@@ -1,0 +1,39 @@
+name: "ggGallery"
+
+title: "ggGallery"
+
+description: |
+  A gallery of ggplots and beyond
+
+base_url: https://genchanghsu.github.io/ggGallery/
+repository_url: https://github.com/GenChangHSU/ggGallery
+source_url: true
+
+output_dir: "."
+
+output: distill::distill_article
+
+navbar:
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - text: "Contact"
+      href: contact.html      
+    - icon: fa fa-rss
+      href: index.xml
+
+collections:
+  posts:
+    categories: true
+    categories_metadata: false
+    authors_metadata: false
+    disqus: ggGallery
+    share: [twitter, facebook]
+    subscribe: _subscribe.html
+    custom: _custom.html
+    citations: false
+    
+theme: theme.css
+

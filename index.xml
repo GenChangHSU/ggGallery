@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>ggGallery</title>
+    <link>https://genchanghsu.github.io/ggGallery/</link>
+    <atom:link href="https://genchanghsu.github.io/ggGallery/index.xml" rel="self" type="application/rss+xml"/>
+    <description>A gallery of ggplots and beyond
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Thu, 18 Feb 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Welcome to My Blog</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/welcome</link>
+      <description>Welcome to our new blog, My Blog. We hope you enjoy 
+reading what we have to say!</description>
+      <category>2021</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/welcome</guid>
+      <pubDate>Thu, 18 Feb 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/welcome/welcome_files/figure-html5/pressure-1.png" medium="image" type="image/png" width="1248" height="768"/>
+    </item>
+  </channel>
+</rss>

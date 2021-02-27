@@ -1,0 +1,66 @@
+---
+title: "About this blog"
+description: |
+  Welcome to ggGallery! Here is something you would like to know about this blog.
+---
+
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+h1{
+font-size: 40px;
+}
+
+</style>
+
+
+<!-- Start of the article -->
+# Who
+My name is Gen-Chang Hsu, an undergraduate at the Department of Life Science, National Taiwan University. I have broad interests in ecology, evolutionary biology, and data science, especially data visualization. Check out [my website](https://genchanghsu.github.io/){target="_blank"} for more information!
+
+# What
+This blog is a collection of ggplots and ggplot extensions. Each post explores a graphing topic (e.g., proper usage of a geom, handy tips for customizing themes and scales, nice features of an extension package) in depth and provides some worked examples to showcase the versatility of ggplots. 
+
+# Why
+For fun and enjoyment, for learning and practice, for brainstorming and communication, for achievement and satisfaction, for...
+
+<br>
+
+<p class="text", style="">
+Go wild and be creative!
+</p>
+
+<style>
+
+.text{
+ font-size: 35px;
+ text-align: center;
+ font-weight: bold;
+ font-style: italic;
+}
+
+</style>
+
+
+

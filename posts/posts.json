@@ -1,0 +1,23 @@
+[
+  {
+    "path": "posts/welcome/",
+    "title": "Welcome to My Blog",
+    "description": "Welcome to our new blog, My Blog. We hope you enjoy \nreading what we have to say!",
+    "author": [
+      {
+        "name": "Gen-Chang Hsu",
+        "url": {}
+      }
+    ],
+    "date": "2021-02-18",
+    "categories": [
+      "2021"
+    ],
+    "contents": "\r\n\r\n\r\nd-article a {\r\n    color: #2780e3 !important;\r\n    border-bottom: none !important;\r\n}\r\n\r\nd-article a:hover {\r\n    color: #2780e3 !important;\r\n    border-bottom: 2px solid !important;\r\n}\r\n\r\nd-byline {\r\n    margin-left: -10% !important;\r\n}\r\n\r\nd-title {\r\n    margin-left: -10%;\r\n}\r\n\r\nd-article {\r\n    margin-left: -10%;\r\n}\r\n\r\np {\r\n    width: 120%;\r\n}\r\n\r\nd-article h2 {\r\n    width: 120%;\r\n}\r\n\r\ndiv.article-footer{\r\n    width: 120%;\r\n}\r\n\r\nd-article div.sourceCode { \r\n    width: 120% !important;\r\n}\r\n\r\nd-article pre { \r\n    width: 120% !important;\r\n}\r\n\r\ndiv.l-body {\r\n    width: 120% !important;\r\n}\r\n\r\nR Markdown\r\nThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com\r\nWhen you click the Knit button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:\r\n\r\n\r\nsummary(cars)\r\n\r\n\r\n     speed           dist       \r\n Min.   : 4.0   Min.   :  2.00  \r\n 1st Qu.:12.0   1st Qu.: 26.00  \r\n Median :15.0   Median : 36.00  \r\n Mean   :15.4   Mean   : 42.98  \r\n 3rd Qu.:19.0   3rd Qu.: 56.00  \r\n Max.   :25.0   Max.   :120.00  \r\n\r\nIncluding Plots\r\nYou can also embed plots, for example:\r\n\r\n\r\nplot(pressure)\r\n\r\n\r\n\r\nprint_factors <- function(x) {\r\nprint(paste(\"The factors of\",x,\"are:\"))\r\nfor(i in 1:x) {\r\nif((x %% i) == 0) {\r\nprint(i)\r\n}\r\n}\r\n}\r\n\r\nprint_factors(120)\r\n\r\n\r\n[1] \"The factors of 120 are:\"\r\n[1] 1\r\n[1] 2\r\n[1] 3\r\n[1] 4\r\n[1] 5\r\n[1] 6\r\n[1] 8\r\n[1] 10\r\n[1] 12\r\n[1] 15\r\n[1] 20\r\n[1] 24\r\n[1] 30\r\n[1] 40\r\n[1] 60\r\n[1] 120\r\n\r\nNote that the echo = FALSE parameter was added to the code chunk to prevent printing of the R code that generated the plot.\r\n\r\n\r\n\r\n",
+    "preview": "posts/welcome/welcome_files/figure-html5/pressure-1.png",
+    "last_modified": "2021-02-27T00:48:26-08:00",
+    "input_file": {},
+    "preview_width": 1248,
+    "preview_height": 768
+  }
+]

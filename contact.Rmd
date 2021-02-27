@@ -1,0 +1,64 @@
+---
+title: "Contact"
+description: |
+---
+
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+div.icon {
+    font-size: 120px; 
+    display: inline-block;
+    display: -moz-inline-box;
+    zoom: 1;
+    width: 100%;
+    text-align: center;
+}
+
+div.icon a:hover {
+    border-bottom: none !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+</style>
+
+
+<!-- Start of the article -->
+```{r load_packages, message=FALSE, warning=FALSE, include=FALSE} 
+library(fontawesome)
+```
+
+Any cool ideas or suggestions? I would love to hear from you! Contact me by email or find me on GitHub, Twitter, and Facebook. Also visit my website [here](https://genchanghsu.github.io/){target="_blank"}!
+
+<div style="height: 1em;"></div>
+
+<div class="icon">
+<a href="mailto:genchanghsu@gmail.com" target="_blank">`r fa("envelope", fill = "#EA4335")`</a>
+<span style = "margin-left: 5%;">[`r fa("github")`](https://github.com/GenChangHSU){target="_blank"}</span>
+<span style = "margin-left: 5%;">[`r fa("twitter", fill = "#00aced")`](https://twitter.com/GenChangHSU){target="_blank"}</span>
+<span style = "margin-left: 5%;">[`r fa("facebook-square", fill = "#3b5998")`](https://www.facebook.com/GenChangHSU/){target="_blank"}</span>
+</div>
+
+
+
+
