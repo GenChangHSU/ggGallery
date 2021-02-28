@@ -29,7 +29,9 @@ collections:
     categories: true
     categories_metadata: false
     authors_metadata: false
-    disqus: ggGallery
+    disqus:
+      shortname: gggallery
+      hidden: true
     share: [twitter, facebook]
     subscribe: _subscribe.html
     custom: _custom.html
