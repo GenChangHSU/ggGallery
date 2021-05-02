@@ -10,7 +10,7 @@ output:
     self_contained: false
 categories:
   - "2021"
-# preview: images/sharpe-ratio.png
+preview: ../../homepage_images/Post1.png
 ---
 
 <!-- Webpage style -->
@@ -72,6 +72,7 @@ div.l-body {
 knitr::opts_chunk$set(message = F, 
                       error = F, 
                       warning = F)
+getwd()
 ```
 
 <!-- Start of the article -->
