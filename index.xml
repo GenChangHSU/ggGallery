@@ -7,17 +7,16 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Thu, 18 Feb 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 01 May 2021 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>Welcome to My Blog</title>
+      <title>Post #1. Center long legend titles in ggplots</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
-      <link>https://genchanghsu.github.io/ggGallery/posts/welcome</link>
-      <description>Welcome to our new blog, My Blog. We hope you enjoy 
-reading what we have to say!</description>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots</link>
+      <description>In this blog, I will show you a simple quick hack to center long legend titles in ggplots without bothering gtables and grobs.</description>
       <category>2021</category>
-      <guid>https://genchanghsu.github.io/ggGallery/posts/welcome</guid>
-      <pubDate>Thu, 18 Feb 2021 00:00:00 +0000</pubDate>
-      <media:content url="https://genchanghsu.github.io/ggGallery/posts/welcome/welcome_files/figure-html5/pressure-1.png" medium="image" type="image/png" width="1248" height="768"/>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots</guid>
+      <pubDate>Sat, 01 May 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots/post-1-center-long-legend-titles-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
   </channel>
 </rss>

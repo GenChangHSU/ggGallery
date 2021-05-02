@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" version="1.0">
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/about.html</loc>
-    <lastmod>2021-02-26T08:53:17-08:00</lastmod>
+    <lastmod>2021-05-01T09:58:14-07:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/contact.html</loc>
@@ -13,7 +13,7 @@
     <lastmod>2021-02-19T00:27:41-08:00</lastmod>
   </url>
   <url>
-    <loc>https://genchanghsu.github.io/ggGallery/posts/welcome/</loc>
-    <lastmod>2021-02-27T00:48:26-08:00</lastmod>
+    <loc>https://genchanghsu.github.io/ggGallery/posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots/</loc>
+    <lastmod>2021-05-02T07:17:37-07:00</lastmod>
   </url>
 </urlset>
