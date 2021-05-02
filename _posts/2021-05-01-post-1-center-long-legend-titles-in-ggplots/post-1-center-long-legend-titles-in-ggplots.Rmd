@@ -121,7 +121,7 @@ ggplot(mtcars, aes(wt, mpg)) +
 
 ```
 
-There is a solution to this issue on [stackoverflow](https://stackoverflow.com/questions/48000292/center-align-legend-title-and-legend-keys-in-ggplot2-for-long-legend-titles). Basically, what it does is to extract the individual elements from the legend grobs, add extra space, and finally piece them back together. This method really delves into the heart of ggplots, but such "brute force" method might require quite a bit of time as well as decent understandings of how ggplot legends is built.
+There is a solution to this problem on [stackoverflow](https://stackoverflow.com/questions/48000292/center-align-legend-title-and-legend-keys-in-ggplot2-for-long-legend-titles). Basically, what it does is to extract the individual elements from the legend grobs, add extra space, and finally piece them back together. This method really delves into the heart of ggplots, but such "brute force" method might require quite a bit of time as well as decent understandings of how ggplot legends is built.
 
 So isn't there a simpler and more elegant way to do so?
 

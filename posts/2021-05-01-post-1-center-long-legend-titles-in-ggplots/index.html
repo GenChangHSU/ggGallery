@@ -2702,7 +2702,7 @@ div.l-body {
 </div>
 <p><img src="post-1-center-long-legend-titles-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png" width="75%" /></p>
 </div>
-<p>There is a solution to this issue on <a href="https://stackoverflow.com/questions/48000292/center-align-legend-title-and-legend-keys-in-ggplot2-for-long-legend-titles">stackoverflow</a>. Basically, what it does is to extract the individual elements from the legend grobs, add extra space, and finally piece them back together. This method really delves into the heart of ggplots, but such “brute force” method might require quite a bit of time as well as decent understandings of how ggplot legends is built.</p>
+<p>There is a solution to this problem on <a href="https://stackoverflow.com/questions/48000292/center-align-legend-title-and-legend-keys-in-ggplot2-for-long-legend-titles">stackoverflow</a>. Basically, what it does is to extract the individual elements from the legend grobs, add extra space, and finally piece them back together. This method really delves into the heart of ggplots, but such “brute force” method might require quite a bit of time as well as decent understandings of how ggplot legends is built.</p>
 <p>So isn’t there a simpler and more elegant way to do so?</p>
 <h2 id="the-hack">The hack</h2>
 <p>The answer to this question is a complete no-brainer: Yes! Otherwise, I will not be writing this blog, right?! <strong>Here is the hack: just use “negative” left margin around the legend title</strong>:</p>
