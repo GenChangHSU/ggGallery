@@ -72,7 +72,7 @@ div.l-body {
 knitr::opts_chunk$set(message = F, 
                       error = F, 
                       warning = F)
-getwd()
+
 ```
 
 <!-- Start of the article -->

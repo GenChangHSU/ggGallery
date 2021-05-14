@@ -7,7 +7,17 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 01 May 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 07 May 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #2. Three ways to create log axes in ggplots: which one should you use?</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2021-05-07-post-2-three-ways-to-create-log-axes-in-ggplots-which-one-should-you-use</link>
+      <description>This blog shows you three different ways to create log axes in ggplots and provides some suggestions on which method to use for your figures.</description>
+      <category>2021</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2021-05-07-post-2-three-ways-to-create-log-axes-in-ggplots-which-one-should-you-use</guid>
+      <pubDate>Fri, 07 May 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-05-07-post-2-three-ways-to-create-log-axes-in-ggplots-which-one-should-you-use/../../homepage_images/Post2.png" medium="image" type="image/png" width="960" height="576"/>
+    </item>
     <item>
       <title>Post #1. Center long legend titles in ggplots</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>

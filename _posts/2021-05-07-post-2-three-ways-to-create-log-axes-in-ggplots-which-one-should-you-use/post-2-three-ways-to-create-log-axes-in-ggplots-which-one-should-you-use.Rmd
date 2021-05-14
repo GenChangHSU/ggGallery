@@ -1,0 +1,313 @@
+---
+title: "Post #2. Three ways to create log axes in ggplots: which one should you use?"
+description: |
+  This blog shows you three different ways to create log axes in ggplots and provides some suggestions on which method to use for your figures.
+author:
+  - name: Gen-Chang Hsu
+date: 05-07-2021
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2021"
+preview: ../../homepage_images/Post2.png
+---
+  
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+      border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+</style>
+  
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F)
+
+```
+
+<!-- Start of the article -->
+  
+We often have data spanning across several orders of magnitude or having skewed distributions. In either case, we might consider transforming our data, and log transformation is one of the most common data transformation techniques people use. 
+
+In ggplots, there are three different methods to do log transformation:<br> 
+<span style="display: block; margin-top: 10px; margin-left: 10px"> **(1) Transformation of variables**</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> **(2) Transformation of scales**</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> **(3) Transformation of coordinates**</span>
+
+You can take a look at a brief demonstration of the three methods on this [ggplot2 website](https://ggplot2.tidyverse.org/reference/coord_trans.html). These methods share something in common, but also differ from each other in some ways, and I often find it confusing to use them (I think you might feel the same way as I do!) 
+
+In this post, I will go over these methods one by one, explain the details, and make a comprehensive comparison. Hopefully, after reading the article, you will clear up the confusions and know how which method to go for your figures!
+
+By the way, we will be working with the famous  [`diamonds`](https://ggplot2.tidyverse.org/reference/diamonds.html) dataset in ggplot2, which contains the price and various attributes of around 54,000 diamonds. 
+
+Say we would like to see how the price of diamonds is related to the weight (carat) of diamonds. Let's first make a scatterplot to visualize their relationship:
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+library(tidyverse)
+
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_point() +
+  theme_classic(base_size = 13)
+
+```
+
+It looks a bit over-plotted, but still you can see a seemingly non-linear positive relationship between price and carat. So we decide to log-transform the data to make the relationship more linear.
+
+## Method 1. Transformation of variables
+
+The first method is transformation of variables. This is done by applying `log()` directly to the x and/or y variables in the `aes()`:  
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+ggplot(diamonds, aes(x = log10(carat), y = log10(price))) +
+  geom_point() +
+  theme_classic(base_size = 13)
+
+```
+
+As you can see, the relationship does become more linear. This method simply log-transforms the x and y variables and plot them as is, and so now the axis ticks display the transformed rather than the original values.
+
+If we fit a line through the points using `stat_smooth()`, we are essentially fitting a linear model with log-transformed carat and price as the predictor and the response:
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+ggplot(diamonds, aes(x = log10(carat), y = log10(price))) +
+  geom_point() +
+  stat_smooth(method = "lm", se = F) + 
+  theme_classic(base_size = 13)
+
+```
+
+Just that simple and easy! Though, a minor drawback of this method is that, since the axes now represent the transformed values, the interpretation might become a bit not so straightforward (e.g., what is a diamond of -0.4 log~10~(carat), or a diamond with a log~10~(price) of around 3.5?!)
+
+## Method 2. Transformation of scales
+The second method is transformation of scales. This is done by specifying the `trans = ` argument in the `scale_XXX_continuous()` function:
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_point() +
+  scale_x_continuous(trans = "log10") + 
+  scale_y_continuous(trans = "log10") +
+  theme_classic(base_size = 13)
+
+```
+
+Looks pretty similar to the plot we get from the first method right? Basically, this second method does the same thing as the first one in the beginning: log-transforming the data. But then, instead of displaying the transformed vales on the axes like what the first method does, it actually converts them back into the original values. This is why you will find that the tick marks are equally-spaced yet their corresponding numbers are not equally-distanced.
+
+Again, we fit a line using `stat_smooth()`:
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_point() +
+  scale_x_continuous(trans = "log10") + 
+  scale_y_continuous(trans = "log10") +
+  stat_smooth(method = "lm", se = F) + 
+  theme_classic(base_size = 13)
+
+```
+
+It is important to note that the line is fitted after the log transformation of data. In other words, the line is fitted using the log-transformed carat and price as the predictor and the response (i.e., log~10~(price) ~ log~10~(carat), not price~carat !!!). So in the plot, a price of around $3,000 for a 1.0 carat diamond actually represents the back-converted predicted log~10~-price for that diamond.
+
+In fact, any statistical computations (e.g., fitted line, mean, median, error bars) applied to the data will always occur **AFTER** the transformation of scales. That is, the statistics will be computed on the log-transformed data!
+
+## Method 3. Transformation of coordinates
+The third method is transformation of coordinates. This is done by specifying the transformation for the x and/or y axis in `coord_trans()`:
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_point() +
+  coord_trans(x = "log10", y = "log10") +
+  theme_classic(base_size = 13)
+
+```
+
+You can see that the axes display original values, same as what we have seen in the second method. But it is pretty obvious that the tick marks are not equally-spaced, different from the second method (take a quick look back at the previous plot!).    
+
+Indeed, what this third method does is that it converts the original linear axes into log axes and shifts the original tick marks (which are equally-spaced with equally-distanced numbers) to the new corresponding log positions (which of course will not be equally-spaced but the corresponding numbers are still the same). As a result, the numbers on the tick marks are equally-distanced yet the tick marks themselves are not equally-spaced.
+
+Now we call `stat_smooth()` to fit a line:
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_point() +
+  stat_smooth(method = "lm", se = F) +
+  coord_trans(x = "log10", y = "log10", ylim = c(min(diamonds$price), NA)) + # Need to specify the lower limit for y-axis!
+  theme_classic(base_size = 13)
+
+```
+
+What! The line is not straight?! Yup, it is not straight. Your vision is fine! So why is that?
+
+This is because the line is fitted using the original price and carat rather than the log-transformed data (i.e., price~carat, not log~10~(price) ~ log~10~(carat) !!!), after which the predicted price is then log-transformed and drawn on the plot. So after the transformation, the line will no longer be straight. 
+
+Different from the second method, in this third method, any statistical computations applied to the data will always occur **BEFORE** the transformation of coordinates. That is, the statistics will be computed on the original data and then log-transformed to be shown on the plot!
+
+Note that here I also specify the lower limit (using min price value) for y-axis. Without this, you will get an error message saying something like "missing value where TRUE/FALSE needed". The line is fitted using the original carat and price as the predictor and the response, and in this example we have some non-positive predicted values. These non-positive values are the culprit: the error arises when ggplot attempts to take log of them (remember the computed statistics will be log-transformed to be drawn on the plot)! 
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+lm_diamonds <- lm(price~carat, data = diamonds)
+predict(lm_diamonds) %>% head() # Non-positive predicted values exist
+predict(lm_diamonds) %>% log10() %>% head() # NaNs produced when you take log of the non-positive values 
+
+```
+
+For the second method (transformation of scales), in which the line is fitted and drawn after log transformation, there is no such problem because the predicted values (of course can be non-positive) do not need to undergo transformation again, and so you will always get a straight line! 
+
+## Which transformation method to use?
+Still confused? In the following table, I summarize the similarities/differences among the three log transformation methods we have discussed:
+
+```{r, echo = FALSE}
+library(knitr)
+library(kableExtra)
+
+Sum_table <- data.frame(
+  "x" = c("Axis values",
+         "Axis tick marks",
+         "Numbers on tick marks",
+         "Statistical computations",
+         "Shape of geoms"),
+  "Transformation of variables" = c("Transformed",
+                                    "Equally-spaced",
+                                    "Equally-distanced",
+                                    "After transformation",
+                                    "Not affected"),
+  "Transformation of scales" = c("Original",
+                                 "Equally-spaced",
+                                 "Not equally-distanced",
+                                 "After transformation",
+                                 "Not affected"),
+  "Transformation of coordinates" = c("Original",
+                                      "Not equally-spaced",
+                                      "Equally-distanced",
+                                      "Before transformation",
+                                      "Might be affected*")) %>%
+  `colnames<-`(c("", 
+                 "Transformation of variables", 
+                 "Transformation of scales",
+                 "Transformation of coordinates"))
+
+kable(Sum_table, align = "ccc") %>%  
+  kable_paper(full_width = T, 
+              html_font = "Arial",
+              font_size = 35) %>%
+  row_spec(0, bold = T, color = "black") %>%
+  column_spec(1, italic = T)
+
+```
+<span style="font-size: 18px; margin-top: -100px">*E.g., the fitted straight line becomes curved.</span>
+
+<br>
+And here is a simple dichotomous key to which method to use for your figures (of course it is my opinion, not the standard rule!):
+
+<span id = "aaa" style="display: block; margin-top: 0px; margin-left: 50px">You are fine with log-transformed axis values.......................... **Method 1**</span>
+
+<span id = "bbb" style="display: block; margin-top: 5px; margin-left: 50px">You want your axis to display original values.......................................2</span>
+
+<span id = "ccc" style="display: block; margin-top: 5px; margin-left: 50px">You want to preserve the shape of geoms and it is okay for the statistics to be computed on the log-transformed data (geom-focused).........**Method 2**</span>
+
+<span id = "ddd" style="display: block; margin-top: 5px; margin-left: 50px; margin-bottom: 25px">You want the statistics to be computed on the original data and it is okay to have the shape of geoms altered (stat-focused).......................**Method 3**</span>
+
+<style>
+
+d-article p span#aaa:before { 
+  content: "1a. "; 
+  display: inline-block;
+  margin-left: -2em;
+  margin-right: 0.5em;
+}
+
+d-article p span#bbb:before { 
+  content: "1b. "; 
+  display: inline-block;
+  margin-left: -2em;
+  margin-right: 0.5em;
+}
+
+d-article p span#ccc:before { 
+  content: "2a. "; 
+  display: inline-block;
+  margin-left: -2em;
+  margin-right: 0.5em;
+}
+
+d-article p span#ddd:before { 
+  content: "2b. "; 
+  display: inline-block;
+  margin-left: -2em;
+  margin-right: 0.5em;
+}
+
+d-article table.lightable-paper {
+  margin-bottom: 0px; 
+}
+
+</style>
+
+This is the end of this rather long post. Hooray! Hope it is worth the time and you do learn something useful. And as always, don't forget to leave your comments and suggestions below if you have any!
+
