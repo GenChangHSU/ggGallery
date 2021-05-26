@@ -7,7 +7,17 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Fri, 07 May 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 26 May 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Guest post #1. Communicating the ESSENCE of your data</title>
+      <dc:creator>William Ou</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2021-05-26-guest-post-1-communicating-the-essence-of-your-data</link>
+      <description>*****Add a short description of the post.</description>
+      <category>2021</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2021-05-26-guest-post-1-communicating-the-essence-of-your-data</guid>
+      <pubDate>Wed, 26 May 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-05-26-guest-post-1-communicating-the-essence-of-your-data/../../homepage_images/Guest_post1.gif" medium="image" type="image/gif"/>
+    </item>
     <item>
       <title>Post #2. Three ways to create log axes in ggplots: which one should you use?</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
