@@ -1,7 +1,7 @@
 ---
 title: "Guest Post #1. Communicating the ESSENCE of your data"
 description: |
-  *****Add a short description of the post.
+  Visualizing multidimensional and dynamic data can be challenging. In this post, I will show how you can better communicate these features with interactive plots and animations.
 author:
   - name: "William Ou"
 date: 05-26-2021
@@ -99,7 +99,7 @@ knitr::opts_chunk$set(message = F,
 ```
 
 <!-- Start of the article -->
-**_From the host_**: Here comes the first guest post by William Ou! In this post, he will show you how to visualize the data using interactive plots and animations. This is a rather long post, but fear not, I promise you will find it interesting, and most importantly, your data visualization skills will **LEVEL UP**!
+**_From the host_**: Here comes the first guest post by William Ou! In this post, he will show you how to "attractively" visualize the data using interactive plots and animations. This is a rather long post, but fear not, I promise you will find it interesting, and most importantly, your data visualization skills will **LEVEL UP**!
 
 Before we start, make sure you have the following packages installed:
 
@@ -111,7 +111,6 @@ library(vegan)
 library(gapminder)
 library(gganimate)
 library(palmerpenguins)
-library(emo)  # Install from GitHub: devtools::install_github("hadley/emo")
 
 ```
   
@@ -120,10 +119,7 @@ library(emo)  # Install from GitHub: devtools::install_github("hadley/emo")
 Arguably the biggest challenge in data visualization is the fact that we live in a multi-dimensional and dynamic ^[I refer to dynamic here as a term that indicates change over time, recognizing that time is sometimes interpreted as another dimension] world. Our 3D perception of the universe is an obvious case in support of the multi-dimensions part (all we need is more than 1-dimension!). You might argue that some things are in fact static though. But! If you look closely enough, everything in the physical world is dynamic, constantly moving and fluctuating in space and time. The screen on your computer may look "static" but it's actually constantly emitting light. Even the wall in your room is made up of particles that are constantly moving. Yet, despite the ubiquity of multi-dimensionality and dynamical behaviors, a large amount of the information we acquire today comes in the standard 2D and static format: the book or Wikipedia page you're reading, you're Facebook feed, magazines etc.. Although there are ways of representing dynamic and multi-dimension features in 2D static mediums, doing so often distorts the original information and can hinder the "essence" of the message that one wishes to convey. In many cases, deciphering distorted information requires practice and prior knowledge which renders the information accessible to only a few selected individuals. To demonstrate my point, consider the 2 ways of visualizing the [Palmer Penguins](https://allisonhorst.github.io/palmerpenguins/articles/intro.html) dataset below:
 
 ### Approach 1: Dimension reduction (PCA)
-```{r, fig.width = 5, fig.height = 5, out.width = "70%"}
-# A quick look at the structure of the "penguins" dataset
-glimpse(penguins)
-
+```{r, echo = FALSE, fig.width = 5, fig.height = 5, out.width = "70%"}
 # PCA
 PCA <- penguins %>%
   select(bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g) %>%
@@ -158,7 +154,7 @@ ggplot() +
 
 ### Approach 2: 3D interactive plots
 
-```{r, fig.width = 7, fig.height = 5, out.width = "80%"}
+```{r, echo = FALSE, fig.width = 7, fig.height = 5, out.width = "80%"}
 penguins %>%
   drop_na() %>%
   plot_ly(., x = ~bill_length_mm, y = ~bill_depth_mm, z = ~flipper_length_mm,
@@ -182,10 +178,10 @@ Now, **Approach 2** may also look like a handful. However, if you take a deep br
 
 ## Dynamic variables
 
-*****Add a few opening sentences here? (e.g., Let's see how to visualize dynamic variables...; in this section, we are going to play with the "gapminder" dataset...; a brief intro to the dataset and what you are going to visualize here...)
+Now let’s take a look at some ways to visualize dynamic variables, variables that change over time.
 
 ### Approach 1: Static representation with arrows
-```{r, fig.width = 5, fig.height = 4, out.width = "70%"}
+```{r, echo = FALSE, fig.width = 5, fig.height = 4, out.width = "70%"}
 static_gapminder <- gapminder %>%
   filter(continent != 'Oceania') %>%
   ggplot(aes(x = gdpPercap, y = lifeExp, group = country)) +
@@ -199,7 +195,7 @@ static_gapminder
 ```
 
 ### Approach 2: Animate to reveal each time step sequentially
-```{r, fig.width = 5, fig.height = 4, out.width = "70%"}
+```{r, echo = FALSE, fig.width = 5, fig.height = 4, out.width = "70%"}
 anim_gapminder <- static_gapminder + transition_reveal(year)
 
 anim_gapminder
@@ -270,28 +266,28 @@ Because `gganimate` is a part of the `tidverse`/`ggplot2` ecosystem, it should b
 d-article p span#aaa:before { 
   content: "1. "; 
   display: inline-block;
-  margin-left: -2em;
+  margin-left: -1.5em;
   margin-right: 0.5em;
 }
 
 d-article p span#bbb:before { 
   content: "2. "; 
   display: inline-block;
-  margin-left: -2em;
+  margin-left: -1.5em;
   margin-right: 0.5em;
 }
 
 d-article p span#ccc:before { 
   content: "3. "; 
   display: inline-block;
-  margin-left: -2em;
+  margin-left: -1.5em;
   margin-right: 0.5em;
 }
 
 d-article p span#ddd:before { 
   content: "4. "; 
   display: inline-block;
-  margin-left: -2em;
+  margin-left: -1.5em;
   margin-right: 0.5em;
 }
 
