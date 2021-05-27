@@ -6,21 +6,21 @@
       "description": "Welcome to ggGallery! Here is something you would like to know about this blog.",
       "author": [],
       "contents": "\r\n\r\n\r\nd-article a {\r\n    color: #2780e3 !important;\r\n    border-bottom: none !important;\r\n}\r\n\r\nd-article a:hover {\r\n    color: #2780e3 !important;\r\n    border-bottom: 2px solid !important;\r\n}\r\n\r\nd-title {\r\n    margin-left: -10%;\r\n}\r\n\r\nd-article {\r\n    margin-left: -10%;\r\n}\r\n\r\np {\r\n    width: 120%;\r\n}\r\n\r\nh1{\r\nfont-size: 40px;\r\n}\r\n\r\nWho\r\nThe Host   I am your host, Gen-Chang Hsu, currently an undergraduate at the Department of Life Science, National Taiwan University. I have broad interests in ecology, evolutionary biology, and data science, especially data visualization. Check out my website for more information!\r\nThe Guest   William Ou is an ecologist broadly interested in complexity science, eco-evolutionary dynamics, and more recently, cognitive psychology. When not sciencing, he enjoys biking around the city, eating ice cream, making generative art with ggplot, and watching netflix. Check out his website to learn more!\r\nWhat\r\nThis blog is a collection of ggplots and ggplot extensions. Each post explores a graphing topic (e.g., proper usage of a geom, handy tips for customizing themes and scales, nice features of an extension package) in depth and provides some worked examples to showcase the versatility of ggplots.\r\nWhy\r\nFor fun and enjoyment, for learning and practice, for brainstorming and communication, for achievement and satisfaction, for…\r\n\r\n\r\nGo wild and be creative!\r\n\r\n\r\n\r\n.text{\r\n font-size: 35px;\r\n text-align: center;\r\n font-weight: bold;\r\n font-style: italic;\r\n}\r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-05-27T01:06:58-07:00"
+      "last_modified": "2021-05-27T02:03:58-07:00"
     },
     {
       "path": "contact.html",
       "title": "Contact",
       "author": [],
       "contents": "\r\n\r\n\r\nd-article a {\r\n    color: #2780e3 !important;\r\n    border-bottom: none !important;\r\n}\r\n\r\nd-article a:hover {\r\n    color: #2780e3 !important;\r\n    border-bottom: 2px solid !important;\r\n}\r\n\r\ndiv.icon {\r\n    font-size: 120px; \r\n    display: inline-block;\r\n    display: -moz-inline-box;\r\n    zoom: 1;\r\n    width: 100%;\r\n    text-align: center;\r\n}\r\n\r\ndiv.icon a:hover {\r\n    border-bottom: none !important;\r\n}\r\n\r\nd-title {\r\n    margin-left: -10%;\r\n}\r\n\r\nd-article {\r\n    margin-left: -10%;\r\n}\r\n\r\np {\r\n    width: 120%;\r\n}\r\n\r\nAny cool ideas or suggestions? I would love to hear from you! Contact me by email or find me on GitHub, Twitter, and Facebook. Also visit my website here!\r\n\r\n\r\n\r\n\r\n   \r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-05-27T01:06:59-07:00"
+      "last_modified": "2021-05-27T02:03:59-07:00"
     },
     {
       "path": "index.html",
       "title": "Posts",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-05-27T01:07:00-07:00"
+      "last_modified": "2021-05-27T02:04:00-07:00"
     }
   ],
   "collections": ["posts/posts.json"]

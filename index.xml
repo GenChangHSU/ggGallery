@@ -22,7 +22,7 @@
       <title>Post #2. Three ways to create log axes in ggplots: which one should you use?</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
       <link>https://genchanghsu.github.io/ggGallery/posts/2021-05-07-post-2-three-ways-to-create-log-axes-in-ggplots-which-one-should-you-use</link>
-      <description>This blog shows you three different ways to create log axes in ggplots and provides some suggestions on which method to use for your figures.</description>
+      <description>This post shows you three different ways to create log axes in ggplots and provides some suggestions on which method to use for your figures.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-05-07-post-2-three-ways-to-create-log-axes-in-ggplots-which-one-should-you-use</guid>
       <pubDate>Fri, 07 May 2021 00:00:00 +0000</pubDate>
@@ -32,7 +32,7 @@
       <title>Post #1. Center long legend titles in ggplots</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
       <link>https://genchanghsu.github.io/ggGallery/posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots</link>
-      <description>In this blog, I will show you a simple quick hack to center long legend titles in ggplots without bothering gtables and grobs.</description>
+      <description>In this post, I will show you a simple quick hack to center long legend titles in ggplots without bothering gtables and grobs.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots</guid>
       <pubDate>Sat, 01 May 2021 00:00:00 +0000</pubDate>

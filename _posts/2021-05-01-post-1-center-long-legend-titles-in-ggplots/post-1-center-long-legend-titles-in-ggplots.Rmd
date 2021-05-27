@@ -1,7 +1,7 @@
 ---
 title: "Post #1. Center long legend titles in ggplots"
 description: |
-  In this blog, I will show you a simple quick hack to center long legend titles in ggplots without bothering gtables and grobs. 
+  In this post, I will show you a simple quick hack to center long legend titles in ggplots without bothering gtables and grobs. 
 author:
   - name: Gen-Chang Hsu
 date: 05-01-2021

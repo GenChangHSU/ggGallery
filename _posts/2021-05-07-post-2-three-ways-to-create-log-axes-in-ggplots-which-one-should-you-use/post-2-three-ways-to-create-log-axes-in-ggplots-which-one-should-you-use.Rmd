@@ -1,7 +1,7 @@
 ---
 title: "Post #2. Three ways to create log axes in ggplots: which one should you use?"
 description: |
-  This blog shows you three different ways to create log axes in ggplots and provides some suggestions on which method to use for your figures.
+  This post shows you three different ways to create log axes in ggplots and provides some suggestions on which method to use for your figures.
 author:
   - name: Gen-Chang Hsu
 date: 05-07-2021
