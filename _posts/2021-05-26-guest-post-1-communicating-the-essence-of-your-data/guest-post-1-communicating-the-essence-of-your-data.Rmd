@@ -1,7 +1,7 @@
 ---
 title: "Guest Post #1. Communicating the ESSENCE of your data"
 description: |
-  Visualizing multidimensional and dynamic data can be challenging. In this post, I will show how you can better communicate these features with interactive plots and animations.
+  Visualizing multi-dimensional and dynamic data can be challenging. In this post, I will show how you can better communicate these features with interactive plots and animations.
 author:
   - name: "William Ou"
 date: 05-26-2021
@@ -96,24 +96,19 @@ knitr::opts_chunk$set(message = F,
                       error = F, 
                       warning = F)
 
-```
-
-<!-- Start of the article -->
-**_From the host_**: Here comes the first guest post by William Ou! In this post, he will show you how to "attractively" visualize the data using interactive plots and animations. This is a rather long post, but fear not, I promise you will find it interesting, and most importantly, your data visualization skills will **LEVEL UP**!
-
-Before we start, make sure you have the following packages installed:
-
-```{r}
-# Packages used in this post
 library(tidyverse)
 library(plotly)
 library(vegan)
 library(gapminder)
 library(gganimate)
 library(palmerpenguins)
+library(emo)
 
 ```
-  
+
+<!-- Start of the article -->
+**_From the host_**: Here comes the first guest post by William Ou! In this post, he will show you how to "attractively" visualize the data using interactive plots and animations. This is a rather long post, but fear not, I promise you will find it interesting, and most importantly, your data visualization skills will **LEVEL UP**!
+
 ## The challenge
 
 Arguably the biggest challenge in data visualization is the fact that we live in a multi-dimensional and dynamic ^[I refer to dynamic here as a term that indicates change over time, recognizing that time is sometimes interpreted as another dimension] world. Our 3D perception of the universe is an obvious case in support of the multi-dimensions part (all we need is more than 1-dimension!). You might argue that some things are in fact static though. But! If you look closely enough, everything in the physical world is dynamic, constantly moving and fluctuating in space and time. The screen on your computer may look "static" but it's actually constantly emitting light. Even the wall in your room is made up of particles that are constantly moving. Yet, despite the ubiquity of multi-dimensionality and dynamical behaviors, a large amount of the information we acquire today comes in the standard 2D and static format: the book or Wikipedia page you're reading, you're Facebook feed, magazines etc.. Although there are ways of representing dynamic and multi-dimension features in 2D static mediums, doing so often distorts the original information and can hinder the "essence" of the message that one wishes to convey. In many cases, deciphering distorted information requires practice and prior knowledge which renders the information accessible to only a few selected individuals. To demonstrate my point, consider the 2 ways of visualizing the [Palmer Penguins](https://allisonhorst.github.io/palmerpenguins/articles/intro.html) dataset below:
@@ -174,11 +169,13 @@ penguins %>%
 
 If you've learned PCA before, you might have no problem interpreting **Approach 1**. But if you haven't, you might be wondering: What the \*\*\*\* is a PC1/PC2? What are the units of the axes? Why are there arrows pointing at different directions? What does a single point even represent? Most importantly, where did my penguins go!? Because the focus of this post is not about statistics, I won't go into the details of explaining what a PCA is. What I do want to point out though, is how we can visualize data in a more accessible manner.
 
-Now, **Approach 2** may also look like a handful. However, if you take a deep breath and carefully examine the plot, anyone would be able to interpret it, even without any background (assuming that they can read English, of course)! Upon closer inspection, you'll see that each point in the figure is made up of 4 variables: **1. Bill length (mm)**, **2. Bill depth (mm)**, **3. Flipper length (mm)**, and **4. Body size (g)**. All these variables characterize an individual penguin (a penguin is multi-dimensional!). The 4 variables are represented by 3 axes and a color gradient. The reason why we do not have a 4th axis is because our brain is not programmed to think that way, so the 4th variable is represented as a color gradient instead. An important thing to note is that, these points on the plot show *exactly* what the data says. Nothing is distorted and its as raw as it can be. One cool feature of this plot is that it is interactive. Although our screen is 2D, we can get a better "feel" of the dimensionality by rotating the axes around. Rotating works by dragging the plot around with your cursor. By doing so, we'll see that at certain angles, the points look like a big "cloud" while at other angles you can see a clear separation between clusters of points. Try playing around with the plot, explore its features, and see if you can find other ways of visualizing your data.
+Now, **Approach 2** may also look like a handful. However, if you take a deep breath and carefully examine the plot, anyone would be able to interpret it, even without any background (assuming that they can read English, of course)! Upon closer inspection, you'll see that each point in the figure is made up of 4 variables: **1. Bill length (mm)**, **2. Bill depth (mm)**, **3. Flipper length (mm)**, and **4. Body size (g)**. All these variables characterize an individual penguin (a penguin is multi-dimensional!). The 4 variables are represented by 3 axes and a color gradient. The reason why we do not have a 4^th^ axis is because our brain is not programmed to think that way, so the 4^th^ variable is represented as a color gradient instead. An important thing to note is that, these points on the plot show *exactly* what the data says. Nothing is distorted and its as raw as it can be. One cool feature of this plot is that it is interactive. Although our screen is 2D, we can get a better "feel" of the dimensionality by rotating the axes around. Rotating works by dragging the plot around with your cursor. By doing so, we'll see that at certain angles, the points look like a big "cloud" while at other angles you can see a clear separation between clusters of points. Try playing around with the plot, explore its features, and see if you can find other ways of visualizing your data.
 
 ## Dynamic variables
 
 Now let’s take a look at some ways to visualize dynamic variables, variables that change over time.
+
+<span style="display: block; color: red">Add a short description of the famous gapminder (with link) dataset here? Also one sentence or two of what you are going to visualize in the following figures (e.g., let's see how the relationship between GDP and life exp of each country in the four major continents changed over year...)?</span>
 
 ### Approach 1: Static representation with arrows
 ```{r, echo = FALSE, fig.width = 5, fig.height = 4, out.width = "70%"}
@@ -205,24 +202,29 @@ For the dynamics example, the two figures above are actually identical. The only
 
 The `gapminder` dataset is the perfect example that demonstrates the power of good data visualization! If you haven't already, I strongly encourage you to check out the seminal TED [talk](https://www.ted.com/talks/hans_rosling_the_best_stats_you_ve_ever_seen) by Hans Rosling, the OG of descriptive and exploratory data analysis.
 
+<span style="display: block; color: red">Maybe add the link to [this amazing talk](https://www.youtube.com/watch?v=jbkSRLYSojo&t=34s) by Hans Rosling too?</span>
+
 ## Now for some coding
 
 Let's go over some simple examples to see how you can make your own interactive plot with `plotly` and animation with `gganimate`. Both of these packages have really good documentation and you can find out more about them on their websites: [plotly](https://plotly.com/r/) and [gganimate](https://gganimate.com/articles/gganimate.html)
 
 ### I. Making your first interactive 3D plot with *plotly*
 
-We'll use the mtcars dataset here as an example. Make sure to have the `plotly` package installed on your computer.
+We'll use the [mtcars](https://stat.ethz.ch/R-manual/R-patched/library/datasets/html/mtcars.html) dataset here as an example. Make sure to have the `plotly` package installed on your computer.
 
-The plotly package is built to be compatible with tidyverse with both sharing very similar syntax. Just as `ggplot()` is to `ggplot2`, the main engine of `plotly` plots is the function `plot_ly()`. Again, very similar to ggplot2, we supply the `plot_ly()` function with our data frame and the variables we would like to plot.
+The `plotly` package is built to be compatible with `tidyverse` with both sharing very similar syntax. Just as `ggplot()` is to `ggplot2`, the main engine of `plotly` plots is the function `plot_ly()`. Again, very similar to ggplot2, we supply the `plot_ly()` function with our data frame and the variables we would like to plot.
 
 We'll start by loading the package(s) first, and tweak the dataset a little bit prior to plotting. Here, we will treat \# of cylinders as a factor instead of a integer value for visualization purposes.
 
 ```{r}
+library(tidyverse)
+library(plotly)
+
 mtcars_new <-  mtcars %>%
   mutate(cyl = as.factor(cyl))
 ```
 
-Again, very similar to `ggplot()`, we supply the `plot_ly()` function with the data that we want to plot and specify the axes which would be x, y, and z since we have a 3rd dimension. Note the small differences in how the variables are defined here. In `plot_ly()` the variables are defined with the "\~" (tilde), which is like what you would normally do when defining a linear model (e.g. `lm(y ~ x1 + x2)`). In addition, we'll also specify a 4th variable/dimension as the `color` of the points.
+Again, very similar to `ggplot()`, we supply the `plot_ly()` function with the data that we want to plot and specify the axes which would be x, y, and z since we have a 3rd dimension. Note the small differences in how the variables are defined here. In `plot_ly()` the variables are defined with the "\~" (tilde), which is like what you would normally do when defining a linear model (e.g. `lm(y ~ x1 + x2)`). In addition, we'll also specify a 4^th^ variable/dimension as the `color` of the points.
 
 ```{r, fig.width = 7, fig.height = 5, out.width = "80%"}
 mt_plotly <- plot_ly(data = mtcars_new, x = ~wt, y = ~hp, z = ~qsec,
@@ -238,7 +240,7 @@ mt_plotly %>%
          scene = list(xaxis = list(title = 'Weight (1000lbs)'),
                       yaxis = list(title = 'Horsepower (hp)'),
                       zaxis = list(title = 'Quarter mile time (s)')),
-         annotations = list( #this section is hard-coded 
+         annotations = list( # This section is hard-coded 
            x = 1.13,
            y = 1.05,
            text = '# of Cylcinders',
@@ -300,6 +302,10 @@ d-article table.lightable-paper {
 As you can imagine, animations take a little time to render. So for the sake brevity, I'll use only a subset of the `gapminder` dataset.
 
 ```{r}
+library(tidyverse)
+library(gganimate)
+library(gapminder)
+
 gapminder_asia <- gapminder %>%
   filter(continent == 'Asia')
 ```
@@ -321,7 +327,7 @@ asia_p <- gapminder_asia %>%
 asia_p
 ```
 
-This looks like horrible, doesn't it? But this is what I meant by "plot it all out". This will become clearer through the animation process though, since the points and texts of each country will only appear once at each time point. Because the line specified by `geom_path` is continuous (only 1 line per group), it will only "grow" as time progresses. In other words, each country will only have a single line, a single point, and a single text throughout the animation.
+This looks horrible, doesn't it? But this is what I meant by "plot it all out". This will become clearer through the animation process though, since the points and texts of each country will only appear once at each time point. Because the line specified by `geom_path` is continuous (only 1 line per group), it will only "grow" as time progresses. In other words, each country will only have a single line, a single point, and a single text throughout the animation.
 
 To make the plot an animation, simply choose an appropriate *transition function* from the `gganimate` package and add it to your `ggplot`. But what the heck is a transition function? Transition functions are the functions the allow you to specify *how* you want your plot to be animated. In most cases, all you need to provide to the function is the variable from your dataframe in which you want the animations to be indexed. For example, if we want the animations to progress over time, then we want the time-indexed variable to be our argument. Here, we'll use the `transition_reveal()` function as our transition function since we are trying to visualize the temporal evolution of population size.
 
