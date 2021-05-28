@@ -173,9 +173,7 @@ Now, **Approach 2** may also look like a handful. However, if you take a deep br
 
 ## Dynamic variables
 
-Now let’s take a look at some ways to visualize dynamic variables, variables that change over time.
-
-<span style="display: block; color: red">Add a short description of the famous gapminder (with link) dataset here? Also one sentence or two of what you are going to visualize in the following figures (e.g., let's see how the relationship between GDP and life exp of each country in the four major continents changed over year...)?</span>
+Now let’s take a look at some ways to visualize dynamic variables, variables that change over time. [Gapminder](https://www.gapminder.org/about/) is a foundation founded by Hans Rosling that aims to highlight common misconceptions about global trends with data. The `gapminder` package in R provides a subset of its dataset. Let’s look at how life expectancy and GDP of each country changes over time (year).
 
 ### Approach 1: Static representation with arrows
 ```{r, echo = FALSE, fig.width = 5, fig.height = 4, out.width = "70%"}
@@ -200,9 +198,7 @@ anim_gapminder
 
 For the dynamics example, the two figures above are actually identical. The only difference is that the animation shows how the state variable (in this case, life expectancy) *develops* over time by revealing each data sequentially as time progresses. Animations are particularly helpful for visualizing time-series data with multiple variables because things can get cluttered really fast when lines are drawn to represent the passage of time. Although the animated version also shows a lot of cluttering towards the end, it doesn't necessarily impede understanding because the viewer already has a sense of where each point *came* from.
 
-The `gapminder` dataset is the perfect example that demonstrates the power of good data visualization! If you haven't already, I strongly encourage you to check out the seminal TED [talk](https://www.ted.com/talks/hans_rosling_the_best_stats_you_ve_ever_seen) by Hans Rosling, the OG of descriptive and exploratory data analysis.
-
-<span style="display: block; color: red">Maybe add the link to [this amazing talk](https://www.youtube.com/watch?v=jbkSRLYSojo&t=34s) by Hans Rosling too?</span>
+The `gapminder` dataset is the perfect example that demonstrates the power of good data visualization! If you haven't already, I strongly encourage you to check out the seminal [TED talk](https://www.ted.com/talks/hans_rosling_the_best_stats_you_ve_ever_seen) and this [BBC trailer](https://www.youtube.com/watch?v=jbkSRLYSojo&t=34s) by Hans Rosling, the OG of descriptive and exploratory data analysis.
 
 ## Now for some coding
 
@@ -306,6 +302,7 @@ library(tidyverse)
 library(gganimate)
 library(gapminder)
 
+# Subset the countries in Asia
 gapminder_asia <- gapminder %>%
   filter(continent == 'Asia')
 ```
@@ -319,7 +316,7 @@ asia_p <- gapminder_asia %>%
   ggplot(aes(x = year, y = pop, group = country)) +
   geom_point() +
   geom_path() +
-  geom_text(aes(label = country), hjust = -0.3) +
+  geom_text(aes(label = country), hjust = -0.3, size = 2.5) +
   scale_y_log10() +
   xlim(1950, 2030) +
   theme_bw()
