@@ -23,6 +23,8 @@ navbar:
       href: contact.html      
     - icon: fa fa-rss
       href: index.xml
+    - image: R_blogger.png
+      href: https://www.r-bloggers.com
 
 collections:
   posts:

@@ -201,6 +201,13 @@ span.algolia-autocomplete{
   font-weight: bold;
 }
 
+.distill-site-header .nav-image img {
+    max-height: 25px;
+    width: auto;
+    display: inline-block;
+    margin-bottom: -5px;
+}
+
 .distill-site-header {
   font-weight: 400;
   background: linear-gradient(to right, 
