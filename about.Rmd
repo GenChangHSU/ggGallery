@@ -37,12 +37,7 @@ font-size: 40px;
 
 <!-- Start of the article -->
 # Who
-
-**_The Host_** \  I am your host, Gen-Chang Hsu, currently an undergraduate at the Department of Life Science, National Taiwan University. I have broad interests in ecology, evolutionary biology, and data science, especially data visualization. Check out [my website](https://genchanghsu.github.io/){target="_blank"} for more information!
-
-**_The Guest_** \  William Ou is an ecologist broadly interested in complexity science, eco-evolutionary dynamics, and more recently, cognitive psychology. When not sciencing, he enjoys biking around the city, eating ice cream, making generative art with ggplot, and watching netflix. Check out [his website](https://jiaangou.github.io/){target="_blank"} to learn more!
-
-
+I am Gen-Chang Hsu, currently an undergraduate at the Department of Life Science, National Taiwan University. I have broad interests in ecology, evolutionary biology, and data science, especially data visualization. Check out [my website](https://genchanghsu.github.io/){target="_blank"} for more information!
 
 # What
 This blog is a collection of ggplots and ggplot extensions. Each post explores a graphing topic (e.g., proper usage of a geom, handy tips for customizing themes and scales, nice features of an extension package) in depth and provides some worked examples to showcase the versatility of ggplots. 

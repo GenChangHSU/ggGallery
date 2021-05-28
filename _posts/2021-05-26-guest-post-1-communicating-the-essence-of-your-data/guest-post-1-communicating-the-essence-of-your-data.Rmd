@@ -340,5 +340,6 @@ I started off by suggesting to you that 2D static plots can sometimes limit our 
 
 Through this post, I hope I, at least slightly, highlighted the pedagogical implications of making intuitive and accessible data through thoughtful visualizations. So there you have it! May you live long and prosper `r emo::ji("vulcan")`
 
+<hr>
 
-
+William Ou is an ecologist broadly interested in complexity science, eco-evolutionary dynamics, and more recently, cognitive psychology. When not sciencing, he enjoys biking around the city, eating ice cream, making generative art with ggplot, and watching netflix. Check out [his website](https://jiaangou.github.io/){target="_blank"} to learn more!
