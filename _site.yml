@@ -41,3 +41,5 @@ collections:
     
 theme: theme.css
 
+rss:
+  full_content: true
