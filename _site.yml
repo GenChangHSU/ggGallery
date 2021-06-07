@@ -28,6 +28,7 @@ navbar:
 
 collections:
   posts:
+    feed_items_max: false
     categories: true
     categories_metadata: false
     authors_metadata: false
