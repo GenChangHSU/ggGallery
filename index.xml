@@ -11,12 +11,12 @@
     <item>
       <title>Post #4. Consistent colors of the same factor levels across figures</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
-      <link>https://genchanghsu.github.io/ggGallery/posts/2021-06-26-post-4-fix-the-colors-for-the-same-levels-across-figures</link>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2021-06-26-post-4-consistent-colors-of-the-same-factor-levels-across-figures</link>
       <description>In this post, I will show you a simple trick to keep the colors of the same factor levels consistent across different ggplot figures.</description>
       <category>2021</category>
-      <guid>https://genchanghsu.github.io/ggGallery/posts/2021-06-26-post-4-fix-the-colors-for-the-same-levels-across-figures</guid>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2021-06-26-post-4-consistent-colors-of-the-same-factor-levels-across-figures</guid>
       <pubDate>Sat, 26 Jun 2021 00:00:00 +0000</pubDate>
-      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-06-26-post-4-fix-the-colors-for-the-same-levels-across-figures/../../homepage_images/Post4.png" medium="image" type="image/png" width="960" height="576"/>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-06-26-post-4-consistent-colors-of-the-same-factor-levels-across-figures/../../homepage_images/Post4.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
       <title>Post #3. Pie charts with ggplot</title>
