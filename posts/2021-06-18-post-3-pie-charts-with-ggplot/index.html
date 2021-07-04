@@ -126,7 +126,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-3-pie-charts-with-ggplot_files/anchor-4.2.2/anchor.min.js","post-3-pie-charts-with-ggplot_files/bowser-1.9.3/bowser.min.js","post-3-pie-charts-with-ggplot_files/distill-2.2.21/template.v2.js","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-1-1.png","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-2-1.png","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-3-1.png","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-4-1.png","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-5-1.png","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-6-1.png","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-7-1.png","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-8-1.png","post-3-pie-charts-with-ggplot_files/jquery-1.11.3/jquery.min.js","post-3-pie-charts-with-ggplot_files/popper-2.6.0/popper.min.js","post-3-pie-charts-with-ggplot_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-3-pie-charts-with-ggplot_files/tippy-6.2.7/tippy-light-border.css","post-3-pie-charts-with-ggplot_files/tippy-6.2.7/tippy.css","post-3-pie-charts-with-ggplot_files/tippy-6.2.7/tippy.umd.min.js","post-3-pie-charts-with-ggplot_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["post-3-pie-charts-with-ggplot_files/anchor-4.2.2/anchor.min.js","post-3-pie-charts-with-ggplot_files/bowser-1.9.3/bowser.min.js","post-3-pie-charts-with-ggplot_files/distill-2.2.21/template.v2.js","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-1-1.png","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-2-1.png","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-3-1.png","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-4-1.png","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-5-1.png","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-6-1.png","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-7-1.png","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-8-1.png","post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-9-1.png","post-3-pie-charts-with-ggplot_files/jquery-1.11.3/jquery.min.js","post-3-pie-charts-with-ggplot_files/popper-2.6.0/popper.min.js","post-3-pie-charts-with-ggplot_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-3-pie-charts-with-ggplot_files/tippy-6.2.7/tippy-light-border.css","post-3-pie-charts-with-ggplot_files/tippy-6.2.7/tippy.css","post-3-pie-charts-with-ggplot_files/tippy-6.2.7/tippy.umd.min.js","post-3-pie-charts-with-ggplot_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2729,9 +2729,7 @@ div.l-body {
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Compute the midpoints of the arcs</span>
 <span class='va'>label_pos</span> <span class='op'>&lt;-</span> <span class='va'>n_cyl</span> <span class='op'>%&gt;%</span>
   <span class='fu'>arrange</span><span class='op'>(</span><span class='fu'>desc</span><span class='op'>(</span><span class='va'>cyl</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>  <span class='co'># Reverse the order of the levels</span>
-  <span class='fu'>mutate</span><span class='op'>(</span>cumsum <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>N</span><span class='op'>)</span>,
-         mid <span class='op'>=</span> <span class='va'>N</span><span class='op'>/</span><span class='fl'>2</span>,
-         pos <span class='op'>=</span> <span class='va'>cumsum</span> <span class='op'>-</span> <span class='va'>mid</span><span class='op'>)</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>pos <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>N</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>N</span><span class='op'>/</span><span class='fl'>2</span><span class='op'>)</span>
 
 <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>n_cyl</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"x"</span>, y <span class='op'>=</span> <span class='va'>N</span>, fill <span class='op'>=</span> <span class='va'>cyl</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'>geom_bar</span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"identity"</span>, position <span class='op'>=</span> <span class='st'>"stack"</span><span class='op'>)</span> <span class='op'>+</span> 
@@ -2752,16 +2750,14 @@ div.l-body {
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># A dataframe for mapping the labels to the slices</span>
 <span class='va'>label_pos2</span> <span class='op'>&lt;-</span> <span class='va'>n_cyl</span> <span class='op'>%&gt;%</span>
   <span class='fu'>arrange</span><span class='op'>(</span><span class='fu'>desc</span><span class='op'>(</span><span class='va'>cyl</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>mutate</span><span class='op'>(</span>cumsum <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>N</span><span class='op'>)</span>,
-         mid <span class='op'>=</span> <span class='va'>N</span><span class='op'>/</span><span class='fl'>2</span>,
-         pos <span class='op'>=</span> <span class='va'>cumsum</span> <span class='op'>-</span> <span class='va'>mid</span>,
+  <span class='fu'>mutate</span><span class='op'>(</span>pos <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>N</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>N</span><span class='op'>/</span><span class='fl'>2</span>,
          prop <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>N</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>N</span><span class='op'>)</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='st'>"%"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>n_cyl</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"x"</span>, y <span class='op'>=</span> <span class='va'>N</span>, fill <span class='op'>=</span> <span class='va'>cyl</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'>geom_bar</span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"identity"</span>, position <span class='op'>=</span> <span class='st'>"stack"</span><span class='op'>)</span> <span class='op'>+</span> 
   <span class='fu'>geom_text</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>label_pos2</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"x"</span>, y <span class='op'>=</span> <span class='va'>pos</span>, label <span class='op'>=</span> <span class='va'>prop</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'>coord_polar</span><span class='op'>(</span>theta <span class='op'>=</span> <span class='st'>"y"</span>, direction <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>scale_y_continuous</span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='va'>label_pos</span><span class='op'>$</span><span class='va'>pos</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Eight     "</span>, <span class='st'>"Six"</span>, <span class='st'>"    Four"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>scale_y_continuous</span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='va'>label_pos2</span><span class='op'>$</span><span class='va'>pos</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Eight     "</span>, <span class='st'>"Six"</span>, <span class='st'>"    Four"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
   <span class='fu'>scale_fill_discrete</span><span class='op'>(</span>name <span class='op'>=</span> <span class='cn'>NULL</span>, guide <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>+</span>  
   <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Number of Cylinders \n (n = 32)"</span><span class='op'>)</span> <span class='op'>+</span> 
   <span class='fu'>theme_void</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
@@ -2770,6 +2766,28 @@ div.l-body {
 </code></pre>
 </div>
 <p><img src="post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-5-1.png" width="70%" /></p>
+</div>
+<p>A even simpler alternative is to map the labels to the stacks using <code>geom_text()</code> and center-align their vertical positions by specifying the argument <code>position_stack(vjust = 0.5)</code>:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>n_cyl2</span> <span class='op'>&lt;-</span> <span class='va'>n_cyl</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>arrange</span><span class='op'>(</span><span class='fu'>desc</span><span class='op'>(</span><span class='va'>cyl</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>pos <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>N</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>N</span><span class='op'>/</span><span class='fl'>2</span>,
+         prop <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>N</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>N</span><span class='op'>)</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='st'>"%"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>n_cyl2</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"x"</span>, y <span class='op'>=</span> <span class='va'>N</span>, fill <span class='op'>=</span> <span class='va'>cyl</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_bar</span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"identity"</span>, position <span class='op'>=</span> <span class='st'>"stack"</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>geom_text</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>label <span class='op'>=</span> <span class='va'>prop</span><span class='op'>)</span>, position <span class='op'>=</span> <span class='fu'>position_stack</span><span class='op'>(</span>vjust <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># Center-align the vertical positions of the labels on each stack</span>
+  <span class='fu'>coord_polar</span><span class='op'>(</span>theta <span class='op'>=</span> <span class='st'>"y"</span>, direction <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_y_continuous</span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='va'>n_cyl2</span><span class='op'>$</span><span class='va'>pos</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Eight     "</span>, <span class='st'>"Six"</span>, <span class='st'>"    Four"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>scale_fill_discrete</span><span class='op'>(</span>name <span class='op'>=</span> <span class='cn'>NULL</span>, guide <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>+</span>  
+  <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Number of Cylinders \n (n = 32)"</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>theme_void</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>plot.title <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0.5</span>, size <span class='op'>=</span> <span class='fl'>15</span><span class='op'>)</span>,
+        axis.text.x <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span><span class='op'>)</span> 
+</code></pre>
+</div>
+<p><img src="post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-6-1.png" width="70%" /></p>
 </div>
 <p>Looks way better than the previous ones, doesn’t it?</p>
 <h2 id="some-variants">Some variants</h2>
@@ -2797,7 +2815,7 @@ div.l-body {
         axis.text.x <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span><span class='op'>)</span>  
 </code></pre>
 </div>
-<p><img src="post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-6-1.png" width="70%" /></p>
+<p><img src="post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-7-1.png" width="70%" /></p>
 </div>
 <h3 id="doughnut-chart">2. Doughnut chart:</h3>
 <p>Have you ever seen a pie chart with its center hollowed out? This is called a “Doughnut chart” (yes, from a “pie” to a “doughnut”)! There is no direct function or argument to create a doughnut chart in ggplot, and so we will use a small trick here: add an arbitrary “empty” level to the x-axis before the one we have. This works because there is nothing to be bent into a circle for that empty level, thus leaving a white area and forming a hollow there. We can use <code>scale_x_discrete(limits = c("x_empty", "x"))</code> to add an arbitrary level “x_empty” to the x-axis.</p>
@@ -2821,7 +2839,7 @@ div.l-body {
         axis.text.x <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
-<p><img src="post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-7-1.png" width="70%" /></p>
+<p><img src="post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-8-1.png" width="70%" /></p>
 </div>
 <p><em>Notes</em>:</p>
 <p><span id="aaa" style="display: block; margin-top: 0px; margin-left: 50px">In this example, I call the empty level “x_empty”. You can use whatever name you want; just make sure it is not the same as your original one.</span></p>
@@ -2868,7 +2886,7 @@ d-article table.lightable-paper {
   <span class='fu'>theme</span><span class='op'>(</span>plot.title <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0.5</span>, size <span class='op'>=</span> <span class='fl'>15</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
-<p><img src="post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-8-1.png" width="70%" /></p>
+<p><img src="post-3-pie-charts-with-ggplot_files/figure-html5/unnamed-chunk-9-1.png" width="70%" /></p>
 </div>
 <h2 id="summary">Summary</h2>
 <p>At this point, you should have got the hang of creating pie charts with ggplot. As you can see, this type of graph is best for visualizing categorical variables with numerical values. However, it becomes less effective when there are too many categories (slices). In general, the number of categories should be less than 7 to achieve a better visual effect (though it really depends on the nature of your data). Also, when you are comparing the slices across multiple pies, it can sometimes be visually deceptive since the angle of the slice represents the “proportion” rather than the original “absolute value”. In these cases, a regular barplot or a boxplot would be a better alternative.</p>

@@ -138,9 +138,7 @@ By the way, because the last level (in this example "cyl 8") is at the bottom of
 # Compute the midpoints of the arcs
 label_pos <- n_cyl %>%
   arrange(desc(cyl)) %>%  # Reverse the order of the levels
-  mutate(cumsum = cumsum(N),
-         mid = N/2,
-         pos = cumsum - mid)
+  mutate(pos = cumsum(N) - N/2)
 
 ggplot(n_cyl, aes(x = "x", y = N, fill = cyl)) +
   geom_bar(stat = "identity", position = "stack") + 
@@ -160,16 +158,14 @@ Additionally, you might want to annotate the slices with proportions. We will cr
 # A dataframe for mapping the labels to the slices
 label_pos2 <- n_cyl %>%
   arrange(desc(cyl)) %>%
-  mutate(cumsum = cumsum(N),
-         mid = N/2,
-         pos = cumsum - mid,
+  mutate(pos = cumsum(N) - N/2,
          prop = paste(100*round(N/sum(N), 2), "%"))
 
 ggplot(n_cyl, aes(x = "x", y = N, fill = cyl)) +
   geom_bar(stat = "identity", position = "stack") + 
   geom_text(data = label_pos2, aes(x = "x", y = pos, label = prop)) +
   coord_polar(theta = "y", direction = -1, clip = "off") +
-  scale_y_continuous(breaks = label_pos$pos, labels = c("Eight     ", "Six", "    Four")) + 
+  scale_y_continuous(breaks = label_pos2$pos, labels = c("Eight     ", "Six", "    Four")) + 
   scale_fill_discrete(name = NULL, guide = F) +  
   labs(title = "Number of Cylinders \n (n = 32)") + 
   theme_void() +
@@ -177,6 +173,28 @@ ggplot(n_cyl, aes(x = "x", y = N, fill = cyl)) +
         axis.text.x = element_text(size = 12)) 
 
 ```
+
+A even simpler alternative is to map the labels to the stacks using `geom_text()` and center-align their vertical positions by specifying the argument `position_stack(vjust = 0.5)`:      
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+n_cyl2 <- n_cyl %>%
+  arrange(desc(cyl)) %>%
+  mutate(pos = cumsum(N) - N/2,
+         prop = paste(100*round(N/sum(N), 2), "%"))
+
+ggplot(n_cyl2, aes(x = "x", y = N, fill = cyl)) +
+  geom_bar(stat = "identity", position = "stack") + 
+  geom_text(aes(label = prop), position = position_stack(vjust = 0.5)) +  # Center-align the vertical positions of the labels on each stack
+  coord_polar(theta = "y", direction = -1, clip = "off") +
+  scale_y_continuous(breaks = n_cyl2$pos, labels = c("Eight     ", "Six", "    Four")) + 
+  scale_fill_discrete(name = NULL, guide = F) +  
+  labs(title = "Number of Cylinders \n (n = 32)") + 
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5, size = 15),
+        axis.text.x = element_text(size = 12)) 
+
+```
+
 Looks way better than the previous ones, doesn't it?
 
 ## Some variants
