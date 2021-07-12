@@ -53,6 +53,7 @@ d-article h2 {
 d-article h3 {
   width: 120%;
   font-size: 28px;
+  
 }
 
 div.article-footer{
@@ -83,7 +84,7 @@ knitr::opts_chunk$set(message = F,
 <!-- Start of the article -->
 
 ## Background
-Pie charts are arguably one of the most fundamental graphs in the world. They are primarily used for presenting categorical variables with numerical values (values that can be converted to proportions). These charts are so simple and straightforward that almost everyone can grasp the information at first glance without thinking, thus quite useful for data exploration and communication (yet some have argued not to use them, especially in scientific publications. See [this article](https://www.perceptualedge.com/articles/visual_business_intelligence/save_the_pies_for_dessert.pdf) for more details). That said, an ill-designed pie chart could still ruin your good data. So in this post, we will be looking at some ways to enhance your pie chart and make it more "attractive" and "effective"! 
+Pie charts are arguably one of the most fundamental graphs in the world. They are primarily used for presenting categorical variables with numerical values (values that can be converted to proportions). These charts are so simple and straightforward that almost everyone can grasp the information at first glance without thinking, thus quite useful for data exploration and communication (yet some have argued not to use them, especially in scientific publications. See [this article](https://www.perceptualedge.com/articles/visual_business_intelligence/save_the_pies_for_dessert.pdf) for more details). That said, an ill-designed pie chart could still ruin your good data. So in this "cook" post, we will be looking at some ways to enhance your pie chart and make it more "attractive" and "effective"! 
 
 
 ## Basic pie charts with ggplot
@@ -117,6 +118,8 @@ ggplot(n_cyl, aes(x = "x", y = N, fill = cyl)) +
 So what does `theta = "y"` do? Basically, this argument tells ggplot to map the y-axis to a polar coordinate system. The stacks in the barplot are bent into a circle, with the arc length of each slice proportional to the original heights of the stacks. Remember, pie charts are just circular stacked barplots! 
 
 ## More tweaks
+
+### Recipe 1: clean up the pie
 The above pie chart does not look satisfying. The axis tick marks and labels, grid lines, and the grey background are kind of extra, so let's remove them. We will also add a title to the plot.
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
@@ -130,14 +133,15 @@ ggplot(n_cyl, aes(x = "x", y = N, fill = cyl)) +
 
 ```
 
+### Recipe 2: label the pie
 Sometimes you may want to directly label the slices rather than having a separate legend. **Here is a trick**: change the y axis tick labels to the names of the slices. We will compute the midpoints of the arcs (which are the positions at which the tick labels will be placed) and specify the label names in `scale_y_continuous()`.
 
-By the way, because the last level (in this example "cyl 8") is at the bottom of the barplot and will go first in the pie chart, we need to reverse the order of the levels in our original dataframe to match the order of the stacks in the plot.
+By the way, because the last factor level (in this example "cyl 8") is at the bottom of the barplot and will go first in the pie chart, we need to reverse the order of the factor levels in our original dataframe to match the order of the stacks (slices) in the plot.
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
 # Compute the midpoints of the arcs
 label_pos <- n_cyl %>%
-  arrange(desc(cyl)) %>%  # Reverse the order of the levels
+  arrange(desc(cyl)) %>%  # Reverse the order of the factor levels
   mutate(pos = cumsum(N) - N/2)
 
 ggplot(n_cyl, aes(x = "x", y = N, fill = cyl)) +
@@ -152,7 +156,8 @@ ggplot(n_cyl, aes(x = "x", y = N, fill = cyl)) +
 
 ```
 
-Additionally, you might want to annotate the slices with proportions. We will create a new dataframe and use `geom_text()` to map the labels to the slices. The x positions are just an arbitrary "x" (same as the one in `geom_bar()`); the y positions are the midpoints of the arcs.
+### Recipe 3: annotate the pie
+Additionally, you might want to annotate the slices, say for example, the proportions. We will create a new dataframe and use `geom_text()` to map the labels to the slices. The x positions are just an arbitrary "x" (same as the one in `geom_bar()`); the y positions are the midpoints of the arcs.
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
 # A dataframe for mapping the labels to the slices
@@ -174,7 +179,7 @@ ggplot(n_cyl, aes(x = "x", y = N, fill = cyl)) +
 
 ```
 
-A even simpler alternative is to map the labels to the stacks using `geom_text()` and center-align their vertical positions by specifying the argument `position_stack(vjust = 0.5)`:      
+An even simpler alternative is to map the labels to the stacks using `geom_text()` and center-align their vertical positions by specifying the argument `position_stack(vjust = 0.5)`:      
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
 n_cyl2 <- n_cyl %>%
@@ -197,8 +202,8 @@ ggplot(n_cyl2, aes(x = "x", y = N, fill = cyl)) +
 
 Looks way better than the previous ones, doesn't it?
 
-## Some variants
-Now, let's see some variants of pie charts:
+## Different varieties of pies
+Now that we have already learned how to bake a basic pie, let's take a look at some other pie varieties:
 
 ### 1. Exploded pie chart:
 In an exploded pie chart, the slices are split apart from each other. You can "cut" the slices by adding thick white borders around them (personally I feel that this is more visually appealing than the original "unexploded" one).

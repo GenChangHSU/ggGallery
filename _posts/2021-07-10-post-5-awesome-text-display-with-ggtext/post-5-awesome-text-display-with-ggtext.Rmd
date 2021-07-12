@@ -1,0 +1,197 @@
+---
+title: "Post #5. Awesome text displays with ggtext"
+description: |
+  Enhance the text displays in your ggplots with the extension package `ggtext`!
+author:
+  - name: Gen-Chang Hsu
+date: 2021-07-10
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2021"
+preview: ../../homepage_images/Post5.png  
+---
+
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+</style>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F)
+
+```
+
+<!-- Start of the article -->
+
+## Overview
+Text is one of the fundamental elements in a graph. A well-designed text display can make your plot look pleasant and more informative. ggplot2 provides many functions and arguments for text manipulation (appearance, layout, annotations, etc.), which are already more than enough most of the time. But if you want to do something further, the extension package [`ggtext`](https://wilkelab.org/ggtext/index.html) has more to offer. This package has several added functionalities currently not implemented in ggplot2, the most important being that it supports the use of Markdown/HTML/CSS, which allows for greater flexibility in text rendering. So in this post, I will be showing you some of these cool features. Ready? Let's get started!  
+
+
+## Date preparation
+We will be using the data from the [International Biology Olympiad](https://www.ibo-info.org/en/contest/past-ibos.html) website. IBO is arguably the most magnificent annual biology event for high school students around the world. Since the very first one held 30 years ago in the Czech Republic, more countries have joined as members, and it would be interesting to see how the numbers of participants changed over the past three decades.
+
+To do so, we will first scrap the data from the website using the package [`rvest`](https://rvest.tidyverse.org/), and then do some data manipulation for later plotting use. Since web-scraping is not the main focus of this post, I will not go into the details. If interested, you can visit the package's website for more information. There are also plenty of learning resources out there on the internet. 
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%", fig.show = "hold"}
+library(tidyverse)
+library(rvest)
+
+# The website url
+IBO_url <- "https://www.ibo-info.org/en/contest/past-ibos.html"
+
+# Read the html and select elements using css selectors
+IBO_html <- read_html(IBO_url) %>%
+  html_elements("div.item__content") %>%
+  html_text2()
+
+IBO_img <- read_html(IBO_url) %>%
+  html_elements("img") %>%
+  html_attr("src")
+
+# Extract the information from the html text
+Year <- IBO_html %>% str_extract("[:digit:]{4}(?=:)")
+
+Country <- IBO_html %>% str_extract("(?<=,\\s)[:alpha:]+[:blank:]*[:alpha:]*") %>%
+  replace_na("Japan")
+
+Students <- IBO_html %>% str_extract("[:digit:]*(?=\\s*students)")
+
+Logo <- IBO_img %>% 
+  str_subset("-logo-") %>% 
+  str_c("https://www.ibo-info.org/", ., sep = "")
+
+# Put all information in a dataframe  
+IBO_data <- tibble(Year, Country, Students, Logo) %>%
+  mutate(Students = as.numeric(Students))
+
+```
+
+
+## The basic plot
+Now we have our dataset at hand. It's time to visualize it using a simple line chart:
+
+```{r, fig.width = 5, fig.height = 3, out.width = "45%", fig.show = "hold"}
+
+
+
+
+```
+
+
+
+
+
+## Make it texty 
+The basic plot looks fine, but a bit plain. Let's see how we can add some flavor to it. 
+
+
+
+
+First, add some text display besides the points
+
+```{r, fig.width = 5, fig.height = 3, out.width = "45%", fig.show = "hold"}
+
+
+
+
+```
+
+
+
+
+
+image as axis label with years
+
+
+```{r, fig.width = 5, fig.height = 3, out.width = "45%", fig.show = "hold"}
+
+
+
+
+```
+
+
+
+
+Alternatively, image as label besides the points
+
+```{r, fig.width = 5, fig.height = 3, out.width = "45%", fig.show = "hold"}
+
+
+
+
+```
+
+
+
+
+
+## Summary
+There are almost unlimited things you can do with your text using ggtext. Here I only showed some, but there are a lot more to . Spend some time exploring the package website. I believe you will become a master of text!
+
+Oh, one last thing forget to say: I was one of the participants in the 2014 IBO in Bali, Indonesia It's been seven years. Time really flies! 
+
+In fact, this is one of the main reasons why I chose the IBO dataset as the example data. Another reason is that there are many awesome logos, which serve well the purpose of this post!
+
+That's it for this post and don't forget to leave your comments and suggestions below if you have any!
+
+
