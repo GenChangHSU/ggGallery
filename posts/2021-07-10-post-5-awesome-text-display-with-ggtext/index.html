@@ -102,14 +102,20 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="og:type" content="article"/>
 <meta property="og:description" content="Enhance the text displays in your ggplots with the extension package `ggtext`!"/>
 <meta property="og:url" content="https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/"/>
+<meta property="og:image" content="https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/post-5-awesome-text-display-with-ggtext_files/figure-html5/unnamed-chunk-2-1.png"/>
+<meta property="og:image:width" content="960"/>
+<meta property="og:image:height" content="576"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="ggGallery"/>
 
 <!--  https://dev.twitter.com/cards/types/summary -->
-<meta property="twitter:card" content="summary"/>
+<meta property="twitter:card" content="summary_large_image"/>
 <meta property="twitter:title" content="ggGallery: Post #5. Awesome text displays with ggtext"/>
 <meta property="twitter:description" content="Enhance the text displays in your ggplots with the extension package `ggtext`!"/>
 <meta property="twitter:url" content="https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/"/>
+<meta property="twitter:image" content="https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/post-5-awesome-text-display-with-ggtext_files/figure-html5/unnamed-chunk-2-1.png"/>
+<meta property="twitter:image:width" content="960"/>
+<meta property="twitter:image:height" content="576"/>
 
 <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
@@ -120,7 +126,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-5-awesome-text-display-with-ggtext_files/anchor-4.2.2/anchor.min.js","post-5-awesome-text-display-with-ggtext_files/bowser-1.9.3/bowser.min.js","post-5-awesome-text-display-with-ggtext_files/distill-2.2.21/template.v2.js","post-5-awesome-text-display-with-ggtext_files/header-attrs-2.9/header-attrs.js","post-5-awesome-text-display-with-ggtext_files/jquery-1.11.3/jquery.min.js","post-5-awesome-text-display-with-ggtext_files/popper-2.6.0/popper.min.js","post-5-awesome-text-display-with-ggtext_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-5-awesome-text-display-with-ggtext_files/tippy-6.2.7/tippy-light-border.css","post-5-awesome-text-display-with-ggtext_files/tippy-6.2.7/tippy.css","post-5-awesome-text-display-with-ggtext_files/tippy-6.2.7/tippy.umd.min.js","post-5-awesome-text-display-with-ggtext_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["post-5-awesome-text-display-with-ggtext_files/anchor-4.2.2/anchor.min.js","post-5-awesome-text-display-with-ggtext_files/bowser-1.9.3/bowser.min.js","post-5-awesome-text-display-with-ggtext_files/distill-2.2.21/template.v2.js","post-5-awesome-text-display-with-ggtext_files/figure-html5/unnamed-chunk-2-1.png","post-5-awesome-text-display-with-ggtext_files/figure-html5/unnamed-chunk-3-1.png","post-5-awesome-text-display-with-ggtext_files/header-attrs-2.9/header-attrs.js","post-5-awesome-text-display-with-ggtext_files/jquery-1.11.3/jquery.min.js","post-5-awesome-text-display-with-ggtext_files/popper-2.6.0/popper.min.js","post-5-awesome-text-display-with-ggtext_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-5-awesome-text-display-with-ggtext_files/tippy-6.2.7/tippy-light-border.css","post-5-awesome-text-display-with-ggtext_files/tippy-6.2.7/tippy.css","post-5-awesome-text-display-with-ggtext_files/tippy-6.2.7/tippy.umd.min.js","post-5-awesome-text-display-with-ggtext_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2705,26 +2711,43 @@ div.l-body {
 
 <span class='co'># Put all information in a dataframe  </span>
 <span class='va'>IBO_data</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span><span class='op'>(</span><span class='va'>Year</span>, <span class='va'>Country</span>, <span class='va'>Students</span>, <span class='va'>Logo</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>mutate</span><span class='op'>(</span>Students <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>Students</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>Year <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>Year</span><span class='op'>)</span>,
+         Students <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>Students</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
 <h2 id="the-basic-plot">The basic plot</h2>
 <p>Now we have our dataset at hand. It’s time to visualize it using a simple line chart:</p>
 <div class="layout-chunk" data-layout="l-body">
-
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>IBO_data</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Year</span>, y <span class='op'>=</span> <span class='va'>Students</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>geom_point</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>labs</span><span class='op'>(</span>y <span class='op'>=</span> <span class='st'>"Number of participants"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_classic</span><span class='op'>(</span><span class='op'>)</span> 
+</code></pre>
 </div>
+<p><img src="post-5-awesome-text-display-with-ggtext_files/figure-html5/unnamed-chunk-2-1.png" width="70%" /></p>
+</div>
+<p>As you can see, the numbers of participants have generally increased over time, but there was a sharp drop in 2020 due to the COVID-19 global pandemic, which might have caused some countries to withdraw from the event.</p>
 <h2 id="make-it-texty">Make it texty</h2>
-<p>The basic plot looks fine, but a bit plain. Let’s see how we can add some flavor to it.</p>
-<p>First, add some text display besides the points</p>
+<p>The above line chart looks fine, though a bit plain. Let’s see how we can make use of <code>ggtext</code> to add some flavor to it.</p>
+<h3 id="add-labels-to-the-points">1. Add labels to the points</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>IBO_data</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Year</span>, y <span class='op'>=</span> <span class='va'>Students</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>geom_point</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>theme_classic</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="post-5-awesome-text-display-with-ggtext_files/figure-html5/unnamed-chunk-3-1.png" width="100%" /></p>
+</div>
+<h3 id="image-as-axis-label-with-years">image as axis label with years</h3>
 <div class="layout-chunk" data-layout="l-body">
 
 </div>
-<p>image as axis label with years</p>
-<div class="layout-chunk" data-layout="l-body">
-
-</div>
-<p>Alternatively, image as label besides the points</p>
+<h3 id="alternatively-image-as-label-besides-the-points">Alternatively, image as label besides the points</h3>
 <div class="layout-chunk" data-layout="l-body">
 
 </div>

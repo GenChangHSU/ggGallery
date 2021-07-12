@@ -12,10 +12,135 @@
       <title>Post #5. Awesome text displays with ggtext</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
       <link>https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext</link>
-      <description>Enhance the text displays in your ggplots with the extension package `ggtext`!</description>
+      <description>
+
+
+&lt;!-- Webpage style --&gt;
+&lt;style&gt;
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+&lt;/style&gt;
+&lt;!-- Start of the article --&gt;
+&lt;h2 id="overview"&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Text is one of the fundamental elements in a graph. A well-designed text display can make your plot look pleasant and more informative. ggplot2 provides many functions and arguments for text manipulation (appearance, layout, annotations, etc.), which are already more than enough most of the time. But if you want to do something further, the extension package &lt;a href="https://wilkelab.org/ggtext/index.html"&gt;&lt;code&gt;ggtext&lt;/code&gt;&lt;/a&gt; has more to offer. This package has several added functionalities currently not implemented in ggplot2, the most important being that it supports the use of Markdown/HTML/CSS, which allows for greater flexibility in text rendering. So in this post, I will be showing you some of these cool features. Ready? Let’s get started!&lt;/p&gt;
+&lt;h2 id="date-preparation"&gt;Date preparation&lt;/h2&gt;
+&lt;p&gt;We will be using the data from the &lt;a href="https://www.ibo-info.org/en/contest/past-ibos.html"&gt;International Biology Olympiad&lt;/a&gt; website. IBO is arguably the most magnificent annual biology event for high school students around the world. Since the very first one held 30 years ago in the Czech Republic, more countries have joined as members, and it would be interesting to see how the numbers of participants changed over the past three decades.&lt;/p&gt;
+&lt;p&gt;To do so, we will first scrap the data from the website using the package &lt;a href="https://rvest.tidyverse.org/"&gt;&lt;code&gt;rvest&lt;/code&gt;&lt;/a&gt;, and then do some data manipulation for later plotting use. Since web-scraping is not the main focus of this post, I will not go into the details. If interested, you can visit the package’s website for more information. There are also plenty of learning resources out there on the internet.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+library(rvest)
+
+# The website url
+IBO_url &amp;lt;- &amp;quot;https://www.ibo-info.org/en/contest/past-ibos.html&amp;quot;
+
+# Read the html and select elements using css selectors
+IBO_html &amp;lt;- read_html(IBO_url) %&amp;gt;%
+  html_elements(&amp;quot;div.item__content&amp;quot;) %&amp;gt;%
+  html_text2()
+
+IBO_img &amp;lt;- read_html(IBO_url) %&amp;gt;%
+  html_elements(&amp;quot;img&amp;quot;) %&amp;gt;%
+  html_attr(&amp;quot;src&amp;quot;)
+
+# Extract the information from the html text
+Year &amp;lt;- IBO_html %&amp;gt;% str_extract(&amp;quot;[:digit:]{4}(?=:)&amp;quot;)
+
+Country &amp;lt;- IBO_html %&amp;gt;% str_extract(&amp;quot;(?&amp;lt;=,\\s)[:alpha:]+[:blank:]*[:alpha:]*&amp;quot;) %&amp;gt;%
+  replace_na(&amp;quot;Japan&amp;quot;)
+
+Students &amp;lt;- IBO_html %&amp;gt;% str_extract(&amp;quot;[:digit:]*(?=\\s*students)&amp;quot;)
+
+Logo &amp;lt;- IBO_img %&amp;gt;% 
+  str_subset(&amp;quot;-logo-&amp;quot;) %&amp;gt;% 
+  str_c(&amp;quot;https://www.ibo-info.org/&amp;quot;, ., sep = &amp;quot;&amp;quot;)
+
+# Put all information in a dataframe  
+IBO_data &amp;lt;- tibble(Year, Country, Students, Logo) %&amp;gt;%
+  mutate(Year = as.numeric(Year),
+         Students = as.numeric(Students))&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="the-basic-plot"&gt;The basic plot&lt;/h2&gt;
+&lt;p&gt;Now we have our dataset at hand. It’s time to visualize it using a simple line chart:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(IBO_data, aes(x = Year, y = Students)) + 
+  geom_point() + 
+  geom_line() + 
+  labs(y = &amp;quot;Number of participants&amp;quot;) +
+  theme_classic() &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file2d7475d86730_files/figure-html/unnamed-chunk-2-1.png" width="70%" /&gt;&lt;/p&gt;
+&lt;p&gt;As you can see, the numbers of participants have generally increased over time, but there was a sharp drop in 2020 due to the COVID-19 global pandemic, which might have caused some countries to withdraw from the event.&lt;/p&gt;
+&lt;h2 id="make-it-texty"&gt;Make it texty&lt;/h2&gt;
+&lt;p&gt;The above line chart looks fine, though a bit plain. Let’s see how we can make use of &lt;code&gt;ggtext&lt;/code&gt; to add some flavor to it.&lt;/p&gt;
+&lt;h3 id="add-labels-to-the-points"&gt;1. Add labels to the points&lt;/h3&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(IBO_data, aes(x = Year, y = Students)) + 
+  geom_point() + 
+  geom_line() + 
+  theme_classic()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file2d7475d86730_files/figure-html/unnamed-chunk-3-1.png" width="100%" /&gt;&lt;/p&gt;
+&lt;h3 id="image-as-axis-label-with-years"&gt;image as axis label with years&lt;/h3&gt;
+&lt;h3 id="alternatively-image-as-label-besides-the-points"&gt;Alternatively, image as label besides the points&lt;/h3&gt;
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;p&gt;There are almost unlimited things you can do with your text using ggtext. Here I only showed some, but there are a lot more to . Spend some time exploring the package website. I believe you will become a master of text!&lt;/p&gt;
+&lt;p&gt;Oh, one last thing forget to say: I was one of the participants in the 2014 IBO in Bali, Indonesia It’s been seven years. Time really flies!&lt;/p&gt;
+&lt;p&gt;In fact, this is one of the main reasons why I chose the IBO dataset as the example data. Another reason is that there are many awesome logos, which serve well the purpose of this post!&lt;/p&gt;
+&lt;p&gt;That’s it for this post and don’t forget to leave your comments and suggestions below if you have any!&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>79d2bb7739c75b460f70f988cdc86658</distill:md5>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext</guid>
       <pubDate>Sat, 10 Jul 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/post-5-awesome-text-display-with-ggtext_files/figure-html5/unnamed-chunk-2-1.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
       <title>Post #4. Consistent colors of the same factor levels across figures</title>

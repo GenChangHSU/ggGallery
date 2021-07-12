@@ -121,32 +121,47 @@ Logo <- IBO_img %>%
 
 # Put all information in a dataframe  
 IBO_data <- tibble(Year, Country, Students, Logo) %>%
-  mutate(Students = as.numeric(Students))
+  mutate(Year = as.numeric(Year),
+         Students = as.numeric(Students))
 
 ```
-
 
 ## The basic plot
 Now we have our dataset at hand. It's time to visualize it using a simple line chart:
 
-```{r, fig.width = 5, fig.height = 3, out.width = "45%", fig.show = "hold"}
-
-
-
+```{r, fig.width = 5, fig.height = 3, out.width = "70%", fig.show = "hold"}
+ggplot(IBO_data, aes(x = Year, y = Students)) + 
+  geom_point() + 
+  geom_line() + 
+  labs(y = "Number of participants") +
+  theme_classic() 
 
 ```
 
-
-
+As you can see, the numbers of participants have generally increased over time, but there was a sharp drop in 2020 due to the COVID-19 global pandemic, which might have caused some countries to withdraw from the event.
 
 
 ## Make it texty 
-The basic plot looks fine, but a bit plain. Let's see how we can add some flavor to it. 
+The above line chart looks fine, though a bit plain. Let's see how we can make use of `ggtext` to add some flavor to it.  
+
+### 1. Add labels to the points
+
+```{r, fig.width = 5, fig.height = 3, out.width = "100%", fig.show = "hold"}
+ggplot(IBO_data, aes(x = Year, y = Students)) + 
+  geom_point() + 
+  geom_line() + 
+  theme_classic()
+
+
+
+```
 
 
 
 
-First, add some text display besides the points
+
+### image as axis label with years
+
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "45%", fig.show = "hold"}
 
@@ -158,21 +173,7 @@ First, add some text display besides the points
 
 
 
-
-image as axis label with years
-
-
-```{r, fig.width = 5, fig.height = 3, out.width = "45%", fig.show = "hold"}
-
-
-
-
-```
-
-
-
-
-Alternatively, image as label besides the points
+### Alternatively, image as label besides the points
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "45%", fig.show = "hold"}
 
