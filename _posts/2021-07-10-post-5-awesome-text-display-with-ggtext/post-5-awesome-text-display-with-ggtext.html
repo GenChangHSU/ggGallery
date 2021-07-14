@@ -1545,7 +1545,7 @@ div.l-body {
 </style>
 <!-- Start of the article -->
 <h2 id="overview">Overview</h2>
-<p>Text is one of the fundamental elements in a graph. A well-designed text display can make your plot look pleasant and more informative. ggplot2 provides many functions and arguments for text manipulation (appearance, layout, annotations, etc.), which are already more than enough most of the time. But if you want to do something further, the extension package <a href="https://wilkelab.org/ggtext/index.html"><code>ggtext</code></a> has more to offer. This package has several added functionalities currently not implemented in ggplot2, the most important being that it supports the use of Markdown/HTML/CSS, which allows for greater flexibility in text rendering. So in this post, I will be showing you some of these cool features. Ready? Let’s get started!</p>
+<p>Text is one of the fundamental elements in a graph. A well-designed text display can make your plot look pleasant and more informative. ggplot2 provides many functions and arguments for text manipulation (appearance, layout, annotation, etc.), which are already more than enough most of the time. But if you want to do something further, the extension package <a href="https://wilkelab.org/ggtext/index.html"><code>ggtext</code></a> has more to offer. This package has several added functionalities currently not implemented in ggplot2, the most important being that it supports the use of Markdown/HTML/CSS, which allows for greater flexibility in text rendering. So in this post, I will be showing you some of these cool features. Ready? Let’s get started!</p>
 <h2 id="date-preparation">Date preparation</h2>
 <p>We will be using the data from the <a href="https://www.ibo-info.org/en/contest/past-ibos.html">International Biology Olympiad</a> website. IBO is arguably the most magnificent annual biology event for high school students around the world. Since the very first one held 30 years ago in the Czech Republic, more countries have joined as members, and it would be interesting to see how the numbers of participants changed over the past three decades.</p>
 <p>To do so, we will first scrap the data from the website using the package <a href="https://rvest.tidyverse.org/"><code>rvest</code></a>, and then do some data manipulation for later plotting use. Since web-scraping is not the main focus of this post, I will not go into the details. If interested, you can visit the package’s website for more information. There are also plenty of learning resources out there on the internet.</p>
@@ -1597,24 +1597,19 @@ div.l-body {
 <p><span style="display: block; margin-top: 0px; margin-left: 10px"> <strong>(1) Modify text outside the plot area</strong></span> <span style="display: block; margin-top: 5px; margin-left: 10px"> <strong>(2) Modify text inside the plot area</strong></span> <span style="display: block; margin-top: 5px; margin-left: 10px"> <strong>(3) Add images to the plot</strong></span></p>
 <p>I will go through the details in the following sections.</p>
 <h3 id="modify-text-outside-the-plot-area">1. Modify text outside the plot area</h3>
-<p>First, we can modify the text outside the plot area — the title, axis labels, captions, facet strip text, and so on.</p>
+<p>First, we can modify the text outside the plot area — the title, axis labels, captions, facet strips, and so on.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://wilkelab.org/ggtext/'>ggtext</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wch/extrafont'>extrafont</a></span><span class='op'>)</span> <span class='co'># Fonts for plotting</span>
-<span class='fu'><a href='https://rdrr.io/pkg/extrafont/man/font_import.html'>font_import</a></span><span class='op'>(</span><span class='op'>)</span> <span class='co'># Import the fonts</span>
-</code></pre>
-</div>
-<pre><code>Importing fonts may take a few minutes, depending on the number of fonts and the speed of the system.
-Continue? [y/n] </code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/extrafont/man/loadfonts.html'>loadfonts</a></span><span class='op'>(</span>device <span class='op'>=</span> <span class='st'>"win"</span><span class='op'>)</span> <span class='co'># Load in the fonts</span>
+<span class='co'># font_import() # Import system fonts (only need to run it once on your device) </span>
+<span class='fu'><a href='https://rdrr.io/pkg/extrafont/man/loadfonts.html'>loadfonts</a></span><span class='op'>(</span>quiet <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span> <span class='co'># Register system fonts (need to run it in every R session)</span>
 
-<span class='co'># Split into two time periods</span>
+<span class='co'># Create a new column for the two time periods</span>
 <span class='va'>IBO_data</span> <span class='op'>&lt;-</span> <span class='va'>IBO_data</span> <span class='op'>%&gt;%</span> 
   <span class='fu'>mutate</span><span class='op'>(</span>Time_period <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>Year</span> <span class='op'>&lt;=</span> <span class='fl'>2005</span>, <span class='st'>"1990 to 2005"</span>, <span class='st'>"2006 to 2020"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='co'># Faceted line chart</span>
+<span class='co'># Plain faceted line chart</span>
 <span class='va'>IBO_plot</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>IBO_data</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Year</span>, y <span class='op'>=</span> <span class='va'>Students</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
   <span class='fu'>geom_point</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
   <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
@@ -1627,48 +1622,47 @@ Continue? [y/n] </code></pre>
 <span class='va'>IBO_plot</span> <span class='op'>&lt;-</span> <span class='va'>IBO_plot</span> <span class='op'>+</span> 
   <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"&lt;span style = 'font-size: 18pt'&gt;&lt;i&gt;**I**nternational **B**iology **O**lympiad&lt;i/&gt;&lt;/span&gt;&lt;br&gt;Numbers of participants over past three decades"</span><span class='op'>)</span> <span class='op'>+</span> 
   <span class='fu'>theme</span><span class='op'>(</span>plot.title <span class='op'>=</span> <span class='fu'><a href='https://wilkelab.org/ggtext/reference/element_textbox.html'>element_textbox_simple</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>10</span>,
-                                            halign <span class='op'>=</span> <span class='fl'>0.5</span>,
-                                            color <span class='op'>=</span> <span class='st'>"#007575"</span>,
                                             family <span class='op'>=</span> <span class='st'>"Century Gothic"</span>,
+                                            color <span class='op'>=</span> <span class='st'>"#007575"</span>,
+                                            fill <span class='op'>=</span> <span class='st'>"#e0f2f2"</span>,
+                                            halign <span class='op'>=</span> <span class='fl'>0.5</span>,
                                             lineheight <span class='op'>=</span> <span class='fl'>1.5</span>,
                                             padding <span class='op'>=</span> <span class='fu'>margin</span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>)</span>, 
-                                            margin <span class='op'>=</span> <span class='fu'>margin</span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>5</span>, <span class='fl'>0</span><span class='op'>)</span>,
-                                            fill <span class='op'>=</span> <span class='st'>"#e0f2f2"</span><span class='op'>)</span><span class='op'>)</span>
+                                            margin <span class='op'>=</span> <span class='fu'>margin</span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>5</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Axis labels</span>
 <span class='va'>IBO_plot</span> <span class='op'>&lt;-</span> <span class='va'>IBO_plot</span> <span class='op'>+</span> 
   <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>""</span>, y <span class='op'>=</span> <span class='st'>"Number of participants&lt;br&gt;&lt;span style = 'font-size: 9pt;'&gt;(**Note:** different y-axis ranges in the two panels)&lt;/span&gt;"</span><span class='op'>)</span> <span class='op'>+</span> 
-  <span class='fu'>theme</span><span class='op'>(</span>axis.title.y <span class='op'>=</span> <span class='fu'><a href='https://wilkelab.org/ggtext/reference/element_textbox.html'>element_textbox_simple</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>14</span>, 
-                                              halign <span class='op'>=</span> <span class='fl'>0.5</span>,
-                                              color <span class='op'>=</span> <span class='st'>"#045a8d"</span>,
+  <span class='fu'>theme</span><span class='op'>(</span>axis.title.y <span class='op'>=</span> <span class='fu'><a href='https://wilkelab.org/ggtext/reference/element_textbox.html'>element_textbox_simple</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>14</span>,
                                               family <span class='op'>=</span> <span class='st'>"Arial"</span>,
+                                              color <span class='op'>=</span> <span class='st'>"#045a8d"</span>,
+                                              fill <span class='op'>=</span> <span class='st'>"#fff080"</span>,
+                                              halign <span class='op'>=</span> <span class='fl'>0.5</span>,
                                               orientation <span class='op'>=</span> <span class='st'>"left-rotated"</span>,
+                                              r <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>5</span>, <span class='st'>"pt"</span><span class='op'>)</span>,
                                               padding <span class='op'>=</span> <span class='fu'>margin</span><span class='op'>(</span><span class='fl'>4</span>, <span class='fl'>4</span>, <span class='fl'>4</span>, <span class='fl'>4</span><span class='op'>)</span>,
                                               margin <span class='op'>=</span> <span class='fu'>margin</span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>8</span>, <span class='fl'>0</span><span class='op'>)</span>,
                                               minwidth <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>2</span>, <span class='st'>"in"</span><span class='op'>)</span>,
-                                              maxwidth <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>5</span>, <span class='st'>"in"</span><span class='op'>)</span>,
-                                              r <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>5</span>, <span class='st'>"pt"</span><span class='op'>)</span>,
-                                              fill <span class='op'>=</span> <span class='st'>"#fff080"</span><span class='op'>)</span><span class='op'>)</span>
+                                              maxwidth <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>5</span>, <span class='st'>"in"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Caption</span>
 <span class='va'>IBO_plot</span> <span class='op'>&lt;-</span> <span class='va'>IBO_plot</span> <span class='op'>+</span> 
   <span class='fu'>labs</span><span class='op'>(</span>caption <span class='op'>=</span> <span class='st'>"&lt;i&gt;&lt;span style = 'font-size: 9pt;'&gt;Data source: https:&amp;#47;&amp;#47;www&amp;#46;ibo-info.org/en/contest/past-ibos.html&lt;/span&gt;&lt;br&gt;Retrieved July, 2021&lt;i/&gt;"</span><span class='op'>)</span> <span class='op'>+</span> 
-  <span class='fu'>theme</span><span class='op'>(</span>plot.caption <span class='op'>=</span> <span class='fu'><a href='https://wilkelab.org/ggtext/reference/element_markdown.html'>element_markdown</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>8</span>, 
-                                        lineheight <span class='op'>=</span> <span class='fl'>1.5</span>,
+  <span class='fu'>theme</span><span class='op'>(</span>plot.caption <span class='op'>=</span> <span class='fu'><a href='https://wilkelab.org/ggtext/reference/element_markdown.html'>element_markdown</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>8</span>,
                                         family <span class='op'>=</span> <span class='st'>"serif"</span>,
-                                        color <span class='op'>=</span> <span class='st'>"grey50"</span><span class='op'>)</span><span class='op'>)</span>
+                                        color <span class='op'>=</span> <span class='st'>"grey50"</span>,
+                                        lineheight <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='co'># Facet strip text</span>
+<span class='co'># Facet strips</span>
 <span class='va'>IBO_plot</span> <span class='op'>&lt;-</span> <span class='va'>IBO_plot</span> <span class='op'>+</span> 
   <span class='fu'>theme</span><span class='op'>(</span>strip.background <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
         strip.text.y <span class='op'>=</span> <span class='fu'><a href='https://wilkelab.org/ggtext/reference/element_textbox.html'>element_textbox_simple</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>12</span>,
+                                              family <span class='op'>=</span> <span class='st'>"Comic Sans MS"</span>,
                                               color <span class='op'>=</span> <span class='st'>"white"</span>, 
                                               fill <span class='op'>=</span> <span class='st'>"#810f7c"</span>, 
-                                              family <span class='op'>=</span> <span class='st'>"Comic Sans MS"</span>,
+                                              halign <span class='op'>=</span> <span class='fl'>0.5</span>,
                                               orientation <span class='op'>=</span> <span class='st'>"right-rotated"</span>,
-                                              halign <span class='op'>=</span> <span class='fl'>0.5</span>, 
-                                              r <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>8</span>, <span class='st'>"pt"</span><span class='op'>)</span>, 
-                                              width <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>1</span>, <span class='st'>"npc"</span><span class='op'>)</span>,
+                                              r <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>8</span>, <span class='st'>"pt"</span><span class='op'>)</span>,
                                               padding <span class='op'>=</span> <span class='fu'>margin</span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>,
                                               margin <span class='op'>=</span> <span class='fu'>margin</span><span class='op'>(</span><span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
                                      
@@ -1677,7 +1671,9 @@ Continue? [y/n] </code></pre>
 </div>
 <p><img src="post-5-awesome-text-display-with-ggtext_files/figure-html5/unnamed-chunk-3-1.png" width="85%" /></p>
 </div>
-<p>So you can see that I use quite a bit of these syntaxes. Remember in the beginning, I mentioned that <code>ggtext</code> can render text written in Markdown/HTML/CSS language. With these, you can easily modify the appearance of a specific letter/word in a sentence.</p>
+<p>The key functions here are <code>element_textbox_simple()</code> and <code>element_markdown()</code>. Basically they do almost the same job, the main difference being that the former allows users to have more control over the appearance of the text box, whereas the latter focuses on modifying the text itself. So if you are working with text only, you can simply use <code>element_markdown()</code>.</p>
+<p>The usage of <code>element_textbox_simple()</code> and <code>element_markdown()</code> are pretty much similar to their ggplot2 counterparts <code>element_text()</code> and <code>element_rect()</code>. When you want to modify a specific part of the plot (e.g., title), just call these functions to the corresponding arguments (e.g., <code>plot.title =</code>) in the <code>theme()</code>.</p>
+<p>Also, you might have seen that I use quite a bit of the Markdown/HTML/CSS syntaxes. Remember in the beginning, I mentioned that <code>ggtext</code> can render text written in Markdown/HTML/CSS languages. With these, you can easily do some advanced text manipulation, for example, modifying the appearance of a specific letter/word in a sentence.</p>
 <h3 id="modify-text-inside-the-plot-area">2. Modify text inside the plot area</h3>
 <p>Next, we will shift gears a bit and focus on the text inside the plot. Specifically, I will add labels besides the points.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1711,13 +1707,15 @@ Continue? [y/n] </code></pre>
   <span class='fu'>theme</span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://wilkelab.org/ggtext/reference/element_markdown.html'>element_markdown</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"black"</span>, size <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Add the main logo to the upper panel</span>
-<span class='va'>IBO_plot</span> <span class='op'>+</span> 
-  <span class='fu'><a href='https://wilkelab.org/ggtext/reference/geom_richtext.html'>geom_richtext</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1992</span>, <span class='fl'>2007</span><span class='op'>)</span>, 
-                                  y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>200</span>, <span class='fl'>300</span><span class='op'>)</span>,
-                                  Time_period <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1990 to 2005"</span>, <span class='st'>"2006 to 2020"</span><span class='op'>)</span>,
-                                  logo <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"&lt;img src = './IBO_logos/main.png' width = '100' /&gt;"</span>, <span class='st'>""</span><span class='op'>)</span><span class='op'>)</span>,
+<span class='va'>IBO_plot</span> <span class='op'>&lt;-</span> <span class='va'>IBO_plot</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://wilkelab.org/ggtext/reference/geom_richtext.html'>geom_richtext</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1992</span>, 
+                                  y <span class='op'>=</span> <span class='fl'>200</span>,
+                                  Time_period <span class='op'>=</span> <span class='st'>"1990 to 2005"</span>,
+                                  logo <span class='op'>=</span> <span class='st'>"&lt;img src = './IBO_logos/main.png' width = '100' /&gt;"</span><span class='op'>)</span>,
                 <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, label <span class='op'>=</span> <span class='va'>logo</span><span class='op'>)</span>, 
                 colour <span class='op'>=</span> <span class='st'>"transparent"</span><span class='op'>)</span>
+
+<span class='va'>IBO_plot</span>
 </code></pre>
 </div>
 <p><img src="post-5-awesome-text-display-with-ggtext_files/figure-html5/unnamed-chunk-5-1.png" width="85%" /></p>
@@ -1726,7 +1724,7 @@ Continue? [y/n] </code></pre>
 <p>There are lots of things you can do for your text using <code>ggtext</code>. Spend some time exploring the package website. I believe you will become a master of text. By the way, I highly recommend having a basic understanding of Markdown/HTML/CSS, which will allow you to fully leverage the strength of <code>ggtext</code>!</p>
 <p>Oh, one last thing forget to say: I was one of the participants in the 2014 IBO in Bali, Indonesia It’s been seven years. Time flies! In fact, this is one of the main reasons why I chose IBO data as the example dataset. The other is that the website contains many logos, which serve well the purpose of this post.</p>
 <p>That’s it for this post and don’t forget to leave your comments and suggestions below if you have any!</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
