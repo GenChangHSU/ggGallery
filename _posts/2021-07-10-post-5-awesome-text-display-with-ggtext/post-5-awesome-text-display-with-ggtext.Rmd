@@ -1,7 +1,7 @@
 ---
 title: "Post #5. Awesome text displays with ggtext"
 description: |
-  Enhance the text displays in your ggplots with the extension package `ggtext`!
+  Enhance the text displays in your ggplots with the extension package ggtext!
 author:
   - name: Gen-Chang Hsu
 date: 2021-07-10
@@ -256,7 +256,17 @@ Now we have already done with our text manipulation. Most of the time, we will e
 The principle of adding images is the use of HTML `<img>` tag, which has a basic syntax structure `<img scr = 'path_to_image'/>`. If you are not familiar with HTML, don't panic. Simply copy and paste the code in the example below and replace the image path with yours (can be a website url or a local directory). The additional `width` attribute in the `<img>` tag allows for controlling the width of the image.
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
-# HTML <img> tags (logos available on my GitHub repository)
+# Url of the logos (available on my GitHub repository)
+logo_url <- "https://github.com/GenChangHSU/ggGallery/tree/master/_posts/2021-07-10-post-5-awesome-text-display-with-ggtext/IBO_logos"
+
+download.file(url = "https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2021-07-10-post-5-awesome-text-display-with-ggtext/IBO_logos.zip", destfile = "IBO_logos.zip")
+
+# unzip the .zip file
+unzip(zipfile = "IBO_logos.zip")
+
+
+
+# HTML <img> tags
 IBO_logo <- rev(paste0("<img src = './IBO_logos/", Year, ".png' width = '15' /><br>", Year))
 
 # Add the logos to the x-axis 
@@ -268,7 +278,7 @@ IBO_plot <- IBO_plot +
 IBO_logo_df <- data.frame(x = 1992, 
                           y = 200,
                           Time_period = "1990 to 2005",
-                          logo = "<img src = './IBO_logos/main.png' width = '100' />")
+                          logo = paste0("<img src = './IBO_logos/main.png' width = '100' />"))
 
 IBO_plot <- IBO_plot +
   geom_richtext(data = IBO_logo_df, 
