@@ -141,13 +141,13 @@ There are three main parts we can do with `ggtext`:<br>
 
 <span style="display: block; margin-top: 0px; margin-left: 10px"> **(1) Modify text outside the plot area**</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> **(2) Modify text inside the plot area**</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> **(3) Add images to the plot**</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> **(3) Add external images to the plot**</span>
 
 I will go through the details in the following sections.
 
 
 ### 1. Modify text outside the plot area
-First, we can modify the text outside the plot area — the title, axis labels, captions, facet strips, and so on.   
+First, we will begin by modifying the text outside the plot area — the title, axis labels, captions, facet strips, and so on.   
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
 library(ggtext)
@@ -222,49 +222,56 @@ IBO_plot
 
 The key functions here are `element_textbox_simple()` and `element_markdown()`. Basically they do almost the same job, the main difference being that the former allows users to have more control over the appearance of the text box, whereas the latter focuses on modifying the text itself. So if you are working with text only, you can simply use `element_markdown()`.
 
-The usage of `element_textbox_simple()` and `element_markdown()` are pretty much similar to their ggplot2 counterparts `element_text()` and `element_rect()`. When you want to modify a specific part of the plot (e.g., title), just call these functions to the corresponding arguments (e.g., `plot.title = `) in the `theme()`.  
+The usage of `element_textbox_simple()` and `element_markdown()` are pretty much similar to their ggplot2 counterpart `element_text()`. When you want to modify a specific part of the plot (e.g., title), just call these functions to the corresponding arguments (e.g., `plot.title = `) in the `theme()`.  
 
 Also, you might have seen that I use quite a bit of the Markdown/HTML/CSS syntaxes. Remember in the beginning, I mentioned that `ggtext` can render text written in Markdown/HTML/CSS languages. With these, you can easily do some advanced text manipulation, for example, modifying the appearance of a specific letter/word in a sentence.
 
 
 ### 2. Modify text inside the plot area
-Next, we will shift gears a bit and focus on the text inside the plot. Specifically, I will add labels besides the points.
+After getting the text outside the plot done, we can next work on the text inside the plot area. Specifically, I will add some labels besides points and modify their appearance a bit.
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
+# Add country labels to the points
 IBO_plot <- IBO_plot +
   geom_richtext(aes(label = Country), 
-                angle = 45, 
                 size = 2,
+                color = colorRampPalette(c("#a50f15", "#e66101"))(nrow( IBO_data)),
+                fill = "transparent",
+                angle = 45,
                 hjust = 0.1,
                 vjust = -0.1,
-                label.padding = unit(c(1, 5, 1, 5), "pt"),
                 label.r = unit(4, "pt"),
-                fill = "transparent",
-                color = colorRampPalette(c("#a50f15", "#e66101"))(nrow( IBO_data)))
+                label.padding = unit(c(1, 5, 1, 5), "pt"))
 
 IBO_plot
 
 ```
 
+Here, I use the function `geom_richtext()` to map the labels to the points. This function is quite similar to ggplot2's `geom_text()` or `geom_label()`, but it has an additional feature: the text/box can be rotated by any angles.
 
-### 3. Add images to the plot
-Finally, we can add images to the plot using the HTML `<img>` tag:
+
+### 3. Add external images to the plot
+Now we have already done with our text manipulation. Most of the time, we will end it here and happy to go. However, there is one extra thing we can do to make the plot fancier — adding external images to the plot! Of course you can do this manually later (perhaps in PowerPoint), but isn't it great to complete all the work at once in R? This will streamline the process and make it fully reproducible! So let's do it!
+
+The principle of adding images is the use of HTML `<img>` tag, which has a basic syntax structure `<img scr = 'path_to_image'/>`. If you are not familiar with HTML, don't panic. Simply copy and paste the code in the example below and replace the image path with yours (can be a website url or a local directory). The additional `width` attribute in the `<img>` tag allows for controlling the width of the image.
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
-# The url for the IBO logos (available on my GitHub repository)
+# HTML <img> tags (logos available on my GitHub repository)
 IBO_logo <- rev(paste0("<img src = './IBO_logos/", Year, ".png' width = '15' /><br>", Year))
 
-# Add the IBO logos to the x-axis 
+# Add the logos to the x-axis 
 IBO_plot <- IBO_plot +
   scale_x_continuous(breaks = 1990:2020, labels = IBO_logo) +
   theme(axis.text.x = element_markdown(color = "black", size = 7))
 
-# Add the main logo to the upper panel
+# Add another logo to the upper panel
+IBO_logo_df <- data.frame(x = 1992, 
+                          y = 200,
+                          Time_period = "1990 to 2005",
+                          logo = "<img src = './IBO_logos/main.png' width = '100' />")
+
 IBO_plot <- IBO_plot +
-  geom_richtext(data = data.frame(x = 1992, 
-                                  y = 200,
-                                  Time_period = "1990 to 2005",
-                                  logo = "<img src = './IBO_logos/main.png' width = '100' />"),
+  geom_richtext(data = IBO_logo_df, 
                 aes(x = x, y = y, label = logo), 
                 colour = "transparent")
 
@@ -272,11 +279,19 @@ IBO_plot
 
 ```
 
+As shown above, you can add external images to two areas of a plot: the axes and the plot panel. 
+
+For the first one, you need to specify in `scale_xx_XXX()` the positions at which the images should be placed on the axes (`breaks = `), along with the HTML `<img>` tags as labels (`labels = `). After that, call `element_markdown()` to the corresponding theme element (in this example `axis.text.x`) in the `theme()`. The images will then be displayed along the axes. 
+
+For the second one, simply create a dataframe containing the x and y positions as well as a column containing the HTML `<img>` tags, and use `geom_richtext()` to map the image tags to the plot. The images will then be displayed at the designated positions.
+
 
 ## Summary
+A quick recap of what we have done throughout the post. **First**, we modified the plot title, axis labels, caption, and facet strips using two `theme()` elements `element_textbox_simple()` and `element_markdown()`. **Second**, we added some labels to the plot using the geom layer `geom_richtext()` and customized the labels a bit. **Third**, we used `element_markdown()` to add external images to the x-axis, and `geom_richtext()` to add another image to the plot area.
+
 There are lots of things you can do for your text using `ggtext`. Spend some time exploring the package website. I believe you will become a master of text. By the way, I highly recommend having a basic understanding of Markdown/HTML/CSS, which will allow you to fully leverage the strength of `ggtext`!
 
-Oh, one last thing forget to say: I was one of the participants in the 2014 IBO in Bali, Indonesia It's been seven years. Time flies! In fact, this is one of the main reasons why I chose IBO data as the example dataset. The other is that the website contains many logos, which serve well the purpose of this post.
+Oh, one last thing forget to say: I was one of the participants in the 2014 IBO in Bali, Indonesia. It's been seven years. Time flies! In fact, this is one of the main reasons why I chose IBO data as the example dataset. The other is that the website contains many logos, which serve well the purpose of this post.
 
 That's it for this post and don't forget to leave your comments and suggestions below if you have any!
 

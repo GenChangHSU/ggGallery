@@ -1577,6 +1577,7 @@ div.l-body {
 </code></pre>
 </div>
 </div>
+<p><br></p>
 <h2 id="the-basic-plot">The basic plot</h2>
 <p>Now we have our dataset at hand. It’s time to visualize it using a simple line chart:</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1594,10 +1595,10 @@ div.l-body {
 <h2 id="make-it-texty">Make it texty</h2>
 <p>The above line chart looks fine, though a bit plain. So now we will make use of <code>ggtext</code> to add some flavor to it. Also, I will split the line chart into two panels (one from 1990 to 2005 and the other from 2006 to 2020) using facets for two reasons: (1) to avoid crowding and overlapping, and (2) to demonstrate how to modify the facet strip text.</p>
 <p>There are three main parts we can do with <code>ggtext</code>:<br></p>
-<p><span style="display: block; margin-top: 0px; margin-left: 10px"> <strong>(1) Modify text outside the plot area</strong></span> <span style="display: block; margin-top: 5px; margin-left: 10px"> <strong>(2) Modify text inside the plot area</strong></span> <span style="display: block; margin-top: 5px; margin-left: 10px"> <strong>(3) Add images to the plot</strong></span></p>
+<p><span style="display: block; margin-top: 0px; margin-left: 10px"> <strong>(1) Modify text outside the plot area</strong></span> <span style="display: block; margin-top: 5px; margin-left: 10px"> <strong>(2) Modify text inside the plot area</strong></span> <span style="display: block; margin-top: 5px; margin-left: 10px"> <strong>(3) Add external images to the plot</strong></span></p>
 <p>I will go through the details in the following sections.</p>
 <h3 id="modify-text-outside-the-plot-area">1. Modify text outside the plot area</h3>
-<p>First, we can modify the text outside the plot area — the title, axis labels, captions, facet strips, and so on.</p>
+<p>First, we will begin by modifying the text outside the plot area — the title, axis labels, captions, facet strips, and so on.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://wilkelab.org/ggtext/'>ggtext</a></span><span class='op'>)</span>
@@ -1672,46 +1673,51 @@ div.l-body {
 <p><img src="post-5-awesome-text-display-with-ggtext_files/figure-html5/unnamed-chunk-3-1.png" width="85%" /></p>
 </div>
 <p>The key functions here are <code>element_textbox_simple()</code> and <code>element_markdown()</code>. Basically they do almost the same job, the main difference being that the former allows users to have more control over the appearance of the text box, whereas the latter focuses on modifying the text itself. So if you are working with text only, you can simply use <code>element_markdown()</code>.</p>
-<p>The usage of <code>element_textbox_simple()</code> and <code>element_markdown()</code> are pretty much similar to their ggplot2 counterparts <code>element_text()</code> and <code>element_rect()</code>. When you want to modify a specific part of the plot (e.g., title), just call these functions to the corresponding arguments (e.g., <code>plot.title =</code>) in the <code>theme()</code>.</p>
+<p>The usage of <code>element_textbox_simple()</code> and <code>element_markdown()</code> are pretty much similar to their ggplot2 counterpart <code>element_text()</code>. When you want to modify a specific part of the plot (e.g., title), just call these functions to the corresponding arguments (e.g., <code>plot.title =</code>) in the <code>theme()</code>.</p>
 <p>Also, you might have seen that I use quite a bit of the Markdown/HTML/CSS syntaxes. Remember in the beginning, I mentioned that <code>ggtext</code> can render text written in Markdown/HTML/CSS languages. With these, you can easily do some advanced text manipulation, for example, modifying the appearance of a specific letter/word in a sentence.</p>
 <h3 id="modify-text-inside-the-plot-area">2. Modify text inside the plot area</h3>
-<p>Next, we will shift gears a bit and focus on the text inside the plot. Specifically, I will add labels besides the points.</p>
+<p>After getting the text outside the plot done, we can next work on the text inside the plot area. Specifically, I will add some labels besides points and modify their appearance a bit.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>IBO_plot</span> <span class='op'>&lt;-</span> <span class='va'>IBO_plot</span> <span class='op'>+</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Add country labels to the points</span>
+<span class='va'>IBO_plot</span> <span class='op'>&lt;-</span> <span class='va'>IBO_plot</span> <span class='op'>+</span>
   <span class='fu'><a href='https://wilkelab.org/ggtext/reference/geom_richtext.html'>geom_richtext</a></span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>label <span class='op'>=</span> <span class='va'>Country</span><span class='op'>)</span>, 
-                angle <span class='op'>=</span> <span class='fl'>45</span>, 
                 size <span class='op'>=</span> <span class='fl'>2</span>,
+                color <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/colorRamp.html'>colorRampPalette</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"#a50f15"</span>, <span class='st'>"#e66101"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span> <span class='va'>IBO_data</span><span class='op'>)</span><span class='op'>)</span>,
+                fill <span class='op'>=</span> <span class='st'>"transparent"</span>,
+                angle <span class='op'>=</span> <span class='fl'>45</span>,
                 hjust <span class='op'>=</span> <span class='fl'>0.1</span>,
                 vjust <span class='op'>=</span> <span class='op'>-</span><span class='fl'>0.1</span>,
-                label.padding <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='st'>"pt"</span><span class='op'>)</span>,
                 label.r <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>4</span>, <span class='st'>"pt"</span><span class='op'>)</span>,
-                fill <span class='op'>=</span> <span class='st'>"transparent"</span>,
-                color <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/colorRamp.html'>colorRampPalette</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"#a50f15"</span>, <span class='st'>"#e66101"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span> <span class='va'>IBO_data</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+                label.padding <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='st'>"pt"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='va'>IBO_plot</span>
 </code></pre>
 </div>
 <p><img src="post-5-awesome-text-display-with-ggtext_files/figure-html5/unnamed-chunk-4-1.png" width="85%" /></p>
 </div>
-<h3 id="add-images-to-the-plot">3. Add images to the plot</h3>
-<p>Finally, we can add images to the plot using the HTML <code>&lt;img&gt;</code> tag:</p>
+<p>Here, I use the function <code>geom_richtext()</code> to map the labels to the points. This function is quite similar to ggplot2’s <code>geom_text()</code> or <code>geom_label()</code>, but it has an additional feature: the text/box can be rotated by any angles.</p>
+<h3 id="add-external-images-to-the-plot">3. Add external images to the plot</h3>
+<p>Now we have already done with our text manipulation. Most of the time, we will end it here and happy to go. However, there is one extra thing we can do to make the plot fancier — adding external images to the plot! Of course you can do this manually later (perhaps in PowerPoint), but isn’t it great to complete all the work at once in R? This will streamline the process and make it fully reproducible! So let’s do it!</p>
+<p>The principle of adding images is the use of HTML <code>&lt;img&gt;</code> tag, which has a basic syntax structure <code>&lt;img scr = 'path_to_image'/&gt;</code>. If you are not familiar with HTML, don’t panic. Simply copy and paste the code in the example below and replace the image path with yours (can be a website url or a local directory). The additional <code>width</code> attribute in the <code>&lt;img&gt;</code> tag allows for controlling the width of the image.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># The url for the IBO logos (available on my GitHub repository)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># HTML &lt;img&gt; tags (logos available on my GitHub repository)</span>
 <span class='va'>IBO_logo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"&lt;img src = './IBO_logos/"</span>, <span class='va'>Year</span>, <span class='st'>".png' width = '15' /&gt;&lt;br&gt;"</span>, <span class='va'>Year</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='co'># Add the IBO logos to the x-axis </span>
+<span class='co'># Add the logos to the x-axis </span>
 <span class='va'>IBO_plot</span> <span class='op'>&lt;-</span> <span class='va'>IBO_plot</span> <span class='op'>+</span>
   <span class='fu'>scale_x_continuous</span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fl'>1990</span><span class='op'>:</span><span class='fl'>2020</span>, labels <span class='op'>=</span> <span class='va'>IBO_logo</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'>theme</span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://wilkelab.org/ggtext/reference/element_markdown.html'>element_markdown</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"black"</span>, size <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='co'># Add the main logo to the upper panel</span>
+<span class='co'># Add another logo to the upper panel</span>
+<span class='va'>IBO_logo_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1992</span>, 
+                          y <span class='op'>=</span> <span class='fl'>200</span>,
+                          Time_period <span class='op'>=</span> <span class='st'>"1990 to 2005"</span>,
+                          logo <span class='op'>=</span> <span class='st'>"&lt;img src = './IBO_logos/main.png' width = '100' /&gt;"</span><span class='op'>)</span>
+
 <span class='va'>IBO_plot</span> <span class='op'>&lt;-</span> <span class='va'>IBO_plot</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://wilkelab.org/ggtext/reference/geom_richtext.html'>geom_richtext</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1992</span>, 
-                                  y <span class='op'>=</span> <span class='fl'>200</span>,
-                                  Time_period <span class='op'>=</span> <span class='st'>"1990 to 2005"</span>,
-                                  logo <span class='op'>=</span> <span class='st'>"&lt;img src = './IBO_logos/main.png' width = '100' /&gt;"</span><span class='op'>)</span>,
+  <span class='fu'><a href='https://wilkelab.org/ggtext/reference/geom_richtext.html'>geom_richtext</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>IBO_logo_df</span>, 
                 <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, label <span class='op'>=</span> <span class='va'>logo</span><span class='op'>)</span>, 
                 colour <span class='op'>=</span> <span class='st'>"transparent"</span><span class='op'>)</span>
 
@@ -1720,9 +1726,13 @@ div.l-body {
 </div>
 <p><img src="post-5-awesome-text-display-with-ggtext_files/figure-html5/unnamed-chunk-5-1.png" width="85%" /></p>
 </div>
+<p>As shown above, you can add external images to two areas of a plot: the axes and the plot panel.</p>
+<p>For the first one, you need to specify in <code>scale_xx_XXX()</code> the positions at which the images should be placed on the axes (<code>breaks =</code>), along with the HTML <code>&lt;img&gt;</code> tags as labels (<code>labels =</code>). After that, call <code>element_markdown()</code> to the corresponding theme element (in this example <code>axis.text.x</code>) in the <code>theme()</code>. The images will then be displayed along the axes.</p>
+<p>For the second one, simply create a dataframe containing the x and y positions as well as a column containing the HTML <code>&lt;img&gt;</code> tags, and use <code>geom_richtext()</code> to map the image tags to the plot. The images will then be displayed at the designated positions.</p>
 <h2 id="summary">Summary</h2>
+<p>A quick recap of what we have done throughout the post. <strong>First</strong>, we modified the plot title, axis labels, caption, and facet strips using two <code>theme()</code> elements <code>element_textbox_simple()</code> and <code>element_markdown()</code>. <strong>Second</strong>, we added some labels to the plot using the geom layer <code>geom_richtext()</code> and customized the labels a bit. <strong>Third</strong>, we used <code>element_markdown()</code> to add external images to the x-axis, and <code>geom_richtext()</code> to add another image to the plot area.</p>
 <p>There are lots of things you can do for your text using <code>ggtext</code>. Spend some time exploring the package website. I believe you will become a master of text. By the way, I highly recommend having a basic understanding of Markdown/HTML/CSS, which will allow you to fully leverage the strength of <code>ggtext</code>!</p>
-<p>Oh, one last thing forget to say: I was one of the participants in the 2014 IBO in Bali, Indonesia It’s been seven years. Time flies! In fact, this is one of the main reasons why I chose IBO data as the example dataset. The other is that the website contains many logos, which serve well the purpose of this post.</p>
+<p>Oh, one last thing forget to say: I was one of the participants in the 2014 IBO in Bali, Indonesia. It’s been seven years. Time flies! In fact, this is one of the main reasons why I chose IBO data as the example dataset. The other is that the website contains many logos, which serve well the purpose of this post.</p>
 <p>That’s it for this post and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
