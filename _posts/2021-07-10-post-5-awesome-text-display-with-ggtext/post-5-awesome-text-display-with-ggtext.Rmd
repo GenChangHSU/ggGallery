@@ -1,7 +1,7 @@
 ---
 title: "Post #5. Awesome text displays with ggtext"
 description: |
-  Enhance the text displays in your ggplots with the extension package ggtext!
+  Enhance text displays in your ggplots with the extension package ggtext!
 author:
   - name: Gen-Chang Hsu
 date: 2021-07-10
@@ -83,11 +83,11 @@ knitr::opts_chunk$set(message = F,
 <!-- Start of the article -->
 
 ## Overview
-Text is one of the fundamental elements in a graph. A well-designed text display can make your plot look pleasant and more informative. ggplot2 provides many functions and arguments for text manipulation (appearance, layout, annotation, etc.), which are already more than enough most of the time. But if you want to do something further, the extension package [`ggtext`](https://wilkelab.org/ggtext/index.html) has more to offer. This package has several added functionalities currently not implemented in ggplot2, the most important being that it supports the use of Markdown/HTML/CSS, which allows for greater flexibility in text rendering. So in this post, I will be showing you some of these cool features. Ready? Let's get started!  
+Text is one of the fundamental elements in a graph. A well-designed text display can make your plot look pleasant and more informative. ggplot2 provides many functions and arguments for text manipulation (appearance, layout, annotation, etc.), which are already more than enough most of the time. But if you want to do something further, the extension package [`ggtext`](https://wilkelab.org/ggtext/index.html) has more to offer. This package has several added functionalities currently not implemented in ggplot2, the most important being that it supports the use of Markdown/HTML/CSS, which offers greater flexibility in text rendering. So in this post, I will be showing you some of these cool features. Ready? Let's get started!  
 
 
 ## Date preparation
-We will be using the data from the [International Biology Olympiad](https://www.ibo-info.org/en/contest/past-ibos.html) website. IBO is arguably the most magnificent annual biology event for high school students around the world. Since the very first one held 30 years ago in the Czech Republic, more countries have joined as members, and it would be interesting to see how the numbers of participants changed over the past three decades.
+We will be using the data from the [International Biology Olympiad](https://www.ibo-info.org/en/contest/past-ibos.html) website. IBO is arguably the largest annual biology event for high school students. Each year, a member country will host the competition, and students around the world will gather to participate in this great event. Since the very first IBO held in 1990 in the Czech Republic, more countries have joined as members, and it would be interesting to see how the numbers of participating students changed over the past three decades.
 
 To do so, we will first scrap the data from the website using the package [`rvest`](https://rvest.tidyverse.org/), and then do some data manipulation for later plotting use. Since web-scraping is not the main focus of this post, I will not go into the details. If interested, you can visit the package's website for more information. There are also plenty of learning resources out there on the internet. 
 
@@ -114,7 +114,8 @@ Students <- IBO_html %>% str_extract("[:digit:]*(?=\\s*students)")
 # Put all information in a dataframe  
 IBO_data <- tibble(Year, Country, Students) %>%
   mutate(Year = as.numeric(Year),
-         Students = as.numeric(Students))
+         Students = as.numeric(Students)) %>%
+  filter(Year %in% 1990:2020)  # Use data only from 1990 to 2020
 
 ```
 <br>
@@ -131,23 +132,12 @@ ggplot(IBO_data, aes(x = Year, y = Students)) +
 
 ```
 
-As you can see, the numbers of participants have generally increased over time, but there was a sharp drop in 2020 due to the COVID-19 global pandemic, which might have caused some countries to withdraw from the event.
+As you can see, the number of participants had generally increased over time, but there was a sharp drop in 2020 due to the COVID-19 global pandemic, which might have caused some countries to withdraw from the event.
 
 
 ## Make it texty 
-The above line chart looks fine, though a bit plain. So now we will make use of `ggtext` to add some flavor to it. Also, I will split the line chart into two panels (one from 1990 to 2005 and the other from 2006 to 2020) using facets for two reasons: (1) to avoid crowding and overlapping, and (2) to demonstrate how to modify the facet strip text. 
+The above line chart looks fine, though a bit plain. So now we will make use of `ggtext` to add some flavor to it. I will split the line chart into two panels (one from 1990 to 2005 and the other from 2006 to 2020) using facets for two reasons: (1) to avoid crowding and overlapping, and (2) to demonstrate how we can modify the facet strips. 
 
-There are three main parts we can do with `ggtext`:<br>
-
-<span style="display: block; margin-top: 0px; margin-left: 10px"> **(1) Modify text outside the plot area**</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> **(2) Modify text inside the plot area**</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> **(3) Add external images to the plot**</span>
-
-I will go through the details in the following sections.
-
-
-### 1. Modify text outside the plot area
-First, we will begin by modifying the text outside the plot area — the title, axis labels, captions, facet strips, and so on.   
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
 library(ggtext)
@@ -164,10 +154,26 @@ IBO_plot <- ggplot(IBO_data, aes(x = Year, y = Students)) +
   geom_point() + 
   geom_line() + 
   facet_wrap(~Time_period, scales = "free", nrow = 2, strip.position = "right") +
-  scale_x_continuous(breaks = 1990:2020) +
-  scale_y_continuous(expand = c(0, 50)) + 
+  scale_x_continuous(breaks = 1990:2020) + 
   theme_classic()
 
+IBO_plot 
+```
+
+There are three main things we can do with `ggtext`:<br>
+
+<span style="display: block; margin-top: 0px; margin-left: 10px"> **(1) Modify text outside the plot area**</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> **(2) Modify text inside the plot area**</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> **(3) Add external images to the plot**</span>
+
+I will go through the details in the following sections.
+
+### 1. Modify text outside the plot area
+First, we will begin by modifying the text outside the plot area — title, axis labels, axis ticks, captions, facet strips, etc.   
+
+* **Title**
+
+```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
 # Title
 IBO_plot <- IBO_plot + 
   labs(title = "<span style = 'font-size: 18pt'><i>**I**nternational **B**iology **O**lympiad<i/></span><br>Numbers of participants over past three decades") + 
@@ -180,9 +186,15 @@ IBO_plot <- IBO_plot +
                                             padding = margin(5, 1, 5, 1), 
                                             margin = margin(0, 0, 5, 0)))
 
+IBO_plot
+```
+
+* **Axis labels**
+
+```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
 # Axis labels
 IBO_plot <- IBO_plot + 
-  labs(x = "", y = "Number of participants<br><span style = 'font-size: 9pt;'>(**Note:** different y-axis ranges in the two panels)</span>") + 
+  labs(x = "", y = "Number of participants<br><span style = 'font-size: 9pt;'>(**Note:** different y-axis scales in the two panels)</span>") + 
   theme(axis.title.y = element_textbox_simple(size = 14,
                                               family = "Arial",
                                               color = "#045a8d",
@@ -195,6 +207,41 @@ IBO_plot <- IBO_plot +
                                               minwidth = unit(2, "in"),
                                               maxwidth = unit(5, "in")))
 
+IBO_plot
+```
+
+* **Axis ticks**
+
+```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
+# Axis ticks
+breaks_fun <- function(x) {  # A function to specify the axis tick positions for the two panels
+  if (min(x) < 50) {
+    seq(0, 200, 50)
+  } else {
+    seq(150, 300, 50)
+  }
+}
+
+labels_fun <- function(x) {  # A function to specify the axis tick labels for the two panels
+  if (min(x) < 50) {
+    c("<span style = 'font-size: 12pt; color: red;'>0</span>", seq(50, 150, 50), "<span style = 'font-size: 12pt; color: red;'>200</span>")
+  } else {
+    c("<span style = 'font-size: 12pt; color: red;'>150</span>", seq(200, 250, 50), "<span style = 'font-size: 12pt; color: red;'>300</span>")
+  }
+}
+
+IBO_plot <- IBO_plot + 
+  scale_y_continuous(expand = c(0, 40),  # For adjusting the y-axis range 
+                     breaks = breaks_fun,
+                     labels = labels_fun) +
+  theme(axis.text.y = element_markdown())
+
+IBO_plot
+```
+
+* **Caption**
+
+```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
 # Caption
 IBO_plot <- IBO_plot + 
   labs(caption = "<i><span style = 'font-size: 9pt;'>Data source: https:&#47;&#47;www&#46;ibo-info.org/en/contest/past-ibos.html</span><br>Retrieved July, 2021<i/>") + 
@@ -203,6 +250,12 @@ IBO_plot <- IBO_plot +
                                         color = "grey50",
                                         lineheight = 1.5))
 
+IBO_plot
+```
+
+* **Facet strips**
+
+```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
 # Facet strips
 IBO_plot <- IBO_plot + 
   theme(strip.background = element_blank(),
@@ -215,20 +268,21 @@ IBO_plot <- IBO_plot +
                                               r = unit(8, "pt"),
                                               padding = margin(1, 1, 1, 1),
                                               margin = margin(3, 3, 3, 3)))
-                                     
-IBO_plot
 
+IBO_plot
 ```
 
-The key functions here are `element_textbox_simple()` and `element_markdown()`. Basically they do almost the same job, the main difference being that the former allows users to have more control over the appearance of the text box, whereas the latter focuses on modifying the text itself. So if you are working with text only, you can simply use `element_markdown()`.
+The key functions here are `element_textbox_simple()` and `element_markdown()`. Basically they do the same job; the main difference is that the former allows for more control over the appearance of the text box, whereas the latter focuses on modifying the text itself. So if you are working with text only, you can simply use `element_markdown()`.
+
+There are many things you can modify for the text. For example, the font size, font family, font color, font position and alignment, and line spacing. As for the text box, you can change the border color, fill color, size, corner radius (for rounded box), and so on. Take a look at the documentations of the two functions to see what other arguments there are!  
 
 The usage of `element_textbox_simple()` and `element_markdown()` are pretty much similar to their ggplot2 counterpart `element_text()`. When you want to modify a specific part of the plot (e.g., title), just call these functions to the corresponding arguments (e.g., `plot.title = `) in the `theme()`.  
 
-Also, you might have seen that I use quite a bit of the Markdown/HTML/CSS syntaxes. Remember in the beginning, I mentioned that `ggtext` can render text written in Markdown/HTML/CSS languages. With these, you can easily do some advanced text manipulation, for example, modifying the appearance of a specific letter/word in a sentence.
+Also, you might have seen that I use quite a bit of the Markdown/HTML/CSS syntaxes. Remember in the beginning, I mentioned that `ggtext` can render text written in Markdown/HTML/CSS languages. With these, you can easily do some advanced text manipulation, for instance, modifying the appearance of a specific letter/word in a sentence (like what I did for the title).
 
 
 ### 2. Modify text inside the plot area
-After getting the text outside the plot done, we can next work on the text inside the plot area. Specifically, I will add some labels besides points and modify their appearance a bit.
+After getting the text outside the plot area done, we can proceed to the text inside the plot area. Specifically, I will add country labels to the points and modify their appearances a bit.
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
 # Add country labels to the points
@@ -247,31 +301,43 @@ IBO_plot
 
 ```
 
-Here, I use the function `geom_richtext()` to map the labels to the points. This function is quite similar to ggplot2's `geom_text()` or `geom_label()`, but it has an additional feature: the text/box can be rotated by any angles.
+Here I use the function `geom_richtext()` to map the country labels to the points. This function is quite similar to ggplot2's `geom_text()` or `geom_label()`, but it has an additional feature: the text/box can be rotated by any angles.
 
 
 ### 3. Add external images to the plot
-Now we have already done with our text manipulation. Most of the time, we will end it here and happy to go. However, there is one extra thing we can do to make the plot fancier — adding external images to the plot! Of course you can do this manually later (perhaps in PowerPoint), but isn't it great to complete all the work at once in R? This will streamline the process and make it fully reproducible! So let's do it!
+Now we are finished with our text manipulation. Most of the time, we will end it here and be happy to go. However, there is one extra thing we can do to make the plot fancier — adding external images to the plot! Of course you can do this manually later (perhaps in PowerPoint), but isn't it great to complete all the work at once in R? This will streamline the process and make it fully reproducible! So let's do it!
 
-The principle of adding images is the use of HTML `<img>` tag, which has a basic syntax structure `<img scr = 'path_to_image'/>`. If you are not familiar with HTML, don't panic. Simply copy and paste the code in the example below and replace the image path with yours (can be a website url or a local directory). The additional `width` attribute in the `<img>` tag allows for controlling the width of the image.
+The principle of adding images is the use of HTML `<img>` tag, which has a basic syntax structure `<img scr = 'path_to_image'/>`. If you are not familiar with HTML, don't panic. Simply copy and paste the code in the example below and replace the image path with yours (can be a website url or a local directory). The additional `height` and `width` attribute in the `<img>` tag allow for controlling the size of the images.
+
+You can add images to two places of a figure: the axis ticks and the plot panel.
+
+* **Add images to the axis ticks**
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
 # Download the zip file of the logos from my GitHub repository
-# The file will be saved in the current directory
+# The file will be saved in your current directory
 download.file(url = "https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2021-07-10-post-5-awesome-text-display-with-ggtext/IBO_logos.zip", destfile = "./IBO_logos.zip")
 
 # Unzip the file
 unzip(zipfile = "./IBO_logos.zip")
 
 # HTML <img> tags
-IBO_logo <- rev(paste0("<img src = './IBO_logos/", Year, ".png' width = '15' /><br>", Year))
+IBO_logo <- rev(paste0("<img src = './IBO_logos/", Year, ".png' height = '15' width = '15' /><br>", Year))
 
 # Add the logos to the x-axis 
 IBO_plot <- IBO_plot +
   scale_x_continuous(breaks = 1990:2020, labels = IBO_logo) +
   theme(axis.text.x = element_markdown(color = "black", size = 7))
 
-# Add another logo to the upper panel
+IBO_plot
+```
+
+To add images to the axis ticks, you need to specify in `scale_x|y_XXX()` the tick positions at which the images should be placed on the axis (`breaks = `), along with the HTML `<img>` tags as labels (`labels = `). After that, call `element_markdown()` to the corresponding theme element (in this example `axis.text.x = `) in `theme()`. The images will then be displayed along the axis.
+
+* **Add images to the plot panel**
+
+```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
+# Add the main logo to the upper panel
 IBO_logo_df <- data.frame(x = 1992, 
                           y = 200,
                           Time_period = "1990 to 2005",
@@ -283,22 +349,17 @@ IBO_plot <- IBO_plot +
                 colour = "transparent")
 
 IBO_plot
-
 ```
 
-As shown above, you can add external images to two areas of a plot: the axes and the plot panel. 
-
-For the first one, you need to specify in `scale_xx_XXX()` the positions at which the images should be placed on the axes (`breaks = `), along with the HTML `<img>` tags as labels (`labels = `). After that, call `element_markdown()` to the corresponding theme element (in this example `axis.text.x`) in the `theme()`. The images will then be displayed along the axes. 
-
-For the second one, simply create a dataframe containing the x and y positions as well as a column containing the HTML `<img>` tags, and use `geom_richtext()` to map the image tags to the plot. The images will then be displayed at the designated positions.
+To add images to the plot panel, simply create a dataframe containing the x and y positions as well as a column containing the HTML `<img>` tags, and use `geom_richtext(aes(label = ))` to map the image tags to the plot. The images will then be displayed at the designated positions.
 
 
 ## Summary
-A quick recap of what we have done throughout the post. **First**, we modified the plot title, axis labels, caption, and facet strips using two `theme()` elements `element_textbox_simple()` and `element_markdown()`. **Second**, we added some labels to the plot using the geom layer `geom_richtext()` and customized the labels a bit. **Third**, we used `element_markdown()` to add external images to the x-axis, and `geom_richtext()` to add another image to the plot area.
+A quick recap of what we have done throughout the post. **First**, we modified the plot title, axis labels, axis ticks, caption, and facet strips using two `theme()` elements `element_textbox_simple()` and `element_markdown()`. **Second**, we added some country labels to the points using the geom layer `geom_richtext()` and customized the labels a bit. **Third**, we used `element_markdown()` to add external images to the x-axis, and `geom_richtext()` to add another image to the plot panel.
 
-There are lots of things you can do for your text using `ggtext`. Spend some time exploring the package website. I believe you will become a master of text. By the way, I highly recommend having a basic understanding of Markdown/HTML/CSS, which will allow you to fully leverage the strength of `ggtext`!
+Honestly, I feel that the final figure in this post does not look so satisfying. I tried to show the things you can do with `ggtext` as many as possible, making the figure kind of "over-texty". It is just for demonstration purpose though. When working with your own figure, you might want to think a bit about how to better design it. Maybe spend some time exploring the package website to learn more. Also, I highly recommend having a basic understanding of Markdown/HTML/CSS, which will allow you to fully leverage the strength of `ggtext`!
 
-Oh, one last thing forget to say: I was one of the participants in the 2014 IBO in Bali, Indonesia. It's been seven years. Time flies! In fact, this is one of the main reasons why I chose IBO data as the example dataset. The other is that the website contains many logos, which serve well the purpose of this post.
+Oh, one last thing forget to say: I was one of the participants in the 2014 IBO in Bali, Indonesia. It's been seven years. Time flies! In fact, this is one of the main reasons why I chose IBO data as the example dataset. The other is that the website has many logos, which serves well the purpose of this post.
 
 That's it for this post and don't forget to leave your comments and suggestions below if you have any!
 
