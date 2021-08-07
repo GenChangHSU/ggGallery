@@ -1,0 +1,253 @@
+---
+title: "Post #6. Play a music for your data - violin plots with ggplot"
+description: |
+  Visualize data distributions using violin plots with ggplot.
+author:
+  - name: Gen-Chang Hsu
+date: 2021-08-02
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2021"
+preview: ../../homepage_images/Post6.png  
+draft: true
+---
+
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+</style>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F)
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+Data exploration is the very first step for any data analysis project, allowing us to grasp an idea of what our data look like before proceeding to further analyses. We can use some simple summary statistics (e.g., mean, SD, the five-number summary ^[The five-number summary is set of descriptive statistics consisting of the minimum value, the lower quartile (Q1), the median (Q2), the upper quartile (Q3), and the maximum value.] to do so. Alternatively, we can plot the data to really see their "true colors" and potentially uncover some interesting/weird patterns (to see is to belief right?!). This is especially handy for large datasets where it is difficult to inspect each data point.
+
+There are quite a few types of graphs we can use to visualize the structure/distribution of the (continuous) data. In this post, I will show you some commonly-used graphs, first the basic ones (strip plot, box plot, and point-range plot), and then to our focus—the violin plot. 
+
+
+## Some basic visualizations for data exploration
+We will be using the [`crabs`](https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/crabs.html) dataset from the [`MASS`](https://cran.r-project.org/web/packages/MASS/index.html) package as our example data. This dataset contains five morphological measurements (frontal lobe size, rear width, carapace length, carapace width, and body depth) of 50 purple rock crab ([*Leptograpsus variegatus*](https://eol.org/pages/46511257)) individuals for each of the two color forms (blue and orange) and sexes (male and female). An interesting question here is whether the carapace width, an important indicator for the growth and development of the individuals, differ between sexes for the two color forms. Before conducting formal statistical tests, it would be great to first visualize the carapace width by color form and sex so that we can get an idea of what the data look like.
+
+Let's begin with some basic and most-commonly used graphs:
+
+<span style="display: block; margin-top: 0px; margin-left: 10px"> **(1) Strip plot**</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> **(2) Box plot**</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> **(3) Point-range plot**</span>
+
+### Strip plot
+A strip plot is no more than drawing the raw data points along the axis to show their distribution and range. In fact, it is simply a special version of scatterplot where one dimension is fixed to a single point.
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%", fig.show = "hold"}
+library(MASS)  # For the "crabs" dataset
+library(tidyverse)
+
+crabs_df <- crabs %>%
+  select(sp, sex, CW) %>%
+  transmute(color = case_when(sp == "B" ~ "Blue",
+                              sp == "O" ~ "Orange"),
+            sex = case_when(sex == "M" ~ "Male",
+                            sex == "F" ~ "Female"),
+            carapace_width = CW)
+
+ggplot(data = crabs_df, aes(x = color, y = carapace_width, color = sex)) + 
+  geom_point(position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.7)) + 
+  labs(x = "Color form", y = "Carapace width (mm)") + 
+  theme_classic() + 
+  theme(legend.title = element_text(hjust = 0.5))
+
+```
+
+I use `position_jitterdodge()` to dodge the points for the two sexes within each color form so that they won't overlap with each other at the same x-axis position, and to jitter the points (i.e., adding some random noise) within each sex to prevent overplotting.
+
+As you can see, blue males tend have a wider carapace than blue females, whereas both sexes of the orange form seem to have similar carapace widths.
+
+### Box plot
+A common alternative to strip plot is the box plot, where the data are displayed as a box and two whiskers based on the five-number summary (remember this term in the "Introduction"?). 
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%", fig.show = "hold"}
+ggplot(data = crabs_df, aes(x = color, y = carapace_width, color = sex)) + 
+  geom_boxplot(position = position_dodge(width = 0.7), width = 0.5) + 
+  labs(x = "Color form", y = "Carapace width (mm)") + 
+  theme_classic() + 
+  theme(legend.title = element_text(hjust = 0.5))
+
+```
+
+Here, we can see that the median carapace width of blue males is larger than that of the blue females, while the opposite is true for the orange form.   
+
+### Point-range plot
+Yet another alternative to strip plot is the point-range plot, where the data are displayed as a mean and some measure of uncertainty (e.g., SD, SE, and confidence interval). 
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%", fig.show = "hold"}
+ggplot(data = crabs_df, aes(x = color, y = carapace_width, color = sex)) + 
+  stat_summary(geom = "pointrange", fun.data = "mean_se", position = position_dodge(width = 0.5)) +  # The bars represent SE 
+  labs(x = "Color form", y = "Carapace width (mm)") + 
+  theme_classic() + 
+  theme(legend.title = element_text(hjust = 0.5))
+
+```
+
+Apparently, males on average are wider than females for the blue form, and *vice versa* for the orange form.
+
+
+## Violin plot
+Now let's get down to our main topic—the violin plot. A violin plot displays the kernel density estimates of the data as two symmetrical probability curves, forming a violin-like area and hence the name.
+
+A violin plot provides more information than a box plot or a point-range plot does, as it shows the full distribution of the data rather than just a few summary statistics. In particular, when the data distribution is **bi-modal** or **multi-modal** (i.e., more than one peak), a violin plot can show the positions of the peaks as well as their relative magnitudes, which are otherwise not revealed by a box plot or a point-range plot. 
+
+There is a trade-off though. Depending on the data, the probability curves can actually be quite curly and you might want to dispose of the "malformed" violin if that's the case.
+
+To make a violin plot with ggplot, simply use the ggplot built-in function `geom_violin()`: 
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%", fig.show = "hold"}
+ggplot(data = crabs_df, aes(x = color, y = carapace_width, color = sex)) + 
+  geom_violin(position = position_dodge(width = 0.7), width = 0.5) + 
+  labs(x = "Color form", y = "Carapace width (mm)") + 
+  theme_classic() + 
+  theme(legend.title = element_text(hjust = 0.5))
+
+```
+
+This violin plot looks a bit plain. We can modify some arguments in `geom_violin()` to make it more appealing. For example, we can turn off the `trim` argument to allow for full density curves beyond the data range, add lines inside the violins to denote the quartiles, and fill the empty violins with some colors to make them more "concrete". 
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%", fig.show = "hold"}
+ggplot(data = crabs_df, aes(x = color, y = carapace_width, color = sex)) + 
+  geom_violin(position = position_dodge(width = 0.7), 
+              width = 0.5,
+              size = 1,  # Thicker lines
+              trim = F,  # Don't trim off the tails of density curves beyond data range
+              scale = "area",  # All violins have the same area size 
+              draw_quantiles = c(0.25, 0.5, 0.75),  # Add quartiles to the violins
+              fill = after_scale(alpha("grey", 0.1))) +  # Fill the violins
+  labs(x = "Color form", y = "Carapace width (mm)") + 
+  theme_classic() + 
+  theme(legend.title = element_text(hjust = 0.5))
+
+```
+
+Another important aspect of a violin plot is the appearance of the density curves, determined by two factors: **bandwidth** and **kernel** (a bit mathy; see [this post](https://aakinshin.net/posts/kde-bw/) for details if interested). **Bandwidth** is the easier (and also straightforward) one to adjust. It is a real positive number and controls the smoothness of the density estimates: a smaller value gives a "spikier" curve, while a larger value results in a "smoother" look.
+
+```{r, fig.width = 5, fig.height = 4, out.width = "40%", fig.show = "hold", results = "hide", fig.keep = "all"}
+map(c(0.5, 1, 2, 5), function(bw_values){  # Pass a set of bandwidth values to the ggplot
+ggplot(data = crabs_df, aes(x = color, y = carapace_width, color = sex)) + 
+  geom_violin(position = position_dodge(width = 0.7), 
+              width = 0.5,
+              size = 1,  
+              trim = F,
+              scale = "area",
+              draw_quantiles = c(0.25, 0.5, 0.75),
+              fill = after_scale(alpha("grey", 0.1)),
+              bw = bw_values) +  # Control the bandwidth
+  labs(x = "Color form", y = "Carapace width (mm)", title = paste0("Bandwidth = ", bw_values)) + 
+  guides(color = "none") +
+  theme_classic(base_size = 12) + 
+  theme(legend.title = element_text(hjust = 0.5),
+        plot.title = element_text(hjust = 0.5, size = 15))
+})
+
+```
+
+Depending on the nature of the data, you might want to try out a few bandwidth values and see which one best captures the data distribution. Or, you can just do nothing and let ggplot pick a default one for you!
+
+
+## Variants of violin plots
+### Overlay other plot types
+
+### hybrid violin
+
+### Wilkinson dot plot and beasworm
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Summary
+In this post we...
+
+Although more informative than box plots, they are less popular. Because of their unpopularity, their meaning can be harder to grasp for many readers not familiar with the violin plot representation.
+
+I wasn’t familiar with this type of plot until I started using ggplot2. That’s a shame, because this is a useful technique; a quick glance shows viewers the shape of the distribution and lets them easily estimate its mode and range. Anyway personally that is really cool and kind of "fancy".
+
+You can make a plain violin plot more informative by overlaying other types of plot. but don't overdo it as it can be too rich and perhaps discordant. Experiment different combinations a bit and find the right balance. Your data will appreciate you if you play a melodious music for them! 
+
+That's it for this post and don't forget to leave your comments and suggestions below if you have any!
+
+
+
+
+
+
+
+
