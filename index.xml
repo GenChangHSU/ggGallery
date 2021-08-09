@@ -7,7 +7,17 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 10 Jul 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 02 Aug 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #6. Play a music for your data - violin plots with ggplot</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2021-08-02-post-6-play-a-music-for-your-data-violin-plots-with-ggplot</link>
+      <description>Visualize data distributions using violin plots with ggplot.</description>
+      <category>2021</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2021-08-02-post-6-play-a-music-for-your-data-violin-plots-with-ggplot</guid>
+      <pubDate>Mon, 02 Aug 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-08-02-post-6-play-a-music-for-your-data-violin-plots-with-ggplot/../../homepage_images/Post6.png" medium="image" type="image/png" width="960" height="576"/>
+    </item>
     <item>
       <title>Post #5. Awesome text displays with ggtext</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
