@@ -1,5 +1,5 @@
 ---
-title: "Post #6. Play a music for your data - violin plots with ggplot"
+title: "Post #6. Play music for your data - violin plots with ggplot"
 description: |
   Visualize data distributions using violin plots with ggplot.
 author:
@@ -83,7 +83,7 @@ knitr::opts_chunk$set(message = F,
 <!-- Start of the article -->
 
 ## Introduction
-Data exploration is the very first step for any data analysis project, allowing us to grasp an idea of what our data look like before proceeding to further analyses. We can use some simple summary statistics (e.g., mean, SD, the five-number summary ^[The five-number summary is set of descriptive statistics consisting of the minimum value, the lower quartile (Q1), the median (Q2), the upper quartile (Q3), and the maximum value.]) to do so. Alternatively, we can plot the data to really show their "true colors" and potentially uncover some interesting/weird patterns (to see is to belief right?!). This is especially handy for large datasets where it is difficult to inspect each data point.
+Data exploration is the very first step for any data analysis project, allowing us to grasp an idea of what our data look like before proceeding to further analyses. We can use some simple summary statistics (e.g., mean, SD, the five-number summary ^[The five-number summary is set of descriptive statistics consisting of the minimum value, the lower quartile (Q1), the median (Q2), the upper quartile (Q3), and the maximum value.]) to do so. Alternatively, we can plot the data to really show their "true colors" and potentially uncover some interesting/weird patterns (to see is to believe right?!). This is especially handy for large datasets where it is difficult to inspect each data point.
 
 There are quite a few types of graphs we can use to visualize the distribution of (continuous) data. In this post, I will show you some commonly-used graphs, first the basic ones (strip plot, box plot, and point-range plot), and then to our focus—the violin plot. 
 
