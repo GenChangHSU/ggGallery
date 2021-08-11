@@ -1,5 +1,5 @@
 ---
-title: "Post #6. Play music for your data - violin plots with ggplot"
+title: "Post #6. Play good music for your data - violin plots with ggplot"
 description: |
   Visualize data distributions using violin plots with ggplot.
 author:
@@ -396,7 +396,7 @@ Similar to `geom_violin()`, you can specify the `bandwidth` in `geom_quasirandom
 ## Summary
 In this post, we have seen some basic graph types as well as the violin plot and its extensions for visualizing data distributions. Violin plots can be quite useful for conveying the message in the data; however, they are much less popular in scientific communication (compared with strip plots or box plots). Believe it or not, I didn't even hear of "violin plot" until I started learning ggplots!
 
-You can make a plain violin plot more informative by combining other graph types to display different aspects of the data. Just don't overdo it as the information can be too rich and perhaps obscured. Experiment a bit and find the right balance. Your data will appreciate you if you play a melodious music for them!
+You can make a plain violin plot more informative by combining other graph types to display different aspects of the data. Just don't overdo it as the information can be too rich and perhaps obscured. Experiment a bit and find the right balance. Your data will appreciate you if you play a beautiful piece of music for them!
 
 That's it for this post and don't forget to leave your comments and suggestions below if you have any!
 
