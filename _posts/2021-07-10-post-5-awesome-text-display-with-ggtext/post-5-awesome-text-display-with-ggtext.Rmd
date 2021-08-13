@@ -355,7 +355,7 @@ IBO_plot
 
 To give you a better idea of how the final figure is generated, I have organized the code chunk pieces throughout the post into a full code chunk below. You can simply copy and paste it into your R session, swap your own data and modify the arguments as you wish!
 
-```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
+```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hide"}
 # Library
 library(tidyverse)
 library(rvest)
