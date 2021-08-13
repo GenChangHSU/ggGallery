@@ -138,12 +138,13 @@ As you can see, the number of participants had generally increased over time, bu
 ## Make it texty 
 The above line chart looks fine, though a bit plain. So now we will make use of `ggtext` to add some flavor to it. I will split the line chart into two panels (one from 1990 to 2005 and the other from 2006 to 2020) using facets for two reasons: (1) to avoid crowding and overlapping, and (2) to demonstrate how we can modify the facet strips. 
 
-
 ```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
 library(ggtext)
 library(extrafont) # Fonts for plotting
-# font_import() # Import system fonts (only need to run it once on your device) 
-loadfonts(quiet = T) # Register system fonts (need to run it in every R session)
+
+# Import and register the system fonts
+# font_import()  # Please run this line to import the fonts; only need to do it once
+loadfonts(quiet = T)  # Need to load the system fonts in every R session
 
 # Create a new column for the two time periods
 IBO_data <- IBO_data %>% 
@@ -168,7 +169,7 @@ There are three main things we can do with `ggtext`:<br>
 
 I will go through the details in the following sections.
 
-### 1. Modify text outside the plot area
+### (1) Modify text outside the plot area
 First, we will begin by modifying the text outside the plot area — title, axis labels, axis ticks, captions, facet strips, etc.   
 
 * **Title**
@@ -281,8 +282,10 @@ The usage of `element_textbox_simple()` and `element_markdown()` are pretty much
 Also, you might have seen that I use quite a bit of the Markdown/HTML/CSS syntaxes. Remember in the beginning, I mentioned that `ggtext` can render text written in Markdown/HTML/CSS languages. With these, you can easily do some advanced text manipulation, for instance, modifying the appearance of a specific letter/word in a sentence (like what I did for the title).
 
 
-### 2. Modify text inside the plot area
+### (2) Modify text inside the plot area
 After getting the text outside the plot area done, we can proceed to the text inside the plot area. Specifically, I will add country labels to the points and modify their appearances a bit.
+
+Here I use the function `geom_richtext()` to map the country labels to the points. This function is quite similar to ggplot2's `geom_text()` or `geom_label()`, but it has an additional feature: the text/box can be rotated by any angles.
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
 # Add country labels to the points
@@ -298,20 +301,19 @@ IBO_plot <- IBO_plot +
                 label.padding = unit(c(1, 5, 1, 5), "pt"))
 
 IBO_plot
-
 ```
 
-Here I use the function `geom_richtext()` to map the country labels to the points. This function is quite similar to ggplot2's `geom_text()` or `geom_label()`, but it has an additional feature: the text/box can be rotated by any angles.
 
-
-### 3. Add external images to the plot
+### (3) Add external images to the plot
 Now we are finished with our text manipulation. Most of the time, we will end it here and be happy to go. However, there is one extra thing we can do to make the plot fancier — adding external images to the plot! Of course you can do this manually later (perhaps in PowerPoint), but isn't it great to complete all the work at once in R? This will streamline the process and make it fully reproducible! So let's do it!
 
 The principle of adding images is the use of HTML `<img>` tag, which has a basic syntax structure `<img scr = 'path_to_image'/>`. If you are not familiar with HTML, don't panic. Simply copy and paste the code in the example below and replace the image path with yours (can be a website url or a local directory). The additional `height` and `width` attribute in the `<img>` tag allow for controlling the size of the images.
 
-You can add images to two places of a figure: the axis ticks and the plot panel.
+You can add images to two places of a figure: **axis ticks** and **plot panel**.
 
 * **Add images to the axis ticks**
+
+To add images to the axis ticks, you need to specify in `scale_x|y_XXX()` the tick positions at which the images should be placed on the axis (`breaks = `), along with the HTML `<img>` tags as labels (`labels = `). After that, call `element_markdown()` to the corresponding theme element (in this example `axis.text.x = `) in `theme()`. The images will then be displayed along the axis.
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
 # Download the zip file of the logos from my GitHub repository
@@ -322,9 +324,9 @@ download.file(url = "https://raw.githubusercontent.com/GenChangHSU/ggGallery/mas
 unzip(zipfile = "./IBO_logos.zip")
 
 # HTML <img> tags
-IBO_logo <- rev(paste0("<img src = './IBO_logos/", Year, ".png' height = '15' width = '15' /><br>", Year))
+IBO_logo <- paste0("<img src = './IBO_logos/", 1990:2020, ".png' height = '15' width = '15' /><br>", 1990:2020)
 
-# Add the logos to the x-axis 
+# Add the logos to the x-axis ticks
 IBO_plot <- IBO_plot +
   scale_x_continuous(breaks = 1990:2020, labels = IBO_logo) +
   theme(axis.text.x = element_markdown(color = "black", size = 7))
@@ -332,9 +334,9 @@ IBO_plot <- IBO_plot +
 IBO_plot
 ```
 
-To add images to the axis ticks, you need to specify in `scale_x|y_XXX()` the tick positions at which the images should be placed on the axis (`breaks = `), along with the HTML `<img>` tags as labels (`labels = `). After that, call `element_markdown()` to the corresponding theme element (in this example `axis.text.x = `) in `theme()`. The images will then be displayed along the axis.
-
 * **Add images to the plot panel**
+
+To add images to the plot panel, simply create a dataframe containing the x and y positions as well as a column containing the HTML `<img>` tags, and use `geom_richtext(aes(label = ))` to map the image tags to the plot. The images will then be displayed at the designated positions.
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
 # Add the main logo to the upper panel
@@ -351,7 +353,160 @@ IBO_plot <- IBO_plot +
 IBO_plot
 ```
 
-To add images to the plot panel, simply create a dataframe containing the x and y positions as well as a column containing the HTML `<img>` tags, and use `geom_richtext(aes(label = ))` to map the image tags to the plot. The images will then be displayed at the designated positions.
+To give you a better idea of how the final figure is generated, I have organized the code chunk pieces throughout the post into a full code chunk below. You can simply copy and paste it into your R session, swap your own data and modify the arguments as you wish!
+
+```{r, fig.width = 6, fig.height = 6, out.width = "85%", fig.show = "hold"}
+# Library
+library(tidyverse)
+library(rvest)
+library(ggtext)
+library(extrafont)
+
+# Import and register the system fonts
+# font_import()  # Please run this line to import the fonts; only need to do it once
+loadfonts(quiet = T)  # Need to load the system fonts in every R session
+
+# The IBO website url
+IBO_url <- "https://www.ibo-info.org/en/contest/past-ibos.html"
+
+# Read and extract the website contents into a dataframe
+IBO_html <- read_html(IBO_url) %>%
+  html_elements("div.item__content") %>%
+  html_text2()
+
+Year <- IBO_html %>% str_extract("[:digit:]{4}(?=:)")
+Country <- IBO_html %>% str_extract("(?<=,\\s)[:alpha:]+[:blank:]*[:alpha:]*") %>% replace_na("Japan")
+Students <- IBO_html %>% str_extract("[:digit:]*(?=\\s*students)")
+
+IBO_data <- tibble(Year, Country, Students) %>%
+  mutate(Year = as.numeric(Year),
+         Students = as.numeric(Students)) %>%
+  filter(Year %in% 1990:2020) %>%
+  mutate(Time_period = ifelse(Year <= 2005, "1990 to 2005", "2006 to 2020"))
+
+# Functions for setting breaks and labels for each of the two facet panels
+breaks_fun <- function(x) {
+  if (min(x) < 50) {
+    seq(0, 200, 50)
+  } else {
+    seq(150, 300, 50)
+  }
+}
+
+labels_fun <- function(x) {
+  if (min(x) < 50) {
+    c("<span style = 'font-size: 12pt; color: red;'>0</span>", seq(50, 150, 50), "<span style = 'font-size: 12pt; color: red;'>200</span>")
+  } else {
+    c("<span style = 'font-size: 12pt; color: red;'>150</span>", seq(200, 250, 50), "<span style = 'font-size: 12pt; color: red;'>300</span>")
+  }
+}
+
+# Download the IBO logos
+download.file(url = "https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2021-07-10-post-5-awesome-text-display-with-ggtext/IBO_logos.zip", destfile = "./IBO_logos.zip")
+unzip(zipfile = "./IBO_logos.zip")
+
+# A vector of HTML <img> tags as x-axis tick logos
+IBO_logo <- paste0("<img src = './IBO_logos/", 1990:2020, ".png' height = '15' width = '15' /><br>", 1990:2020)
+
+# A dataframe for the main logo
+IBO_logo_df <- data.frame(x = 1992, 
+                          y = 200,
+                          Time_period = "1990 to 2005",
+                          logo = paste0("<img src = './IBO_logos/main.png' width = '100' />"))
+
+# Plot
+ggplot(IBO_data, aes(x = Year, y = Students)) +
+  
+  # Country labels
+  geom_richtext(aes(label = Country), 
+                size = 2,
+                color = colorRampPalette(c("#a50f15", "#e66101"))(nrow( IBO_data)),
+                fill = "transparent",
+                angle = 45,
+                hjust = 0.1,
+                vjust = -0.1,
+                label.r = unit(4, "pt"),
+                label.padding = unit(c(1, 5, 1, 5), "pt")) +
+  
+  # Main logo in the upper panel
+  geom_richtext(data = IBO_logo_df, 
+                aes(x = x, y = y, label = logo), 
+                colour = "transparent") +
+  
+  # Points
+  geom_point() + 
+  
+  # Lines
+  geom_line() + 
+  
+  # Facets
+  facet_wrap(~Time_period, scales = "free", nrow = 2, strip.position = "right") +
+  
+  # x-axis tick logos
+  scale_x_continuous(breaks = 1990:2020, labels = IBO_logo) +
+  
+  # y-axis tick labels
+  scale_y_continuous(expand = c(0, 40),
+                     breaks = breaks_fun,
+                     labels = labels_fun) +
+  
+  # Built-in theme
+  theme_classic() + 
+  
+  # Specify title, y-axis label, caption, and facet strips using Markdown/HTML/CSS language
+  labs(title = "<span style = 'font-size: 18pt'><i>**I**nternational **B**iology **O**lympiad<i/></span><br>Numbers of participants over past three decades",
+       x = "", 
+       y = "Number of participants<br><span style = 'font-size: 9pt;'>(**Note:** different y-axis scales in the two panels)</span>",
+       caption = "<i><span style = 'font-size: 9pt;'>Data source: https:&#47;&#47;www&#46;ibo-info.org/en/contest/past-ibos.html</span><br>Retrieved July, 2021<i/>") + 
+  
+  theme(# Title
+        plot.title = element_textbox_simple(size = 10,
+                                            family = "Century Gothic",
+                                            color = "#007575",
+                                            fill = "#e0f2f2",
+                                            halign = 0.5,
+                                            lineheight = 1.5,
+                                            padding = margin(5, 1, 5, 1), 
+                                            margin = margin(0, 0, 5, 0)),
+        # y-axis label
+        axis.title.y = element_textbox_simple(size = 14,
+                                              family = "Arial",
+                                              color = "#045a8d",
+                                              fill = "#fff080",
+                                              halign = 0.5,
+                                              orientation = "left-rotated",
+                                              r = unit(5, "pt"),
+                                              padding = margin(4, 4, 4, 4),
+                                              margin = margin(0, 0, 8, 0),
+                                              minwidth = unit(2, "in"),
+                                              maxwidth = unit(5, "in")),
+        
+        # x-axis tick logos
+        axis.text.x = element_markdown(color = "black", size = 7),
+        
+        # y-axis tick labels
+        axis.text.y = element_markdown(),
+        
+        # Caption
+        plot.caption = element_markdown(size = 8,
+                                        family = "serif",
+                                        color = "grey50",
+                                        lineheight = 1.5),
+        
+        # Facet strips
+        strip.background = element_blank(),
+        strip.text.y = element_textbox_simple(size = 12,
+                                              family = "Comic Sans MS",
+                                              color = "white", 
+                                              fill = "#810f7c", 
+                                              halign = 0.5,
+                                              orientation = "right-rotated",
+                                              r = unit(8, "pt"),
+                                              padding = margin(1, 1, 1, 1),
+                                              margin = margin(3, 3, 3, 3)))
+
+
+```
 
 
 ## Summary
