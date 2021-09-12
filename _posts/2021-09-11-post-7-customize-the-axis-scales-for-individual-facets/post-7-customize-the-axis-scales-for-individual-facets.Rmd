@@ -1,0 +1,128 @@
+---
+title: "Post #7. Customize the axis scales for individual facets"
+description: |
+   Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for each individual ggplot facet
+author:
+  - name: Gen-Chang Hsu
+date: 2021-09-11
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2021"
+preview: ../../homepage_images/Post7.png  
+draft: true
+---
+
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+</style>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F)
+
+```
+
+<!-- Start of the article -->
+
+## The problem
+
+
+
+
+
+
+## The solutions
+
+
+### (1) Standard fix
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%", fig.show = "hold"}
+library(tidyverse)
+
+
+```
+
+
+
+### (2) Quick fix
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%", fig.show = "hold"}
+# devtools::install_github("teunbrand/ggh4x")
+library(ggh4x)
+
+
+
+
+```
+
+
+
+
+## Summary
+
+
+
+
+
+
+
+That's it for this post and don't forget to leave your comments and suggestions below if you have any!
