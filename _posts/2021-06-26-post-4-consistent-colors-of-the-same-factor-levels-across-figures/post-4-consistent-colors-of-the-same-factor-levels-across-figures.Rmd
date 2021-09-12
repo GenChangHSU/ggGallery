@@ -201,6 +201,7 @@ So what is the ultimate solution to this problem? Three steps:
 **Finally**, identify the subset of factor levels appearing in the data you are using for that specific figure and specify them using the argument `limits = ` in `scale_color_manual()`.
 
 Okay, to see is to believe. Here is a demo:
+
 ```{r, fig.width = 5, fig.height = 3, out.width = "45%", fig.show = "hold"}
 library(RColorBrewer)
 
