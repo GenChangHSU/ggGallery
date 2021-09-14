@@ -83,46 +83,240 @@ knitr::opts_chunk$set(message = F,
 
 <!-- Start of the article -->
 
+Welcome to my new post! I have been a bit busy lately and I feel so glad to come back to my blog.
+
+In this post, I will share with you a useful tips for adjusting the axis scales for individual panels when you're using facets.
+
+I have been encountering this problem several times (I guess you too!), and so I think it would be great to write something on this. Continue reading and you will surely get something out of it!  
+
+
 ## The problem
 
+We will be using the `airquality` dataset. This dataset contains the daily air quality measurements, including Ozone, Solar, temperuate, and wind speed, in New York from May to September 1973. 
 
+Let's visualize these four variables at once using facets
 
+```{r, fig.width = 6, fig.height = 4, out.width = "85%", fig.show = "hold"}
+library(tidyverse)
 
+air_df <- airquality %>% pivot_longer(cols = 1:4, 
+                                      names_to = "Env_vars", 
+                                      values_to = "Values")
+  
+P_air <- ggplot(air_df, aes(x = Day, y = Values, color = as.factor(Month), group = Month)) + 
+  geom_point() + 
+  geom_line() +
+  labs(x = "Day of month", y = NULL) +
+  scale_color_brewer(palette = "Set1", 
+                     labels = c("May", "June", "July", "August", "September")) +
+  facet_wrap(~Env_vars, 
+             nrow = 2, 
+             scales = "free_y",
+             strip.position = "left", 
+             labeller = as_labeller(c(Temp = "Temperature (°F)", 
+                                      Solar.R = "Solar radiace (lang)",
+                                      Wind = "Wind (mph)",
+                                      Ozone = "Ozone (ppb)"))) + 
+  theme(strip.background = element_blank(),
+        strip.placement = "outside",
+        legend.position = "top",
+        legend.title = element_blank())
+
+```
+
+Hmm, the y-axes for the panels look fine, but what if we want to make them prettier? Can we modify the axis scales for the individual facets? Of course we can. Keep reading!
 
 
 ## The solutions
 
+Customizing ggplot facets is definitely not an easy task, and sometimes it requires a lot of trial-and-errors. To fix this problem, there are two main ways: 
 
-### (1) Standard fix
+<span style="display: block; margin-top: 0px; margin-left: 10px"> **(1) Manual fix: adjusting the axis step by step**</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> **(2) Quick fix: setting the axis using extension package**</span>
 
-```{r, fig.width = 5, fig.height = 3, out.width = "70%", fig.show = "hold"}
+### (1) Manual fix
+The manual fix includes three steps
+
+* Step 1. Change the limits
+
+* Step 2. Change the breaks
+
+* Step 3. Change the labels
+
+**Step 1. Change the limits**
+
+```{r, fig.width = 6, fig.height = 4, out.width = "85%", fig.show = "hold"}
 library(tidyverse)
+
+map(1:4, function(x){ggplot_build(P_air)$layout$panel_scales_y[[x]]$range$range})
+
+
+limits_fun <- function(x) {
+  if (max(x) < 21) {
+    c(0, 25)
+  } else if (max(x) < 100) {
+    c(0, 100) 
+  } else if (max(x) < 170) {
+    c(0, 200) 
+  } else {
+    c(0, 320)
+  }
+}
+
+ggplot(air_df, aes(x = Day, y = Values, color = as.factor(Month), group = Month)) + 
+  geom_point() + 
+  geom_line() +
+  labs(x = "Day of month", y = NULL) +
+  scale_color_brewer(palette = "Set1", labels = c("May", "June", "July", "August", "September")) +
+  scale_y_continuous(limits = limits_fun,
+                     expand = c(0, 0)) +
+  facet_wrap(~Env_vars, 
+             nrow = 2, 
+             scales = "free_y",
+             strip.position = "left", 
+             labeller = as_labeller(c(Temp = "Temperature (°F)", 
+                                      Solar.R = "Solar radiace (lang)",
+                                      Wind = "Wind (mph)",
+                                      Ozone = "Ozone (ppb)"))) + 
+  theme(strip.background = element_blank(),
+        strip.placement = "outside",
+        legend.position = "top",
+        legend.title = element_blank())
 
 
 ```
 
+**Step 2. Change the breaks**
+
+```{r, fig.width = 6, fig.height = 4, out.width = "85%", fig.show = "hold"}
+library(tidyverse)
+
+breaks_fun <- function(x) {
+  if (max(x) == 25) {
+    c(0, 12, 25)
+  } else if (max(x) == 100) {
+    c(0, 30, 100) 
+  } else if (max(x) == 200) {
+    c(0, 150, 200) 
+  } else {
+    c(0, 100, 200, 320)
+  }
+}
+
+
+ggplot(air_df, aes(x = Day, y = Values, color = as.factor(Month), group = Month)) + 
+  geom_point() + 
+  geom_line() +
+  labs(x = "Day of month", y = NULL) +
+  scale_color_brewer(palette = "Set1", labels = c("May", "June", "July", "August", "September")) +
+  scale_y_continuous(limits = limits_fun,
+                     breaks = breaks_fun,
+                     expand = c(0, 0)) +
+  facet_wrap(~Env_vars, 
+             nrow = 2, 
+             scales = "free_y",
+             strip.position = "left", 
+             labeller = as_labeller(c(Temp = "Temperature (°F)", 
+                                      Solar.R = "Solar radiace (lang)",
+                                      Wind = "Wind (mph)",
+                                      Ozone = "Ozone (ppb)"))) + 
+  theme(strip.background = element_blank(),
+        strip.placement = "outside",
+        legend.position = "top",
+        legend.title = element_blank())
+
+
+```
+
+**Step 3. Change the labels**
+
+```{r, fig.width = 6, fig.height = 4, out.width = "85%", fig.show = "hold"}
+library(tidyverse)
+
+labels_fun <- function(x) {
+  if (max(x) < 21) {
+    c(0, 25)
+  } else if (max(x) < 100) {
+    c(0, 100) 
+  } else if (max(x) < 170) {
+    c(0, 200) 
+  } else {
+    c(0, 320)
+  }
+}
+
+
+ggplot(air_df, aes(x = Day, y = Values, color = as.factor(Month), group = Month)) + 
+  geom_point() + 
+  geom_line() +
+  labs(x = "Day of month", y = NULL) +
+  scale_color_brewer(palette = "Set1", labels = c("May", "June", "July", "August", "September")) +
+  scale_y_continuous(limits = limits_fun,
+                     breaks = breaks_fun,
+                     expand = c(0, 0)) +
+  facet_wrap(~Env_vars, 
+             nrow = 2, 
+             scales = "free_y",
+             strip.position = "left", 
+             labeller = as_labeller(c(Temp = "Temperature (°F)", 
+                                      Solar.R = "Solar radiace (lang)",
+                                      Wind = "Wind (mph)",
+                                      Ozone = "Ozone (ppb)"))) + 
+  theme(strip.background = element_blank(),
+        strip.placement = "outside",
+        legend.position = "top",
+        legend.title = element_blank())
+
+
+```
+
+This method is a bit tedious to be honest, but it gets you the idea and really get you know how ggplot deal with the axis scales under the hood. Now let's take a look at the second method: quick fix using extension package.
 
 
 ### (2) Quick fix
 
-```{r, fig.width = 5, fig.height = 3, out.width = "70%", fig.show = "hold"}
+The package [`ggh4x`](https://teunbrand.github.io/ggh4x/) has many nice functions for working with facets. You can install it from GitHub.
+
+To set the individual scales, use `facetted_pos_scales()` and specify the name of the individual panel as well as the scale function to be applied.
+
+```{r, fig.width = 6, fig.height = 4, out.width = "85%", fig.show = "hold"}
 # devtools::install_github("teunbrand/ggh4x")
 library(ggh4x)
 
-
+ggplot(air_df, aes(x = Day, y = Values, color = as.factor(Month), group = Month)) + 
+  geom_point() + 
+  geom_line() +
+  labs(x = "Day of month", y = NULL) +
+  scale_color_brewer(palette = "Set1", labels = c("May", "June", "July", "August", "September")) +
+  scale_y_continuous(limits = limits_fun,
+                     breaks = breaks_fun,
+                     expand = c(0, 0)) +
+  facet_wrap(~Env_vars, 
+             nrow = 2, 
+             scales = "free_y",
+             strip.position = "left", 
+             labeller = as_labeller(c(Temp = "Temperature (°F)", 
+                                      Solar.R = "Solar radiace (lang)",
+                                      Wind = "Wind (mph)",
+                                      Ozone = "Ozone (ppb)"))) + 
+  theme(strip.background = element_blank(),
+        strip.placement = "outside",
+        legend.position = "top",
+        legend.title = element_blank()) + 
+  facetted_pos_scales(
+    y = list(
+      Env_vars == "Ozone" ~ scale_y_continuous(breaks = c(6, 7)),
+      Env_vars == "Temp" ~ scale_y_reverse()
+    )
+  )
 
 
 ```
 
-
+Done! Easy-peasy!
 
 
 ## Summary
+In this post, we have walked through two ways to customize the axis scales for individual ggplot facets. Facets are quite handy, but sometimes also difficult to work with, and it really takes time to work around. Hopefully, there are many extensions and the people in the R community have come up with many solutions to various kind of issues. 
 
-
-
-
-
-
-
-That's it for this post and don't forget to leave your comments and suggestions below if you have any!
+Hope this post helps and don't forget to leave your comments and suggestions below if you have any!
