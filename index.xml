@@ -7,7 +7,17 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 02 Aug 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 11 Sep 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #7. Customize the axis scales for individual ggplot facets</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2021-09-11-post-7-customize-the-axis-scales-for-individual-facets</link>
+      <description>Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets!</description>
+      <category>2021</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2021-09-11-post-7-customize-the-axis-scales-for-individual-facets</guid>
+      <pubDate>Sat, 11 Sep 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-09-11-post-7-customize-the-axis-scales-for-individual-facets/../../homepage_images/Post7.png" medium="image" type="image/png" width="1152" height="768"/>
+    </item>
     <item>
       <title>Post #6. Play good music for your data - violin plots with ggplot</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>

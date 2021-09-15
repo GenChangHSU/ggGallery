@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
   <meta name="generator" content="distill" />
-  <link rel="alternate" type="application/rss+xml" href="https://genchanghsu.github.io/ggGallery/index.xml" />
 
   <style type="text/css">
   /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
@@ -87,26 +86,29 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
   <!--radix_placeholder_meta_tags-->
-  <title>ggGallery: Posts</title>
+  <title>ggGallery: About this blog</title>
 
+  <meta property="description" itemprop="description" content="Welcome to ggGallery! Here is something you would like to know about this blog."/>
 
 
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="ggGallery: Posts"/>
+  <meta property="og:title" content="ggGallery: About this blog"/>
   <meta property="og:type" content="article"/>
+  <meta property="og:description" content="Welcome to ggGallery! Here is something you would like to know about this blog."/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="ggGallery"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="ggGallery: Posts"/>
+  <meta property="twitter:title" content="ggGallery: About this blog"/>
+  <meta property="twitter:description" content="Welcome to ggGallery! Here is something you would like to know about this blog."/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["Posts"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description"]}},"value":[{"type":"character","attributes":{},"value":["About this blog"]},{"type":"character","attributes":{},"value":["Welcome to ggGallery! Here is something you would like to know about this blog."]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2530,26 +2532,18 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   }</style>
   <!--/radix_placeholder_distill-->
   <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-  <script src="site_libs/popper-2.6.0/popper.min.js"></script>
-  <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
-  <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
-  <script src="site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
-  <script src="site_libs/anchor-4.2.2/anchor.min.js"></script>
-  <script src="site_libs/bowser-1.9.3/bowser.min.js"></script>
-  <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
-  <script src="site_libs/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
   <!--/radix_placeholder_site_in_header-->
 
 
 </head>
 
-<body class="layout-listing">
+<body>
 
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Posts","authors":[]}
+{"title":"About this blog","description":"Welcome to ggGallery! Here is something you would like to know about this blog.","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2577,304 +2571,66 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_navigation_before_body-->
 <!--radix_placeholder_site_before_body-->
 <!--/radix_placeholder_site_before_body-->
-<!--radix_placeholder_article_listing-->
-
-
-<script type="application/javascript">
-
-function init_posts_list() {
-
-  function load_image(img) {
-    var src = $(img).attr('data-src');
-    if (src) {
-      $(img).attr('src', src);
-      $(img).load(function() {
-        img.removeAttribute('data-src');
-      });
-    }
-  }
-
-  function set_posts_visible(posts, visible) {
-    if (visible) {
-
-      // show bottom border by default
-      $(posts).removeClass('post-preview-last');
-
-      // apply limits if need be
-      var max_posts = 25;
-      var apply_limits = $('.posts-container').hasClass('posts-apply-limit');
-      if (apply_limits && posts.length > max_posts) {
-        posts = $(posts).slice(0, max_posts);
-      } else {
-        $('.posts-more a').addClass('hidden');
-      }
-
-      // apply last style
-      $(posts.slice(-1)[0]).addClass('post-preview-last');
-
-      $(posts).removeClass('hidden');
-      $(posts).find('img[data-src]').each(function(i, img) {
-        load_image(img);
-      });
-    } else {
-      $(posts).addClass('hidden');
-    }
-  }
-
-  function apply_hash_filter() {
-
-    // clear active state
-    $('.categories .active').removeClass('active');
-
-    // mark all posts invisible to start
-    set_posts_visible($('.posts-list').children('a'), false);
-
-    // if we have a hash filter
-    if (window.location.hash && window.location.hash.startsWith("#category:")) {
-
-      // mark posts that match the category visible
-      var page_category = window.location.hash.replace(/^#category:/, "");
-      page_category = decodeURIComponent(page_category)
-      var posts = $('.post-metadata').map(function(idx, script) {
-        var metadata = $.parseJSON($(script).html());
-        var post = null;
-        $.each(metadata.categories, function(idx, category) {
-          category = category.replace(/ /g,"_");
-          if ((page_category || '').toLowerCase() === "articles" || category === page_category) {
-            post = $(script).parent().get();
-            return false;
-          }
-        });
-        return post;
-      });
-      set_posts_visible(posts, true);
-
-      // mark the hash active
-      $('.categories li>a[href="' + decodeURIComponent(window.location.hash) + '"]').addClass('active');
-
-      // update the list_caption
-      var list_caption = $('.posts-list-caption');
-      var caption = (page_category || '').toLowerCase() === "articles"
-        ? list_caption.attr('data-caption')
-        : ('Category: ' + page_category.replace(/_/g," "));
-      list_caption.text(caption);
-
-    } else {
-
-      // no hash filter, make all posts visible (subject to max display)
-      set_posts_visible($('.posts-list').children(), true);
-
-      // reset list caption
-      var list_caption = $('.posts-list-caption');
-      list_caption.text(list_caption.attr('data-caption'));
-
-
-    }
-  }
-
-  // more articles
-  function apply_post_limits(apply) {
-    if (apply) {
-      $('.posts-container').addClass('posts-apply-limit');
-      $('.posts-more a').removeClass('hidden');
-    } else {
-      $('.posts-container').removeClass('posts-apply-limit');
-      $('.posts-more a').addClass('hidden');
-    }
-  }
-
-  // click handling for tags
-  $('.dt-tag').click(function(ev) {
-    window.location.hash = '#category:' + $(this).text().replace(/ /g, "_");
-    return false;
-  })
-
-  // hash filter handling
-  apply_hash_filter();
-  $(window).on('hashchange',function() {
-    apply_post_limits(true);
-    apply_hash_filter();
-  });
-
-  // more articles link
-  $('.posts-more a').click(function(e) {
-    e.preventDefault();
-    apply_post_limits(false);
-    apply_hash_filter();
-    return false;
-  });
-
-}
-
-</script>
-
-
-
-<div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
-<div class="posts-list">
-<h1 class="posts-list-caption" data-caption="Posts">Posts</h1>
-<a href="posts/2021-09-11-post-7-customize-the-axis-scales-for-individual-facets/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["2021"]}</script>
-<div class="metadata">
-<div class="publishedDate">Sept. 11, 2021</div>
-</div>
-<div class="thumbnail">
-<img src="homepage_images/Post7.png"/>
-</div>
-<div class="description">
-<h2>Post #7. Customize the axis scales for individual ggplot facets</h2>
-<p>Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets!</p>
-</div>
-</a>
-<a href="posts/2021-08-02-post-6-play-good-music-for-your-data-violin-plots-with-ggplot/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["2021"]}</script>
-<div class="metadata">
-<div class="publishedDate">Aug. 2, 2021</div>
-</div>
-<div class="thumbnail">
-<img src="homepage_images/Post6.png"/>
-</div>
-<div class="description">
-<h2>Post #6. Play good music for your data - violin plots with ggplot</h2>
-<p>Visualize data distributions using violin plots with ggplot.</p>
-</div>
-</a>
-<a href="posts/2021-07-10-post-5-awesome-text-display-with-ggtext/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["2021"]}</script>
-<div class="metadata">
-<div class="publishedDate">July 10, 2021</div>
-</div>
-<div class="thumbnail">
-<img src="homepage_images/Post5.png"/>
-</div>
-<div class="description">
-<h2>Post #5. Awesome text displays with ggtext</h2>
-<p>Enhance text displays in your ggplots with the extension package ggtext!</p>
-</div>
-</a>
-<a href="posts/2021-06-26-post-4-consistent-colors-of-the-same-factor-levels-across-figures/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["2021"]}</script>
-<div class="metadata">
-<div class="publishedDate">June 26, 2021</div>
-</div>
-<div class="thumbnail">
-<img src="homepage_images/Post4.png"/>
-</div>
-<div class="description">
-<h2>Post #4. Consistent colors of the same factor levels across figures</h2>
-<p>In this post, I will show you a simple trick to keep the colors of the same factor levels consistent across different ggplot figures.</p>
-</div>
-</a>
-<a href="posts/2021-06-18-post-3-pie-charts-with-ggplot/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["2021"]}</script>
-<div class="metadata">
-<div class="publishedDate">June 18, 2021</div>
-</div>
-<div class="thumbnail">
-<img src="homepage_images/Post3.png"/>
-</div>
-<div class="description">
-<h2>Post #3. Pie charts with ggplot</h2>
-<p>Want to know how to create effective pie charts with ggplot? Dig in to learn more!</p>
-</div>
-</a>
-<a href="posts/2021-05-26-guest-post-1-communicating-the-essence-of-your-data/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["2021"]}</script>
-<div class="metadata">
-<div class="publishedDate">May 26, 2021</div>
-</div>
-<div class="thumbnail">
-<img data-src="homepage_images/Guest_post1.gif"/>
-</div>
-<div class="description">
-<h2>Guest Post #1. Communicating the ESSENCE of your data</h2>
-<p>Visualizing multi-dimensional and dynamic data can be challenging. In this post, I will show how you can better communicate these features with interactive plots and animations.</p>
-</div>
-</a>
-<a href="posts/2021-05-07-post-2-three-ways-to-create-log-axes-in-ggplots-which-one-should-you-use/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["2021"]}</script>
-<div class="metadata">
-<div class="publishedDate">May 7, 2021</div>
-</div>
-<div class="thumbnail">
-<img data-src="homepage_images/Post2.png"/>
-</div>
-<div class="description">
-<h2>Post #2. Three ways to create log axes in ggplots: which one should you use?</h2>
-<p>This post shows you three different ways to create log axes in ggplots and provides some suggestions on which method to use for your figures.</p>
-</div>
-</a>
-<a href="posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["2021"]}</script>
-<div class="metadata">
-<div class="publishedDate">May 1, 2021</div>
-</div>
-<div class="thumbnail">
-<img data-src="homepage_images/Post1.png"/>
-</div>
-<div class="description">
-<h2>Post #1. Center long legend titles in ggplots</h2>
-<p>In this post, I will show you a simple quick hack to center long legend titles in ggplots without bothering gtables and grobs.</p>
-</div>
-</a>
-</div>
-<div class="posts-sidebar">
-<div><div class="sidebar-section custom" style="font-size: 18px; line-height: 1.25em;">
-  <h3>About</h3>
-  A gallery of <a href="https://ggplot2.tidyverse.org/index.html" target="_blank" style="text-decoration: none;">ggplots</a> and <a href="https://exts.ggplot2.tidyverse.org/" target="_blank" style="text-decoration: none;">beyond</a>! 
-</div>
-
-<div class="sidebar-section custom" style="font-size: 18px; display: none;">
-  <h3>Search</h3>
-  <form action="https://duckduckgo.com/">
-    <input type="text" name="q" placeholder="Search..." style="font-size: 18px; height: 30px; border-radius: 3px; border-style: solid; border-color: #D3D3D3;">
-    <input type="hidden" name="sites" 
-      value="https://beta.rstudioconnect.com/content/3776/"> <!-- Replace with your blog URL -->
-    <!--<button type="submit">Search</button>-->
-  </form>
-</div>
-
-</div>
-<div class="sidebar-section subscribe">
-<h3>Subscribe</h3>
-<form method='post' action='https://blogtrottr.com'>
-  <p style="font-size: 18px; line-height: 1.25em;">Like it? Subscribe to get the latest post:</p>
-  <input type='text' name='btr_email' style="font-size: 18px; height: 30px; border-radius: 3px; border-style: solid; border-color: #D3D3D3;" placeholder="Email"/>
-  <input type='hidden' name='btr_url'
-         value='https://genchanghsu.github.io/ggGallery/index.xml'/>
-  <input type='hidden' name='schedule_type' value='0' />
-  <input type='submit' value='Subscribe'/>
-</form>
-</div>
-<div class="sidebar-section categories">
-<h3>Categories</h3>
-<ul>
-<li>
-<a href="#category:articles">articles</a>
-<span class="category-count">(8)</span>
-</li>
-<li>
-<a href="#category:2021">2021</a>
-<span class="category-count">(8)</span>
-</li>
-</ul>
-</div>
-</div>
-<div class="posts-more">
-<a href="#">More articles &raquo;</a>
-</div>
-</div>
-<!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
-<h1>Posts</h1>
+<h1>About this blog</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
-
+<p><p>Welcome to ggGallery! Here is something you would like to know about this blog.</p></p>
 </div>
 
 
 <div class="d-article">
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+h1{
+font-size: 40px;
+}
+
+</style>
+<!-- Start of the article -->
+<h1 id="who">Who</h1>
+<p>I am Gen-Chang Hsu, currently an undergraduate at the Department of Life Science, National Taiwan University. I have broad interests in ecology, evolutionary biology, and data science, especially data visualization. Check out <a href="https://genchanghsu.github.io/" target="_blank">my website</a> for more information!</p>
+<h1 id="what">What</h1>
+<p>This blog is a collection of ggplots and ggplot extensions. Each post explores a graphing topic (e.g., proper usage of a geom, handy tips for customizing themes and scales, nice features of an extension package) in depth and provides some worked examples to showcase the versatility of ggplots.</p>
+<h1 id="why">Why</h1>
+<p>For fun and enjoyment, for learning and practice, for brainstorming and communication, for achievement and satisfaction, for…</p>
+<p><br></p>
+<p class="text", style="">
+Go wild and be creative!
+</p>
+<style>
+
+.text{
+ font-size: 35px;
+ text-align: center;
+ font-weight: bold;
+ font-style: italic;
+}
+
+</style>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

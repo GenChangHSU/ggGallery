@@ -56,7 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
 code span.cf { color: #007ba5; } /* ControlFlow */
@@ -77,7 +77,7 @@ code span.kw { color: #007ba5; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
 code span.ot { color: #007ba5; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
@@ -86,9 +86,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
   <!--radix_placeholder_meta_tags-->
-  <title>Post #7. Customize the axis scales for individual facets</title>
+  <title>Post #7. Customize the axis scales for individual ggplot facets</title>
 
-  <meta property="description" itemprop="description" content="Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets"/>
+  <meta property="description" itemprop="description" content="Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets!"/>
 
 
   <!--  https://schema.org/Article -->
@@ -97,26 +97,26 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <meta name="article:author" content="Gen-Chang Hsu"/>
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="Post #7. Customize the axis scales for individual facets"/>
+  <meta property="og:title" content="Post #7. Customize the axis scales for individual ggplot facets"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets"/>
+  <meta property="og:description" content="Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets!"/>
   <meta property="og:locale" content="en_US"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="Post #7. Customize the axis scales for individual facets"/>
-  <meta property="twitter:description" content="Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets"/>
+  <meta property="twitter:title" content="Post #7. Customize the axis scales for individual ggplot facets"/>
+  <meta property="twitter:description" content="Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets!"/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","draft"]}},"value":[{"type":"character","attributes":{},"value":["Post #7. Customize the axis scales for individual facets"]},{"type":"character","attributes":{},"value":["Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2021-09-11"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2021"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post7.png"]},{"type":"logical","attributes":{},"value":[true]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview"]}},"value":[{"type":"character","attributes":{},"value":["Post #7. Customize the axis scales for individual ggplot facets"]},{"type":"character","attributes":{},"value":["Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets!\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2021-09-11"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2021"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post7.png"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-7-customize-the-axis-scales-for-individual-facets_files/anchor-4.2.2/anchor.min.js","post-7-customize-the-axis-scales-for-individual-facets_files/bowser-1.9.3/bowser.min.js","post-7-customize-the-axis-scales-for-individual-facets_files/distill-2.2.21/template.v2.js","post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-1-1.png","post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-2-1.png","post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-3-1.png","post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-4-1.png","post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-5-1.png","post-7-customize-the-axis-scales-for-individual-facets_files/header-attrs-2.10/header-attrs.js","post-7-customize-the-axis-scales-for-individual-facets_files/header-attrs-2.9/header-attrs.js","post-7-customize-the-axis-scales-for-individual-facets_files/jquery-1.11.3/jquery.min.js","post-7-customize-the-axis-scales-for-individual-facets_files/popper-2.6.0/popper.min.js","post-7-customize-the-axis-scales-for-individual-facets_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-7-customize-the-axis-scales-for-individual-facets_files/tippy-6.2.7/tippy-light-border.css","post-7-customize-the-axis-scales-for-individual-facets_files/tippy-6.2.7/tippy.css","post-7-customize-the-axis-scales-for-individual-facets_files/tippy-6.2.7/tippy.umd.min.js","post-7-customize-the-axis-scales-for-individual-facets_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["post-7-customize-the-axis-scales-for-individual-facets_files/anchor-4.2.2/anchor.min.js","post-7-customize-the-axis-scales-for-individual-facets_files/bowser-1.9.3/bowser.min.js","post-7-customize-the-axis-scales-for-individual-facets_files/distill-2.2.21/template.v2.js","post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-1-1.png","post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-2-1.png","post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-3-1.png","post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-4-1.png","post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-5-1.png","post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-6-1.png","post-7-customize-the-axis-scales-for-individual-facets_files/header-attrs-2.10/header-attrs.js","post-7-customize-the-axis-scales-for-individual-facets_files/header-attrs-2.9/header-attrs.js","post-7-customize-the-axis-scales-for-individual-facets_files/jquery-1.11.3/jquery.min.js","post-7-customize-the-axis-scales-for-individual-facets_files/popper-2.6.0/popper.min.js","post-7-customize-the-axis-scales-for-individual-facets_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-7-customize-the-axis-scales-for-individual-facets_files/tippy-6.2.7/tippy-light-border.css","post-7-customize-the-axis-scales-for-individual-facets_files/tippy-6.2.7/tippy.css","post-7-customize-the-axis-scales-for-individual-facets_files/tippy-6.2.7/tippy.umd.min.js","post-7-customize-the-axis-scales-for-individual-facets_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1263,7 +1263,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          return "<p>" + $('#ref-' + ref).html() + "</p>";
+        }).join("\n");
         window.tippy(this, {
           allowHTML: true,
           content: refHtml,
@@ -1434,7 +1437,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
-  <script src="post-7-customize-the-axis-scales-for-individual-facets_files/header-attrs-2.10/header-attrs.js"></script>
+  <script src="post-7-customize-the-axis-scales-for-individual-facets_files/header-attrs-2.9/header-attrs.js"></script>
   <script src="post-7-customize-the-axis-scales-for-individual-facets_files/jquery-1.11.3/jquery.min.js"></script>
   <script src="post-7-customize-the-axis-scales-for-individual-facets_files/popper-2.6.0/popper.min.js"></script>
   <link href="post-7-customize-the-axis-scales-for-individual-facets_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -1455,7 +1458,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #7. Customize the axis scales for individual facets","description":"Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-09-11T00:00:00.000+08:00","citationText":"Hsu, 2021"}
+{"title":"Post #7. Customize the axis scales for individual ggplot facets","description":"Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-09-11T00:00:00.000-07:00","citationText":"Hsu, 2021"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1465,13 +1468,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>Post #7. Customize the axis scales for individual facets</h1>
+<h1>Post #7. Customize the axis scales for individual ggplot facets</h1>
 <!--radix_placeholder_categories-->
 <div class="dt-tags">
 <div class="dt=tag">2021</div>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets</p></p>
+<p><p>Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets!</p></p>
 </div>
 
 <div class="d-byline">
@@ -1542,10 +1545,11 @@ div.l-body {
 </style>
 <!-- Start of the article -->
 <p>Welcome to my new post! I have been a bit busy lately and I feel so excited to come back to my blog.</p>
-<p>In this post, I will share with you some useful tips for adjusting the axis scales for individual panels when you’re using ggplot facets. I have been dealing with this problem several times before (and I guess you too!), and so I think this would be a great topic to write about. Continue reading and you will surely get something out of it!</p>
+<p>In this post, I will share with you some useful tips for adjusting the axis scales for individual panels when you’re using ggplot facets. I have been dealing with this problem several times before (and I guess you too!), and so I think this would be a great topic to write about. Keep reading and you will surely get something out of it!</p>
 <h2 id="the-problem">The problem</h2>
-<p>We will be using the <code>airquality</code> dataset throughout the post. This dataset contains the daily measurements of four environmental variables, including ozone concentration, solar radiance, temperature, and wind speed, in New York from May to September 1973.</p>
-<p>Let’s visualize these four variables at once using facets:</p>
+<p>Facets are quite useful for displaying data by category/level/class. However, sometimes you might have facets in different units, and this might cause some problems for the appearances of the panels (e.g., the panels with large absolute axis range may “distort” the ones with small absolute range). Although you can set <code>scales = "free_XXX"</code> to allow the axes to vary by panel, it might not be as satisfying as you think, and this would require further adjustments of the individual facet panels.</p>
+<p>We will be using the <code>airquality</code> dataset as our example data. This dataset contains the daily measurements of four environmental variables, including ozone concentration, solar radiance, temperature, and wind speed, in New York from May to September 1973.</p>
+<p>First, let’s visualize these four variables at once using facets:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
@@ -1580,194 +1584,136 @@ div.l-body {
 </div>
 <p><img src="post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-1-1.png" width="85%" /></p>
 </div>
-<p>Hmm, the y-axes of the panels look fine, but what if we want to make them prettier (e.g., change the axis ranges or tick breaks)? Can we modify the axis scales for the individual facets to our heart’s content? Of course we can. Keep reading!</p>
+<p>Hmm, the y-axes of the panels look fine, but what if we want to do something further (e.g., change the axis ranges or tick breaks)? Can we modify the axis scales for the individual facets to our heart’s content? Of course we can. Continue reading!</p>
 <h2 id="the-solutions">The solutions</h2>
-<p>Customizing the axis scales in ggplot facets is definitely not an easy task, and sometimes it requires a lot of trial and error. There are two main ways to do so:</p>
-<p><span style="display: block; margin-top: 0px; margin-left: 10px"> <strong>(1) Manual fix: adjusting the axis scales step by step</strong></span> <span style="display: block; margin-top: 5px; margin-left: 10px"> <strong>(2) Quick fix: setting the axis scales using extension package</strong></span></p>
+<p>Customizing the axis scales in ggplot facets is definitely not an easy task, and sometimes it requires a lot of trial and error. There are two ways you can do for it:</p>
+<p><span style="display: block; margin-top: 0px; margin-left: 10px"> <strong>Method 1. Manual fix: adjusting the axis scales step by step</strong></span> <span style="display: block; margin-top: 5px; margin-left: 10px"> <strong>Method 2. Quick fix: setting the axis scales using extension package</strong></span></p>
 <p>I’ll go through them in more detail in the following section.</p>
-<h3 id="manual-fix">(1) Manual fix</h3>
-<p>The “manual fix” method includes three steps: <strong>adjust the limits</strong>, <strong>adjust the breaks</strong>, and <strong>adjust the labels</strong>.</p>
-<p><strong>Step 1. Adjust the limits</strong></p>
+<h3 id="method-1.-manual-fix">Method 1. Manual fix</h3>
+<p>The basic idea of this method is to identify the individual facets and apply specific scale arguments to each of them. This method includes three main steps: <strong>(1) Adjust the limits</strong>, <strong>(2) Adjust the breaks</strong>, and <strong>(3) Adjust the labels</strong>.</p>
+<p><strong>Step (1) - Adjust the limits</strong></p>
+<p>We first start by extracting the current axis limits of each facet panel:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Get a vector of the levels of the facet variable </span>
+<span class='va'>var_names</span> <span class='op'>&lt;-</span> <span class='va'>air_df</span><span class='op'>$</span><span class='va'>Env_vars</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'>map</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span><span class='fu'>ggplot_build</span><span class='op'>(</span><span class='va'>P_air</span><span class='op'>)</span><span class='op'>$</span><span class='va'>layout</span><span class='op'>$</span><span class='va'>panel_scales_y</span><span class='op'>[[</span><span class='va'>x</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>range</span><span class='op'>$</span><span class='va'>range</span><span class='op'>}</span><span class='op'>)</span>
+<span class='co'># Extract the limits of each facet panel </span>
+<span class='va'>facet_lims</span> <span class='op'>&lt;-</span> <span class='fu'>map</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>lims</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot_build</span><span class='op'>(</span><span class='va'>P_air</span><span class='op'>)</span><span class='op'>$</span><span class='va'>layout</span><span class='op'>$</span><span class='va'>panel_scales_y</span><span class='op'>[[</span><span class='va'>x</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>range</span><span class='op'>$</span><span class='va'>range</span>
+  <span class='fu'>set_names</span><span class='op'>(</span><span class='va'>lims</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Lower"</span>, <span class='st'>"Upper"</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='op'>}</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>`names&lt;-`</span><span class='op'>(</span><span class='va'>var_names</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>bind_rows</span><span class='op'>(</span>.id <span class='op'>=</span> <span class='st'>"Facet"</span><span class='op'>)</span>
+
+<span class='va'>facet_lims</span>
 </code></pre>
 </div>
-<pre><code>[[1]]
-[1]   1 168
-
-[[2]]
-[1]   7 334
-
-[[3]]
-[1] 56 97
-
-[[4]]
-[1]  1.7 20.7</code></pre>
+<pre><code># A tibble: 4 x 3
+  Facet   Lower Upper
+  &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
+1 Ozone     1   168  
+2 Solar.R   7   334  
+3 Temp     56    97  
+4 Wind      1.7  20.7</code></pre>
+</div>
+<p><br></p>
+<p>Next, we will create a function using a series of <code>if else</code> statements to “gradually” identify the individual facet panels based on their current limits, and then set the new limits for each of them. This function will later be passed to the <code>breaks =</code> argument in <code>scale_y_continuous()</code> to draw new limits. (I know this is somewhat abstract; see the below code to get a better idea of how this works!)</p>
+<p>Also note that in the <code>if else</code> statements, you can pick any number you like in the logical condition parts, as long as it can distinguish among the facets. For example, you can use <em>max(x) &lt; 50</em> or <em>max(x) &lt; 30</em> to identify the “Wind” panel. Though, I would suggest using the midpoint between the upper limits of the two “closest” panels to avoid potential errors (e.g., <em>max(x) &lt; 50</em> would be better than <em>max(x) &lt; 30</em> for distinguishing between “Wind” and “Temp” panel).</p>
+<div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>limits_fun</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>21</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>25</span><span class='op'>)</span>
-  <span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>100</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>100</span><span class='op'>)</span> 
-  <span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>170</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>200</span><span class='op'>)</span> 
-  <span class='op'>}</span> <span class='kw'>else</span> <span class='op'>{</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>320</span><span class='op'>)</span>
+  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>50</span><span class='op'>)</span> <span class='op'>{</span>  <span class='co'># This will identify the current "Wind" panel</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>30</span><span class='op'>)</span>  <span class='co'># New limits for the "Wind" panel</span>
+  <span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>150</span><span class='op'>)</span> <span class='op'>{</span>  <span class='co'># This will identify the current "Temp" panel</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>40</span>, <span class='fl'>120</span><span class='op'>)</span>  <span class='co'># New limits for the "Temp" panel</span>
+  <span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>250</span><span class='op'>)</span> <span class='op'>{</span>  <span class='co'># This will identify the current "Ozone" panel</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>200</span><span class='op'>)</span>  <span class='co'># New limits for the "Ozone" panel</span>
+  <span class='op'>}</span> <span class='kw'>else</span> <span class='op'>{</span>  <span class='co'># This will identify the current "Solar.R" panel (the "leftover" panel)</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>350</span><span class='op'>)</span>  <span class='co'># New limits for the "Solar.R" panel</span>
   <span class='op'>}</span>
 <span class='op'>}</span>
 
-<span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>air_df</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Day</span>, y <span class='op'>=</span> <span class='va'>Values</span>, color <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>Month</span><span class='op'>)</span>, group <span class='op'>=</span> <span class='va'>Month</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
-  <span class='fu'>geom_point</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
-  <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Day of month"</span>, y <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>scale_color_brewer</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"May"</span>, <span class='st'>"June"</span>, <span class='st'>"July"</span>, <span class='st'>"August"</span>, <span class='st'>"September"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>scale_y_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='va'>limits_fun</span>,
-                     expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>facet_wrap</span><span class='op'>(</span><span class='op'>~</span><span class='va'>Env_vars</span>, 
-             nrow <span class='op'>=</span> <span class='fl'>2</span>, 
-             scales <span class='op'>=</span> <span class='st'>"free_y"</span>,
-             strip.position <span class='op'>=</span> <span class='st'>"left"</span>, 
-             labeller <span class='op'>=</span> <span class='fu'>as_labeller</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>Temp <span class='op'>=</span> <span class='st'>"Temperature (°F)"</span>, 
-                                      Solar.R <span class='op'>=</span> <span class='st'>"Solar radiace (lang)"</span>,
-                                      Wind <span class='op'>=</span> <span class='st'>"Wind (mph)"</span>,
-                                      Ozone <span class='op'>=</span> <span class='st'>"Ozone (ppb)"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
-  <span class='fu'>theme</span><span class='op'>(</span>strip.background <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
-        strip.placement <span class='op'>=</span> <span class='st'>"outside"</span>,
-        legend.position <span class='op'>=</span> <span class='st'>"top"</span>,
-        legend.title <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</code></pre>
-</div>
-<p><img src="post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-2-1.png" width="85%" /></p>
-</div>
-<p><strong>Step 2. Change the breaks</strong></p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-
-<span class='va'>breaks_fun</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>25</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>12</span>, <span class='fl'>25</span><span class='op'>)</span>
-  <span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>100</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>30</span>, <span class='fl'>100</span><span class='op'>)</span> 
-  <span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>200</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>150</span>, <span class='fl'>200</span><span class='op'>)</span> 
-  <span class='op'>}</span> <span class='kw'>else</span> <span class='op'>{</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>100</span>, <span class='fl'>200</span>, <span class='fl'>320</span><span class='op'>)</span>
-  <span class='op'>}</span>
-<span class='op'>}</span>
-
-
-<span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>air_df</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Day</span>, y <span class='op'>=</span> <span class='va'>Values</span>, color <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>Month</span><span class='op'>)</span>, group <span class='op'>=</span> <span class='va'>Month</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
-  <span class='fu'>geom_point</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
-  <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Day of month"</span>, y <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>scale_color_brewer</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"May"</span>, <span class='st'>"June"</span>, <span class='st'>"July"</span>, <span class='st'>"August"</span>, <span class='st'>"September"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>scale_y_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='va'>limits_fun</span>,
-                     breaks <span class='op'>=</span> <span class='va'>breaks_fun</span>,
-                     expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>facet_wrap</span><span class='op'>(</span><span class='op'>~</span><span class='va'>Env_vars</span>, 
-             nrow <span class='op'>=</span> <span class='fl'>2</span>, 
-             scales <span class='op'>=</span> <span class='st'>"free_y"</span>,
-             strip.position <span class='op'>=</span> <span class='st'>"left"</span>, 
-             labeller <span class='op'>=</span> <span class='fu'>as_labeller</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>Temp <span class='op'>=</span> <span class='st'>"Temperature (°F)"</span>, 
-                                      Solar.R <span class='op'>=</span> <span class='st'>"Solar radiace (lang)"</span>,
-                                      Wind <span class='op'>=</span> <span class='st'>"Wind (mph)"</span>,
-                                      Ozone <span class='op'>=</span> <span class='st'>"Ozone (ppb)"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
-  <span class='fu'>theme</span><span class='op'>(</span>strip.background <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
-        strip.placement <span class='op'>=</span> <span class='st'>"outside"</span>,
-        legend.position <span class='op'>=</span> <span class='st'>"top"</span>,
-        legend.title <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>P_air</span> <span class='op'>+</span> <span class='fu'>scale_y_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='va'>limits_fun</span><span class='op'>)</span>
 </code></pre>
 </div>
 <p><img src="post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-3-1.png" width="85%" /></p>
 </div>
-<p><strong>Step 3. Change the labels</strong></p>
+<p>We have changed the axis limits, and now we will proceed to our second step: change the breaks.</p>
+<p><strong>Step 2. Change the breaks</strong></p>
+<p>Similar to what we’ve done in the first step, we will create another function, again using a series of <code>if else</code> statements, to “gradually” identify the individual facet panels based on their current tick breaks, and then set the new breaks for each of them.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-
-<span class='va'>labels_fun</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>21</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>25</span><span class='op'>)</span>
-  <span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>100</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>100</span><span class='op'>)</span> 
-  <span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>170</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>200</span><span class='op'>)</span> 
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>breaks_fun</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>50</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>30</span>, <span class='fl'>5</span><span class='op'>)</span>  <span class='co'># New tick breaks for the "Wind" panel</span>
+  <span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>150</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>40</span>, <span class='fl'>120</span>, <span class='fl'>20</span><span class='op'>)</span>  <span class='co'># New tick breaks for the "Temp" panel</span>
+  <span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>250</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>200</span>, <span class='fl'>40</span><span class='op'>)</span>  <span class='co'># New tick breaks for the "Ozone" panel</span>
   <span class='op'>}</span> <span class='kw'>else</span> <span class='op'>{</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>320</span><span class='op'>)</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>350</span>, <span class='fl'>50</span><span class='op'>)</span>  <span class='co'># New tick breaks for the "Solar.R" panel</span>
   <span class='op'>}</span>
 <span class='op'>}</span>
 
-
-<span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>air_df</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Day</span>, y <span class='op'>=</span> <span class='va'>Values</span>, color <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>Month</span><span class='op'>)</span>, group <span class='op'>=</span> <span class='va'>Month</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
-  <span class='fu'>geom_point</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
-  <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Day of month"</span>, y <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>scale_color_brewer</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"May"</span>, <span class='st'>"June"</span>, <span class='st'>"July"</span>, <span class='st'>"August"</span>, <span class='st'>"September"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>scale_y_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='va'>limits_fun</span>,
-                     breaks <span class='op'>=</span> <span class='va'>breaks_fun</span>,
-                     expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>facet_wrap</span><span class='op'>(</span><span class='op'>~</span><span class='va'>Env_vars</span>, 
-             nrow <span class='op'>=</span> <span class='fl'>2</span>, 
-             scales <span class='op'>=</span> <span class='st'>"free_y"</span>,
-             strip.position <span class='op'>=</span> <span class='st'>"left"</span>, 
-             labeller <span class='op'>=</span> <span class='fu'>as_labeller</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>Temp <span class='op'>=</span> <span class='st'>"Temperature (°F)"</span>, 
-                                      Solar.R <span class='op'>=</span> <span class='st'>"Solar radiace (lang)"</span>,
-                                      Wind <span class='op'>=</span> <span class='st'>"Wind (mph)"</span>,
-                                      Ozone <span class='op'>=</span> <span class='st'>"Ozone (ppb)"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
-  <span class='fu'>theme</span><span class='op'>(</span>strip.background <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
-        strip.placement <span class='op'>=</span> <span class='st'>"outside"</span>,
-        legend.position <span class='op'>=</span> <span class='st'>"top"</span>,
-        legend.title <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>P_air</span> <span class='op'>+</span> <span class='fu'>scale_y_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='va'>limits_fun</span>,
+                           breaks <span class='op'>=</span> <span class='va'>breaks_fun</span><span class='op'>)</span>
 </code></pre>
 </div>
 <p><img src="post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-4-1.png" width="85%" /></p>
 </div>
-<p>This method is a bit tedious to be honest, but it gets you the idea and really get you know how ggplot deal with the axis scales under the hood. Now let’s take a look at the second method: quick fix using extension package.</p>
+<p><strong>Step 3. Change the labels</strong></p>
+<p>This step is optional; if you’ve already set the new breaks, then the tick labels should automatically get set too. However, in some cases, you might want change the labels, and you can do it using the same principle as you used in the first two steps. Just make sure the numbers of labels you supply to each facet should match the numbers of tick breaks in that facet. (Here I’ll show you how to set new tick labels but just for demonstration purpose, and so the tick labels might not make any sense!)</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>labels_fun</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>50</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span><span class='op'>]</span>  <span class='co'># New tick labels for the "Wind" panel</span>
+  <span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>150</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>letters</span><span class='op'>[</span><span class='fl'>8</span><span class='op'>:</span><span class='fl'>12</span><span class='op'>]</span>  <span class='co'># New tick labels for the "Temp" panel</span>
+  <span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>250</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>letters</span><span class='op'>[</span><span class='fl'>13</span><span class='op'>:</span><span class='fl'>18</span><span class='op'>]</span>  <span class='co'># New tick labels for the "Ozone" panel</span>
+  <span class='op'>}</span> <span class='kw'>else</span> <span class='op'>{</span>
+    <span class='va'>letters</span><span class='op'>[</span><span class='fl'>19</span><span class='op'>:</span><span class='fl'>26</span><span class='op'>]</span>  <span class='co'># New tick labels for the "Solar.R" panel</span>
+  <span class='op'>}</span>
+<span class='op'>}</span>
+
+<span class='va'>P_air</span> <span class='op'>+</span> <span class='fu'>scale_y_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='va'>limits_fun</span>,
+                           breaks <span class='op'>=</span> <span class='va'>breaks_fun</span>,
+                           labels <span class='op'>=</span> <span class='va'>labels_fun</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-5-1.png" width="85%" /></p>
+</div>
+<p>This “manual” method is a bit tedious to be honest, but it does let you know how ggplot deals with the axis scales under the hood. However, who on earth would have the extra time to do this kind of manual adjustments? This is when the second method comes in handy!</p>
 <h3 id="quick-fix">(2) Quick fix</h3>
-<p>The package <a href="https://teunbrand.github.io/ggh4x/"><code>ggh4x</code></a> has many nice functions for working with facets. You can install it from GitHub.</p>
-<p>To set the individual scales, use <code>facetted_pos_scales()</code> and specify the name of the individual panel as well as the scale function to be applied.</p>
+<p>The package <a href="https://teunbrand.github.io/ggh4x/"><code>ggh4x</code></a> has many nice functions for working with facets (you can install it from GitHub). Among these, the function <code>facetted_pos_scales()</code> allows users to directly set the scale arguments for each individual facets by name.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># devtools::install_github("teunbrand/ggh4x")</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/teunbrand/ggh4x'>ggh4x</a></span><span class='op'>)</span>
 
-<span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>air_df</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Day</span>, y <span class='op'>=</span> <span class='va'>Values</span>, color <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>Month</span><span class='op'>)</span>, group <span class='op'>=</span> <span class='va'>Month</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
-  <span class='fu'>geom_point</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
-  <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Day of month"</span>, y <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>scale_color_brewer</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"May"</span>, <span class='st'>"June"</span>, <span class='st'>"July"</span>, <span class='st'>"August"</span>, <span class='st'>"September"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>scale_y_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='va'>limits_fun</span>,
-                     breaks <span class='op'>=</span> <span class='va'>breaks_fun</span>,
-                     expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>facet_wrap</span><span class='op'>(</span><span class='op'>~</span><span class='va'>Env_vars</span>, 
-             nrow <span class='op'>=</span> <span class='fl'>2</span>, 
-             scales <span class='op'>=</span> <span class='st'>"free_y"</span>,
-             strip.position <span class='op'>=</span> <span class='st'>"left"</span>, 
-             labeller <span class='op'>=</span> <span class='fu'>as_labeller</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>Temp <span class='op'>=</span> <span class='st'>"Temperature (°F)"</span>, 
-                                      Solar.R <span class='op'>=</span> <span class='st'>"Solar radiace (lang)"</span>,
-                                      Wind <span class='op'>=</span> <span class='st'>"Wind (mph)"</span>,
-                                      Ozone <span class='op'>=</span> <span class='st'>"Ozone (ppb)"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
-  <span class='fu'>theme</span><span class='op'>(</span>strip.background <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
-        strip.placement <span class='op'>=</span> <span class='st'>"outside"</span>,
-        legend.position <span class='op'>=</span> <span class='st'>"top"</span>,
-        legend.title <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
-  <span class='fu'><a href='https://rdrr.io/pkg/ggh4x/man/facetted_pos_scales.html'>facetted_pos_scales</a></span><span class='op'>(</span>
-    y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-      <span class='va'>Env_vars</span> <span class='op'>==</span> <span class='st'>"Ozone"</span> <span class='op'>~</span> <span class='fu'>scale_y_continuous</span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>7</span><span class='op'>)</span><span class='op'>)</span>,
-      <span class='va'>Env_vars</span> <span class='op'>==</span> <span class='st'>"Temp"</span> <span class='op'>~</span> <span class='fu'>scale_y_reverse</span><span class='op'>(</span><span class='op'>)</span>
-    <span class='op'>)</span>
-  <span class='op'>)</span>
+<span class='va'>P_air</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/pkg/ggh4x/man/facetted_pos_scales.html'>facetted_pos_scales</a></span><span class='op'>(</span>
+  y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>Env_vars</span> <span class='op'>==</span> <span class='st'>"Ozone"</span> <span class='op'>~</span> <span class='fu'>scale_y_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>200</span><span class='op'>)</span>, 
+                                                    breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>200</span>, <span class='fl'>40</span><span class='op'>)</span>,
+                                                    labels <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fl'>13</span><span class='op'>:</span><span class='fl'>18</span><span class='op'>]</span><span class='op'>)</span>,
+           <span class='va'>Env_vars</span> <span class='op'>==</span> <span class='st'>"Solar.R"</span> <span class='op'>~</span> <span class='fu'>scale_y_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>350</span><span class='op'>)</span>,
+                                                      breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>350</span>, <span class='fl'>50</span><span class='op'>)</span>,
+                                                      labels <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fl'>19</span><span class='op'>:</span><span class='fl'>26</span><span class='op'>]</span><span class='op'>)</span>,
+           <span class='va'>Env_vars</span> <span class='op'>==</span> <span class='st'>"Temp"</span> <span class='op'>~</span> <span class='fu'>scale_y_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>40</span>, <span class='fl'>120</span><span class='op'>)</span>, 
+                                                   breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>40</span>, <span class='fl'>120</span>, <span class='fl'>20</span><span class='op'>)</span>,
+                                                   labels <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fl'>8</span><span class='op'>:</span><span class='fl'>12</span><span class='op'>]</span><span class='op'>)</span>,
+           <span class='va'>Env_vars</span> <span class='op'>==</span> <span class='st'>"Wind"</span> <span class='op'>~</span> <span class='fu'>scale_y_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>30</span><span class='op'>)</span>, 
+                                                   breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>30</span>, <span class='fl'>5</span><span class='op'>)</span>,
+                                                   labels <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
+      <span class='op'>)</span>
 </code></pre>
 </div>
-<p><img src="post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-5-1.png" width="85%" /></p>
+<p><img src="post-7-customize-the-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-6-1.png" width="85%" /></p>
 </div>
-<p>Done! Easy-peasy!</p>
+<p>Done! Exact output. Easy-peasy!</p>
 <h2 id="summary">Summary</h2>
-<p>In this post, we have walked through two ways to customize the axis scales for individual ggplot facets. Facets are quite handy, but sometimes also difficult to work with, and it really takes time to work around. Hopefully, there are many extensions and the people in the R community have come up with many solutions to various kind of issues.</p>
+<p>In this post, we have walked through two ways to customize the axis scales for individual ggplot facets. Facets are really useful, but sometimes they’re also difficult to work with, and it really takes time to get your head around. Fortunately, there are many extension packages designed to make ggplots more user-friendly and versatile, and people in the R community have also been discussing all kinds of ggplot-related issues. Simply search on the net and you’ll find the solutions to your problems out there!</p>
 <p>Hope this post helps and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
