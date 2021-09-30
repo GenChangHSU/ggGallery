@@ -86,7 +86,13 @@ knitr::opts_chunk$set(message = F,
 
 In this post, we are going to have a fun one: pokemon phylogeny!
 
+My favoratie computer game back to my childhood
 
+Currently around 860 ish species and belonging to 18 different type or functional groups
+
+Previous stidies have done a phyloginey and this one would be a simple version of it.
+
+EAch pok has their stats, including speed, attack. And pok in each type may have different properties nad characteristics, and so it would be interesign to do some clustering analysis to see their relatonship, perhaps gain some insights into their evolutionay history.
 
 
 ## Background
@@ -253,6 +259,10 @@ A few interesting points:
 We get the pokemon stats data and organize and perform hierarchical cluster analysis, and visualize the clustering result using ggdendro and dendextend, nd finally add some pokemon images to the leaves.
 
 This is a rather fun post, but in fact you might have seen that we used lots of different methods and techniques to arrive at our final product. This is the beauty of a data science project: integrative approach!
+
+This posts, we did some simple data analysis workdlow: from data colleciton adn import, data tidying and organizzaion, and modeling and visualzation, and finally data communication, which is the post you are reading right now! 
+Perhaps this is the most important one! 
+
 
 Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any!
 
