@@ -7,7 +7,17 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 11 Sep 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 01 Oct 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #8. Pokemon phylogeny with ggdendro</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2021-10-01-post-8-pokemon-phylogeny-with-ggdendro</link>
+      <description>Create a Pokemon phylogenetic tree in ggplot with the extension package ggdendro.</description>
+      <category>2021</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2021-10-01-post-8-pokemon-phylogeny-with-ggdendro</guid>
+      <pubDate>Fri, 01 Oct 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-10-01-post-8-pokemon-phylogeny-with-ggdendro/../../homepage_images/Post8.png" medium="image" type="image/png" width="960" height="960"/>
+    </item>
     <item>
       <title>Post #7. Customize the axis scales for individual ggplot facets</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
