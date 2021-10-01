@@ -88,7 +88,7 @@ Different from previous posts, this time we are going to have a fun one: **Pokem
 ## Background
 Pokemon is arguably one of the most popular computer games around the world. Not only does it inspire our imagination and creativity, but it also reflects our understanding and passion for nature. In fact, Pokemon was one of my favorite games back in my childhood days: I really enjoyed the sheer joy and excitement of collecting, training, and battling.   
 
-Pokemon represents a fantasy world teeming with a high diversity of amazing creatures distributed over diverse landscapes. There are currently 900ish Pokemon species as of 2021, belonging to 18 different types/functional groups. They roam in the oceans, thrive in the mountains, soar in the sky, dwell in the ground, and even live with humans in the urban areas!
+Pokemon represents a fantasy world teeming with a high diversity of amazing creatures distributed over diverse landscapes. There are currently 900ish Pokemon species as of 2021, belonging to 18 different types/functional groups. They roam around the oceans, wander through the mountains, soar in the sky, dwell under the ground, and even live with humans in the urban areas!
 
 Each Pokemon species is associated with a set of stats pertaining to their ability and performance, including **HP (Hit Point)**, **Attack**, **Defense**, **Special Attack**, **Special defense**, and **Speed**. The values of these stats may vary among species of different types, and so it would be quite interesting to do some cluster analysis to explore the relationships among Pokemon types in terms of their stats.
 
