@@ -7,7 +7,16 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Fri, 01 Oct 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 19 Dec 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #9. Arrange multiple ggplots</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots</link>
+      <description>Come and learn two ways to arrange multiple ggplots on a same page.</description>
+      <category>2021</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots</guid>
+      <pubDate>Sun, 19 Dec 2021 00:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>Post #8. Pokemon phylogeny with ggdendro</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
