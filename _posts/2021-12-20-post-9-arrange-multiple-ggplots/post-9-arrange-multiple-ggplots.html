@@ -56,7 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
 code span.cf { color: #007ba5; } /* ControlFlow */
@@ -77,7 +77,7 @@ code span.kw { color: #007ba5; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
 code span.ot { color: #007ba5; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"NULL"}
+  {"type":"character","attributes":{},"value":["post-9-arrange-multiple-ggplots_files/anchor-4.2.2/anchor.min.js","post-9-arrange-multiple-ggplots_files/bowser-1.9.3/bowser.min.js","post-9-arrange-multiple-ggplots_files/distill-2.2.21/template.v2.js","post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-1-1.png","post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-1-2.png","post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-1-3.png","post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-2-1.png","post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-3-1.png","post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-4-1.png","post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-5-1.png","post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-5-2.png","post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-6-1.png","post-9-arrange-multiple-ggplots_files/header-attrs-2.10/header-attrs.js","post-9-arrange-multiple-ggplots_files/header-attrs-2.11/header-attrs.js","post-9-arrange-multiple-ggplots_files/jquery-1.11.3/jquery.min.js","post-9-arrange-multiple-ggplots_files/jquery-3.6.0/jquery-3.6.0.js","post-9-arrange-multiple-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.js","post-9-arrange-multiple-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.map","post-9-arrange-multiple-ggplots_files/popper-2.6.0/popper.min.js","post-9-arrange-multiple-ggplots_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-9-arrange-multiple-ggplots_files/tippy-6.2.7/tippy-light-border.css","post-9-arrange-multiple-ggplots_files/tippy-6.2.7/tippy.css","post-9-arrange-multiple-ggplots_files/tippy-6.2.7/tippy.umd.min.js","post-9-arrange-multiple-ggplots_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1263,7 +1263,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          return "<p>" + $('#ref-' + ref).html() + "</p>";
+        }).join("\n");
         window.tippy(this, {
           allowHTML: true,
           content: refHtml,
@@ -1434,8 +1437,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
-  <script src="post-9-arrange-multiple-ggplots_files/header-attrs-2.10/header-attrs.js"></script>
-  <script src="post-9-arrange-multiple-ggplots_files/jquery-1.11.3/jquery.min.js"></script>
+  <script src="post-9-arrange-multiple-ggplots_files/header-attrs-2.11/header-attrs.js"></script>
+  <script src="post-9-arrange-multiple-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <script src="post-9-arrange-multiple-ggplots_files/popper-2.6.0/popper.min.js"></script>
   <link href="post-9-arrange-multiple-ggplots_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="post-9-arrange-multiple-ggplots_files/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -1455,7 +1458,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #9. Arrange multiple ggplots","description":"Come and learn two ways to arrange multiple ggplots on a same page.","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-12-20T00:00:00.000+08:00","citationText":"Hsu, 2021"}
+{"title":"Post #9. Arrange multiple ggplots","description":"Come and learn two ways to arrange multiple ggplots on a same page.","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-12-20T00:00:00.000-08:00","citationText":"Hsu, 2021"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1541,13 +1544,155 @@ div.l-body {
 
 </style>
 <!-- Start of the article -->
+<p>Feel excited to re-blog after taking a one-and-a-half months break. Quite shocked at my rusty writing skills. I think I really need to brush up a bit! So this time we will just do a simple post as a warm-up.</p>
 <h2 id="introduction">Introduction</h2>
-<h2 id="method-1.">Method 1.</h2>
-<p>ggarrange basic layout panel labels annotate figure alignment</p>
+<p>Sometimes we have a set of related plots and we would like to arrange them on a same page or as a single graphic. Instead of doing this manually (e.g., using MS PowerPoint), we can actually achieve the job in R. This not only streamlines the figure generation process but also makes it fully reproducible so that others can get the exact figure as yours after running your code.</p>
+<p>In this post, I will show you two methods for layout of multiple ggplots: (1) using the function <code>ggarrange()</code> in the package <a href="https://rpkgs.datanovia.com/ggpubr/index.html">ggpubr</a>, and (2) using the function <code>draw_plot()</code> and its families in the package <a href="https://wilkelab.org/cowplot/index.html">cowplot</a>. Let’s jump right in!</p>
+<h2 id="method-1.-using-ggarrange-in-the-package-ggpubr">Method 1. Using <code>ggarrange()</code> in the package <code>ggpubr</code></h2>
+<p><code>ggarrange()</code> is a convenient function for laying out multiple plots on a same device. It also allows the users to make some adjustments, for example, adding panel labels and aligning the plots. The package also offers another function for adding text annotations to the figure. We’ll go through these one by one in the following.</p>
+<p>To begin with, let’s create some plots using the famous <code>iris</code> data set:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+
+<span class='co'>### 1. A scatterplot of Sepal.Length vs. Sepal.Width</span>
+<span class='va'>P1</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>iris</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Sepal.Length</span>, y <span class='op'>=</span> <span class='va'>Sepal.Width</span>, color <span class='op'>=</span> <span class='va'>Species</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>geom_point</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>scale_color_brewer</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, name <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>theme_classic</span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>14</span><span class='op'>)</span>
+
+<span class='co'>### 2. Density plot of Sepal.Length</span>
+<span class='va'>P2</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>iris</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Sepal.Length</span>, color <span class='op'>=</span> <span class='va'>Species</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>geom_density</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>..scaled..</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>scale_color_brewer</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, name <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>theme_classic</span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>14</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>scale_y_continuous</span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0.2</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'>### 3. Density plot of Sepal.Width</span>
+<span class='va'>P3</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>iris</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Sepal.Width</span>, color <span class='op'>=</span> <span class='va'>Species</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>geom_density</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>..scaled..</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>scale_color_brewer</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, name <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>theme_classic</span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>14</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>scale_y_continuous</span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0.2</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>coord_flip</span><span class='op'>(</span><span class='op'>)</span>
+  
+<span class='va'>P1</span>
+<span class='va'>P2</span>
+<span class='va'>P3</span>
+</code></pre>
+</div>
+<p><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-1-1.png" width="45%" /><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-1-2.png" width="45%" /><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-1-3.png" width="45%" /></p>
+</div>
+<h3 id="basic-layout">1. Basic layout</h3>
+<p>Now, say, you would like to place the density plots at the top (for Sepal.Length) and right (for Sepal.Width) of the scatterplot to show their distributions. We can do this by passing the above ggplot objects (P1, P2 and P3) into <code>ggarrange()</code> and specify the layout designs (the numbers of rows and columns along with their widths and heights).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rpkgs.datanovia.com/ggpubr/'>ggpubr</a></span><span class='op'>)</span>
+
+<span class='va'>P_arrg_1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html'>ggarrange</a></span><span class='op'>(</span><span class='va'>P2</span> <span class='op'>+</span> <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>""</span>, y <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>,  <span class='co'># remove the axis labels</span>
+                      <span class='cn'>NULL</span>,  <span class='co'># you can add an empty plot using "NULL" to create a white space in the figure</span>
+                      <span class='va'>P1</span>, 
+                      <span class='va'>P3</span> <span class='op'>+</span> <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>""</span>, y <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>, 
+                      nrow <span class='op'>=</span> <span class='fl'>2</span>, 
+                      ncol <span class='op'>=</span> <span class='fl'>2</span>,
+                      widths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.65</span>, <span class='fl'>0.35</span><span class='op'>)</span>,  <span class='co'># the widths of the two columns</span>
+                      heights <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.35</span>, <span class='fl'>0.65</span><span class='op'>)</span>,  <span class='co'># the heights of the two rows</span>
+                      common.legend <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>  <span class='co'># use the same legend for all plots</span>
+
+<span class='va'>P_arrg_1</span>
+</code></pre>
+</div>
+<p><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /></p>
+</div>
+<h3 id="panel-labels">2. Panel labels</h3>
+<p>After getting our basic layout done, we can then add some panel labels to the plots and adjust their x and y positions:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P_arrg_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html'>ggarrange</a></span><span class='op'>(</span><span class='va'>P2</span> <span class='op'>+</span> <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>""</span>, y <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>,  
+                      <span class='cn'>NULL</span>,
+                      <span class='va'>P1</span>, 
+                      <span class='va'>P3</span> <span class='op'>+</span> <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>""</span>, y <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>, 
+                      nrow <span class='op'>=</span> <span class='fl'>2</span>, 
+                      ncol <span class='op'>=</span> <span class='fl'>2</span>,
+                      widths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.65</span>, <span class='fl'>0.35</span><span class='op'>)</span>,  
+                      heights <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.35</span>, <span class='fl'>0.65</span><span class='op'>)</span>,  
+                      common.legend <span class='op'>=</span> <span class='cn'>T</span>,
+                      labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"(a)"</span>, <span class='st'>""</span>, <span class='st'>"(b)"</span>, <span class='st'>"(c)"</span><span class='op'>)</span>,  <span class='co'># the panel labels for each plot (also an empty string for the "NULL" plot)</span>
+                      label.x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,  <span class='co'># the x positions of the labels</span>
+                      label.y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1.1</span>, <span class='fl'>1.1</span>, <span class='fl'>1.1</span>, <span class='fl'>1.1</span><span class='op'>)</span><span class='op'>)</span>  <span class='co'># the y positions of the labels</span>
+
+<span class='va'>P_arrg_2</span>
+</code></pre>
+</div>
+<p><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /></p>
+</div>
+<h3 id="text-annotations">3. Text annotations</h3>
+<p>Sometimes we might want to add some text/labels to the figure. <code>ggpubr</code> provides a handy function <code>annotate_figure()</code> for this: simply create a <code>grob</code> object using <code>text_grob()</code> (you can also specify the x and y positions of the text as well as its horizontal and vertical adjustments) and pass it to the function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P_arrg_3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/annotate_figure.html'>annotate_figure</a></span><span class='op'>(</span><span class='va'>P_arrg_2</span>,
+                            top <span class='op'>=</span> <span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/text_grob.html'>text_grob</a></span><span class='op'>(</span><span class='st'>"Visualizing Iris Data"</span>, 
+                                            color <span class='op'>=</span> <span class='st'>"blue"</span>, 
+                                            face <span class='op'>=</span> <span class='st'>"bold.italic"</span>, 
+                                            size <span class='op'>=</span> <span class='fl'>14</span>, 
+                                            x <span class='op'>=</span> <span class='fl'>0.825</span>, 
+                                            y <span class='op'>=</span> <span class='fl'>1</span>, 
+                                            vjust <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>P_arrg_3</span>
+</code></pre>
+</div>
+<p><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /></p>
+</div>
+<h3 id="plot-alignment">4. Plot alignment</h3>
+<p>Another nice functionality in <code>ggarrange()</code> is that it can automatically align the plot panels. This is particularly useful when the plots have different margin sizes (e.g., due to different label lengths). Let’s take a look at an example:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'>### A scatterplot of Sepal.Length vs. Sepal.Width</span>
+<span class='va'>P4</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>iris</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Sepal.Length</span>, y <span class='op'>=</span> <span class='va'>Sepal.Width</span>, color <span class='op'>=</span> <span class='va'>Species</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>geom_point</span><span class='op'>(</span>show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>scale_color_brewer</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, name <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>theme_classic</span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>14</span><span class='op'>)</span>
+
+<span class='co'>### Density plot of Sepal.Length</span>
+<span class='va'>P5</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>iris</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Sepal.Length</span>, color <span class='op'>=</span> <span class='va'>Species</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>geom_density</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>..scaled..</span><span class='op'>)</span>, show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>scale_color_brewer</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, name <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='cn'>NULL</span>, y <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_classic</span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>14</span><span class='op'>)</span> 
+
+<span class='co'>### The y-axes of the two plots are not aligned by default</span>
+<span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html'>ggarrange</a></span><span class='op'>(</span><span class='va'>P5</span>, 
+          <span class='va'>P4</span>,
+          nrow <span class='op'>=</span> <span class='fl'>2</span>,
+          heights <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.3</span>, <span class='fl'>0.7</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-5-1.png" width="50%" style="display: block; margin: auto;" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'>### The y-axes of the two plots are now aligned</span>
+<span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html'>ggarrange</a></span><span class='op'>(</span><span class='va'>P5</span>, 
+          <span class='va'>P4</span>,
+          nrow <span class='op'>=</span> <span class='fl'>2</span>,
+          heights <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.3</span>, <span class='fl'>0.7</span><span class='op'>)</span>,
+          align <span class='op'>=</span> <span class='st'>"v"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-6-1.png" width="50%" style="display: block; margin: auto;" /></p>
+</div>
 <h2 id="method-2.">Method 2.</h2>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
 <p>cowplot drawplot drawtext drawgrob drawimage</p>
 <p>Add any thing to the plot window to anywhere as you wish</p>
 <h2 id="summary">Summary</h2>
+<p>To recap, we</p>
+<p>The first method, <code>ggarrange()</code> is . So if you do not have complex layout, this is perhaps the go-to method</p>
+<p>The second method, <code>draw_plot()</code>, allows you to arrange any plots at any positions with any size. This is more flexible, but of course it might take a while to tweak the plots. So save this method for the time when you need to create a complex multiple layout plot.</p>
+<p>The most important thing is to have an idea of what your figure should look like. Perhaps draw it down on a paper. After you get an idea, yuo can then proceed and make the individual plots, and design the layout, and finally tweak the figure and do some additional decorations.</p>
 <p>Hope you enjoy the reading and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
