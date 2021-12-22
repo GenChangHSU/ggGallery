@@ -12,7 +12,325 @@
       <title>Post #9. Arrange multiple ggplots</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
       <link>https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots</link>
-      <description>Come and learn two ways to arrange multiple ggplots on a same page.</description>
+      <description>
+
+
+&lt;!-- Webpage style --&gt;
+&lt;style&gt;
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+&lt;/style&gt;
+&lt;!-- Start of the article --&gt;
+&lt;p&gt;Feel excited to re-blog after taking a one-and-a-half months break. Quite shocked at my rusty writing skills. I think I really need to brush up a bit! So this time, we will do a simple post as a warm-up.&lt;/p&gt;
+&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Sometimes we have a set of related plots and we would like to arrange them on a same page or as a single graphic. Instead of doing this manually (e.g., using MS PowerPoint), we can actually do it in R. This not only streamlines the figure generation process, but also makes it fully reproducible so that others can get the exact figure as yours after running your code.&lt;/p&gt;
+&lt;p&gt;In this post, I will show you two methods for laying out multiple ggplots: (1) using the function &lt;code&gt;ggarrange()&lt;/code&gt; in the package &lt;a href="https://rpkgs.datanovia.com/ggpubr/index.html"&gt;ggpubr&lt;/a&gt;, and (2) using the function &lt;code&gt;draw_plot()&lt;/code&gt; and its families in the package &lt;a href="https://wilkelab.org/cowplot/index.html"&gt;cowplot&lt;/a&gt;. Let’s jump right in!&lt;/p&gt;
+&lt;h2 id="method-1.-using-ggarrange-in-the-package-ggpubr"&gt;Method 1. Using &lt;code&gt;ggarrange()&lt;/code&gt; in the package &lt;code&gt;ggpubr&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;ggarrange()&lt;/code&gt; is a convenient function for arranging multiple ggplots on a same graphic device. It also allows the users to make some adjustments, for example, adding panel labels and aligning the plots by axis. The package also offers a function for adding text annotations to the figure. We’ll go through these one by one in the following.&lt;/p&gt;
+&lt;p&gt;To begin with, let’s create some plots using the famous &lt;code&gt;iris&lt;/code&gt; data set:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+
+### 1. A scatterplot of Sepal.Length vs. Sepal.Width
+P1 &amp;lt;- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
+  geom_point() + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;, name = &amp;quot;&amp;quot;) + 
+  theme_classic(base_size = 14)
+
+### 2. Density plot of Sepal.Length
+P2 &amp;lt;- ggplot(iris, aes(x = Sepal.Length, color = Species)) + 
+  geom_density(aes(y = ..scaled..)) + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;, name = &amp;quot;&amp;quot;) + 
+  theme_classic(base_size = 14) + 
+  scale_y_continuous(breaks = seq(0, 1, 0.2))
+
+### 3. Density plot of Sepal.Width
+P3 &amp;lt;- ggplot(iris, aes(x = Sepal.Width, color = Species)) + 
+  geom_density(aes(y = ..scaled..)) + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;, name = &amp;quot;&amp;quot;) + 
+  theme_classic(base_size = 14) + 
+  scale_y_continuous(breaks = seq(0, 1, 0.2)) +
+  coord_flip()
+  
+P1
+P2
+P3&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-1-1.png" width="45%" /&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-1-2.png" width="45%" /&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-1-3.png" width="45%" /&gt;&lt;/p&gt;
+&lt;h3 id="basic-layout"&gt;1. Basic layout&lt;/h3&gt;
+&lt;p&gt;Now, say, we would like to place the density plots at the top (for Sepal.Length) and right (for Sepal.Width) of the scatterplot to show their distributions. We can do this by passing the above ggplot objects (P1, P2 and P3) into &lt;code&gt;ggarrange()&lt;/code&gt; and specify the layout designs (the numbers of rows and columns along with their widths and heights).&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(ggpubr)
+
+P_arrg_1 &amp;lt;- ggarrange(P2 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;),  # remove the axis labels
+                      NULL,  # you can add an empty plot using &amp;quot;NULL&amp;quot; to create a white space in the graphic device
+                      P1, 
+                      P3 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;), 
+                      nrow = 2,  # split the graphic device into two rows
+                      ncol = 2,  # split the graphic device into two columns
+                      widths = c(0.65, 0.35),  # the widths of the two columns
+                      heights = c(0.35, 0.65),  # the heights of the two rows
+                      common.legend = T)  # use the same legend for all plots
+
+P_arrg_1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="panel-labels"&gt;2. Panel labels&lt;/h3&gt;
+&lt;p&gt;After getting our basic layout done, we can then add panel labels to the plots and adjust their x and y positions (in the range of 0 to 1 relative to each individual plots):&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;P_arrg_2 &amp;lt;- ggarrange(P2 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;),  
+                      NULL,
+                      P1, 
+                      P3 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;), 
+                      nrow = 2, 
+                      ncol = 2,
+                      widths = c(0.65, 0.35),  
+                      heights = c(0.35, 0.65),  
+                      common.legend = T,
+                      labels = c(&amp;quot;(a)&amp;quot;, &amp;quot;&amp;quot;, &amp;quot;(b)&amp;quot;, &amp;quot;(c)&amp;quot;),  # the panel labels for each plot (also an empty string for the &amp;quot;NULL&amp;quot; plot)
+                      label.x = c(0, 0, 0, 0),  # the x positions of the labels
+                      label.y = c(1.1, 1.1, 1.1, 1.1))  # the y positions of the labels
+
+P_arrg_2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="text-annotations"&gt;3. Text annotations&lt;/h3&gt;
+&lt;p&gt;Sometimes we might want to add some text annotations to the figure. &lt;code&gt;ggpubr&lt;/code&gt; provides a handy function &lt;code&gt;annotate_figure()&lt;/code&gt; for this: simply create a &lt;code&gt;grob&lt;/code&gt; object using &lt;code&gt;text_grob()&lt;/code&gt; (in which you can specify the x and y positions of the text as well as its horizontal and vertical adjustments) and pass it to &lt;code&gt;annotate_figure()&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;P_arrg_3 &amp;lt;- annotate_figure(P_arrg_2,
+                            top = text_grob(&amp;quot;Visualizing Iris Data&amp;quot;, 
+                                            color = &amp;quot;blue&amp;quot;, 
+                                            face = &amp;quot;bold.italic&amp;quot;, 
+                                            size = 14, 
+                                            x = 0.825, 
+                                            y = 1, 
+                                            vjust = 10))
+
+P_arrg_3&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="plot-alignment"&gt;4. Plot alignment&lt;/h3&gt;
+&lt;p&gt;Another nice functionality of &lt;code&gt;ggarrange()&lt;/code&gt; is that it can automatically align the plot panels by axis (vertically and/or horizontally). This is particularly useful when the plots have different margin sizes (e.g., due to different label lengths). Let’s take a look at an example:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### A scatterplot of Sepal.Length vs. Sepal.Width
+P4 &amp;lt;- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
+  geom_point(show.legend = F) + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;, name = &amp;quot;&amp;quot;) + 
+  theme_classic(base_size = 14)
+
+### Density plot of Sepal.Length
+P5 &amp;lt;- ggplot(iris, aes(x = Sepal.Length, color = Species)) + 
+  geom_density(aes(y = ..scaled..), show.legend = F) + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;, name = &amp;quot;&amp;quot;) +
+  labs(x = NULL, y = NULL) +
+  theme_classic(base_size = 14) 
+
+### The y-axes of the two plots are not aligned by default
+ggarrange(P5, 
+          P4,
+          nrow = 2,
+          heights = c(0.3, 0.7))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-5-1.png" width="50%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### The y-axes of the two plots are now vertically aligned
+ggarrange(P5, 
+          P4,
+          nrow = 2,
+          heights = c(0.3, 0.7),
+          align = &amp;quot;v&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-6-1.png" width="50%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h2 id="method-2.-using-draw_plot-in-the-package-cowplot"&gt;Method 2. Using &lt;code&gt;draw_plot()&lt;/code&gt; in the package &lt;code&gt;cowplot&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;The package &lt;code&gt;cowplot&lt;/code&gt; provides a family of functions for adding plots/images/text to the graphic device. We will see these nice features shortly in the following. Again, let’s first create some example plots:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+
+### 1. A scatterplot of Sepal.Length vs. Sepal.Width
+P1 &amp;lt;- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
+  geom_point(show.legend = F) + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;, name = &amp;quot;&amp;quot;) + 
+  theme_classic(base_size = 14)
+
+### 2. Density plot of Sepal.Length
+P2 &amp;lt;- ggplot(iris, aes(x = Sepal.Length, color = Species)) + 
+  geom_density(aes(y = ..scaled..)) + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;, name = &amp;quot;&amp;quot;) + 
+  theme_classic(base_size = 14) + 
+  scale_y_continuous(breaks = seq(0, 1, 0.2))
+
+### 3. Density plot of Sepal.Width
+P3 &amp;lt;- ggplot(iris, aes(x = Sepal.Width, color = Species)) + 
+  geom_density(aes(y = ..scaled..), show.legend = F) + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;, name = &amp;quot;&amp;quot;) + 
+  theme_classic(base_size = 14) + 
+  scale_y_continuous(breaks = seq(0, 1, 0.2)) +
+  coord_flip()
+  
+P1
+P2
+P3&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-7-1.png" width="45%" /&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-7-2.png" width="45%" /&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-7-3.png" width="45%" /&gt;&lt;/p&gt;
+&lt;h3 id="basic-layout-1"&gt;1. Basic layout&lt;/h3&gt;
+&lt;p&gt;The first method &lt;code&gt;ggarrange&lt;/code&gt; works by cutting the graphic device into grids of various widths and heights and placing the corresponding plots into those grids. Here, the second method &lt;code&gt;draw_plot()&lt;/code&gt;, is a bit different though. Basically, we first create a drawing canvas (using the function &lt;code&gt;ggdraw()&lt;/code&gt;), which has the x- and y-coordinates of 0 to 1. Next, we use &lt;code&gt;draw_plot()&lt;/code&gt; to add the plots to this canvas by specifying their x and y positions (corresponding to the bottom-left corner of the plots) as well as the widths and heights.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(cowplot)
+
+ggdraw() + 
+  draw_plot(P2 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;), x = 0, y = 0.65, width = 0.925, height = 0.3) + 
+  draw_plot(P1, x = 0, y = 0, width = 0.65, height = 0.65) +
+  draw_plot(P3 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;), x = 0.65, y = 0, width = 0.3, height = 0.65)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-8-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="panel-labels-1"&gt;2. Panel labels&lt;/h3&gt;
+&lt;p&gt;Similarly, we can add panel labels to the figure using the function &lt;code&gt;draw_text()&lt;/code&gt;, with the same principle as &lt;code&gt;draw_plot()&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggdraw() + 
+  draw_plot(P2 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;), x = 0, y = 0.65, width = 0.925, height = 0.3) + 
+  draw_plot(P1, x = 0, y = 0, width = 0.65, height = 0.65) +
+  draw_plot(P3 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;), x = 0.65, y = 0, width = 0.3, height = 0.65) + 
+  draw_text(c(&amp;quot;(a)&amp;quot;, &amp;quot;(b)&amp;quot;, &amp;quot;(c)&amp;quot;), x = c(0.075, 0.075, 0.725), y = c(0.975, 0.675, 0.675)) + 
+  draw_text(&amp;quot;Visualizing Iris Data&amp;quot;, x = 0.5, y = 0.975, color = &amp;quot;blue&amp;quot;, size = 14, fontface = &amp;quot;italic&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-9-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="add-external-images"&gt;3. Add external images&lt;/h3&gt;
+&lt;p&gt;Another cool thing when working with &lt;code&gt;cowplot&lt;/code&gt; is that you can add external images to the graphic device. Use &lt;code&gt;draw_image()&lt;/code&gt; to do this (note that you need to have the package &lt;code&gt;magick&lt;/code&gt; installed beforehand for this function to work):&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;magick&amp;quot;)
+ggdraw() + 
+  draw_plot(P2 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;), x = 0, y = 0.65, width = 0.925, height = 0.3) + 
+  draw_plot(P1, x = 0, y = 0, width = 0.65, height = 0.65) +
+  draw_plot(P3 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;), x = 0.65, y = 0, width = 0.3, height = 0.65) + 
+  draw_text(c(&amp;quot;(a)&amp;quot;, &amp;quot;(b)&amp;quot;, &amp;quot;(c)&amp;quot;), x = c(0.075, 0.075, 0.725), y = c(0.975, 0.675, 0.675)) + 
+  draw_text(&amp;quot;Visualizing Iris Data&amp;quot;, x = 0.5, y = 0.975, color = &amp;quot;blue&amp;quot;, size = 14, fontface = &amp;quot;italic&amp;quot;) +
+  draw_image(&amp;quot;https://archive.ics.uci.edu/ml/assets/MLimages/Large53.jpg&amp;quot;, x = 0.75, y = 0.9, width = 0.1, height = 0.1)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-10-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="insets-and-legends"&gt;4. Insets and legends&lt;/h3&gt;
+&lt;p&gt;We can even do more tricks in the figure, for example, adding inset plots. Additionally, the package has a function called &lt;code&gt;get_legend()&lt;/code&gt;, which allows one to extract the legend from a plot (as a &lt;code&gt;grob&lt;/code&gt; object) for further use. See the example below to get an idea of how they work:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### 1. A scatterplot of Sepal.Length vs. Sepal.Width
+P1 &amp;lt;- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
+  geom_point(show.legend = F) + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;, name = &amp;quot;&amp;quot;) + 
+  theme_classic(base_size = 14) + 
+  scale_x_continuous(limits = c(3, NA)) + 
+  scale_y_continuous(limits = c(1, NA))
+
+### 2. Density plot of Sepal.Length
+P2 &amp;lt;- ggplot(iris, aes(x = Sepal.Length, color = Species)) + 
+  geom_density(aes(y = ..scaled..), show.legend = F) + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;, name = &amp;quot;&amp;quot;) + 
+  theme_classic(base_size = 14) + 
+  scale_x_continuous(limits = c(3, NA)) + 
+  scale_y_continuous(breaks = seq(0, 1, 0.2))
+
+### 3. Density plot of Sepal.Width
+P3 &amp;lt;- ggplot(iris, aes(x = Sepal.Width, color = Species)) + 
+  geom_density(aes(y = ..scaled..), show.legend = F) + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;, name = &amp;quot;&amp;quot;) + 
+  theme_classic(base_size = 14) + 
+  scale_x_continuous(limits = c(1, NA)) + 
+  scale_y_continuous(breaks = seq(0, 1, 0.2)) +
+  coord_flip()
+
+### 4. Extract the legend from the scatterplot
+P1_legned &amp;lt;- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
+  geom_point() + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;, name = &amp;quot;&amp;quot;) + 
+  theme_classic(base_size = 14) + 
+  scale_x_continuous(limits = c(3, NA)) + 
+  scale_y_continuous(limits = c(1, NA))
+
+P_legend &amp;lt;- get_legend(P1_legned)
+
+### 5. Inset boxplots 
+P5 &amp;lt;- ggplot(iris, aes(x = Species, y = Sepal.Length, color = Species)) + 
+  geom_boxplot(show.legend = F, outlier.shape = NA) + 
+  scale_y_continuous(limits = c(3, NA)) + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;, name = &amp;quot;&amp;quot;) + 
+  coord_flip() + 
+  theme_classic(base_size = 14) + 
+  scale_x_discrete(labels = c(&amp;quot;1&amp;quot;, &amp;quot;2&amp;quot;, &amp;quot;3&amp;quot;)) + 
+  theme(axis.title = element_text(color = &amp;quot;transparent&amp;quot;),
+        axis.text = element_text(color = &amp;quot;transparent&amp;quot;),
+        axis.line = element_line(color = &amp;quot;transparent&amp;quot;),
+        axis.ticks = element_line(color = &amp;quot;transparent&amp;quot;),
+        panel.background = element_blank(),
+        plot.background = element_blank())
+  
+P6 &amp;lt;- ggplot(iris, aes(x = Species, y = Sepal.Width, color = Species)) + 
+  geom_boxplot(show.legend = F, outlier.shape = NA) + 
+  scale_y_continuous(limits = c(1, NA)) + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;, name = &amp;quot;&amp;quot;) +
+  theme_classic(base_size = 14) + 
+  scale_x_discrete(labels = c(&amp;quot;1&amp;quot;, &amp;quot;2&amp;quot;, &amp;quot;3&amp;quot;)) + 
+  theme(axis.title = element_text(color = &amp;quot;transparent&amp;quot;),
+        axis.text = element_text(color = &amp;quot;transparent&amp;quot;),
+        axis.line = element_line(color = &amp;quot;transparent&amp;quot;),
+        axis.ticks = element_line(color = &amp;quot;transparent&amp;quot;),
+        panel.background = element_blank(),
+        plot.background = element_blank())
+
+### Put everything together
+ggdraw() + 
+  draw_plot(P2 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;), x = -0.025, y = 0.65, width = 0.7, height = 0.3) + 
+  draw_plot(P1, x = 0, y = 0, width = 0.65, height = 0.65) +
+  draw_plot(P3 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;), x = 0.65, y = 0, width = 0.3, height = 0.65) + 
+  draw_text(c(&amp;quot;(a)&amp;quot;, &amp;quot;(b)&amp;quot;, &amp;quot;(c)&amp;quot;), x = c(0.075, 0.075, 0.725), y = c(0.975, 0.675, 0.675)) + 
+  draw_text(&amp;quot;Visualizing Iris Data&amp;quot;, x = 0.5, y = 0.975, color = &amp;quot;blue&amp;quot;, size = 14, fontface = &amp;quot;italic&amp;quot;) +
+  draw_grob(P_legend, x = 0.75, y = 0.75, width = 0.1, height = 0.1) + 
+  draw_image(&amp;quot;https://archive.ics.uci.edu/ml/assets/MLimages/Large53.jpg&amp;quot;, x = 0.75, y = 0.85, width = 0.1, height = 0.1) + 
+  draw_plot(P5, x = 0, y = 0.025, width = 0.65, height = 0.2) + 
+  draw_plot(P6, x = 0.025, y = 0, width = 0.2, height = 0.65)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-11-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Note that you might need to tweak a bit so that the inset boxplots align with the axes of the main panel. A tip here is to use exactly the same axis settings (labels, ticks, ranges, font size, etc.) for the main panel and the insets and specify the same x and y positions in &lt;code&gt;draw_plot()&lt;/code&gt; for them. After making sure that the main panel and the insets are aligned, you can then remove all the theme elements from the insets and redraw the geoms on the canvas.&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;!-- To recap, we --&gt;
+&lt;!-- The first method, `ggarrange()` is . So if you do not have complex layout, this is --&gt;
+&lt;!-- perhaps the go-to method --&gt;
+&lt;!-- The second method, `draw_plot()`, allows you to arrange any plots at any positions with --&gt;
+&lt;!-- Basically, with `cowplot`, you can put anything anywhere in the figure as you wish. Perhaps the only downside is that it might take a while to experiment so that the objects are at the exact positions with the sizes you want. But this also allows for much greater flexibility right?! --&gt;
+&lt;!-- plots. So save this method for the time when you need to create a complex multiple layout plot. --&gt;
+&lt;!-- The most important thing is to have an idea of what your figure should look like. Perhaps draw it down on a paper. After you get an idea, yuo can then proceed and make the individual plots, and design the layout, and finally tweak the figure and do some additional decorations. --&gt;
+&lt;!-- Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any! --&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>7e292a800db49bdbba626427c2dc7df4</distill:md5>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots</guid>
       <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>

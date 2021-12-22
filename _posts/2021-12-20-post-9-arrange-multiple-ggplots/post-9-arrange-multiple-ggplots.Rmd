@@ -1,7 +1,7 @@
 ---
 title: "Post #9. Arrange multiple ggplots"
 description: |
-  Come and learn two ways to arrange multiple ggplots on a same page.
+  Come and learn two ways to arrange multiple ggplots on a same graphic device.
 author:
   - name: Gen-Chang Hsu
 date: 12-20-2021
@@ -83,18 +83,18 @@ knitr::opts_chunk$set(message = F,
 
 <!-- Start of the article -->
 
-Feel excited to re-blog after taking a one-and-a-half months break. Quite shocked at my rusty writing skills. I think I really need to brush up a bit! So this time we will just do a simple post as a warm-up.
+Feel excited to re-blog after taking a one-and-a-half months break. Quite shocked at my rusty writing skills. I think I really need to brush up a bit! So this time, we will do a simple post as a warm-up.
 
 
 ## Introduction
-Sometimes we have a set of related plots and we would like to arrange them on a same page or as a single graphic. Instead of doing this manually (e.g., using MS PowerPoint), we can actually achieve the job in R. This not only streamlines the figure generation process but also makes it fully reproducible so that others can get the exact figure as yours after running your code.
+Sometimes we have a set of related plots and we would like to arrange them on a same page or as a single graphic. Instead of doing this manually (e.g., using MS PowerPoint), we can actually do it in R. This not only streamlines the figure generation process, but also makes it fully reproducible so that others can get the exact figure as yours after running your code.
 
-In this post, I will show you two methods for layout of multiple ggplots: (1) using the function `ggarrange()` in the package [ggpubr](https://rpkgs.datanovia.com/ggpubr/index.html), and (2) using the function `draw_plot()` and its families in the package [cowplot](https://wilkelab.org/cowplot/index.html). Let's jump right in! 
+In this post, I will show you two methods for laying out multiple ggplots: (1) using the function `ggarrange()` in the package [ggpubr](https://rpkgs.datanovia.com/ggpubr/index.html), and (2) using the function `draw_plot()` and its families in the package [cowplot](https://wilkelab.org/cowplot/index.html). Let's jump right in! 
 
 
 ## Method 1. Using `ggarrange()` in the package `ggpubr`
 
-`ggarrange()` is a convenient function for laying out multiple plots on a same device. It also allows the users to make some adjustments, for example, adding panel labels and aligning the plots. The package also offers another function for adding text annotations to the figure. We'll go through these one by one in the following.
+`ggarrange()` is a convenient function for arranging multiple ggplots on a same graphic device. It also allows the users to make some adjustments, for example, adding panel labels and aligning the plots by axis. The package also offers a function for adding text annotations to the figure. We'll go through these one by one in the following.
 
 To begin with, let's create some plots using the famous `iris` data set:
 
@@ -130,17 +130,17 @@ P3
 
 ### 1. Basic layout
 
-Now, say, you would like to place the density plots at the top (for Sepal.Length) and right (for Sepal.Width) of the scatterplot to show their distributions. We can do this by passing the above ggplot objects (P1, P2 and P3) into `ggarrange()` and specify the layout designs (the numbers of rows and columns along with their widths and heights). 
+Now, say, we would like to place the density plots at the top (for Sepal.Length) and right (for Sepal.Width) of the scatterplot to show their distributions. We can do this by passing the above ggplot objects (P1, P2 and P3) into `ggarrange()` and specify the layout designs (the numbers of rows and columns along with their widths and heights). 
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "70%", fig.align = 'center'}
 library(ggpubr)
 
 P_arrg_1 <- ggarrange(P2 + labs(x = "", y = ""),  # remove the axis labels
-                      NULL,  # you can add an empty plot using "NULL" to create a white space in the figure
+                      NULL,  # you can add an empty plot using "NULL" to create a white space in the graphic device
                       P1, 
                       P3 + labs(x = "", y = ""), 
-                      nrow = 2, 
-                      ncol = 2,
+                      nrow = 2,  # split the graphic device into two rows
+                      ncol = 2,  # split the graphic device into two columns
                       widths = c(0.65, 0.35),  # the widths of the two columns
                       heights = c(0.35, 0.65),  # the heights of the two rows
                       common.legend = T)  # use the same legend for all plots
@@ -151,7 +151,7 @@ P_arrg_1
 
 ### 2. Panel labels
 
-After getting our basic layout done, we can then add some panel labels to the plots and adjust their x and y positions: 
+After getting our basic layout done, we can then add panel labels to the plots and adjust their x and y positions (in the range of 0 to 1 relative to each individual plots): 
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "70%", fig.align = 'center'}
 P_arrg_2 <- ggarrange(P2 + labs(x = "", y = ""),  
@@ -173,7 +173,7 @@ P_arrg_2
 
 ### 3. Text annotations
 
-Sometimes we might want to add some text/labels to the figure. `ggpubr` provides a handy function `annotate_figure()` for this: simply create a `grob` object using `text_grob()` (you can also specify the x and y positions of the text as well as its horizontal and vertical adjustments) and pass it to the function.
+Sometimes we might want to add some text annotations to the figure. `ggpubr` provides a handy function `annotate_figure()` for this: simply create a `grob` object using `text_grob()` (in which you can specify the x and y positions of the text as well as its horizontal and vertical adjustments) and pass it to `annotate_figure()`
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "70%", fig.align = 'center'}
 P_arrg_3 <- annotate_figure(P_arrg_2,
@@ -191,7 +191,7 @@ P_arrg_3
 
 ### 4. Plot alignment
 
-Another nice functionality in `ggarrange()` is that it can automatically align the plot panels. This is particularly useful when the plots have different margin sizes (e.g., due to different label lengths). Let's take a look at an example:
+Another nice functionality of `ggarrange()` is that it can automatically align the plot panels by axis (vertically and/or horizontally). This is particularly useful when the plots have different margin sizes (e.g., due to different label lengths). Let's take a look at an example:
 
 ```{r, fig.width = 4.5, fig.height = 4.5, out.width = "50%", fig.align = 'center'}
 ### A scatterplot of Sepal.Length vs. Sepal.Width
@@ -215,7 +215,7 @@ ggarrange(P5,
 ```
 
 ```{r, fig.width = 4.5, fig.height = 4.5, out.width = "50%", fig.align = 'center'}
-### The y-axes of the two plots are now aligned
+### The y-axes of the two plots are now vertically aligned
 ggarrange(P5, 
           P4,
           nrow = 2,
@@ -229,7 +229,7 @@ ggarrange(P5,
 
 ## Method 2. Using `draw_plot()` in the package `cowplot` 
 
-The package `cowplot` provides a family of functions for adding plots/images/text to the graphic device. We will see those nice features in the followings. Again, we first create some example plots:
+The package `cowplot` provides a family of functions for adding plots/images/text to the graphic device. We will see these nice features shortly in the following. Again, let's first create some example plots:
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "45%", fig.show = "hold"}
 library(tidyverse)
@@ -262,9 +262,9 @@ P3
 ```
 
 ### 1. Basic layout
-In the first method `ggarrange`, you can think of it as cutting the graphic device into various grids of various widths and heights, and placing the corresponding plots into those grids.  
 
-Here, the second method `draw_plot()`, is a bit different though. The basic idea is that, we first create a drawing canvas (using the function `ggdraw()`), which has the x- and y-coordinates of 0 to 1. Next, we use `draw_plot()` to add the objects to this canvas by specifying the x and y positions as well as their widths and heights. (Note that the x and y position in `draw_plot()` corresponds to the bottom-left corner of the plot.)
+The first method `ggarrange` works by cutting the graphic device into grids of various widths and heights and placing the corresponding plots into those grids. 
+Here, the second method `draw_plot()`, is a bit different though. Basically, we first create a drawing canvas (using the function `ggdraw()`), which has the x- and y-coordinates of 0 to 1. Next, we use `draw_plot()` to add the plots to this canvas by specifying their x and y positions (corresponding to the bottom-left corner of the plots) as well as the widths and heights.
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "70%", fig.align = 'center'}
 library(cowplot)
@@ -275,9 +275,10 @@ ggdraw() +
   draw_plot(P3 + labs(x = "", y = ""), x = 0.65, y = 0, width = 0.3, height = 0.65)
 
 ```
+
 ### 2. Panel labels
 
-Let's add panel labels to the figure using the function `draw_text()`, with the same principle as `draw_plot()`:
+Similarly, we can add panel labels to the figure using the function `draw_text()`, with the same principle as `draw_plot()`:
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "70%", fig.align = 'center'}
 ggdraw() + 
@@ -288,9 +289,10 @@ ggdraw() +
   draw_text("Visualizing Iris Data", x = 0.5, y = 0.975, color = "blue", size = 14, fontface = "italic") 
 
 ```
+
 ### 3. Add external images
 
-Another cool thing with `cowplot` is that you can add external images to the figure, just like what you've done for the plots and text. Use `draw_image()` to achieve this (note that you need to have the package `magick` installed beforehand for this function to work):
+Another cool thing when working with `cowplot` is that you can add external images to the graphic device. Use `draw_image()` to do this (note that you need to have the package `magick` installed beforehand for this function to work):
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "70%", fig.align = 'center'}
 # install.packages("magick")
@@ -303,9 +305,10 @@ ggdraw() +
   draw_image("https://archive.ics.uci.edu/ml/assets/MLimages/Large53.jpg", x = 0.75, y = 0.9, width = 0.1, height = 0.1)
 
 ```
+
 ### 4. Insets and legends
 
-We can even do some further tricks in the figure such as adding plot insets and adjusting the legend position:
+We can even do more tricks in the figure, for example, adding inset plots. Additionally, the package has a function called `get_legend()`, which allows one to extract the legend from a plot (as a `grob` object) for further use. See the example below to get an idea of how they work:
 
 ```{r, fig.width = 6, fig.height = 6, out.width = "70%", fig.align = 'center'}
 ### 1. A scatterplot of Sepal.Length vs. Sepal.Width
@@ -343,21 +346,33 @@ P1_legned <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species
 
 P_legend <- get_legend(P1_legned)
 
-### 5. Boxplot insets
+### 5. Inset boxplots 
 P5 <- ggplot(iris, aes(x = Species, y = Sepal.Length, color = Species)) + 
-  geom_boxplot(show.legend = F) + 
+  geom_boxplot(show.legend = F, outlier.shape = NA) + 
   scale_y_continuous(limits = c(3, NA)) + 
   scale_color_brewer(palette = "Set1", name = "") + 
   coord_flip() + 
   theme_classic(base_size = 14) + 
   scale_x_discrete(labels = c("1", "2", "3")) + 
   theme(axis.title = element_text(color = "transparent"),
-        axis.text = element_text(color = "transparent"))
+        axis.text = element_text(color = "transparent"),
+        axis.line = element_line(color = "transparent"),
+        axis.ticks = element_line(color = "transparent"),
+        panel.background = element_blank(),
+        plot.background = element_blank())
   
-
-P5
-
-
+P6 <- ggplot(iris, aes(x = Species, y = Sepal.Width, color = Species)) + 
+  geom_boxplot(show.legend = F, outlier.shape = NA) + 
+  scale_y_continuous(limits = c(1, NA)) + 
+  scale_color_brewer(palette = "Set1", name = "") +
+  theme_classic(base_size = 14) + 
+  scale_x_discrete(labels = c("1", "2", "3")) + 
+  theme(axis.title = element_text(color = "transparent"),
+        axis.text = element_text(color = "transparent"),
+        axis.line = element_line(color = "transparent"),
+        axis.ticks = element_line(color = "transparent"),
+        panel.background = element_blank(),
+        plot.background = element_blank())
 
 ### Put everything together
 ggdraw() + 
@@ -366,25 +381,26 @@ ggdraw() +
   draw_plot(P3 + labs(x = "", y = ""), x = 0.65, y = 0, width = 0.3, height = 0.65) + 
   draw_text(c("(a)", "(b)", "(c)"), x = c(0.075, 0.075, 0.725), y = c(0.975, 0.675, 0.675)) + 
   draw_text("Visualizing Iris Data", x = 0.5, y = 0.975, color = "blue", size = 14, fontface = "italic") +
-  draw_grob(P_legend, x = 0.75, y = 0.8, width = 0.1, height = 0.1) + 
-  draw_image("https://archive.ics.uci.edu/ml/assets/MLimages/Large53.jpg", x = 0.75, y = 0.9, width = 0.1, height = 0.1) + 
-  draw_plot(P5, x = 0, y = 0.1, width = 0.65, height = 0.15)
+  draw_grob(P_legend, x = 0.75, y = 0.75, width = 0.1, height = 0.1) + 
+  draw_image("https://archive.ics.uci.edu/ml/assets/MLimages/Large53.jpg", x = 0.75, y = 0.85, width = 0.1, height = 0.1) + 
+  draw_plot(P5, x = 0, y = 0.025, width = 0.65, height = 0.2) + 
+  draw_plot(P6, x = 0.025, y = 0, width = 0.2, height = 0.65)
 
 ```
 
-Basically, with `cowplot`, you can put anything anywhere in the figure as you wish. Perhaps the only downside is that it might take a while to experiment a bit so that the objects are at the exact positions with the sizes you want. But this also allows for much greater flexibility right?!
+Note that you might need to tweak a bit so that the inset boxplots align with the axes of the main panel. A tip here is to use exactly the same axis settings (labels, ticks, ranges, font size, etc.) for the main panel and the insets and specify the same x and y positions in `draw_plot()` for them. After making sure that the main panel and the insets are aligned, you can then remove all the theme elements from the insets and redraw the geoms on the canvas.  
 
 
 ## Summary
 
-<!-- To recap, we  -->
+<!-- To recap, we -->
 
 <!-- The first method, `ggarrange()` is . So if you do not have complex layout, this is -->
 <!-- perhaps the go-to method -->
 
 <!-- The second method, `draw_plot()`, allows you to arrange any plots at any positions with -->
-<!-- any size. This is more flexible, but of course it might take a while to tweak the  -->
-<!-- plots. So save this method for the time when you need to create a complex multiple layout plot.  -->
+<!-- Basically, with `cowplot`, you can put anything anywhere in the figure as you wish. Perhaps the only downside is that it might take a while to experiment so that the objects are at the exact positions with the sizes you want. But this also allows for much greater flexibility right?! -->
+<!-- plots. So save this method for the time when you need to create a complex multiple layout plot. -->
 
 <!-- The most important thing is to have an idea of what your figure should look like. Perhaps draw it down on a paper. After you get an idea, yuo can then proceed and make the individual plots, and design the layout, and finally tweak the figure and do some additional decorations. -->
 

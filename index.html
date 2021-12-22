@@ -2628,6 +2628,7 @@ function init_posts_list() {
 
       // mark posts that match the category visible
       var page_category = window.location.hash.replace(/^#category:/, "");
+      page_category = decodeURIComponent(page_category)
       var posts = $('.post-metadata').map(function(idx, script) {
         var metadata = $.parseJSON($(script).html());
         var post = null;
@@ -2643,7 +2644,7 @@ function init_posts_list() {
       set_posts_visible(posts, true);
 
       // mark the hash active
-      $('.categories li>a[href="' + window.location.hash + '"]').addClass('active');
+      $('.categories li>a[href="' + decodeURIComponent(window.location.hash) + '"]').addClass('active');
 
       // update the list_caption
       var list_caption = $('.posts-list-caption');
@@ -2716,7 +2717,7 @@ function init_posts_list() {
 </div>
 <div class="description">
 <h2>Post #9. Arrange multiple ggplots</h2>
-<p>Come and learn two ways to arrange multiple ggplots on a same page.</p>
+<p>Come and learn two ways to arrange multiple ggplots on a same graphic device.</p>
 </div>
 </a>
 <a href="posts/2021-10-01-post-8-pokemon-phylogeny-with-ggdendro/" class="post-preview">
@@ -2725,7 +2726,7 @@ function init_posts_list() {
 <div class="publishedDate">Oct. 1, 2021</div>
 </div>
 <div class="thumbnail">
-<img src="homepage_images/Post8.png"/>
+<img src="posts/2021-10-01-post-8-pokemon-phylogeny-with-ggdendro/../../homepage_images/Post8.png"/>
 </div>
 <div class="description">
 <h2>Post #8. Pokemon phylogeny with ggdendro</h2>
@@ -2738,7 +2739,7 @@ function init_posts_list() {
 <div class="publishedDate">Sept. 11, 2021</div>
 </div>
 <div class="thumbnail">
-<img src="homepage_images/Post7.png"/>
+<img src="posts/2021-09-11-post-7-customize-the-axis-scales-for-individual-facets/../../homepage_images/Post7.png"/>
 </div>
 <div class="description">
 <h2>Post #7. Customize the axis scales for individual ggplot facets</h2>
@@ -2751,7 +2752,7 @@ function init_posts_list() {
 <div class="publishedDate">Aug. 2, 2021</div>
 </div>
 <div class="thumbnail">
-<img src="homepage_images/Post6.png"/>
+<img src="posts/2021-08-02-post-6-play-good-music-for-your-data-violin-plots-with-ggplot/../../homepage_images/Post6.png"/>
 </div>
 <div class="description">
 <h2>Post #6. Play good music for your data - violin plots with ggplot</h2>
@@ -2764,7 +2765,7 @@ function init_posts_list() {
 <div class="publishedDate">July 10, 2021</div>
 </div>
 <div class="thumbnail">
-<img src="homepage_images/Post5.png"/>
+<img src="posts/2021-07-10-post-5-awesome-text-display-with-ggtext/../../homepage_images/Post5.png"/>
 </div>
 <div class="description">
 <h2>Post #5. Awesome text displays with ggtext</h2>
@@ -2777,7 +2778,7 @@ function init_posts_list() {
 <div class="publishedDate">June 26, 2021</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post4.png"/>
+<img data-src="posts/2021-06-26-post-4-consistent-colors-of-the-same-factor-levels-across-figures/../../homepage_images/Post4.png"/>
 </div>
 <div class="description">
 <h2>Post #4. Consistent colors of the same factor levels across figures</h2>
@@ -2790,7 +2791,7 @@ function init_posts_list() {
 <div class="publishedDate">June 18, 2021</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post3.png"/>
+<img data-src="posts/2021-06-18-post-3-pie-charts-with-ggplot/../../homepage_images/Post3.png"/>
 </div>
 <div class="description">
 <h2>Post #3. Pie charts with ggplot</h2>
@@ -2803,7 +2804,7 @@ function init_posts_list() {
 <div class="publishedDate">May 26, 2021</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Guest_post1.gif"/>
+<img data-src="posts/2021-05-26-guest-post-1-communicating-the-essence-of-your-data/../../homepage_images/Guest_post1.gif"/>
 </div>
 <div class="description">
 <h2>Guest Post #1. Communicating the ESSENCE of your data</h2>
@@ -2816,7 +2817,7 @@ function init_posts_list() {
 <div class="publishedDate">May 7, 2021</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post2.png"/>
+<img data-src="posts/2021-05-07-post-2-three-ways-to-create-log-axes-in-ggplots-which-one-should-you-use/../../homepage_images/Post2.png"/>
 </div>
 <div class="description">
 <h2>Post #2. Three ways to create log axes in ggplots: which one should you use?</h2>
@@ -2829,7 +2830,7 @@ function init_posts_list() {
 <div class="publishedDate">May 1, 2021</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post1.png"/>
+<img data-src="posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots/../../homepage_images/Post1.png"/>
 </div>
 <div class="description">
 <h2>Post #1. Center long legend titles in ggplots</h2>
@@ -2838,31 +2839,31 @@ function init_posts_list() {
 </a>
 </div>
 <div class="posts-sidebar">
-<div><div class="sidebar-section custom" style="font-size: 18px; line-height: 1.25em;">
-  <h3>About</h3>
-  A gallery of <a href="https://ggplot2.tidyverse.org/index.html" target="_blank" style="text-decoration: none;">ggplots</a> and <a href="https://exts.ggplot2.tidyverse.org/" target="_blank" style="text-decoration: none;">beyond</a>! 
-</div>
-
-<div class="sidebar-section custom" style="font-size: 18px; display: none;">
-  <h3>Search</h3>
-  <form action="https://duckduckgo.com/">
-    <input type="text" name="q" placeholder="Search..." style="font-size: 18px; height: 30px; border-radius: 3px; border-style: solid; border-color: #D3D3D3;">
-    <input type="hidden" name="sites" 
-      value="https://beta.rstudioconnect.com/content/3776/"> <!-- Replace with your blog URL -->
-    <!--<button type="submit">Search</button>-->
-  </form>
-</div>
-
+<div><div class="sidebar-section custom" style="font-size: 18px; line-height: 1.25em;">
+  <h3>About</h3>
+  A gallery of <a href="https://ggplot2.tidyverse.org/index.html" target="_blank" style="text-decoration: none;">ggplots</a> and <a href="https://exts.ggplot2.tidyverse.org/" target="_blank" style="text-decoration: none;">beyond</a>! 
+</div>
+
+<div class="sidebar-section custom" style="font-size: 18px; display: none;">
+  <h3>Search</h3>
+  <form action="https://duckduckgo.com/">
+    <input type="text" name="q" placeholder="Search..." style="font-size: 18px; height: 30px; border-radius: 3px; border-style: solid; border-color: #D3D3D3;">
+    <input type="hidden" name="sites" 
+      value="https://beta.rstudioconnect.com/content/3776/"> <!-- Replace with your blog URL -->
+    <!--<button type="submit">Search</button>-->
+  </form>
+</div>
+
 </div>
 <div class="sidebar-section subscribe">
 <h3>Subscribe</h3>
-<form method='post' action='https://blogtrottr.com'>
-  <p style="font-size: 18px; line-height: 1.25em;">Like it? Subscribe to get the latest post:</p>
-  <input type='text' name='btr_email' style="font-size: 18px; height: 30px; border-radius: 3px; border-style: solid; border-color: #D3D3D3;" placeholder="Email"/>
-  <input type='hidden' name='btr_url'
-         value='https://genchanghsu.github.io/ggGallery/index.xml'/>
-  <input type='hidden' name='schedule_type' value='0' />
-  <input type='submit' value='Subscribe'/>
+<form method='post' action='https://blogtrottr.com'>
+  <p style="font-size: 18px; line-height: 1.25em;">Like it? Subscribe to get the latest post:</p>
+  <input type='text' name='btr_email' style="font-size: 18px; height: 30px; border-radius: 3px; border-style: solid; border-color: #D3D3D3;" placeholder="Email"/>
+  <input type='hidden' name='btr_url'
+         value='https://genchanghsu.github.io/ggGallery/index.xml'/>
+  <input type='hidden' name='schedule_type' value='0' />
+  <input type='submit' value='Subscribe'/>
 </form>
 </div>
 <div class="sidebar-section categories">
@@ -2883,7 +2884,7 @@ function init_posts_list() {
 <a href="#">More articles &raquo;</a>
 </div>
 </div>
-<!--/radix_placeholder_article_listing-->
+<!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
 <h1>Posts</h1>
