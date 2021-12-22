@@ -224,39 +224,171 @@ ggarrange(P5,
 
 ```
 
-## Method 2. 
-
-```{r, fig.width = 6, fig.height = 6, out.width = "70%", fig.show = "hold"}
+<br>
 
 
+## Method 2. Using `draw_plot()` in the package `cowplot` 
+
+The package `cowplot` provides a family of functions for adding plots/images/text to the graphic device. We will see those nice features in the followings. Again, we first create some example plots:
+
+```{r, fig.width = 5, fig.height = 3, out.width = "45%", fig.show = "hold"}
+library(tidyverse)
+
+### 1. A scatterplot of Sepal.Length vs. Sepal.Width
+P1 <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
+  geom_point(show.legend = F) + 
+  scale_color_brewer(palette = "Set1", name = "") + 
+  theme_classic(base_size = 14)
+
+### 2. Density plot of Sepal.Length
+P2 <- ggplot(iris, aes(x = Sepal.Length, color = Species)) + 
+  geom_density(aes(y = ..scaled..)) + 
+  scale_color_brewer(palette = "Set1", name = "") + 
+  theme_classic(base_size = 14) + 
+  scale_y_continuous(breaks = seq(0, 1, 0.2))
+
+### 3. Density plot of Sepal.Width
+P3 <- ggplot(iris, aes(x = Sepal.Width, color = Species)) + 
+  geom_density(aes(y = ..scaled..), show.legend = F) + 
+  scale_color_brewer(palette = "Set1", name = "") + 
+  theme_classic(base_size = 14) + 
+  scale_y_continuous(breaks = seq(0, 1, 0.2)) +
+  coord_flip()
+  
+P1
+P2
+P3
 
 ```
 
-cowplot
-drawplot
-drawtext
-drawgrob
-drawimage
+### 1. Basic layout
+In the first method `ggarrange`, you can think of it as cutting the graphic device into various grids of various widths and heights, and placing the corresponding plots into those grids.  
 
-Add any thing to the plot window to anywhere as you wish
+Here, the second method `draw_plot()`, is a bit different though. The basic idea is that, we first create a drawing canvas (using the function `ggdraw()`), which has the x- and y-coordinates of 0 to 1. Next, we use `draw_plot()` to add the objects to this canvas by specifying the x and y positions as well as their widths and heights. (Note that the x and y position in `draw_plot()` corresponds to the bottom-left corner of the plot.)
+
+```{r, fig.width = 6, fig.height = 6, out.width = "70%", fig.align = 'center'}
+library(cowplot)
+
+ggdraw() + 
+  draw_plot(P2 + labs(x = "", y = ""), x = 0, y = 0.65, width = 0.925, height = 0.3) + 
+  draw_plot(P1, x = 0, y = 0, width = 0.65, height = 0.65) +
+  draw_plot(P3 + labs(x = "", y = ""), x = 0.65, y = 0, width = 0.3, height = 0.65)
+
+```
+### 2. Panel labels
+
+Let's add panel labels to the figure using the function `draw_text()`, with the same principle as `draw_plot()`:
+
+```{r, fig.width = 6, fig.height = 6, out.width = "70%", fig.align = 'center'}
+ggdraw() + 
+  draw_plot(P2 + labs(x = "", y = ""), x = 0, y = 0.65, width = 0.925, height = 0.3) + 
+  draw_plot(P1, x = 0, y = 0, width = 0.65, height = 0.65) +
+  draw_plot(P3 + labs(x = "", y = ""), x = 0.65, y = 0, width = 0.3, height = 0.65) + 
+  draw_text(c("(a)", "(b)", "(c)"), x = c(0.075, 0.075, 0.725), y = c(0.975, 0.675, 0.675)) + 
+  draw_text("Visualizing Iris Data", x = 0.5, y = 0.975, color = "blue", size = 14, fontface = "italic") 
+
+```
+### 3. Add external images
+
+Another cool thing with `cowplot` is that you can add external images to the figure, just like what you've done for the plots and text. Use `draw_image()` to achieve this (note that you need to have the package `magick` installed beforehand for this function to work):
+
+```{r, fig.width = 6, fig.height = 6, out.width = "70%", fig.align = 'center'}
+# install.packages("magick")
+ggdraw() + 
+  draw_plot(P2 + labs(x = "", y = ""), x = 0, y = 0.65, width = 0.925, height = 0.3) + 
+  draw_plot(P1, x = 0, y = 0, width = 0.65, height = 0.65) +
+  draw_plot(P3 + labs(x = "", y = ""), x = 0.65, y = 0, width = 0.3, height = 0.65) + 
+  draw_text(c("(a)", "(b)", "(c)"), x = c(0.075, 0.075, 0.725), y = c(0.975, 0.675, 0.675)) + 
+  draw_text("Visualizing Iris Data", x = 0.5, y = 0.975, color = "blue", size = 14, fontface = "italic") +
+  draw_image("https://archive.ics.uci.edu/ml/assets/MLimages/Large53.jpg", x = 0.75, y = 0.9, width = 0.1, height = 0.1)
+
+```
+### 4. Insets and legends
+
+We can even do some further tricks in the figure such as adding plot insets and adjusting the legend position:
+
+```{r, fig.width = 6, fig.height = 6, out.width = "70%", fig.align = 'center'}
+### 1. A scatterplot of Sepal.Length vs. Sepal.Width
+P1 <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
+  geom_point(show.legend = F) + 
+  scale_color_brewer(palette = "Set1", name = "") + 
+  theme_classic(base_size = 14) + 
+  scale_x_continuous(limits = c(3, NA)) + 
+  scale_y_continuous(limits = c(1, NA))
+
+### 2. Density plot of Sepal.Length
+P2 <- ggplot(iris, aes(x = Sepal.Length, color = Species)) + 
+  geom_density(aes(y = ..scaled..), show.legend = F) + 
+  scale_color_brewer(palette = "Set1", name = "") + 
+  theme_classic(base_size = 14) + 
+  scale_x_continuous(limits = c(3, NA)) + 
+  scale_y_continuous(breaks = seq(0, 1, 0.2))
+
+### 3. Density plot of Sepal.Width
+P3 <- ggplot(iris, aes(x = Sepal.Width, color = Species)) + 
+  geom_density(aes(y = ..scaled..), show.legend = F) + 
+  scale_color_brewer(palette = "Set1", name = "") + 
+  theme_classic(base_size = 14) + 
+  scale_x_continuous(limits = c(1, NA)) + 
+  scale_y_continuous(breaks = seq(0, 1, 0.2)) +
+  coord_flip()
+
+### 4. Extract the legend from the scatterplot
+P1_legned <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
+  geom_point() + 
+  scale_color_brewer(palette = "Set1", name = "") + 
+  theme_classic(base_size = 14) + 
+  scale_x_continuous(limits = c(3, NA)) + 
+  scale_y_continuous(limits = c(1, NA))
+
+P_legend <- get_legend(P1_legned)
+
+### 5. Boxplot insets
+P5 <- ggplot(iris, aes(x = Species, y = Sepal.Length, color = Species)) + 
+  geom_boxplot(show.legend = F) + 
+  scale_y_continuous(limits = c(3, NA)) + 
+  scale_color_brewer(palette = "Set1", name = "") + 
+  coord_flip() + 
+  theme_classic(base_size = 14) + 
+  scale_x_discrete(labels = c("1", "2", "3")) + 
+  theme(axis.title = element_text(color = "transparent"),
+        axis.text = element_text(color = "transparent"))
+  
+
+P5
 
 
 
+### Put everything together
+ggdraw() + 
+  draw_plot(P2 + labs(x = "", y = ""), x = -0.025, y = 0.65, width = 0.7, height = 0.3) + 
+  draw_plot(P1, x = 0, y = 0, width = 0.65, height = 0.65) +
+  draw_plot(P3 + labs(x = "", y = ""), x = 0.65, y = 0, width = 0.3, height = 0.65) + 
+  draw_text(c("(a)", "(b)", "(c)"), x = c(0.075, 0.075, 0.725), y = c(0.975, 0.675, 0.675)) + 
+  draw_text("Visualizing Iris Data", x = 0.5, y = 0.975, color = "blue", size = 14, fontface = "italic") +
+  draw_grob(P_legend, x = 0.75, y = 0.8, width = 0.1, height = 0.1) + 
+  draw_image("https://archive.ics.uci.edu/ml/assets/MLimages/Large53.jpg", x = 0.75, y = 0.9, width = 0.1, height = 0.1) + 
+  draw_plot(P5, x = 0, y = 0.1, width = 0.65, height = 0.15)
+
+```
+
+Basically, with `cowplot`, you can put anything anywhere in the figure as you wish. Perhaps the only downside is that it might take a while to experiment a bit so that the objects are at the exact positions with the sizes you want. But this also allows for much greater flexibility right?!
 
 
 ## Summary
-To recap, we 
 
-The first method, `ggarrange()` is . So if you do not have complex layout, this is
-perhaps the go-to method
+<!-- To recap, we  -->
 
-The second method, `draw_plot()`, allows you to arrange any plots at any positions with
-any size. This is more flexible, but of course it might take a while to tweak the 
-plots. So save this method for the time when you need to create a complex multiple layout plot. 
+<!-- The first method, `ggarrange()` is . So if you do not have complex layout, this is -->
+<!-- perhaps the go-to method -->
 
-The most important thing is to have an idea of what your figure should look like. Perhaps draw it down on a paper. After you get an idea, yuo can then proceed and make the individual plots, and design the layout, and finally tweak the figure and do some additional decorations.
+<!-- The second method, `draw_plot()`, allows you to arrange any plots at any positions with -->
+<!-- any size. This is more flexible, but of course it might take a while to tweak the  -->
+<!-- plots. So save this method for the time when you need to create a complex multiple layout plot.  -->
 
-Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any!
+<!-- The most important thing is to have an idea of what your figure should look like. Perhaps draw it down on a paper. After you get an idea, yuo can then proceed and make the individual plots, and design the layout, and finally tweak the figure and do some additional decorations. -->
+
+<!-- Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any! -->
 
 
 
