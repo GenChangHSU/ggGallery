@@ -56,7 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { } /* Attribute */
+code span.at { color: #20794d; } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
 code span.cf { color: #007ba5; } /* ControlFlow */
@@ -77,7 +77,7 @@ code span.kw { color: #007ba5; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
 code span.ot { color: #007ba5; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.sc { color: #20794d; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
@@ -88,7 +88,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_meta_tags-->
 <title>ggGallery: Post #9. Arrange multiple ggplots</title>
 
-<meta property="description" itemprop="description" content="Come and learn two ways to arrange multiple ggplots on a same graphic device."/>
+<meta property="description" itemprop="description" content="Come and learn two methods to arrange multiple ggplots on a same graphic device."/>
 
 <link rel="canonical" href="https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/"/>
 
@@ -100,28 +100,28 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
 <meta property="og:title" content="ggGallery: Post #9. Arrange multiple ggplots"/>
 <meta property="og:type" content="article"/>
-<meta property="og:description" content="Come and learn two ways to arrange multiple ggplots on a same graphic device."/>
+<meta property="og:description" content="Come and learn two methods to arrange multiple ggplots on a same graphic device."/>
 <meta property="og:url" content="https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/"/>
-<meta property="og:image" content="https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-1-1.png"/>
-<meta property="og:image:width" content="960"/>
-<meta property="og:image:height" content="576"/>
+<meta property="og:image" content="https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/../../homepage_images/Post9.png"/>
+<meta property="og:image:width" content="1152"/>
+<meta property="og:image:height" content="1152"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="ggGallery"/>
 
 <!--  https://dev.twitter.com/cards/types/summary -->
 <meta property="twitter:card" content="summary_large_image"/>
 <meta property="twitter:title" content="ggGallery: Post #9. Arrange multiple ggplots"/>
-<meta property="twitter:description" content="Come and learn two ways to arrange multiple ggplots on a same graphic device."/>
+<meta property="twitter:description" content="Come and learn two methods to arrange multiple ggplots on a same graphic device."/>
 <meta property="twitter:url" content="https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/"/>
-<meta property="twitter:image" content="https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-1-1.png"/>
-<meta property="twitter:image:width" content="960"/>
-<meta property="twitter:image:height" content="576"/>
+<meta property="twitter:image" content="https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/../../homepage_images/Post9.png"/>
+<meta property="twitter:image:width" content="1152"/>
+<meta property="twitter:image:height" content="1152"/>
 
 <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Post #9. Arrange multiple ggplots"]},{"type":"character","attributes":{},"value":["Come and learn two ways to arrange multiple ggplots on a same graphic device."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["12-20-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2021"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post9.png"]},{"type":"character","attributes":{},"value":["https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/"]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Post #9. Arrange multiple ggplots"]},{"type":"character","attributes":{},"value":["Come and learn two methods to arrange multiple ggplots on a same graphic device."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["12-20-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2021"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post9.png"]},{"type":"character","attributes":{},"value":["https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -472,7 +472,7 @@ d-title {
 
 </style>
 
-<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
 <link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
 <link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
 <script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
@@ -1879,10 +1879,7 @@ function init_distill() {
 
     // hoverable references
     $('span.citation[data-cites]').each(function() {
-      var refs = $(this).attr('data-cites').split(" ");
-      var refHtml = refs.map(function(ref) {
-        return "<p>" + $('#ref-' + ref).html() + "</p>";
-      }).join("\n");
+      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
       window.tippy(this, {
         allowHTML: true,
         content: refHtml,
@@ -2548,8 +2545,8 @@ d-appendix d-footnote-list a.footnote-backlink {
   color: var(--hover-color, white);
 }</style>
 <!--/radix_placeholder_distill-->
-  <script src="../../site_libs/header-attrs-2.11/header-attrs.js"></script>
-  <script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <script src="../../site_libs/header-attrs-2.10/header-attrs.js"></script>
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
   <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2569,7 +2566,7 @@ d-appendix d-footnote-list a.footnote-backlink {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #9. Arrange multiple ggplots","description":"Come and learn two ways to arrange multiple ggplots on a same graphic device.","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-12-20T00:00:00.000-08:00","citationText":"Hsu, 2021"}
+{"title":"Post #9. Arrange multiple ggplots","description":"Come and learn two methods to arrange multiple ggplots on a same graphic device.","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-12-20T00:00:00.000+08:00","citationText":"Hsu, 2021"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2602,7 +2599,7 @@ d-appendix d-footnote-list a.footnote-backlink {
   <a href="../../index.html#category:2021" class="dt-tag">2021</a>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>Come and learn two ways to arrange multiple ggplots on a same graphic device.</p></p>
+<p><p>Come and learn two methods to arrange multiple ggplots on a same graphic device.</p></p>
 </div>
 
 <div class="d-byline">
@@ -2672,12 +2669,12 @@ div.l-body {
 
 </style>
 <!-- Start of the article -->
-<p>Feel excited to re-blog after taking a one-and-a-half months break. Quite shocked at my rusty writing skills. I think I really need to brush up a bit! So this time, we will do a simple post as a warm-up.</p>
+<p>Feel excited to re-blog after taking a one-and-a-half months break. Quite shocked at my rusty writing skills. I think I really need to brush up a bit! This time, I will just do a simple post as a warm-up.</p>
 <h2 id="introduction">Introduction</h2>
-<p>Sometimes we have a set of related plots and we would like to arrange them on a same page or as a single graphic. Instead of doing this manually (e.g., using MS PowerPoint), we can actually do it in R. This not only streamlines the figure generation process, but also makes it fully reproducible so that others can get the exact figure as yours after running your code.</p>
-<p>In this post, I will show you two methods for laying out multiple ggplots: (1) using the function <code>ggarrange()</code> in the package <a href="https://rpkgs.datanovia.com/ggpubr/index.html">ggpubr</a>, and (2) using the function <code>draw_plot()</code> and its families in the package <a href="https://wilkelab.org/cowplot/index.html">cowplot</a>. Let’s jump right in!</p>
+<p>Sometimes we have a set of related plots and we would like to arrange them as a single graph. Instead of doing this manually (e.g., using MS PowerPoint), we can actually do it in R. This not only streamlines the figure generation process, but also makes it fully reproducible so that others can get the exact figure as yours with your code.</p>
+<p>In this post, I will show you two methods for laying out multiple ggplots: (1) using the function <code>ggarrange()</code> in the package <a href="https://rpkgs.datanovia.com/ggpubr/index.html"><code>ggpubr</code></a>, and (2) using the function <code>draw_plot()</code> and its families in the package <a href="https://wilkelab.org/cowplot/index.html"><code>cowplot</code></a>. Let’s jump right in!</p>
 <h2 id="method-1.-using-ggarrange-in-the-package-ggpubr">Method 1. Using <code>ggarrange()</code> in the package <code>ggpubr</code></h2>
-<p><code>ggarrange()</code> is a convenient function for arranging multiple ggplots on a same graphic device. It also allows the users to make some adjustments, for example, adding panel labels and aligning the plots by axis. The package also offers a function for adding text annotations to the figure. We’ll go through these one by one in the following.</p>
+<p><code>ggarrange()</code> is a convenient function for arranging multiple ggplots on a same graphic device. It also allows the users to make some adjustments, for example, adding panel labels and aligning the plots by axis. Moreover, the package offers a function for adding text annotations to the figure. We’ll go through these features one by one in the following.</p>
 <p>To begin with, let’s create some plots using the famous <code>iris</code> data set:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2733,7 +2730,7 @@ div.l-body {
 <p><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="panel-labels">2. Panel labels</h3>
-<p>After getting our basic layout done, we can then add panel labels to the plots and adjust their x and y positions (in the range of 0 to 1 relative to each individual plots):</p>
+<p>After getting our basic layout done, we can then add panel labels to the plots by specifying their x and y positions for each individual plots using values in the range of 0 to 1 (e.g., (x, y) = (0, 0) means bottom-left corner of the plot; values outside this range are also allowed and it will draw the labels outside the plot area).</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P_arrg_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html'>ggarrange</a></span><span class='op'>(</span><span class='va'>P2</span> <span class='op'>+</span> <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>""</span>, y <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>,  
@@ -2773,7 +2770,7 @@ div.l-body {
 <p><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="plot-alignment">4. Plot alignment</h3>
-<p>Another nice functionality of <code>ggarrange()</code> is that it can automatically align the plot panels by axis (vertically and/or horizontally). This is particularly useful when the plots have different margin sizes (e.g., due to different label lengths). Let’s take a look at an example:</p>
+<p>Another nice functionality of <code>ggarrange()</code> is that it can automatically align the plot panels by axis (vertically and/or horizontally). This is particularly useful when the plots have different margin sizes (e.g., due to different label lengths). Sounds a bit abstract right? Let’s take a look at an example:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'>### A scatterplot of Sepal.Length vs. Sepal.Width</span>
@@ -2812,7 +2809,7 @@ div.l-body {
 </div>
 <p><br></p>
 <h2 id="method-2.-using-draw_plot-in-the-package-cowplot">Method 2. Using <code>draw_plot()</code> in the package <code>cowplot</code></h2>
-<p>The package <code>cowplot</code> provides a family of functions for adding plots/images/text to the graphic device. We will see these nice features shortly in the following. Again, let’s first create some example plots:</p>
+<p>The package <code>cowplot</code> provides a family of functions for adding plots/images/text to the graphic device. We will see how to make use of them shortly. Again, let’s first create some example plots:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
@@ -2846,7 +2843,8 @@ div.l-body {
 <p><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-7-1.png" width="45%" /><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-7-2.png" width="45%" /><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-7-3.png" width="45%" /></p>
 </div>
 <h3 id="basic-layout-1">1. Basic layout</h3>
-<p>The first method <code>ggarrange</code> works by cutting the graphic device into grids of various widths and heights and placing the corresponding plots into those grids. Here, the second method <code>draw_plot()</code>, is a bit different though. Basically, we first create a drawing canvas (using the function <code>ggdraw()</code>), which has the x- and y-coordinates of 0 to 1. Next, we use <code>draw_plot()</code> to add the plots to this canvas by specifying their x and y positions (corresponding to the bottom-left corner of the plots) as well as the widths and heights.</p>
+<p>The first method <code>ggarrange</code> works by “cutting” the graphic device into grids of various widths and heights and placing the corresponding plots into those grids.</p>
+<p>Here, the second method <code>draw_plot()</code>, is a bit different though. Basically, we will first create a drawing canvas (using the function <code>ggdraw()</code>), which has the x- and y-coordinates of 0 to 1. Next, we use <code>draw_plot()</code> to add the plots to this canvas by specifying their x and y positions using values in the range of 0 to 1 (again, (x, y) = (0, 0) corresponds to the bottom-left corner of the plot) as well as the widths and heights.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://wilkelab.org/cowplot/'>cowplot</a></span><span class='op'>)</span>
@@ -2860,7 +2858,7 @@ div.l-body {
 <p><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-8-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="panel-labels-1">2. Panel labels</h3>
-<p>Similarly, we can add panel labels to the figure using the function <code>draw_text()</code>, with the same principle as <code>draw_plot()</code>:</p>
+<p>We can add panel labels to the figure using the function <code>draw_text()</code>, with the same principle as <code>draw_plot()</code>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://wilkelab.org/cowplot/reference/ggdraw.html'>ggdraw</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
@@ -2890,7 +2888,7 @@ div.l-body {
 <p><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-10-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="insets-and-legends">4. Insets and legends</h3>
-<p>We can even do more tricks in the figure, for example, adding inset plots. Additionally, the package has a function called <code>get_legend()</code>, which allows one to extract the legend from a plot (as a <code>grob</code> object) for further use. See the example below to get an idea of how they work:</p>
+<p>We can even do more tricks in the figure, for instance, adding inset plots. Additionally, the package has a function called <code>get_legend()</code>, which allows one to extract the legend from a plot (as a <code>grob</code> object) for further use. See the example below to get an idea of how they work:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'>### 1. A scatterplot of Sepal.Length vs. Sepal.Width</span>
@@ -2971,11 +2969,11 @@ div.l-body {
 </div>
 <p><img src="post-9-arrange-multiple-ggplots_files/figure-html5/unnamed-chunk-11-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
-<p>Note that you might need to tweak a bit so that the inset boxplots align with the axes of the main panel. A tip here is to use exactly the same axis settings (labels, ticks, ranges, font size, etc.) for the main panel and the insets and specify the same x and y positions in <code>draw_plot()</code> for them. After making sure that the main panel and the insets are aligned, you can then remove all the theme elements from the insets and redraw the geoms on the canvas.</p>
+<p>Note that you might need to experiment a bit so that the inset boxplots align with the axes of the main panel. A tip here is to use exactly the same axis settings (labels, ticks, ranges, font size, etc.) for the main panel and the insets as well as the same x and y positions in <code>draw_plot()</code> (so basically the insets will overlay the main panel). After making sure that the main panel and the insets are nicely aligned, you can remove those unnecessary theme elements from the inset plot and then re-draw them on the main panel.</p>
 <h2 id="summary">Summary</h2>
-<p>To recap, we’ve walked through two methods to arrange multiple ggplots on a same graphic device. The first one, <code>ggarrange()</code> in the package <code>ggpubr</code>, is straightforward and easy-to-use. Just pass the plots into the function, tell it your layout designs, and it’s done. The package also offers a function for adding text annotations to the figure. So if you simply just want to combine several plots together without complex layout, this is perhaps the go-to method and will save you lots of time.</p>
-<p>The second method, <code>draw_plot()</code> and its family functions in the package <code>cowplot</code>, create a drawing canvas that allows you to put any plots/text/images at any places on it. You can also create plot insets as well as extract the legend from the plot to customize its position. This method provides much greater flexibility in terms of plot layout, but at a cost that it might take some time to experiment a bit so that the objects of desired sizes are at the exact positions you want. This second method is well-suited for complex plot layout, or if you really want to tweak the plot positions to your heart’s content.</p>
-<p>Whatever method you use, perhaps the most important thing is to think about what your final figure should look like. Maybe sketch it out on a paper first. After getting sort of an idea, you can then proceed to preparing the individual plots, determining their positions and sizes, doing some decorations such as adding panel labels and text annotations, and finally fine-tuning the objects before printing it out.</p>
+<p>To recap, we’ve walked through two methods to arrange multiple ggplots on a same graphic device. The first one, <code>ggarrange()</code> in the package <code>ggpubr</code>, is straightforward and easy-to-use. Just pass the individual plots into the function, tell it your layout designs, and you’re done. The package also offers a function for adding text annotations to the figure. So if you simply just want to combine several ggplots together without complex layout, this is perhaps the go-to method and will save you lots of time.</p>
+<p>The second method, <code>draw_plot()</code> and its family functions in the package <code>cowplot</code>, create a drawing canvas that allows you to put any plots/text/images at any places on it. You can also create plot insets as well as extract the legend from the plot to customize its position. This method provides much greater flexibility in terms of plot layout, but at a cost that it might take some time to experiment a bit so that the objects are at the exact positions you want with the desired sizes. This second method is better-suited for complex plot layout, or if you really want to tweak the plot positions to your heart’s content.</p>
+<p>Whatever method you use, the most important thing is to think about what your final figure should look like. Maybe sketch it out on a paper first. After getting sort of an idea, you can then proceed to preparing the individual plots, determining their positions and sizes, doing some decorations like adding panel labels and text annotations, and finally fine-tuning the objects before printing it out.</p>
 <p>Hope you enjoy the reading and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
@@ -3036,14 +3034,12 @@ var disqus_config = function () {
   <p>If you see mistakes or want to suggest changes, please <a href="https://github.com/GenChangHSU/ggGallery/issues/new">create an issue</a> on the source repository.</p>
 </div>
 <!--/radix_placeholder_appendices-->
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<!--radix_placeholder_navigation_after_body--><html><body>
+<!--radix_placeholder_navigation_after_body-->
 <div class="distill-site-nav distill-site-footer">
-<div class="footer" style="margin-top: -5px">
-  2021-<script>document.write(new Date().getFullYear())</script> By Gen-Chang Hsu. Built with <img src="../../distill.png" style="max-height: 20px; position: relative; top: 3px"><a href="https://pkgs.rstudio.com/distill/" target="_blank"> distill</a>.</div>
+  <div class="footer" style="margin-top: -5px">
+  2021-<script>document.write(new Date().getFullYear())</script> By Gen-Chang Hsu. Built with <img src="../../distill.png" style="max-height: 20px; position: relative; top: 3px"/> <a href="https://pkgs.rstudio.com/distill/" target="_blank"> distill</a>.</div>
 </div>
 <!--/radix_placeholder_navigation_after_body-->
-</body></html>
 
 
 </body>
