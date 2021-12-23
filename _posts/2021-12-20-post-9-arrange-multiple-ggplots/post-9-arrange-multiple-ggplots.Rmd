@@ -1,7 +1,7 @@
 ---
-title: "Post #9. Arrange multiple ggplots"
+title: "Post #9. Arrange multiple ggplots on one graphic device"
 description: |
-  Come and learn two methods to arrange multiple ggplots on a same graphic device.
+  Come and learn two methods to arrange multiple ggplots on one graphic device.
 author:
   - name: Gen-Chang Hsu
 date: 12-20-2021
@@ -393,7 +393,7 @@ Note that you might need to experiment a bit so that the inset boxplots align wi
 
 ## Summary
 
-To recap, we've walked through two methods to arrange multiple ggplots on a same graphic device. The first one, `ggarrange()` in the package `ggpubr`, is straightforward and easy-to-use. Just pass the individual plots into the function, tell it your layout designs, and you're done. The package also offers a function for adding text annotations to the figure. So if you simply just want to combine several ggplots together without complex layout, this is perhaps the go-to method and will save you lots of time.
+To recap, we've walked through two methods to arrange multiple ggplots on one graphic device. The first one, `ggarrange()` in the package `ggpubr`, is straightforward and easy-to-use. Just pass the individual plots into the function, tell it your layout designs, and you're done. The package also offers a function for adding text annotations to the figure. So if you simply just want to combine several ggplots together without complex layout, this is perhaps the go-to method and will save you lots of time.
 
 The second method, `draw_plot()` and its family functions in the package `cowplot`, create a drawing canvas that allows you to put any plots/text/images at any places on it. You can also create plot insets as well as extract the legend from the plot to customize its position. This method provides much greater flexibility in terms of plot layout, but at a cost that it might take some time to experiment a bit so that the objects are at the exact positions you want with the desired sizes. This second method is better-suited for complex plot layout, or if you really want to tweak the plot positions to your heart's content.
 
