@@ -2973,14 +2973,10 @@ div.l-body {
 </div>
 <p>Note that you might need to tweak a bit so that the inset boxplots align with the axes of the main panel. A tip here is to use exactly the same axis settings (labels, ticks, ranges, font size, etc.) for the main panel and the insets and specify the same x and y positions in <code>draw_plot()</code> for them. After making sure that the main panel and the insets are aligned, you can then remove all the theme elements from the insets and redraw the geoms on the canvas.</p>
 <h2 id="summary">Summary</h2>
-<!-- To recap, we -->
-<!-- The first method, `ggarrange()` is . So if you do not have complex layout, this is -->
-<!-- perhaps the go-to method -->
-<!-- The second method, `draw_plot()`, allows you to arrange any plots at any positions with -->
-<!-- Basically, with `cowplot`, you can put anything anywhere in the figure as you wish. Perhaps the only downside is that it might take a while to experiment so that the objects are at the exact positions with the sizes you want. But this also allows for much greater flexibility right?! -->
-<!-- plots. So save this method for the time when you need to create a complex multiple layout plot. -->
-<!-- The most important thing is to have an idea of what your figure should look like. Perhaps draw it down on a paper. After you get an idea, yuo can then proceed and make the individual plots, and design the layout, and finally tweak the figure and do some additional decorations. -->
-<!-- Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any! -->
+<p>To recap, we’ve walked through two methods to arrange multiple ggplots on a same graphic device. The first one, <code>ggarrange()</code> in the package <code>ggpubr</code>, is straightforward and easy-to-use. Just pass the plots into the function, tell it your layout designs, and it’s done. The package also offers a function for adding text annotations to the figure. So if you simply just want to combine several plots together without complex layout, this is perhaps the go-to method and will save you lots of time.</p>
+<p>The second method, <code>draw_plot()</code> and its family functions in the package <code>cowplot</code>, create a drawing canvas that allows you to put any plots/text/images at any places on it. You can also create plot insets as well as extract the legend from the plot to customize its position. This method provides much greater flexibility in terms of plot layout, but at a cost that it might take some time to experiment a bit so that the objects of desired sizes are at the exact positions you want. This second method is well-suited for complex plot layout, or if you really want to tweak the plot positions to your heart’s content.</p>
+<p>Whatever method you use, perhaps the most important thing is to think about what your final figure should look like. Maybe sketch it out on a paper first. After getting sort of an idea, you can then proceed to preparing the individual plots, determining their positions and sizes, doing some decorations such as adding panel labels and text annotations, and finally fine-tuning the objects before printing it out.</p>
+<p>Hope you enjoy the reading and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <div class="article-footer">

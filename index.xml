@@ -108,7 +108,7 @@ P3 &amp;lt;- ggplot(iris, aes(x = Sepal.Width, color = Species)) +
 P1
 P2
 P3&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-1-1.png" width="45%" /&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-1-2.png" width="45%" /&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-1-3.png" width="45%" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file2a304526613c_files/figure-html/unnamed-chunk-1-1.png" width="45%" /&gt;&lt;img src="file2a304526613c_files/figure-html/unnamed-chunk-1-2.png" width="45%" /&gt;&lt;img src="file2a304526613c_files/figure-html/unnamed-chunk-1-3.png" width="45%" /&gt;&lt;/p&gt;
 &lt;h3 id="basic-layout"&gt;1. Basic layout&lt;/h3&gt;
 &lt;p&gt;Now, say, we would like to place the density plots at the top (for Sepal.Length) and right (for Sepal.Width) of the scatterplot to show their distributions. We can do this by passing the above ggplot objects (P1, P2 and P3) into &lt;code&gt;ggarrange()&lt;/code&gt; and specify the layout designs (the numbers of rows and columns along with their widths and heights).&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(ggpubr)
@@ -124,7 +124,7 @@ P_arrg_1 &amp;lt;- ggarrange(P2 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&
                       common.legend = T)  # use the same legend for all plots
 
 P_arrg_1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file2a304526613c_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="panel-labels"&gt;2. Panel labels&lt;/h3&gt;
 &lt;p&gt;After getting our basic layout done, we can then add panel labels to the plots and adjust their x and y positions (in the range of 0 to 1 relative to each individual plots):&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;P_arrg_2 &amp;lt;- ggarrange(P2 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;),  
@@ -141,7 +141,7 @@ P_arrg_1&lt;/code&gt;&lt;/pre&gt;
                       label.y = c(1.1, 1.1, 1.1, 1.1))  # the y positions of the labels
 
 P_arrg_2&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file2a304526613c_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="text-annotations"&gt;3. Text annotations&lt;/h3&gt;
 &lt;p&gt;Sometimes we might want to add some text annotations to the figure. &lt;code&gt;ggpubr&lt;/code&gt; provides a handy function &lt;code&gt;annotate_figure()&lt;/code&gt; for this: simply create a &lt;code&gt;grob&lt;/code&gt; object using &lt;code&gt;text_grob()&lt;/code&gt; (in which you can specify the x and y positions of the text as well as its horizontal and vertical adjustments) and pass it to &lt;code&gt;annotate_figure()&lt;/code&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;P_arrg_3 &amp;lt;- annotate_figure(P_arrg_2,
@@ -154,7 +154,7 @@ P_arrg_2&lt;/code&gt;&lt;/pre&gt;
                                             vjust = 10))
 
 P_arrg_3&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file2a304526613c_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="plot-alignment"&gt;4. Plot alignment&lt;/h3&gt;
 &lt;p&gt;Another nice functionality of &lt;code&gt;ggarrange()&lt;/code&gt; is that it can automatically align the plot panels by axis (vertically and/or horizontally). This is particularly useful when the plots have different margin sizes (e.g., due to different label lengths). Let’s take a look at an example:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### A scatterplot of Sepal.Length vs. Sepal.Width
@@ -175,14 +175,14 @@ ggarrange(P5,
           P4,
           nrow = 2,
           heights = c(0.3, 0.7))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-5-1.png" width="50%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file2a304526613c_files/figure-html/unnamed-chunk-5-1.png" width="50%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### The y-axes of the two plots are now vertically aligned
 ggarrange(P5, 
           P4,
           nrow = 2,
           heights = c(0.3, 0.7),
           align = &amp;quot;v&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-6-1.png" width="50%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file2a304526613c_files/figure-html/unnamed-chunk-6-1.png" width="50%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;h2 id="method-2.-using-draw_plot-in-the-package-cowplot"&gt;Method 2. Using &lt;code&gt;draw_plot()&lt;/code&gt; in the package &lt;code&gt;cowplot&lt;/code&gt;&lt;/h2&gt;
 &lt;p&gt;The package &lt;code&gt;cowplot&lt;/code&gt; provides a family of functions for adding plots/images/text to the graphic device. We will see these nice features shortly in the following. Again, let’s first create some example plots:&lt;/p&gt;
@@ -212,7 +212,7 @@ P3 &amp;lt;- ggplot(iris, aes(x = Sepal.Width, color = Species)) +
 P1
 P2
 P3&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-7-1.png" width="45%" /&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-7-2.png" width="45%" /&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-7-3.png" width="45%" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file2a304526613c_files/figure-html/unnamed-chunk-7-1.png" width="45%" /&gt;&lt;img src="file2a304526613c_files/figure-html/unnamed-chunk-7-2.png" width="45%" /&gt;&lt;img src="file2a304526613c_files/figure-html/unnamed-chunk-7-3.png" width="45%" /&gt;&lt;/p&gt;
 &lt;h3 id="basic-layout-1"&gt;1. Basic layout&lt;/h3&gt;
 &lt;p&gt;The first method &lt;code&gt;ggarrange&lt;/code&gt; works by cutting the graphic device into grids of various widths and heights and placing the corresponding plots into those grids. Here, the second method &lt;code&gt;draw_plot()&lt;/code&gt;, is a bit different though. Basically, we first create a drawing canvas (using the function &lt;code&gt;ggdraw()&lt;/code&gt;), which has the x- and y-coordinates of 0 to 1. Next, we use &lt;code&gt;draw_plot()&lt;/code&gt; to add the plots to this canvas by specifying their x and y positions (corresponding to the bottom-left corner of the plots) as well as the widths and heights.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(cowplot)
@@ -221,7 +221,7 @@ ggdraw() +
   draw_plot(P2 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;), x = 0, y = 0.65, width = 0.925, height = 0.3) + 
   draw_plot(P1, x = 0, y = 0, width = 0.65, height = 0.65) +
   draw_plot(P3 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;), x = 0.65, y = 0, width = 0.3, height = 0.65)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-8-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file2a304526613c_files/figure-html/unnamed-chunk-8-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="panel-labels-1"&gt;2. Panel labels&lt;/h3&gt;
 &lt;p&gt;Similarly, we can add panel labels to the figure using the function &lt;code&gt;draw_text()&lt;/code&gt;, with the same principle as &lt;code&gt;draw_plot()&lt;/code&gt;:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggdraw() + 
@@ -230,7 +230,7 @@ ggdraw() +
   draw_plot(P3 + labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;), x = 0.65, y = 0, width = 0.3, height = 0.65) + 
   draw_text(c(&amp;quot;(a)&amp;quot;, &amp;quot;(b)&amp;quot;, &amp;quot;(c)&amp;quot;), x = c(0.075, 0.075, 0.725), y = c(0.975, 0.675, 0.675)) + 
   draw_text(&amp;quot;Visualizing Iris Data&amp;quot;, x = 0.5, y = 0.975, color = &amp;quot;blue&amp;quot;, size = 14, fontface = &amp;quot;italic&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-9-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file2a304526613c_files/figure-html/unnamed-chunk-9-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="add-external-images"&gt;3. Add external images&lt;/h3&gt;
 &lt;p&gt;Another cool thing when working with &lt;code&gt;cowplot&lt;/code&gt; is that you can add external images to the graphic device. Use &lt;code&gt;draw_image()&lt;/code&gt; to do this (note that you need to have the package &lt;code&gt;magick&lt;/code&gt; installed beforehand for this function to work):&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;magick&amp;quot;)
@@ -241,7 +241,7 @@ ggdraw() +
   draw_text(c(&amp;quot;(a)&amp;quot;, &amp;quot;(b)&amp;quot;, &amp;quot;(c)&amp;quot;), x = c(0.075, 0.075, 0.725), y = c(0.975, 0.675, 0.675)) + 
   draw_text(&amp;quot;Visualizing Iris Data&amp;quot;, x = 0.5, y = 0.975, color = &amp;quot;blue&amp;quot;, size = 14, fontface = &amp;quot;italic&amp;quot;) +
   draw_image(&amp;quot;https://archive.ics.uci.edu/ml/assets/MLimages/Large53.jpg&amp;quot;, x = 0.75, y = 0.9, width = 0.1, height = 0.1)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-10-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file2a304526613c_files/figure-html/unnamed-chunk-10-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="insets-and-legends"&gt;4. Insets and legends&lt;/h3&gt;
 &lt;p&gt;We can even do more tricks in the figure, for example, adding inset plots. Additionally, the package has a function called &lt;code&gt;get_legend()&lt;/code&gt;, which allows one to extract the legend from a plot (as a &lt;code&gt;grob&lt;/code&gt; object) for further use. See the example below to get an idea of how they work:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### 1. A scatterplot of Sepal.Length vs. Sepal.Width
@@ -318,17 +318,13 @@ ggdraw() +
   draw_image(&amp;quot;https://archive.ics.uci.edu/ml/assets/MLimages/Large53.jpg&amp;quot;, x = 0.75, y = 0.85, width = 0.1, height = 0.1) + 
   draw_plot(P5, x = 0, y = 0.025, width = 0.65, height = 0.2) + 
   draw_plot(P6, x = 0.025, y = 0, width = 0.2, height = 0.65)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file25481fc236e6_files/figure-html/unnamed-chunk-11-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file2a304526613c_files/figure-html/unnamed-chunk-11-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Note that you might need to tweak a bit so that the inset boxplots align with the axes of the main panel. A tip here is to use exactly the same axis settings (labels, ticks, ranges, font size, etc.) for the main panel and the insets and specify the same x and y positions in &lt;code&gt;draw_plot()&lt;/code&gt; for them. After making sure that the main panel and the insets are aligned, you can then remove all the theme elements from the insets and redraw the geoms on the canvas.&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
-&lt;!-- To recap, we --&gt;
-&lt;!-- The first method, `ggarrange()` is . So if you do not have complex layout, this is --&gt;
-&lt;!-- perhaps the go-to method --&gt;
-&lt;!-- The second method, `draw_plot()`, allows you to arrange any plots at any positions with --&gt;
-&lt;!-- Basically, with `cowplot`, you can put anything anywhere in the figure as you wish. Perhaps the only downside is that it might take a while to experiment so that the objects are at the exact positions with the sizes you want. But this also allows for much greater flexibility right?! --&gt;
-&lt;!-- plots. So save this method for the time when you need to create a complex multiple layout plot. --&gt;
-&lt;!-- The most important thing is to have an idea of what your figure should look like. Perhaps draw it down on a paper. After you get an idea, yuo can then proceed and make the individual plots, and design the layout, and finally tweak the figure and do some additional decorations. --&gt;
-&lt;!-- Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any! --&gt;
+&lt;p&gt;To recap, we’ve walked through two methods to arrange multiple ggplots on a same graphic device. The first one, &lt;code&gt;ggarrange()&lt;/code&gt; in the package &lt;code&gt;ggpubr&lt;/code&gt;, is straightforward and easy-to-use. Just pass the plots into the function, tell it your layout designs, and it’s done. The package also offers a function for adding text annotations to the figure. So if you simply just want to combine several plots together without complex layout, this is perhaps the go-to method and will save you lots of time.&lt;/p&gt;
+&lt;p&gt;The second method, &lt;code&gt;draw_plot()&lt;/code&gt; and its family functions in the package &lt;code&gt;cowplot&lt;/code&gt;, create a drawing canvas that allows you to put any plots/text/images at any places on it. You can also create plot insets as well as extract the legend from the plot to customize its position. This method provides much greater flexibility in terms of plot layout, but at a cost that it might take some time to experiment a bit so that the objects of desired sizes are at the exact positions you want. This second method is well-suited for complex plot layout, or if you really want to tweak the plot positions to your heart’s content.&lt;/p&gt;
+&lt;p&gt;Whatever method you use, perhaps the most important thing is to think about what your final figure should look like. Maybe sketch it out on a paper first. After getting sort of an idea, you can then proceed to preparing the individual plots, determining their positions and sizes, doing some decorations such as adding panel labels and text annotations, and finally fine-tuning the objects before printing it out.&lt;/p&gt;
+&lt;p&gt;Hope you enjoy the reading and don’t forget to leave your comments and suggestions below if you have any!&lt;/p&gt;
 &lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
       <distill:md5>7e292a800db49bdbba626427c2dc7df4</distill:md5>
       <category>2021</category>
