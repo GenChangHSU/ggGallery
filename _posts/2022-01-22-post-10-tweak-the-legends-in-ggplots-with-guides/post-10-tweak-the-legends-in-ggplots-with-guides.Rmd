@@ -83,24 +83,38 @@ knitr::opts_chunk$set(message = F,
 
 <!-- Start of the article -->
 
-The tenth post.
-A small milestone reached! Keep going
-
+Welcome to the first post in 2022—also my tenth ggGallery post! A small milestone reached. Keep going and head towards the next one!
 
 ## Introduction
 
 
 
 ## Discrete-scale legends
+We can modify the legends mapped to a continuous variable using `guide_legend()`
 
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+library(tidyverse)
 
+```
 
 
 ## Continuous-scale legends
+We can modify the legends mapped to a continuous variable using `guide_colorbar()`
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
 
 
+```
 
 
 ## Summary
+
+In this post, we've seen
+
+Another way to modify the legend appearance is using the `theme()`. 
+
+
+
+
 
 Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any!
