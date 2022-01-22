@@ -1,0 +1,106 @@
+---
+title: "Post #10. Tweak the legends in ggplots with guides()"
+description: |
+  In this post, you will learn how to tweak the appearance of the ggplot legends using with the function `guides()`.
+author:
+  - name: Gen-Chang Hsu
+date: 2022-01-22
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2022"
+preview: ../../homepage_images/Post10.png
+draft: true
+---
+
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+</style>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F)
+
+```
+
+<!-- Start of the article -->
+
+The tenth post.
+A small milestone reached! Keep going
+
+
+## Introduction
+
+
+
+## Discrete-scale legends
+
+
+
+
+## Continuous-scale legends
+
+
+
+
+## Summary
+
+Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any!
