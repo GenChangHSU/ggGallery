@@ -1,0 +1,121 @@
+---
+title: "Post #10. ggplot Legend Tips Series No.1: Working on discrete-scale legends with guides()"
+description: |
+  In this post, you will learn how to tweak the appearance of discrete-scale legends in ggplots with `guides()`.
+author:
+  - name: Gen-Chang Hsu
+date: 2022-01-28
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2022"
+  - "Legend Tips Series"
+preview: ../../homepage_images/Post10.png
+draft: true
+---
+
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+</style>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F)
+
+```
+
+<!-- Start of the article -->
+
+Welcome to the first post in 2022—also my 10^th^ ggGallery post! A tiny but meaningful milestone reached!
+
+In this new year, I am going to launch a blog post series "Legend Tips", where I dive into the relevant functions/arguments to show how you can make use them to enhance your ggplot legends, as well as provide some handy tips for dealing with some commonly-encountered legend issues. 
+
+
+## Introduction
+
+Legends are arguably one of the greatest advantages of ggplots over the R base graphics; ggplot legends are so versatile that you can basically do anything you want. However, there is also a downside of this advantage: it often takes quite a while to wrap your head around lots of argument details. What's worse, there are several different "systems" controlling legends in ggplots—scales, guides, and themes, adding further complications to the already-complicated    
+
+Inspired by the legend problems I've personally encountered throughout my ggplot learning journey as well as the questions my friends have asked me about, I feel that legends would be a great topic to write about, both for myself and for any geeks who love ggplots so much as I do!
+
+Let's kick this series off with working on discrete-scale legends using the function `guides()`.
+
+
+## Discrete-scale legends
+
+We can modify the legends mapped to a continuous variable using `guide_legend()`
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+library(tidyverse)
+
+```
+
+
+
+## Summary
+
+In this post, we've seen how to use the arguments in `guides()` to work on the discrete-scale legends. 
+
+We can modify the appearance of legend keys, layouts, positions. We can even customizing the legend by overriding the default aesthetics.
+
+
+Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any!
+
+

@@ -56,7 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
 code span.cf { color: #007ba5; } /* ControlFlow */
@@ -77,7 +77,7 @@ code span.kw { color: #007ba5; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
 code span.ot { color: #007ba5; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
@@ -85,38 +85,39 @@ code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
-  <!--radix_placeholder_meta_tags-->
-  <title>Post #10. Tweak the legends in ggplots with guides()</title>
 
-  <meta property="description" itemprop="description" content="In this post, you will learn how to tweak the appearance of the ggplot legends using with the function `guides()`."/>
+  <!--radix_placeholder_meta_tags-->
+  <title>Post #10. ggplot Legend Tips Series No.1: Working on discrete-scale legends with guides()</title>
+
+  <meta property="description" itemprop="description" content="In this post, you will learn how to tweak the appearance of discrete-scale legends in ggplots with `guides()`."/>
 
 
   <!--  https://schema.org/Article -->
-  <meta property="article:published" itemprop="datePublished" content="2022-01-22"/>
-  <meta property="article:created" itemprop="dateCreated" content="2022-01-22"/>
+  <meta property="article:published" itemprop="datePublished" content="2022-01-28"/>
+  <meta property="article:created" itemprop="dateCreated" content="2022-01-28"/>
   <meta name="article:author" content="Gen-Chang Hsu"/>
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="Post #10. Tweak the legends in ggplots with guides()"/>
+  <meta property="og:title" content="Post #10. ggplot Legend Tips Series No.1: Working on discrete-scale legends with guides()"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="In this post, you will learn how to tweak the appearance of the ggplot legends using with the function `guides()`."/>
+  <meta property="og:description" content="In this post, you will learn how to tweak the appearance of discrete-scale legends in ggplots with `guides()`."/>
   <meta property="og:locale" content="en_US"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="Post #10. Tweak the legends in ggplots with guides()"/>
-  <meta property="twitter:description" content="In this post, you will learn how to tweak the appearance of the ggplot legends using with the function `guides()`."/>
+  <meta property="twitter:title" content="Post #10. ggplot Legend Tips Series No.1: Working on discrete-scale legends with guides()"/>
+  <meta property="twitter:description" content="In this post, you will learn how to tweak the appearance of discrete-scale legends in ggplots with `guides()`."/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","draft"]}},"value":[{"type":"character","attributes":{},"value":["Post #10. Tweak the legends in ggplots with guides()"]},{"type":"character","attributes":{},"value":["In this post, you will learn how to tweak the appearance of the ggplot legends using with the function `guides()`.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2022-01-22"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2022"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post10.png"]},{"type":"logical","attributes":{},"value":[true]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","draft"]}},"value":[{"type":"character","attributes":{},"value":["Post #10. ggplot Legend Tips Series No.1: Working on discrete-scale legends with guides()"]},{"type":"character","attributes":{},"value":["In this post, you will learn how to tweak the appearance of discrete-scale legends in ggplots with `guides()`.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2022-01-28"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2022","Legend Tips Series"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post10.png"]},{"type":"logical","attributes":{},"value":[true]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-10-tweak-the-legends-in-ggplots-with-guides_files/anchor-4.2.2/anchor.min.js","post-10-tweak-the-legends-in-ggplots-with-guides_files/bowser-1.9.3/bowser.min.js","post-10-tweak-the-legends-in-ggplots-with-guides_files/distill-2.2.21/template.v2.js","post-10-tweak-the-legends-in-ggplots-with-guides_files/header-attrs-2.11/header-attrs.js","post-10-tweak-the-legends-in-ggplots-with-guides_files/jquery-3.6.0/jquery-3.6.0.js","post-10-tweak-the-legends-in-ggplots-with-guides_files/jquery-3.6.0/jquery-3.6.0.min.js","post-10-tweak-the-legends-in-ggplots-with-guides_files/jquery-3.6.0/jquery-3.6.0.min.map","post-10-tweak-the-legends-in-ggplots-with-guides_files/popper-2.6.0/popper.min.js","post-10-tweak-the-legends-in-ggplots-with-guides_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-10-tweak-the-legends-in-ggplots-with-guides_files/tippy-6.2.7/tippy-light-border.css","post-10-tweak-the-legends-in-ggplots-with-guides_files/tippy-6.2.7/tippy.css","post-10-tweak-the-legends-in-ggplots-with-guides_files/tippy-6.2.7/tippy.umd.min.js","post-10-tweak-the-legends-in-ggplots-with-guides_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/anchor-4.2.2/anchor.min.js","post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/bowser-1.9.3/bowser.min.js","post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/distill-2.2.21/template.v2.js","post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/header-attrs-2.11/header-attrs.js","post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/jquery-3.6.0/jquery-3.6.0.js","post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/jquery-3.6.0/jquery-3.6.0.min.js","post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/jquery-3.6.0/jquery-3.6.0.min.map","post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/popper-2.6.0/popper.min.js","post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/tippy-6.2.7/tippy-light-border.css","post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/tippy-6.2.7/tippy.css","post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/tippy-6.2.7/tippy.umd.min.js","post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1263,7 +1264,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          return "<p>" + $('#ref-' + ref).html() + "</p>";
+        }).join("\n");
         window.tippy(this, {
           allowHTML: true,
           content: refHtml,
@@ -1434,16 +1438,16 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
-  <script src="post-10-tweak-the-legends-in-ggplots-with-guides_files/header-attrs-2.10/header-attrs.js"></script>
-  <script src="post-10-tweak-the-legends-in-ggplots-with-guides_files/jquery-1.11.3/jquery.min.js"></script>
-  <script src="post-10-tweak-the-legends-in-ggplots-with-guides_files/popper-2.6.0/popper.min.js"></script>
-  <link href="post-10-tweak-the-legends-in-ggplots-with-guides_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
-  <link href="post-10-tweak-the-legends-in-ggplots-with-guides_files/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
-  <script src="post-10-tweak-the-legends-in-ggplots-with-guides_files/tippy-6.2.7/tippy.umd.min.js"></script>
-  <script src="post-10-tweak-the-legends-in-ggplots-with-guides_files/anchor-4.2.2/anchor.min.js"></script>
-  <script src="post-10-tweak-the-legends-in-ggplots-with-guides_files/bowser-1.9.3/bowser.min.js"></script>
-  <script src="post-10-tweak-the-legends-in-ggplots-with-guides_files/webcomponents-2.0.0/webcomponents.js"></script>
-  <script src="post-10-tweak-the-legends-in-ggplots-with-guides_files/distill-2.2.21/template.v2.js"></script>
+  <script src="post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/header-attrs-2.11/header-attrs.js"></script>
+  <script src="post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <script src="post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/popper-2.6.0/popper.min.js"></script>
+  <link href="post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/anchor-4.2.2/anchor.min.js"></script>
+  <script src="post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
   <!--/radix_placeholder_site_in_header-->
 
@@ -1455,7 +1459,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #10. Tweak the legends in ggplots with guides()","description":"In this post, you will learn how to tweak the appearance of the ggplot legends using with the function `guides()`.","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-01-22T00:00:00.000+08:00","citationText":"Hsu, 2022"}
+{"title":"Post #10. ggplot Legend Tips Series No.1: Working on discrete-scale legends with guides()","description":"In this post, you will learn how to tweak the appearance of discrete-scale legends in ggplots with `guides()`.","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-01-28T00:00:00.000-08:00","citationText":"Hsu, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1465,19 +1469,20 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>Post #10. Tweak the legends in ggplots with guides()</h1>
+<h1>Post #10. ggplot Legend Tips Series No.1: Working on discrete-scale legends with guides()</h1>
 <!--radix_placeholder_categories-->
 <div class="dt-tags">
 <div class="dt=tag">2022</div>
+<div class="dt=tag">Legend Tips Series</div>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>In this post, you will learn how to tweak the appearance of the ggplot legends using with the function <code>guides()</code>.</p></p>
+<p><p>In this post, you will learn how to tweak the appearance of discrete-scale legends in ggplots with <code>guides()</code>.</p></p>
 </div>
 
 <div class="d-byline">
   Gen-Chang Hsu  
   
-<br/>2022-01-22
+<br/>2022-01-28
 </div>
 
 <div class="d-article">
@@ -1541,8 +1546,12 @@ div.l-body {
 
 </style>
 <!-- Start of the article -->
-<p>Welcome to the first post in 2022—also my tenth ggGallery post! A small milestone reached. Keep going and head towards the next one!</p>
+<p>Welcome to the first post in 2022—also my 10<sup>th</sup> ggGallery post! A tiny but meaningful milestone reached!</p>
+<p>In this new year, I am going to launch a blog post series “Legend Tips”, where I dive into the relevant functions/arguments to show how you can make use them to enhance your ggplot legends, as well as provide some handy tips for dealing with some commonly-encountered legend issues.</p>
 <h2 id="introduction">Introduction</h2>
+<p>Legends are one of the greatest advantages of ggplots over the R base graphics: they are so versatile that you can basically do whatever you want. However, there is a downside to this advantage: it often takes quite a while to wrap your head around lots of arguments and details. Another thing that further complicates this is that there are several different “systems” controlling the legends: scales, guides, and themes, rendering it</p>
+<p>Inspired by the problem I’ve encountered throughout my learning and the questions my friends recently asked me about, I feel it would be a great topic to write about, both for myself and for any ggplot geak who !</p>
+<p>Let’s kick this series off by working on discrete-scale legends with <code>guides()</code>.</p>
 <h2 id="discrete-scale-legends">Discrete-scale legends</h2>
 <p>We can modify the legends mapped to a continuous variable using <code>guide_legend()</code></p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1551,14 +1560,9 @@ div.l-body {
 </code></pre>
 </div>
 </div>
-<h2 id="continuous-scale-legends">Continuous-scale legends</h2>
-<p>We can modify the legends mapped to a continuous variable using <code>guide_colorbar()</code></p>
-<div class="layout-chunk" data-layout="l-body">
-
-</div>
 <h2 id="summary">Summary</h2>
-<p>In this post, we’ve seen</p>
-<p>Another way to modify the legend appearance is using the <code>theme()</code>.</p>
+<p>In this post, we’ve seen how to use the arguments in <code>guides()</code> to work on the discrete-scale legends.</p>
+<p>We can modify the appearance of legend keys, layouts, positions. We can even customizing the legend by overriding the default aesthetics.</p>
 <p>Hope you enjoy the reading and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
