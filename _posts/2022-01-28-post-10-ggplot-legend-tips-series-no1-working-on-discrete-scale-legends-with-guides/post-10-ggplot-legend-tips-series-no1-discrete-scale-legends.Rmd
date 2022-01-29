@@ -116,27 +116,61 @@ P <- ggplot(data = CO2) +
 
 P
 ```
+
 Seems that nonchilled individuals have higher CO~2~ uptake rates than chilled ones by visual inspection. Well, this is not the focus of this post. Let's get to the main topic and see how we can modify the legend using the arguments in `guides()`. 
 
-### (1) Text
+### (1) Legend title
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-P + guides(color = guide_legend(title = "ggg"))
+P + guides(color = guide_legend(title = ,
+                                title.position = ,
+                                title.theme = ,
+                                title.hjust = ,
+                                title.vjust = ))
   
 ```
 
-### (1) Legend key
+### (2) Legend labels
 
-### (1) Layout
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+P + guides(color = guide_legend(label = ,
+                                label.position = ,
+                                label.theme = ,
+                                label.hjust = ,
+                                label.vjust = ))
+  
+```
+
+### (3) Legend keys
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+P + guides(color = guide_legend(keywidth = ,
+                                keyheight = ,
+                                override.aes = ))
+  
+```
+
+### (4) Legend layout
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+P + guides(color = guide_legend(direction = , 
+                                nrow = ,
+                                ncol = ,
+                                byrow = ,
+                                reverse = ))
+  
+```
+
+
+
+Before we finish, it is worth mentioning that many of the arguments in `guides()` actually overlap with those in `theme()` (which will be the topic in another post of this series). So what's the difference between these two functions? Which one should you use?
+
+In fact, the arguments in `guides()` only affect the legends corresponding to the specified aesthetic, whereas the arguments in `theme()` will affect all the legends in the figure together. So if you have only one legend, basically using either function would give the same results. However, if you have multiple legends and you want to make different adjustments for them, then you should use `guides()` instead.
 
 
 ## Summary
 
-In this post, we've seen how to use the arguments in `guides()` to adjust the discrete-scale legends. 
-
-We can modify the layouts, the positions, and the appearance of legend items. We can even customize the legend keys by overriding the default aesthetics.
-
-Try experimenting it a bit and I believe you will make a nice legend for your figure!
+In this post, we've learned how to modify the appearance and layout of legend items in discrete ggplot legends using the function `guides()`. We can even customize the legend keys by overriding the default aesthetics. Try playing around with the arguments a bit and I believe you will be albe to make a nice legend(s) for your figure!
 
 Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any!
 
