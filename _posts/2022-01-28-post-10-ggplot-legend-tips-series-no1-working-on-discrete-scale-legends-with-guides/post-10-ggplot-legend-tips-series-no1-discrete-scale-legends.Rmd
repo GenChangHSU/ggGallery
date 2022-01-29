@@ -1,7 +1,7 @@
 ---
-title: "Post #10. ggplot Legend Tips Series No.1: Working on discrete-scale legends with guides()"
+title: "Post #10. ggplot Legend Tips Series No.1: Working on discrete legends with guides()"
 description: |
-  In this post, you will learn how to tweak the appearance of discrete-scale legends in ggplots with `guides()`.
+  In this post, you will learn how to tweak the appearance of discrete legends in ggplots with `guides()`.
 author:
   - name: Gen-Chang Hsu
 date: 2022-01-28
@@ -84,37 +84,59 @@ knitr::opts_chunk$set(message = F,
 
 <!-- Start of the article -->
 
-Welcome to the first post in 2022—also my 10^th^ ggGallery post! A tiny but meaningful milestone reached!
+Welcome to the first post of 2022—also my 10^th^ ggGallery post! A tiny but meaningful milestone reached!
 
-In this new year, I am going to launch a blog post series "Legend Tips", where I dive into the relevant functions/arguments to show how you can make use them to enhance your ggplot legends, as well as provide some handy tips for dealing with some commonly-encountered legend issues. 
+## Background
 
+Legends are arguably one of the greatest advantages of ggplots over the R base graphics; they are so versatile that you can basically create anything you want. Though, it often takes quite a while to wrap your head around lots of argument details. Also, there are actually several "players" controlling the legends in ggplots—scales, guides, and themes, adding further complications to the already-complicated system.
 
-## Introduction
+Inspired by the problems I've personally encountered throughout my ggplot learning journey as well as the questions my friends have asked me about, I've decided to launch a blog post series "Legend Tips", where I dive into the relevant functions/arguments and show how you can make use them to enhance your ggplot legends, as well as provide some handy tips for dealing with frequently-encountered legend issues. I feel that legends would be a great topic to write about, both for myself and for those geeks who use/love ggplots so much as I do! 
 
-Legends are arguably one of the greatest advantages of ggplots over the R base graphics; ggplot legends are so versatile that you can basically do anything you want. However, there is also a downside of this advantage: it often takes quite a while to wrap your head around lots of argument details. What's worse, there are several different "systems" controlling legends in ggplots—scales, guides, and themes, adding further complications to the already-complicated    
-
-Inspired by the legend problems I've personally encountered throughout my ggplot learning journey as well as the questions my friends have asked me about, I feel that legends would be a great topic to write about, both for myself and for any geeks who love ggplots so much as I do!
-
-Let's kick this series off with working on discrete-scale legends using the function `guides()`.
+We'll kick this series off by working on discrete legends using the function `guides()`. Keep reading!
 
 
-## Discrete-scale legends
+## Discrete legends
 
-We can modify the legends mapped to a continuous variable using `guide_legend()`
+There are two main types of legends in ggplots: **discrete** and **continuous**. Discrete legends correspond to the aesthetics mapped to categorical variables (factors), for example, gender and eye color; continuous legends correspond to the aesthetics mapped to continuous variables, for example, tree height and population density. These two legend types can live together in the same figure. They do have many commonalities, but still differ in some detail specifications.
+
+In this post, we will be using the [`CO2`](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/zCO2.html) dataset, which contains the CO~2~ uptake rates of 12 grass plant individuals ([_Echinochloa crus-galli_](https://en.wikipedia.org/wiki/Echinochloa_crus-galli)) from two sites Quebec and Mississippi (each 6) measured at several CO~2~ concentrations. Additionally, half of the plant individuals from each site were chilled overnight before measurement.
+
+Let's first take a look at the CO~2~ uptake rates under the two treatments (nonchilled vs. chilled):
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
 library(tidyverse)
 
+### Boxplot of CO2 uptake rates by treatment
+P <- ggplot(data = CO2) + 
+  geom_boxplot(aes(x = Treatment, y = uptake, color = Treatment), width = 0.5) + 
+  geom_point(aes(x = Treatment, y = uptake, color = Treatment), position = position_jitter(width = 0.05)) + 
+  labs(x = "Treatment", y = expression(paste(CO[2], " uptake rate"))) + 
+  theme_classic(base_size = 14) + 
+  scale_color_brewer(palette = "Set1")
+
+P
+```
+Seems that nonchilled individuals have higher CO~2~ uptake rates than chilled ones by visual inspection. Well, this is not the focus of this post. Let's get to the main topic and see how we can modify the legend using the arguments in `guides()`. 
+
+### (1) Text
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+P + guides(color = guide_legend(title = "ggg"))
+  
 ```
 
+### (1) Legend key
+
+### (1) Layout
 
 
 ## Summary
 
-In this post, we've seen how to use the arguments in `guides()` to work on the discrete-scale legends. 
+In this post, we've seen how to use the arguments in `guides()` to adjust the discrete-scale legends. 
 
-We can modify the appearance of legend keys, layouts, positions. We can even customizing the legend by overriding the default aesthetics.
+We can modify the layouts, the positions, and the appearance of legend items. We can even customize the legend keys by overriding the default aesthetics.
 
+Try experimenting it a bit and I believe you will make a nice legend for your figure!
 
 Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any!
 
