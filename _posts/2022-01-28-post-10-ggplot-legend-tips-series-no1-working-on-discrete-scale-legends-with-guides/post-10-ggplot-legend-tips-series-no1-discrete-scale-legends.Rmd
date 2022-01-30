@@ -135,49 +135,59 @@ Additionally, we can (5) change the default aesthetic mapping and (6) make speci
 
 ### (1) Legend title
 
+We can modify the name, the position (relative to the legend labels and keys), and the text appearance of the title. We can also adjust the horizontal and vertical alignment of the title.  
+
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-P + guides(color = guide_legend(title = "Treatment",
-                                title.position = "top",
-                                title.theme = element_text(size = 15, color = "darkgreen", face = "bold.italic"),
-                                title.hjust = 0.5,
-                                title.vjust = 2))
+P + guides(color = guide_legend(title = "Treatment",  # name
+                                title.position = "top",  # position
+                                title.theme = element_text(size = 15, color = "darkgreen", face = "bold.italic"),  # text appearance
+                                title.hjust = 0.5,  # horizontal alignment
+                                title.vjust = 2))  # vertical alignment
   
 ```
 
 ### (2) Legend labels
 
+Similar to what we've done for the title, we can modify the position (relative to the legend keys) and text appearance of the labels as well as adjust the horizontal and vertical alignment of the title. If we want to hide the labels, specify `label = F`.
+
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-P + guides(color = guide_legend(label = T,
-                                label.position = "left",
-                                label.theme = element_text(size = 12, color = "brown", face = "italic"),
-                                label.hjust = 0.5,
-                                label.vjust = 0.5))
+P + guides(color = guide_legend(label = T,  # show the labels
+                                label.position = "top",  # position
+                                label.theme = element_text(size = 12, color = "brown", face = "italic"),  # text appearance
+                                label.hjust = 0.5,  # horizontal alignment
+                                label.vjust = 0.5))  # vertical alignment
   
 ```
 
 ### (3) Legend keys
 
+We can change the width and height of the legend keys. This is especially handy for adjusting the length of the lines.
+
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-P + guides(color = guide_legend(keywidth = unit(1, "inches"),
-                                keyheight = unit(1, "inches")))
+P + guides(color = guide_legend(keywidth = unit(0.25, "inches"),
+                                keyheight = unit(0.5, "inches")))
   
 ```
 
 ### (4) Legend layout
 
+The legend can be displayed either horizontally or vertically, with legend items separated into several rows and columns. We can also reverse the order of the items.
+
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-P + guides(color = guide_legend(direction = , 
-                                nrow = ,
-                                ncol = ,
-                                byrow = ,
-                                reverse = ))
+P + guides(color = guide_legend(direction = "horizontal",  # direction of the legend
+                                nrow = 1,  # number of rows
+                                ncol = 2,  # number of columns
+                                byrow = T,  # arrange the legend items row by row 
+                                reverse = T))  # reverse the legend items
   
 ```
 
-
 ### (5) Change default mapping
+
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-P + guides(color = guide_legend(override.aes = ))
+P + guides(color = guide_legend(override.aes = list(color = c("purple", "green"),
+                                                    size = 1
+                                                    )))
   
 ```
 
