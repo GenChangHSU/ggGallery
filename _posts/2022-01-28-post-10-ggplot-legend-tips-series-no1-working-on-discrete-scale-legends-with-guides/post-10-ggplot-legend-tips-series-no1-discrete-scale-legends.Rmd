@@ -117,36 +117,49 @@ P <- ggplot(data = CO2) +
 P
 ```
 
-Seems that nonchilled individuals have higher CO~2~ uptake rates than chilled ones by visual inspection. Well, this is not the focus of this post. Let's get to the main topic and see how we can modify the legend using the arguments in `guides()`. 
+Seems that nonchilled individuals have higher CO~2~ uptake rates than chilled ones by visual inspection. Well, this is not the focus of this post. Let's get to the main topic and see how we can modify the legend using `guides()`. 
+
+
+## The `guide_legend()` function
+
+The actual function in `guides()` that controls the discrete legend is `guide_legend()`. In this example, we mapped the factor "Treatment" to color, so we will pass `color = guide_legend()` into `guides()` and specify the arguments in `guide_legend()`.
+
+There are several things we can modify in the legend:
+
+<span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Legend title</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Legend labels</span>
+<span style="display: block; margin-top: 0px; margin-left: 10px"> (3) Legend keys</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (4) Legend layout</span>
+
+Additionally, we can (5) change the default aesthetic mapping and (6) make specific adjustments for multiple legends.
 
 ### (1) Legend title
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-P + guides(color = guide_legend(title = ,
-                                title.position = ,
-                                title.theme = ,
-                                title.hjust = ,
-                                title.vjust = ))
+P + guides(color = guide_legend(title = "Treatment",
+                                title.position = "top",
+                                title.theme = element_text(size = 15, color = "darkgreen", face = "bold.italic"),
+                                title.hjust = 0.5,
+                                title.vjust = 2))
   
 ```
 
 ### (2) Legend labels
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-P + guides(color = guide_legend(label = ,
-                                label.position = ,
-                                label.theme = ,
-                                label.hjust = ,
-                                label.vjust = ))
+P + guides(color = guide_legend(label = T,
+                                label.position = "left",
+                                label.theme = element_text(size = 12, color = "brown", face = "italic"),
+                                label.hjust = 0.5,
+                                label.vjust = 0.5))
   
 ```
 
 ### (3) Legend keys
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-P + guides(color = guide_legend(keywidth = ,
-                                keyheight = ,
-                                override.aes = ))
+P + guides(color = guide_legend(keywidth = unit(1, "inches"),
+                                keyheight = unit(1, "inches")))
   
 ```
 
@@ -162,15 +175,37 @@ P + guides(color = guide_legend(direction = ,
 ```
 
 
+### (5) Change default mapping
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+P + guides(color = guide_legend(override.aes = ))
+  
+```
+
+
+### (6) Multiple legends
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+### Boxplot of CO2 uptake rates by treatment
+P_mult_legend <- ggplot(data = CO2) + 
+  geom_boxplot(aes(x = Treatment, y = uptake, color = Treatment), width = 0.5) + 
+  geom_point(aes(x = Treatment, y = uptake, color = Treatment, shape = Type), position = position_jitter(width = 0.05)) + 
+  labs(x = "Treatment", y = expression(paste(CO[2], " uptake rate"))) + 
+  theme_classic(base_size = 14) + 
+  scale_color_brewer(palette = "Set1")
+
+P_mult_legend
+```
+
+
 
 Before we finish, it is worth mentioning that many of the arguments in `guides()` actually overlap with those in `theme()` (which will be the topic in another post of this series). So what's the difference between these two functions? Which one should you use?
 
-In fact, the arguments in `guides()` only affect the legends corresponding to the specified aesthetic, whereas the arguments in `theme()` will affect all the legends in the figure together. So if you have only one legend, basically using either function would give the same results. However, if you have multiple legends and you want to make different adjustments for them, then you should use `guides()` instead.
+In fact, the arguments in `guides()` only affect the legends corresponding to the specified aesthetics, whereas the arguments in `theme()` will affect all the legends in the figure together. So if you have only one legend, using either function would give the same results. However, if you have multiple legends and you want to make different adjustments for each of them, then you should use `guides()` instead.
 
 
 ## Summary
 
-In this post, we've learned how to modify the appearance and layout of legend items in discrete ggplot legends using the function `guides()`. We can even customize the legend keys by overriding the default aesthetics. Try playing around with the arguments a bit and I believe you will be albe to make a nice legend(s) for your figure!
+In this post, we've learned how to modify the appearance and layout of legend items in discrete ggplot legends using the function `guides()`. We can even customize the legend keys by overriding the default aesthetic mapping. Try playing around with the arguments a bit and I believe you will be albe to make a nice legend(s) for your figure!
 
 Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any!
 

@@ -1459,7 +1459,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #10. ggplot Legend Tips Series No.1: Working on discrete legends with guides()","description":"In this post, you will learn how to tweak the appearance of discrete legends in ggplots with `guides()`.","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-01-28T00:00:00.000-08:00","citationText":"Hsu, 2022"}
+{"title":"Post #10. ggplot Legend Tips Series No.1: Working on discrete legends with guides()","description":"In this post, you will learn how to tweak the appearance of discrete legends in ggplots with `guides()`.","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-01-28T00:00:00.000+08:00","citationText":"Hsu, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1572,15 +1572,20 @@ div.l-body {
 </div>
 <p><img src="post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/figure-html5/unnamed-chunk-1-1.png" width="70%" /></p>
 </div>
-<p>Seems that nonchilled individuals have higher CO<sub>2</sub> uptake rates than chilled ones by visual inspection. Well, this is not the focus of this post. Let’s get to the main topic and see how we can modify the legend using the arguments in <code>guides()</code>.</p>
+<p>Seems that nonchilled individuals have higher CO<sub>2</sub> uptake rates than chilled ones by visual inspection. Well, this is not the focus of this post. Let’s get to the main topic and see how we can modify the legend using <code>guides()</code>.</p>
+<h2 id="the-guide_legend-function">The <code>guide_legend()</code> function</h2>
+<p>The actual function in <code>guides()</code> that controls the discrete legend is <code>guide_legend()</code>. In this example, we mapped the factor “Treatment” to color, so we will pass <code>color = guide_legend()</code> into <code>guides()</code> and specify the arguments in <code>guide_legend()</code>.</p>
+<p>There are several things we can modify in the legends:</p>
+<p><span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Legend title</span> <span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Legend labels</span> <span style="display: block; margin-top: 0px; margin-left: 10px"> (3) Legend keys</span> <span style="display: block; margin-top: 5px; margin-left: 10px"> (4) Legend layout</span></p>
+<p>Additionally, we can change the default mapping and modify multiple legends.</p>
 <h3 id="legend-title">(1) Legend title</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guide_legend.html'>guide_legend</a></span><span class='op'>(</span>title <span class='op'>=</span> ,
-                                title.position <span class='op'>=</span> ,
-                                title.theme <span class='op'>=</span> ,
-                                title.hjust <span class='op'>=</span> ,
-                                title.vjust <span class='op'>=</span> <span class='op'>)</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guide_legend.html'>guide_legend</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Treatment"</span>,
+                                title.position <span class='op'>=</span> <span class='st'>"top"</span>,
+                                title.theme <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>15</span>, color <span class='op'>=</span> <span class='st'>"darkgreen"</span>, face <span class='op'>=</span> <span class='st'>"bold.italic"</span><span class='op'>)</span>,
+                                title.hjust <span class='op'>=</span> <span class='fl'>0.5</span>,
+                                title.vjust <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
 <p><img src="post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/figure-html5/unnamed-chunk-2-1.png" width="70%" /></p>
@@ -1588,11 +1593,11 @@ div.l-body {
 <h3 id="legend-labels">(2) Legend labels</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guide_legend.html'>guide_legend</a></span><span class='op'>(</span>label <span class='op'>=</span> ,
-                                label.position <span class='op'>=</span> ,
-                                label.theme <span class='op'>=</span> ,
-                                label.hjust <span class='op'>=</span> ,
-                                label.vjust <span class='op'>=</span> <span class='op'>)</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guide_legend.html'>guide_legend</a></span><span class='op'>(</span>label <span class='op'>=</span> <span class='cn'>T</span>,
+                                label.position <span class='op'>=</span> <span class='st'>"left"</span>,
+                                label.theme <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>12</span>, color <span class='op'>=</span> <span class='st'>"brown"</span>, face <span class='op'>=</span> <span class='st'>"italic"</span><span class='op'>)</span>,
+                                label.hjust <span class='op'>=</span> <span class='fl'>0.5</span>,
+                                label.vjust <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
 <p><img src="post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/figure-html5/unnamed-chunk-3-1.png" width="70%" /></p>
@@ -1600,9 +1605,8 @@ div.l-body {
 <h3 id="legend-keys">(3) Legend keys</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guide_legend.html'>guide_legend</a></span><span class='op'>(</span>keywidth <span class='op'>=</span> ,
-                                keyheight <span class='op'>=</span> ,
-                                override.aes <span class='op'>=</span> <span class='op'>)</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guide_legend.html'>guide_legend</a></span><span class='op'>(</span>keywidth <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='st'>"inches"</span><span class='op'>)</span>,
+                                keyheight <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='st'>"inches"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
 <p><img src="post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/figure-html5/unnamed-chunk-4-1.png" width="70%" /></p>
@@ -1619,10 +1623,12 @@ div.l-body {
 </div>
 <p><img src="post-10-ggplot-legend-tips-series-no1-discrete-scale-legends_files/figure-html5/unnamed-chunk-5-1.png" width="70%" /></p>
 </div>
+<h3 id="change-the-default-aesthetics">(5) Change the default aesthetics</h3>
+<h3 id="multiple-legends">(6) Multiple legends</h3>
 <p>Before we finish, it is worth mentioning that many of the arguments in <code>guides()</code> actually overlap with those in <code>theme()</code> (which will be the topic in another post of this series). So what’s the difference between these two functions? Which one should you use?</p>
-<p>In fact, the arguments in <code>guides()</code> only affect the legends corresponding to the specified aesthetic, whereas the arguments in <code>theme()</code> will affect all the legends in the figure simultaneously. So if you have only one legend, basically using either function would give the same results. However, if you have multiple legends and you want to make different adjustments for them, then you should use <code>guides()</code> instead.</p>
+<p>In fact, the arguments in <code>guides()</code> only affect the legends corresponding to the specified aesthetic, whereas the arguments in <code>theme()</code> will affect all the legends in the figure together. So if you have only one legend, basically using either function would give the same results. However, if you have multiple legends and you want to make different adjustments for them, then you should use <code>guides()</code> instead.</p>
 <h2 id="summary">Summary</h2>
-<p>In this post, we’ve learned how to modify the appearance and layout of legend items in discrete ggplot legends using the function <code>guides()</code>. We can even customize the legend keys by overriding the default aesthetics. Try playing around with the arguments a bit and I believe you will make a nice legend(s) for your figure!</p>
+<p>In this post, we’ve learned how to modify the appearance and layout of legend items in discrete ggplot legends using the function <code>guides()</code>. We can even customize the legend keys by overriding the default aesthetics. Try playing around with the arguments a bit and I believe you will be albe to make a nice legend(s) for your figure!</p>
 <p>Hope you enjoy the reading and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
