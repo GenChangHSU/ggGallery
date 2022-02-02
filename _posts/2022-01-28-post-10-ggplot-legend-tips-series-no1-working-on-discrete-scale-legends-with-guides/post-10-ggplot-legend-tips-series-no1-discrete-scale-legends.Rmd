@@ -72,6 +72,9 @@ div.l-body {
     width: 120% !important;
 }
 
+div.l-body img {
+    margin-right: 20% !important;
+}
 </style>
 
 ```{r setup, include = FALSE}

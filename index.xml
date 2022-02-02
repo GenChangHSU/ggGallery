@@ -7,7 +7,18 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Fri, 28 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 01 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #11. ggplot Legend Tips Series No.2: Working on continuous legends with guides()</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2022-02-01-post-11-ggplot-legend-tips-series-no2-working-on-continuous-legends-with-guides</link>
+      <description>In this post, you will learn how to tweak the appearance of continuous legends in ggplots with `guides()`.</description>
+      <category>2022</category>
+      <category>Legend Tips Series</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2022-02-01-post-11-ggplot-legend-tips-series-no2-working-on-continuous-legends-with-guides</guid>
+      <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-02-01-post-11-ggplot-legend-tips-series-no2-working-on-continuous-legends-with-guides/../../homepage_images/Post11.png" medium="image" type="image/png" width="960" height="576"/>
+    </item>
     <item>
       <title>Post #10. ggplot Legend Tips Series No.1: Working on discrete legends with guides()</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
