@@ -90,44 +90,55 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-There are several things we can modify in the legend:
+When we map a variable to an aesthetic (e.g., color), ggplot will automatically create a legend for it. This is quite convenient; however, sometimes the information in the legend may be redundant to the plot itself and we would like to hide the legend. This is actually not a hard task, and in this post I will show you three ways to do so, each for different purposes and with different effects:
 
-<span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Legend title</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Legend labels</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Legend keys</span>
+<span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Hide the legend for a geom layer</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Hide the legend for an aesthetic mapping</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Hide all the legends in the figure</span>
 
-
-
-### (1)
+Let's make an example figure first and we'll walk through the above three ways one by one.
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
 library(tidyverse)
 
-P_multi_legend <- ggplot(data = CO2) + 
+P <- ggplot(data = CO2) + 
   geom_boxplot(aes(x = Treatment, y = uptake, color = Treatment), width = 0.5) + 
   geom_point(aes(x = Treatment, y = uptake, color = Treatment, shape = Type), position = position_jitter(width = 0.05)) + 
   labs(x = "Treatment", y = expression(paste(CO[2], " uptake rate"))) + 
   theme_classic(base_size = 14) + 
   scale_color_brewer(palette = "Set1")
 
-P_multi_legend
+P
+```
+
+### (1) Hide the legend for a geom layer
+
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+ggplot(data = CO2) + 
+  geom_boxplot(aes(x = Treatment, y = uptake, color = Treatment), width = 0.5) + 
+  geom_point(aes(x = Treatment, y = uptake, color = Treatment, shape = Type), position = position_jitter(width = 0.05), show.legend = F) + 
+  labs(x = "Treatment", y = expression(paste(CO[2], " uptake rate"))) + 
+  theme_classic(base_size = 14) + 
+  scale_color_brewer(palette = "Set1")
+
 ```
 
 
 
-### (2) 
+### (2) Hide the legend for an aesthetic mapping 
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-
+P + guides(color = "none")
   
 ```
 
 
 
-### (3)
+### (3) Hide all the legends in the figure
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-
+P + theme(legend.position = "none")
   
 ```
 
