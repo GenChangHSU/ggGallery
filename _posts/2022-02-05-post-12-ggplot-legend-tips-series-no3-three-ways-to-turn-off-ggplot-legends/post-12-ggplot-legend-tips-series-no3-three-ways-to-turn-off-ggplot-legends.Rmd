@@ -1,0 +1,141 @@
+---
+title: "Post #12. ggplot Legend Tips Series No.3: Three ways to turn off the legends in ggplots"
+description: |
+  Come and learn three handy tips to turn off the legends in ggplots!
+author:
+  - name: Gen-Chang Hsu
+date: 2022-02-05
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2022"
+  - "Legend Tips Series"
+preview: ../../homepage_images/Post12.png
+draft: true
+---
+
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+</style>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+There are several things we can modify in the legend:
+
+<span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Legend title</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Legend labels</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Legend keys</span>
+
+
+
+### (1)
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+library(tidyverse)
+
+P_multi_legend <- ggplot(data = CO2) + 
+  geom_boxplot(aes(x = Treatment, y = uptake, color = Treatment), width = 0.5) + 
+  geom_point(aes(x = Treatment, y = uptake, color = Treatment, shape = Type), position = position_jitter(width = 0.05)) + 
+  labs(x = "Treatment", y = expression(paste(CO[2], " uptake rate"))) + 
+  theme_classic(base_size = 14) + 
+  scale_color_brewer(palette = "Set1")
+
+P_multi_legend
+```
+
+
+
+### (2) 
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+
+  
+```
+
+
+
+### (3)
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+
+  
+```
+
+
+## Summary
+
+
+
+Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any!
+
+
