@@ -112,7 +112,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","draft"]}},"value":[{"type":"character","attributes":{},"value":["Post #12. ggplot Legend Tips Series No.3: Three ways to turn off the legends in ggplots"]},{"type":"character","attributes":{},"value":["Come and learn three handy tips to turn off the legends in ggplots!\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2022-02-05"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2022","Legend Tips Series"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post12.png"]},{"type":"logical","attributes":{},"value":[true]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview"]}},"value":[{"type":"character","attributes":{},"value":["Post #12. ggplot Legend Tips Series No.3: Three ways to turn off the legends in ggplots"]},{"type":"character","attributes":{},"value":["Come and learn three handy tips to turn off the legends in ggplots!\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2022-02-05"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2022","Legend Tips Series"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post12.png"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1459,7 +1459,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #12. ggplot Legend Tips Series No.3: Three ways to turn off the legends in ggplots","description":"Come and learn three handy tips to turn off the legends in ggplots!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-02-05T00:00:00.000+08:00","citationText":"Hsu, 2022"}
+{"title":"Post #12. ggplot Legend Tips Series No.3: Three ways to turn off the legends in ggplots","description":"Come and learn three handy tips to turn off the legends in ggplots!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-02-05T00:00:00.000-08:00","citationText":"Hsu, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1550,7 +1550,7 @@ div.l-body img {
 </style>
 <!-- Start of the article -->
 <h2 id="introduction">Introduction</h2>
-<p>When we map a variable to an aesthetic (e.g., color), ggplot will automatically create a legend for it, which is quite convenient. However, sometimes we may want to hide the legend (maybe the information there is redundant to the plot itself). This is actually an easy task, and in this post I will show you three ways to do so, each for different purposes and with different effects:</p>
+<p>When we map a variable to an aesthetic (e.g., color), ggplot will automatically create a legend for it, which is quite convenient. However, sometimes we may want to hide the legend (maybe the information there is redundant to the plot itself). This is actually pretty easy, and in this post I will show you three ways to do so, each for different purposes and with different effects:</p>
 <p><span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Hide the legend for a geom layer</span> <span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Hide the legend for an aesthetic mapping</span> <span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Hide all the legends in the figure</span></p>
 <p>Let’s make an example figure first and we’ll walk through the three methods one by one.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1585,7 +1585,7 @@ div.l-body img {
 </div>
 <p>As you can see, all the points in the legend (including the ones in the boxes) are now gone and only the boxes are left.</p>
 <h3 id="hide-the-legend-for-an-aesthetic-mapping">(2) Hide the legend for an aesthetic mapping</h3>
-<p>Looks like the legend for “color” aesthetic in the original figure is a bit redundant: we’ve already known that <span style="color: #E41A1C;">red represents “nonchilled”</span> and <span style="color: #377EB8;">blue represents “chilled”</span> from the main plot itself. On the other hand, we need the legend for “shape” aesthetic to show the site information (Quebec vs. Mississippi), which is not shown in the plot. So is it possible to remove the legend for color but keep the one for shape? Of course it is! Just specify <code>"none"</code> for the aesthetic you want to remove (here <code>color</code>) in <code>guides()</code>:</p>
+<p>Looks like the legend for “color” aesthetic in the original figure is a bit redundant: we’ve already known from the main plot that <span style="color: #E41A1C;">red represents “nonchilled”</span> and <span style="color: #377EB8;">blue represents “chilled”</span>. On the other hand, we need the legend for “shape” aesthetic to show the site information (Quebec vs. Mississippi), which is not present in the plot. So is it possible to remove the legend for color but keep the one for shape? Of course it is! Just specify <code>"none"</code> for the aesthetic you want to remove (here <code>color</code>) in <code>guides()</code>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span>
@@ -1595,6 +1595,7 @@ div.l-body img {
 </div>
 <p>We’ve removed the legend for color and kept the shape. Great!</p>
 <h3 id="hide-all-the-legends-in-the-figure">(3) Hide all the legends in the figure</h3>
+<p>The last method to hide the legend is to specify <code>legend.position = "none"</code> in <code>theme()</code> (which literally means no place for the legend). This will remove all the legends in the figure:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span>
@@ -1603,7 +1604,7 @@ div.l-body img {
 <p><img src="post-12-ggplot-legend-tips-series-no3-three-ways-to-turn-off-ggplot-legends_files/figure-html5/unnamed-chunk-4-1.png" width="55%" style = "margin-left: 15%" style="display: block; margin: auto;" /></p>
 </div>
 <h2 id="summary">Summary</h2>
-<p>To recap, we’ve learned three ways to hide ggplot legends: (1) by geom layer, (2) by aesthetic mapping, and (3) all legends together. For figures with a single geom layer and aesthetic mapping, all three methods will give the same result. For figures with more complex legends, it would be helpful to think about what you would like the legend to look like and use the above principles to customize your legend.</p>
+<p>To recap, we’ve learned three ways to turn off ggplot legends: (1) by geom layer, (2) by aesthetic mapping, and (3) all legends together. For figures with a single geom layer and aesthetic mapping, all three methods will give the same results. For figures with more complex legends, they will generate different effects and it would be helpful to think about what the legend should look like and use the above principles to customize your legend.</p>
 <p>Hope you enjoy the reading and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->

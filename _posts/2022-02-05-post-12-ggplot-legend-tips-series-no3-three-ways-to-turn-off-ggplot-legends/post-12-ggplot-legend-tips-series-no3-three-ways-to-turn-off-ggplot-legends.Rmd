@@ -12,7 +12,6 @@ categories:
   - "2022"
   - "Legend Tips Series"
 preview: ../../homepage_images/Post12.png
-draft: true
 ---
 
 <!-- Webpage style -->
@@ -90,7 +89,7 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-When we map a variable to an aesthetic (e.g., color), ggplot will automatically create a legend for it, which is quite convenient. However, sometimes we may want to hide the legend (maybe the information there is redundant to the plot itself). This is actually an easy task, and in this post I will show you three ways to do so, each for different purposes and with different effects:
+When we map a variable to an aesthetic (e.g., color), ggplot will automatically create a legend for it, which is quite convenient. However, sometimes we may want to hide the legend (maybe the information there is redundant to the plot itself). This is actually pretty easy, and in this post I will show you three ways to do so, each for different purposes and with different effects:
 
 <span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Hide the legend for a geom layer</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Hide the legend for an aesthetic mapping</span>
@@ -130,7 +129,7 @@ As you can see, all the points in the legend (including the ones in the boxes) a
 
 ### (2) Hide the legend for an aesthetic mapping 
 
-Looks like the legend for "color" aesthetic in the original figure is a bit redundant: we've already known that <span style = "color: #E41A1C;">red represents "nonchilled"</span> and <span style = "color: #377EB8;">blue represents "chilled"</span> from the main plot itself. On the other hand, we need the legend for "shape" aesthetic to show the site information (Quebec vs. Mississippi), which is not shown in the plot. So is it possible to remove the legend for color but keep the one for shape? Of course it is! Just specify `"none"` for the aesthetic you want to remove (here `color`) in `guides()`:
+Looks like the legend for "color" aesthetic in the original figure is a bit redundant: we've already known from the main plot that <span style = "color: #E41A1C;">red represents "nonchilled"</span> and <span style = "color: #377EB8;">blue represents "chilled"</span>. On the other hand, we need the legend for "shape" aesthetic to show the site information (Quebec vs. Mississippi), which is not present in the plot. So is it possible to remove the legend for color but keep the one for shape? Of course it is! Just specify `"none"` for the aesthetic you want to remove (here `color`) in `guides()`:
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
 P + guides(color = "none")
@@ -142,15 +141,17 @@ We've removed the legend for color and kept the shape. Great!
 
 ### (3) Hide all the legends in the figure
 
+The last method to hide the legend is to specify `legend.position = "none"` in `theme()` (which literally means no place for the legend). This will remove all the legends in the figure:
+
 ```{r, fig.width = 4, fig.height = 3, out.width = "55%", out.extra = 'style = "margin-left: 15%"'}
 P + theme(legend.position = "none")
-  
+
 ```
 
 
 ## Summary
 
-To recap, we've learned three ways to hide ggplot legends: (1) by geom layer, (2) by aesthetic mapping, and (3) all legends together. For figures with a single geom layer and aesthetic mapping, all three methods will give the same result. For figures with more complex legends, it would be helpful to think about what you would like the legend to look like and use the above principles to customize your legend. 
+To recap, we've learned three ways to turn off ggplot legends: (1) by geom layer, (2) by aesthetic mapping, and (3) all legends together. For figures with a single geom layer and aesthetic mapping, all three methods will give the same results. For figures with more complex legends, they will generate different effects and it would be helpful to think about what the legend should look like and use the above principles to customize your legend.
 
 Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any!
 

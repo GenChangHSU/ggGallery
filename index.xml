@@ -7,7 +7,18 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 01 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 05 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #12. ggplot Legend Tips Series No.3: Three ways to turn off the legends in ggplots</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2022-02-05-post-12-ggplot-legend-tips-series-no3-three-ways-to-turn-off-ggplot-legends</link>
+      <description>Come and learn three handy tips to turn off the legends in ggplots!</description>
+      <category>2022</category>
+      <category>Legend Tips Series</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2022-02-05-post-12-ggplot-legend-tips-series-no3-three-ways-to-turn-off-ggplot-legends</guid>
+      <pubDate>Sat, 05 Feb 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-02-05-post-12-ggplot-legend-tips-series-no3-three-ways-to-turn-off-ggplot-legends/../../homepage_images/Post12.png" medium="image" type="image/png" width="768" height="576"/>
+    </item>
     <item>
       <title>Post #11. ggplot Legend Tips Series No.2: Working on continuous legends with guides()</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
