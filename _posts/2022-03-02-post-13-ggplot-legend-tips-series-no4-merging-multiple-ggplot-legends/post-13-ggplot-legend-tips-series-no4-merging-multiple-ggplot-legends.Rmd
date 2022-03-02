@@ -1,0 +1,140 @@
+---
+title: "Post #13. ggplot Legend Tips Series No.4: Merging multiple ggplot legends"
+description: |
+  Come and learn two handy tips to merge multiple ggplots into one!
+author:
+  - name: Gen-Chang Hsu
+date: 2022-03-02
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2022"
+  - "Legend Tips Series"
+preview: ../../homepage_images/Post13.png
+draft: TRUE
+---
+
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+</style>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+library(tidyverse)
+
+P <- ggplot(data = CO2) + 
+  geom_boxplot(aes(x = Treatment, y = uptake, color = Treatment), width = 0.5) + 
+  geom_point(aes(x = Treatment, y = uptake, color = Treatment, shape = Type), position = position_jitter(width = 0.05)) + 
+  labs(x = "Treatment", y = expression(paste(CO[2], " uptake rate"))) + 
+  theme_classic(base_size = 14) + 
+  scale_color_brewer(palette = "Set1")
+
+P
+```
+
+### Tip 1. 
+
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+
+
+```
+
+
+
+### Tip 2. 
+
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+
+
+```
+
+
+
+## Summary
+
+To recap the two ways to merge ggplot legends, 
+
+
+
+
+
+
+Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any!
+
+
+
