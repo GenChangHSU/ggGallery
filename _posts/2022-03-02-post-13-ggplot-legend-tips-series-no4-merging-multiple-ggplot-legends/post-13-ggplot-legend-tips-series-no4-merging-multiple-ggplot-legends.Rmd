@@ -95,20 +95,31 @@ knitr::opts_chunk$set(message = F,
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
 library(tidyverse)
 
-P <- ggplot(data = CO2) + 
-  geom_boxplot(aes(x = Treatment, y = uptake, color = Treatment), width = 0.5) + 
-  geom_point(aes(x = Treatment, y = uptake, color = Treatment, shape = Type), position = position_jitter(width = 0.05)) + 
-  labs(x = "Treatment", y = expression(paste(CO[2], " uptake rate"))) + 
-  theme_classic(base_size = 14) + 
-  scale_color_brewer(palette = "Set1")
+CO2_mean <- CO2 %>% group_by(Treatment, Type) %>% 
+  summarise(uptake_mean = mean(uptake)) %>%
+  rename(Site = Type)
 
-P
+ggplot() + 
+  geom_boxplot(data = CO2, aes(x = Treatment, y = uptake, color = Type), width = 0.5, outlier.color = NA) + 
+  geom_point(data = CO2_mean, aes(x = Treatment, y = uptake_mean, color = Site, shape = Site), size = 2.5, position = position_dodge(width = 0.5)) + 
+  labs(x = "Treatment", y = expression(paste(CO[2], " uptake rate"))) + 
+  theme_classic(base_size = 14)
+  
+
 ```
 
 ### Tip 1. 
 
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+
+ggplot() + 
+  geom_boxplot(data = CO2, aes(x = Treatment, y = uptake, color = Type), width = 0.5, outlier.color = NA) + 
+  geom_point(data = CO2_mean, aes(x = Treatment, y = uptake_mean, color = Site, shape = Site), size = 2.5, position = position_dodge(width = 0.5)) + 
+  labs(x = "Treatment", y = expression(paste(CO[2], " uptake rate"))) + 
+  theme_classic(base_size = 14) + 
+  scale_color_brewer(name = "1", palette = "Set1", labels = c(1, 2)) + 
+  scale_shape_manual(name = "1", values = c(16, 17), labels = c(1, 2))
 
 
 ```
@@ -119,7 +130,13 @@ P
 
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-
+ggplot() + 
+  geom_boxplot(data = CO2, aes(x = Treatment, y = uptake, color = Type), width = 0.5, outlier.color = NA) + 
+  geom_point(data = CO2_mean, aes(x = Treatment, y = uptake_mean, color = Site, shape = Site), size = 2.5, position = position_dodge(width = 0.5)) + 
+  labs(x = "Treatment", y = expression(paste(CO[2], " uptake rate"))) + 
+  theme_classic(base_size = 14) + 
+  scale_color_brewer(name = "1", palette = "Set1", labels = c(1, 2)) + 
+  guides(shape = "none", color = guide_legend(override.aes = list(shape = c(16, 17))))
 
 ```
 
