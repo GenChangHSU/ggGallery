@@ -88,7 +88,7 @@ knitr::opts_chunk$set(message = F,
 
 <!-- Start of the article -->
 
-## Introduction
+## The problem
 
 
 
@@ -104,15 +104,15 @@ ggplot() +
   geom_point(data = CO2_mean, aes(x = Treatment, y = uptake_mean, color = Site, shape = Site), size = 2.5, position = position_dodge(width = 0.5)) + 
   labs(x = "Treatment", y = expression(paste(CO[2], " uptake rate"))) + 
   theme_classic(base_size = 14)
-  
 
 ```
 
-### Tip 1. 
+## The solution
+
+### Tip 1.  
 
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-
 ggplot() + 
   geom_boxplot(data = CO2, aes(x = Treatment, y = uptake, color = Type), width = 0.5, outlier.color = NA) + 
   geom_point(data = CO2_mean, aes(x = Treatment, y = uptake_mean, color = Site, shape = Site), size = 2.5, position = position_dodge(width = 0.5)) + 
@@ -120,7 +120,6 @@ ggplot() +
   theme_classic(base_size = 14) + 
   scale_color_brewer(name = "1", palette = "Set1", labels = c(1, 2)) + 
   scale_shape_manual(name = "1", values = c(16, 17), labels = c(1, 2))
-
 
 ```
 
