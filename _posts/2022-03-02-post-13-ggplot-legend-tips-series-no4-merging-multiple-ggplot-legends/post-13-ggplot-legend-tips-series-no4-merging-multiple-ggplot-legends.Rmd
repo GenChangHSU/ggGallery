@@ -1,7 +1,7 @@
 ---
-title: "Post #13. ggplot Legend Tips Series No.4: Merging multiple ggplot legends"
+title: "Post #13. ggplot Legend Tips Series No.4: Merging ggplot legends"
 description: |
-  Come and learn two handy tips to merge multiple ggplots into one!
+  Come and learn two handy tips to merge two ggplot legends into one!
 author:
   - name: Gen-Chang Hsu
 date: 2022-03-02
@@ -89,53 +89,59 @@ knitr::opts_chunk$set(message = F,
 <!-- Start of the article -->
 
 ## The problem
-
-
+In this post, we will be using the [`CO2`](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/zCO2.html) dataset for our example plots. Let's first create a boxplot of the CO~2~ uptake rates of plant individuals under two chilling treatments. The boxes are colored by the site which the plants are from (column `Type`):   
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
 library(tidyverse)
 
+P1 <- ggplot() + 
+  geom_boxplot(data = CO2, aes(x = Treatment, y = uptake, color = Type), width = 0.5, outlier.color = NA) + 
+  labs(x = "Treatment", y = expression(paste(CO[2], " uptake rate"))) + 
+  theme_classic(base_size = 14) + 
+  scale_color_brewer(palette = "Set1")
+
+P1
+```
+
+Now suppose that we would like to have points on the boxes showing the mean uptake rates. We can compute the means for each `Type` and `Treatment` combination and add them to the boxplot using another geom layer `geom_point()`. Since the column name `Type` doesn't sound intuitive, we'll change it into `Site`:
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+### Mean CO2 uptake rates by Type and Treatment
 CO2_mean <- CO2 %>% group_by(Treatment, Type) %>% 
   summarise(uptake_mean = mean(uptake)) %>%
   rename(Site = Type)
 
-ggplot() + 
-  geom_boxplot(data = CO2, aes(x = Treatment, y = uptake, color = Type), width = 0.5, outlier.color = NA) + 
-  geom_point(data = CO2_mean, aes(x = Treatment, y = uptake_mean, color = Site, shape = Site), size = 2.5, position = position_dodge(width = 0.5)) + 
-  labs(x = "Treatment", y = expression(paste(CO[2], " uptake rate"))) + 
-  theme_classic(base_size = 14)
+### Add the means (different point colors and shapes for the two sites)
+P2 <- P1 + geom_point(data = CO2_mean, aes(x = Treatment, y = uptake_mean, color = Site, shape = Site), size = 2.5, position = position_dodge(width = 0.5))
+
+P2
+```
+
+Hmm, the two legends (one mapped to "shape" and the other to "color" aesthetic) are not looking good. They shouldn't have been separated! How can we merge them back together? 
+
+## The solutions
+
+Don't panic. It's actually quite simple. There are two ways to fix the problem: 
+
+<span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Rename the legend title and labels</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Override the legend keys</span>
+
+We'll take a look at them shortly below.
+
+### (1) Rename the legend title and labels   
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+P2 + scale_color_brewer(name = "Site", palette = "Set1") +
+  scale_shape_manual(name = "Site", values = c(16, 17))
 
 ```
 
-## The solution
-
-### Tip 1.  
 
 
-```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-ggplot() + 
-  geom_boxplot(data = CO2, aes(x = Treatment, y = uptake, color = Type), width = 0.5, outlier.color = NA) + 
-  geom_point(data = CO2_mean, aes(x = Treatment, y = uptake_mean, color = Site, shape = Site), size = 2.5, position = position_dodge(width = 0.5)) + 
-  labs(x = "Treatment", y = expression(paste(CO[2], " uptake rate"))) + 
-  theme_classic(base_size = 14) + 
-  scale_color_brewer(name = "1", palette = "Set1", labels = c(1, 2)) + 
-  scale_shape_manual(name = "1", values = c(16, 17), labels = c(1, 2))
-
-```
-
-
-
-### Tip 2. 
-
+### Tip 2. Override the legend keys
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-ggplot() + 
-  geom_boxplot(data = CO2, aes(x = Treatment, y = uptake, color = Type), width = 0.5, outlier.color = NA) + 
-  geom_point(data = CO2_mean, aes(x = Treatment, y = uptake_mean, color = Site, shape = Site), size = 2.5, position = position_dodge(width = 0.5)) + 
-  labs(x = "Treatment", y = expression(paste(CO[2], " uptake rate"))) + 
-  theme_classic(base_size = 14) + 
-  scale_color_brewer(name = "1", palette = "Set1", labels = c(1, 2)) + 
-  guides(shape = "none", color = guide_legend(override.aes = list(shape = c(16, 17))))
+P2 + guides(shape = "none", color = guide_legend(title = "Site", override.aes = list(shape = c(16, 17))))
 
 ```
 
