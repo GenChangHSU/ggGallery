@@ -12,7 +12,6 @@ categories:
   - "2022"
   - "Legend Tips Series"
 preview: ../../homepage_images/Post13.png
-draft: TRUE
 ---
 
 <!-- Webpage style -->
@@ -89,7 +88,10 @@ knitr::opts_chunk$set(message = F,
 <!-- Start of the article -->
 
 ## The problem
-In this post, we will be using the [`CO2`](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/zCO2.html) dataset for our example plots. Let's first create a boxplot of the CO~2~ uptake rates of plant individuals under two chilling treatments. The boxes are colored by the site which the plants are from (column `Type`):   
+
+Sometimes in ggplots, we get two legends that convey the same information (i.e., both represent the same variable) yet are drawn separately, and we would like to combine the two legends into one. This is the problem we are going to look into in the post. 
+
+For our example plots, we will be using the [`CO2`](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/zCO2.html) dataset . Let's first create a boxplot of the CO~2~ uptake rates of plant individuals under two chilling treatments. The boxes are colored by the site from which the plants originated (column `Type`):   
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
 library(tidyverse)
@@ -103,7 +105,7 @@ P1 <- ggplot() +
 P1
 ```
 
-Now suppose that we would like to have points on the boxes showing the mean uptake rates. We can compute the means for each `Type` and `Treatment` combination and add them to the boxplot using another geom layer `geom_point()`. Since the column name `Type` doesn't sound intuitive, we'll change it into `Site`:
+Now suppose that we would like to show the mean uptake rates too. We can compute the means for each `Type` and `Treatment` combination and add them to the boxes using another geom layer `geom_point()`. Also, since the column name `Type` doesn't sound intuitive, we'll change it to `Site`:
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
 ### Mean CO2 uptake rates by Type and Treatment
@@ -117,18 +119,20 @@ P2 <- P1 + geom_point(data = CO2_mean, aes(x = Treatment, y = uptake_mean, color
 P2
 ```
 
-Hmm, the two legends (one mapped to "shape" and the other to "color" aesthetic) are not looking good. They shouldn't have been separated! How can we merge them back together? 
+Hmm, the two legends (one mapped to "shape" and the other to "color" aesthetic) are not looking good. They shouldn't have been separated! How can we put them together? 
 
 ## The solutions
 
-Don't panic. It's actually quite simple. There are two ways to fix the problem: 
+It's quite simple actually. There are two ways to fix the problem: 
 
-<span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Rename the legend title and labels</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Override the legend keys</span>
+<span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Reset the legend title</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Modify the legend keys</span>
 
-We'll take a look at them shortly below.
+We'll take a look at them now.
 
-### (1) Rename the legend title and labels   
+### (1) Reset the legend title 
+
+The first way to combine the two legends is to set the same legend title for them, which can be done by specifying the argument `name =  ` in the `scale_XX_YY()` functions. By doing so, ggplot will know that the two legends are indeed the same one and merge them together.
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
 P2 + scale_color_brewer(name = "Site", palette = "Set1") +
@@ -136,25 +140,22 @@ P2 + scale_color_brewer(name = "Site", palette = "Set1") +
 
 ```
 
+### Tip 2. Modify the legend keys
 
+The second way is more of a manual merging. The idea is that, we can modify the keys of one legend (in this example the boxes) by adding the keys of the other legend (in this example the points) and then hide the useless legend (in this example the legend for the points). 
 
-### Tip 2. Override the legend keys
+To do so, use `guides()`: simply pass a list of additional legend keys to the argument `override.aes` for the legend you want to modify and specify `"none"` to hide the useless legend:
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-P2 + guides(shape = "none", color = guide_legend(title = "Site", override.aes = list(shape = c(16, 17))))
+P2 + guides(color = guide_legend(title = "Site", override.aes = list(shape = c(16, 17))), shape = "none")
 
 ```
 
-
+Slightly more tedious than the first way, but still quite easy to do! 
 
 ## Summary
 
-To recap the two ways to merge ggplot legends, 
-
-
-
-
-
+To recap the two ways to merge ggplot legends, we can (1) reset the legend title, or (2) modify the legend keys. Here I only showed you how to do it for two legends, but the principle applies to multiple legends too. In fact, you can even "selectively" merge certain legends and leave others alone!
 
 Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any!
 

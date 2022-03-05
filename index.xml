@@ -7,7 +7,128 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 05 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 01 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #13. ggplot Legend Tips Series No.4: Merging ggplot legends</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2022-03-02-post-13-ggplot-legend-tips-series-no4-merging-multiple-ggplot-legends</link>
+      <description>
+
+
+&lt;!-- Webpage style --&gt;
+&lt;style&gt;
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+&lt;/style&gt;
+&lt;!-- Start of the article --&gt;
+&lt;h2 id="the-problem"&gt;The problem&lt;/h2&gt;
+&lt;p&gt;Sometimes in ggplots, we get two legends that convey the same information (i.e., both represent the same variable) yet are drawn separately, and we would like to combine the two legends into one. This is the problem we are going to look into in the post.&lt;/p&gt;
+&lt;p&gt;For our example plots, we will be using the &lt;a href="https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/zCO2.html"&gt;&lt;code&gt;CO2&lt;/code&gt;&lt;/a&gt; dataset . Let’s first create a boxplot of the CO&lt;sub&gt;2&lt;/sub&gt; uptake rates of plant individuals under two chilling treatments. The boxes are colored by the site from which the plants originated (column &lt;code&gt;Type&lt;/code&gt;):&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+
+P1 &amp;lt;- ggplot() + 
+  geom_boxplot(data = CO2, aes(x = Treatment, y = uptake, color = Type), width = 0.5, outlier.color = NA) + 
+  labs(x = &amp;quot;Treatment&amp;quot;, y = expression(paste(CO[2], &amp;quot; uptake rate&amp;quot;))) + 
+  theme_classic(base_size = 14) + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;)
+
+P1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file4fb05c8f120b_files/figure-html/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Now suppose that we would like to show the mean uptake rates too. We can compute the means for each &lt;code&gt;Type&lt;/code&gt; and &lt;code&gt;Treatment&lt;/code&gt; combination and add them to the boxes using another geom layer &lt;code&gt;geom_point()&lt;/code&gt;. Also, since the column name &lt;code&gt;Type&lt;/code&gt; doesn’t sound intuitive, we’ll change it to &lt;code&gt;Site&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Mean CO2 uptake rates by Type and Treatment
+CO2_mean &amp;lt;- CO2 %&amp;gt;% group_by(Treatment, Type) %&amp;gt;% 
+  summarise(uptake_mean = mean(uptake)) %&amp;gt;%
+  rename(Site = Type)
+
+### Add the means (different point colors and shapes for the two sites)
+P2 &amp;lt;- P1 + geom_point(data = CO2_mean, aes(x = Treatment, y = uptake_mean, color = Site, shape = Site), size = 2.5, position = position_dodge(width = 0.5))
+
+P2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file4fb05c8f120b_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Hmm, the two legends (one mapped to “shape” and the other to “color” aesthetic) are not looking good. They shouldn’t have been separated! How can we put them together?&lt;/p&gt;
+&lt;h2 id="the-solutions"&gt;The solutions&lt;/h2&gt;
+&lt;p&gt;It’s quite simple actually. There are two ways to fix the problem:&lt;/p&gt;
+&lt;p&gt;&lt;span style="display: block; margin-top: 0px; margin-left: 10px"&gt; (1) Reset the legend title&lt;/span&gt; &lt;span style="display: block; margin-top: 5px; margin-left: 10px"&gt; (2) Modify the legend keys&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;We’ll take a look at them now.&lt;/p&gt;
+&lt;h3 id="reset-the-legend-title"&gt;(1) Reset the legend title&lt;/h3&gt;
+&lt;p&gt;The first way to combine the two legends is to set the same legend title for them, which can be done by specifying the argument &lt;code&gt;name =&lt;/code&gt; in the &lt;code&gt;scale_XX_YY()&lt;/code&gt; functions. By doing so, ggplot will know that the two legends are indeed the same one and merge them together.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;P2 + scale_color_brewer(name = &amp;quot;Site&amp;quot;, palette = &amp;quot;Set1&amp;quot;) +
+  scale_shape_manual(name = &amp;quot;Site&amp;quot;, values = c(16, 17))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file4fb05c8f120b_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="tip-2.-modify-the-legend-keys"&gt;Tip 2. Modify the legend keys&lt;/h3&gt;
+&lt;p&gt;The second way is more of a manual merging. The idea is that, we can modify the keys of one legend (in this example the boxes) by adding the keys of the other legend (in this example the points) and then hide the useless legend (in this example the legend for the points).&lt;/p&gt;
+&lt;p&gt;To do so, use &lt;code&gt;guides()&lt;/code&gt;: simply pass a list of additional legend keys to the argument &lt;code&gt;override.aes&lt;/code&gt; for the legend you want to modify and specify &lt;code&gt;"none"&lt;/code&gt; to hide the useless legend:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;P2 + guides(color = guide_legend(title = &amp;quot;Site&amp;quot;, override.aes = list(shape = c(16, 17))), shape = &amp;quot;none&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file4fb05c8f120b_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Slightly more tedious than the first way, but still quite easy to do!&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;p&gt;To recap the two ways to merge ggplot legends, we can (1) reset the legend title, or (2) modify the legend keys. Here I only showed you how to do it for two legends, but the principle applies to multiple legends too. In fact, you can even “selectively” merge certain legends and leave others alone!&lt;/p&gt;
+&lt;p&gt;Hope you enjoy the reading and don’t forget to leave your comments and suggestions below if you have any!&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>b48df3e6255c86cd345b1e49677d9190</distill:md5>
+      <category>2022</category>
+      <category>Legend Tips Series</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2022-03-02-post-13-ggplot-legend-tips-series-no4-merging-multiple-ggplot-legends</guid>
+      <pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-03-02-post-13-ggplot-legend-tips-series-no4-merging-multiple-ggplot-legends/post-13-ggplot-legend-tips-series-no4-merging-multiple-ggplot-legends_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="960" height="576"/>
+    </item>
     <item>
       <title>Post #12. ggplot Legend Tips Series No.3: Three ways to turn off the legends in ggplots</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>

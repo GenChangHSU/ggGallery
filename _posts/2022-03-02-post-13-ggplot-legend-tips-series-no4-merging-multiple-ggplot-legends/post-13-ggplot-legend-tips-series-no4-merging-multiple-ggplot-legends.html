@@ -112,7 +112,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","draft"]}},"value":[{"type":"character","attributes":{},"value":["Post #13. ggplot Legend Tips Series No.4: Merging ggplot legends"]},{"type":"character","attributes":{},"value":["Come and learn two handy tips to merge two ggplot legends into one!\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2022-03-02"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2022","Legend Tips Series"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post13.png"]},{"type":"logical","attributes":{},"value":[true]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview"]}},"value":[{"type":"character","attributes":{},"value":["Post #13. ggplot Legend Tips Series No.4: Merging ggplot legends"]},{"type":"character","attributes":{},"value":["Come and learn two handy tips to merge two ggplot legends into one!\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2022-03-02"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2022","Legend Tips Series"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post13.png"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1550,7 +1550,8 @@ div.l-body img {
 </style>
 <!-- Start of the article -->
 <h2 id="the-problem">The problem</h2>
-<p>In this post, we will be using the <a href="https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/zCO2.html"><code>CO2</code></a> dataset for our example plots. Let’s first create a boxplot of the CO<sub>2</sub> uptake rates of plant individuals under two chilling treatments. The boxes are colored by the site which the plants are from (column <code>Type</code>):</p>
+<p>Sometimes in ggplots, we get two legends that convey the same information (i.e., both represent the same variable) yet are drawn separately, and we would like to combine the two legends into one. This is the problem we are going to look into in the post.</p>
+<p>For our example plots, we will be using the <a href="https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/zCO2.html"><code>CO2</code></a> dataset . Let’s first create a boxplot of the CO<sub>2</sub> uptake rates of plant individuals under two chilling treatments. The boxes are colored by the site from which the plants originated (column <code>Type</code>):</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
@@ -1566,7 +1567,7 @@ div.l-body img {
 </div>
 <p><img src="post-13-ggplot-legend-tips-series-no4-merging-multiple-ggplot-legends_files/figure-html5/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
-<p>Now suppose that we would like to have points on the boxes showing the mean uptake rates. We can compute the means for each <code>Type</code> and <code>Treatment</code> combination and add them to the boxplot using another geom layer <code>geom_point()</code>. Since the column name <code>Type</code> doesn’t sound intuitive, we’ll change it into <code>Site</code>:</p>
+<p>Now suppose that we would like to show the mean uptake rates too. We can compute the means for each <code>Type</code> and <code>Treatment</code> combination and add them to the boxes using another geom layer <code>geom_point()</code>. Also, since the column name <code>Type</code> doesn’t sound intuitive, we’ll change it to <code>Site</code>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'>### Mean CO2 uptake rates by Type and Treatment</span>
@@ -1582,12 +1583,13 @@ div.l-body img {
 </div>
 <p><img src="post-13-ggplot-legend-tips-series-no4-merging-multiple-ggplot-legends_files/figure-html5/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
-<p>Hmm, the two legends (one mapped to “shape” and the other to “color” aesthetic) are not looking good. They shouldn’t have been separated! How can we merge them back together?</p>
+<p>Hmm, the two legends (one mapped to “shape” and the other to “color” aesthetic) are not looking good. They shouldn’t have been separated! How can we put them together?</p>
 <h2 id="the-solutions">The solutions</h2>
-<p>Don’t panic. It’s actually quite simple. There are two ways to fix the problem:</p>
-<p><span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Rename the legend title and labels</span> <span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Override the legend keys</span></p>
-<p>We’ll take a look at them shortly below.</p>
-<h3 id="rename-the-legend-title-and-labels">(1) Rename the legend title and labels</h3>
+<p>It’s quite simple actually. There are two ways to fix the problem:</p>
+<p><span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Reset the legend title</span> <span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Modify the legend keys</span></p>
+<p>We’ll take a look at them now.</p>
+<h3 id="reset-the-legend-title">(1) Reset the legend title</h3>
+<p>The first way to combine the two legends is to set the same legend title for them, which can be done by specifying the argument <code>name =</code> in the <code>scale_XX_YY()</code> functions. By doing so, ggplot will know that the two legends are indeed the same one and merge them together.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P2</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Site"</span>, palette <span class='op'>=</span> <span class='st'>"Set1"</span><span class='op'>)</span> <span class='op'>+</span>
@@ -1596,16 +1598,19 @@ div.l-body img {
 </div>
 <p><img src="post-13-ggplot-legend-tips-series-no4-merging-multiple-ggplot-legends_files/figure-html5/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
-<h3 id="tip-2.-override-the-legend-keys">Tip 2. Override the legend keys</h3>
+<h3 id="tip-2.-modify-the-legend-keys">Tip 2. Modify the legend keys</h3>
+<p>The second way is more of a manual merging. The idea is that, we can modify the keys of one legend (in this example the boxes) by adding the keys of the other legend (in this example the points) and then hide the useless legend (in this example the legend for the points).</p>
+<p>To do so, use <code>guides()</code>: simply pass a list of additional legend keys to the argument <code>override.aes</code> for the legend you want to modify and specify <code>"none"</code> to hide the useless legend:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P2</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>shape <span class='op'>=</span> <span class='st'>"none"</span>, color <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guide_legend.html'>guide_legend</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Site"</span>, override.aes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>shape <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>16</span>, <span class='fl'>17</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P2</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guide_legend.html'>guide_legend</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Site"</span>, override.aes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>shape <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>16</span>, <span class='fl'>17</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>, shape <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span>
 </code></pre>
 </div>
 <p><img src="post-13-ggplot-legend-tips-series-no4-merging-multiple-ggplot-legends_files/figure-html5/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
+<p>Slightly more tedious than the first way, but still quite easy to do!</p>
 <h2 id="summary">Summary</h2>
-<p>To recap the two ways to merge ggplot legends,</p>
+<p>To recap the two ways to merge ggplot legends, we can (1) reset the legend title, or (2) modify the legend keys. Here I only showed you how to do it for two legends, but the principle applies to multiple legends too. In fact, you can even “selectively” merge certain legends and leave others alone!</p>
 <p>Hope you enjoy the reading and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
