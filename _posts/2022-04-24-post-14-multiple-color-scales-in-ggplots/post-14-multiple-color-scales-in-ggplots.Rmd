@@ -1,0 +1,165 @@
+---
+title: "Post #14. Multiple color scales in ggplots"
+description: |
+  A short description of the post.
+author:
+  - name: Gen-Chang Hsu
+date: 2022-04-24
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2022"
+preview: ../../homepage_images/Post14.png 
+draft: true
+---
+
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+</style>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F)
+
+```
+
+<!-- Start of the article -->
+
+## The problem
+
+
+create a contour plot mapped to continuous colors
+
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+library(tidyverse)
+
+ggplot(iris) + 
+  geom_point(aes(x = Species, y = Sepal.Length, color = Sepal.Length), position = position_jitter(width = 0.1)) + 
+  geom_boxplot(aes(x = Species, y = Sepal.Length), width = 0.5, outlier.color = NA, fill = NA) + 
+  labs(y = "Sepal length (cm)") + 
+  theme_classic(base_size = 14) + 
+  scale_color_viridis_c(name = "Sepal length")
+
+
+```
+
+what if we want to use different colors for the boxes? Let's add a second geom layer with mapped to discrete colors
+
+But it throws an error!!!
+
+
+
+
+## The solution
+
+Thankfully there have been packages designed for this.
+Two packages, I'll introduce and walk through them in the following sections.
+
+
+### ggnewscale
+
+To seek a quick fix, `ggnewscale` is the go-to: The main function `new_scale_color()` is super straightforward
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+# install.packages("ggnewscale")
+library(ggnewscale)
+
+ggplot(iris) + 
+  geom_point(aes(x = Species, y = Sepal.Length, color = Sepal.Length), position = position_jitter(width = 0.1)) + 
+  scale_color_viridis_c(name = "Sepal length") + 
+  new_scale_color() +
+  geom_boxplot(aes(x = Species, y = Sepal.Length, color = Species), width = 0.5, outlier.color = NA, fill = NA) + 
+  scale_color_brewer(palette = "Set1") + 
+  labs(y = "Sepal length (cm)") + 
+  theme_classic(base_size = 14)
+
+
+
+```
+
+
+### relayer
+
+Another package that can deal with this situation is `relayer`.
+
+
+
+## Summary
+
+In this post, we learned two packages to use different color scales for multiple geom layers. 
+
+
+That's it for this post and as always, don't forget to leave your comments and suggestions below if you have any!
+
+
+
+
+
+
+
+
+
+
