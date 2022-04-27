@@ -147,15 +147,100 @@ ggplot(iris) +
 
 ### (2) relayer
 
-The second package that can deal with this situation is `relayer`.
+The second way of handling the problem is to use the function `rename_geom_aes()` in the package `relayer`. The basic idea of the function is to assign different "names" to the same aesthetic (e.g., color) as if they were different aesthetics so that these "pseudo-aesthetics" would be treated independently. 
+
+Confused? An example will make it clear! 
+
+```{r, fig.width = 5.5, fig.height = 3.5, out.width = "70%"}
+# devtools::install_github("clauswilke/relayer")  # install the package if you haven't
+library(relayer)
+
+ggplot(iris) +
+  geom_point(aes(x = Species, y = Sepal.Length, colour = Sepal.Length), position = position_jitter(width = 0.1)) +
+  
+  # 1. use the new name ("colour_for_species") for the colour aesthetic in the geom layer
+  # 2. tell ggplot that "colour_for_species" is actually a color aesthetic in rename_geom_aes()
+  (geom_boxplot(aes(x = Species, y = Sepal.Length, colour_for_species = Species), width = 0.5, outlier.color = NA, fill = NA) %>% 
+     rename_geom_aes(new_aes = c("colour" = "colour_for_species"))) + 
+  
+  # the color scale for the first geom layer (mapped to "color")
+  scale_color_viridis_c(aesthetics = "color", name = "Sepal length") + 
+  
+  # the color scale for the second geom layer (mapped to "colour_for_species")
+  scale_color_brewer(aesthetics = "colour_for_species", palette = "Set1", name = "Species") + 
+  labs(y = "Sepal length (cm)") + 
+  theme_classic(base_size = 14)
+
+
+```
+
+
+### Jointly trained
+
+```{r, fig.width = 5.5, fig.height = 3.5, out.width = "70%"}
+scale_distiller <- function(aesthetics, palette, name, ...) {
+  scale_colour_distiller(
+    aesthetics = aesthetics,
+    palette = palette,
+    name = name, ...,
+    guide = guide_legend(order = palette))
+}
+
+ggplot(iris, aes(x = Species, Sepal.Width)) +
+  geom_point(aes(col1 = Sepal.Width, col2 = Sepal.Width, col3 = Sepal.Width, group = Species)) %>%
+    rename_geom_aes(
+      new_aes = c("colour" = "col1", "colour" = "col2", "colour" = "col3"),
+      aes(colour = case_when(group == 1 ~ col1, group == 2 ~ col2, TRUE ~ col3))
+    ) +
+    scale_distiller("col1", 5, "setosa") +
+    scale_distiller("col2", 6, "versicolor") +
+    scale_distiller("col3", 7, "virginica") +
+    theme_bw() + theme(legend.position = "bottom", legend.key.width = grid::unit(6, "pt"))
+
+
+```
+
+### Individually trained
+
+```{r, fig.width = 5.5, fig.height = 3.5, out.width = "70%"}
+scale_distiller <- function(aesthetics, palette, name, ...) {
+  scale_colour_distiller(
+    aesthetics = aesthetics,
+    palette = palette,
+    name = name, ...,
+    guide = guide_legend(order = palette))
+}
+
+# subset data
+iris_setosa <- filter(iris, Species == "setosa")
+iris_versicolor <- filter(iris, Species == "versicolor")
+iris_virginica <- filter(iris, Species == "virginica")
+
+# plot
+ggplot(mapping = aes(Sepal.Length, Sepal.Width)) +
+  (geom_point(data = iris_setosa, aes(colour1 = Sepal.Width)) %>%
+     rename_geom_aes(new_aes = c("colour" = "colour1"))) +
+  (geom_point(data = iris_versicolor, aes(colour2 = Sepal.Width)) %>%
+     rename_geom_aes(new_aes = c("colour" = "colour2"))) +
+  (geom_point(data = iris_virginica, aes(colour3 = Sepal.Width)) %>%
+     rename_geom_aes(new_aes = c("colour" = "colour3"))) +
+  facet_wrap(~Species) +
+  scale_distiller("colour1", 5, "setosa") +
+  scale_distiller("colour2", 6, "versicolor") +
+  scale_distiller("colour3", 7, "virginica") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+
+```
+
 
 
 
 ## Summary
 
-In this post, we learned two packages that allow us to use different color scales for multiple geom layers: `ggnewscale` is the most convenient one for simple purposes; `relayer` is slightly more complicated but at the same time more versatile.
+To recap, we learned two packages that allow us to use different color scales for multiple geom layers: `ggnewscale` is the most convenient one for simple purposes; `relayer` is slightly more complicated but at the same time more versatile.
 
-In this post, I use color aesthetic as an example (which I think is the most common situation). But the same idea applies to other aesthetics as well: fill, linetype, etc. 
+In this post, I use color aesthetic as an example (which I think is the most common situation). But the same principle applies to other aesthetics as well: fill, linetype, etc. 
 
 That's it for now and as always, don't forget to leave your comments and suggestions below if you have any!
 
