@@ -147,94 +147,102 @@ ggplot(iris) +
 
 ### (2) relayer
 
-The second way of handling the problem is to use the function `rename_geom_aes()` in the package `relayer`. The basic idea of the function is to assign different "names" to the same aesthetic (e.g., color) as if they were different aesthetics so that these "pseudo-aesthetics" would be treated independently. 
+The second way to handlie the problem is to use the function `rename_geom_aes()` in the package `relayer`. The basic idea of the function is to assign different "names" to the same aesthetic (e.g., color) as if they were different aesthetics so that these "pseudo-aesthetics" can be be treated independently and not interfere with each other. 
 
-Confused? An example will make it clear! 
+Confused? An example will make things clear! 
 
 ```{r, fig.width = 5.5, fig.height = 3.5, out.width = "70%"}
 # devtools::install_github("clauswilke/relayer")  # install the package if you haven't
 library(relayer)
 
 ggplot(iris) +
+  
+  # the first color aesthetic mapping 
+  # (note that you need to use "colour" instead of "color" for the function to work!)
   geom_point(aes(x = Species, y = Sepal.Length, colour = Sepal.Length), position = position_jitter(width = 0.1)) +
   
-  # 1. use the new name ("colour_for_species") for the colour aesthetic in the geom layer
-  # 2. tell ggplot that "colour_for_species" is actually a color aesthetic in rename_geom_aes()
+  # use the new name ("colour_for_species") for the second color aesthetic mapping   # and specify that "colour_for_species" corresponds to the color aesthetic in rename_geom_aes()
   (geom_boxplot(aes(x = Species, y = Sepal.Length, colour_for_species = Species), width = 0.5, outlier.color = NA, fill = NA) %>% 
      rename_geom_aes(new_aes = c("colour" = "colour_for_species"))) + 
   
-  # the color scale for the first geom layer (mapped to "color")
-  scale_color_viridis_c(aesthetics = "color", name = "Sepal length") + 
+  # the color scale for the first color aesthetic mapping ("colour")
+  scale_color_viridis_c(aesthetics = "colour", name = "Sepal length") + 
   
-  # the color scale for the second geom layer (mapped to "colour_for_species")
+  # the color scale for the second color aesthetic mapping ("colour_for_species")
   scale_color_brewer(aesthetics = "colour_for_species", palette = "Set1", name = "Species") + 
   labs(y = "Sepal length (cm)") + 
   theme_classic(base_size = 14)
 
-
 ```
 
-
-### Jointly trained
+There are a few more interesting things we can do with the `relayer` package. For example, suppose that we want to color the points by both sepal length and species (i.e., having three sets of continuous color gradients).     
 
 ```{r, fig.width = 5.5, fig.height = 3.5, out.width = "70%"}
-scale_distiller <- function(aesthetics, palette, name, ...) {
-  scale_colour_distiller(
-    aesthetics = aesthetics,
-    palette = palette,
-    name = name, ...,
-    guide = guide_legend(order = palette))
-}
+# install.packages("RColorBrewer")  # install the package if you haven't
+library(RColorBrewer)  
+pal_species <- brewer.pal(3, "Set1")  # the point colors for the three species
 
-ggplot(iris, aes(x = Species, Sepal.Width)) +
-  geom_point(aes(col1 = Sepal.Width, col2 = Sepal.Width, col3 = Sepal.Width, group = Species)) %>%
-    rename_geom_aes(
-      new_aes = c("colour" = "col1", "colour" = "col2", "colour" = "col3"),
-      aes(colour = case_when(group == 1 ~ col1, group == 2 ~ col2, TRUE ~ col3))
-    ) +
-    scale_distiller("col1", 5, "setosa") +
-    scale_distiller("col2", 6, "versicolor") +
-    scale_distiller("col3", 7, "virginica") +
-    theme_bw() + theme(legend.position = "bottom", legend.key.width = grid::unit(6, "pt"))
-
+ggplot(iris) +
+  # specify "group = species" to use different colors for each species
+  geom_point(aes(x = Species, y = Sepal.Length, col1 = Sepal.Length, col2 = Sepal.Length, col3 = Sepal.Length, group = Species), position = position_jitter(width = 0.1)) %>%
+  
+  # specify the color mappings to the corresponding species
+    rename_geom_aes(new_aes = c("colour" = "col1", "colour" = "col2", "colour" = "col3"), aes(colour = case_when(group == 1 ~ col1, group == 2 ~ col2, group == 3 ~ col3))) +
+  
+  # geom layer for the boxplot
+  (geom_boxplot(aes(x = Species, y = Sepal.Length, col4 = Species), width = 0.5, outlier.color = NA, fill = NA) %>% 
+     rename_geom_aes(new_aes = c("colour" = "col4"))) + 
+  
+  # color scales for the points (three scales, each for one species)
+  scale_color_gradient(aesthetics = "col1", low = "white", high = pal_species[1], name = "setosa", guide = guide_legend(order = 1, direction = "horizontal", title.position = "top")) +
+  scale_color_gradient(aesthetics = "col2", low = "white", high = pal_species[2], name = "versicolor", guide = guide_legend(order = 2, direction = "horizontal", title.position = "top")) +
+  scale_color_gradient(aesthetics = "col3", low = "white", high = pal_species[3], name = "virginica", guide = guide_legend(order = 3, direction = "horizontal", title.position = "top")) +
+  
+  # color scale for the boxplot
+  scale_color_brewer(aesthetics = "col4", palette = "Set1", name = "Species", guide = guide_legend(order = 4, direction = "vertical")) + 
+  
+  # plot appearance
+  labs(y = "Sepal length (cm)") + 
+  theme_classic(base_size = 14) + 
+  theme(legend.title.align = 0.5)
 
 ```
 
-### Individually trained
+In the example above, the range of the three continuous legends is jointly determined by the sepal length of all three species (the three legends all have the same range). This works fine in this example, but may not work if the three species had quite different sepal lengths (imagine one species has its sepal ten times longer than that of the other two species, then the common legend range will be greatly distorted!)
+
+Of course, it is possible to have individual legend range for each species (i.e., the ranges of the three continuous legends are independent of each other; each is determined by the sepal length of the respective species):
 
 ```{r, fig.width = 5.5, fig.height = 3.5, out.width = "70%"}
-scale_distiller <- function(aesthetics, palette, name, ...) {
-  scale_colour_distiller(
-    aesthetics = aesthetics,
-    palette = palette,
-    name = name, ...,
-    guide = guide_legend(order = palette))
-}
-
-# subset data
-iris_setosa <- filter(iris, Species == "setosa")
-iris_versicolor <- filter(iris, Species == "versicolor")
-iris_virginica <- filter(iris, Species == "virginica")
-
-# plot
-ggplot(mapping = aes(Sepal.Length, Sepal.Width)) +
-  (geom_point(data = iris_setosa, aes(colour1 = Sepal.Width)) %>%
-     rename_geom_aes(new_aes = c("colour" = "colour1"))) +
-  (geom_point(data = iris_versicolor, aes(colour2 = Sepal.Width)) %>%
-     rename_geom_aes(new_aes = c("colour" = "colour2"))) +
-  (geom_point(data = iris_virginica, aes(colour3 = Sepal.Width)) %>%
-     rename_geom_aes(new_aes = c("colour" = "colour3"))) +
-  facet_wrap(~Species) +
-  scale_distiller("colour1", 5, "setosa") +
-  scale_distiller("colour2", 6, "versicolor") +
-  scale_distiller("colour3", 7, "virginica") +
-  theme_bw() +
-  theme(legend.position = "bottom")
+ggplot(mapping = aes(x = Species, y = Sepal.Length)) +
+  
+  # create three separate geom layers for the points so that the color mapping is independent of each other
+  (geom_point(data = filter(iris, Species == "setosa"), aes(col1 = Sepal.Width), position = position_jitter(width = 0.1)) %>% 
+     rename_geom_aes(new_aes = c("colour" = "col1"))) +
+  (geom_point(data = filter(iris, Species == "versicolor"), aes(col2 = Sepal.Width), position = position_jitter(width = 0.1)) %>% 
+     rename_geom_aes(new_aes = c("colour" = "col2"))) +
+  (geom_point(data = filter(iris, Species == "virginica"), aes(col3 = Sepal.Width), position = position_jitter(width = 0.1)) %>% 
+     rename_geom_aes(new_aes = c("colour" = "col3"))) +
+  
+  # geom layer for the boxplot
+  (geom_boxplot(data = iris, aes(x = Species, y = Sepal.Length, col4 = Species), width = 0.5, outlier.color = NA, fill = NA) %>%
+     rename_geom_aes(new_aes = c("colour" = "col4"))) +
+  
+  # color scales for the points (three scales, each for one species)
+  scale_color_gradient(aesthetics = "col1", low = "white", high = pal_species[1], name = "setosa", guide = guide_legend(order = 1, direction = "horizontal", title.position = "top")) +
+  scale_color_gradient(aesthetics = "col2", low = "white", high = pal_species[2], name = "versicolor", guide = guide_legend(order = 2, direction = "horizontal", title.position = "top")) +
+  scale_color_gradient(aesthetics = "col3", low = "white", high = pal_species[3], name = "virginica", guide = guide_legend(order = 3, direction = "horizontal", title.position = "top")) +
+  
+  # color scale for the boxplot
+  scale_color_brewer(aesthetics = "col4", palette = "Set1", name = "Species", guide = guide_legend(order = 4, direction = "vertical")) +
+  
+  # plot appearance
+  labs(y = "Sepal length (cm)") + 
+  theme_classic(base_size = 14) + 
+  theme(legend.title.align = 0.5)
 
 ```
-
-
-
+* **NOTE**
+It seems that the package only works for discrete legend. Therefore, you have to force a continuous scale into a discrete scale (using `guide = guide_legend()`) if the mapped variable is continuous.
 
 ## Summary
 
