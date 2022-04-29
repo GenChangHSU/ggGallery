@@ -9,14 +9,14 @@
     <generator>Distill</generator>
     <lastBuildDate>Sun, 24 Apr 2022 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>Post #14. Multiple color scales in ggplots</title>
+      <title>Post #14. Multiple color scales in one ggplot</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
-      <link>https://genchanghsu.github.io/ggGallery/posts/2022-04-24-post-14-multiple-color-scales-in-ggplots</link>
-      <description>Using different color scales for multiple geom layers with `ggnewscale` and `relayer`</description>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2022-04-24-post-14-multiple-color-scales-in-one-ggplot</link>
+      <description>Using different color scales for multiple geom layers in one ggplot with `ggnewscale` and `relayer`</description>
       <category>2022</category>
-      <guid>https://genchanghsu.github.io/ggGallery/posts/2022-04-24-post-14-multiple-color-scales-in-ggplots</guid>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2022-04-24-post-14-multiple-color-scales-in-one-ggplot</guid>
       <pubDate>Sun, 24 Apr 2022 00:00:00 +0000</pubDate>
-      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-04-24-post-14-multiple-color-scales-in-ggplots/../../homepage_images/Post14.png" medium="image" type="image/png" width="1056" height="672"/>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-04-24-post-14-multiple-color-scales-in-one-ggplot/../../homepage_images/Post14.png" medium="image" type="image/png" width="1056" height="672"/>
     </item>
     <item>
       <title>Post #13. ggplot Legend Tips Series No.4: Merging ggplot legends</title>

@@ -1,7 +1,7 @@
 ---
-title: "Post #14. Multiple color scales in ggplots"
+title: "Post #14. Multiple color scales in one ggplot"
 description: |
-  Using different color scales for multiple geom layers with `ggnewscale` and `relayer`
+  Using different color scales for multiple geom layers in one ggplot with `ggnewscale` and `relayer`
 author:
   - name: Gen-Chang Hsu
 date: 2022-04-24
