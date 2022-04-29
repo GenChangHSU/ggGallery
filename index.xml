@@ -7,7 +7,17 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Wed, 02 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 24 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #14. Multiple color scales in ggplots</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2022-04-24-post-14-multiple-color-scales-in-ggplots</link>
+      <description>Using different color scales for multiple geom layers with `ggnewscale` and `relayer`</description>
+      <category>2022</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2022-04-24-post-14-multiple-color-scales-in-ggplots</guid>
+      <pubDate>Sun, 24 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-04-24-post-14-multiple-color-scales-in-ggplots/../../homepage_images/Post14.png" medium="image" type="image/png" width="1056" height="672"/>
+    </item>
     <item>
       <title>Post #13. ggplot Legend Tips Series No.4: Merging ggplot legends</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
