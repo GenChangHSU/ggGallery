@@ -1,0 +1,127 @@
+---
+title: "Post #15. Manipulating axes for individual facets with `ggtext` and `ggh4x`"
+description: |
+  Bothered by the hassle of adjusting the axes of individual facets? This is the post for you!
+author:
+  - name: Gen-Chang Hsu
+date: 2022-05-12
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2022"
+preview: ../../homepage_images/Post15.png
+draft: T
+---
+
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+</style>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Background
+
+
+
+
+## Reorder items within facet
+
+```{r, fig.width = 5, fig.height = 4, out.width = "70%"}
+library(tidyverse)
+
+ggplot(diamonds, aes(x = color, y = price)) + 
+  stat_summary(geom = "pointrange", fun.data = mean_cl_normal) + 
+  facet_wrap(~cut, scales = "free_x") + 
+  theme_bw(base_size = 13)
+
+
+
+```
+
+
+
+## Customized axis range for individual facets
+
+
+
+
+
+
+## Summary
+
+
+
+That's it for now and hope the topic in this post would be helpful for you sometime in the future. And as always, don't forget to leave your comments and suggestions below if you have any!
+
+
+
+
