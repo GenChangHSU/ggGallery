@@ -91,10 +91,6 @@ knitr::opts_chunk$set(message = F,
 ## Background
 
 
-
-
-## Reorder items within facet
-
 ```{r, fig.width = 5, fig.height = 4, out.width = "70%"}
 library(tidyverse)
 
@@ -103,15 +99,52 @@ ggplot(diamonds, aes(x = color, y = price)) +
   facet_wrap(~cut, scales = "free_x") + 
   theme_bw(base_size = 13)
 
+```
 
+
+
+## Reorder items in indiviudual facets
+
+```{r, fig.width = 5, fig.height = 4, out.width = "70%"}
+library(tidytext)
+
+ggplot(diamonds, aes(x = reorder_within(color, price, cut, fun = mean), color, y = price)) + 
+  stat_summary(geom = "pointrange", fun.data = mean_cl_normal) + 
+  facet_wrap(~cut, scales = "free_x") +  # need to set scales = "free_x" to allow the individual x-axes of facets to vary  
+  scale_x_reordered() + 
+  labs(x = "Color", y = "Price") +
+  theme_bw(base_size = 13)
+
+```
+
+
+```{r, fig.width = 5, fig.height = 4, out.width = "70%"}
+library(ggh4x)
+
+ggplot(diamonds, aes(x = color, y = price)) +
+  stat_summary(geom = "pointrange", fun.data = mean_cl_normal) + 
+  facet_wrap(~cut, scales = "free_x") + 
+  labs(x = "Color", y = "Price") +
+  theme_bw(base_size = 13) + 
+  facetted_pos_scales(x = list(cut == "Fair" ~ scale_x_discrete(limits = rev(levels(fct_reorder(filter(diamonds, cut == "Fair")$color, filter(diamonds, cut == "Fair")$price, mean))))))
 
 ```
 
 
 
-## Customized axis range for individual facets
+## Customized axis ranges in individual facets
 
+```{r, fig.width = 5, fig.height = 4, out.width = "70%"}
+library(ggh4x)
 
+ggplot(diamonds, aes(x = color, y = price)) +
+  stat_summary(geom = "pointrange", fun.data = mean_cl_normal) + 
+  facet_wrap(~cut, scales = "free_x") + 
+  labs(x = "Color", y = "Price") +
+  theme_bw(base_size = 13) + 
+  facetted_pos_scales(y = list(cut == "Fair" ~ scale_y_continuous()))
+
+```
 
 
 
