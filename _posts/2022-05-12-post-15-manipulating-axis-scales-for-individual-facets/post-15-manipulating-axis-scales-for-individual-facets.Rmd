@@ -1,7 +1,7 @@
 ---
-title: "Post #15. Manipulating axes for individual facets with `ggtext` and `ggh4x`"
+title: "Post #15. Manipulating the axes for individual facets with `ggtext` and `ggh4x`"
 description: |
-  Bothered by the hassle of adjusting the axes of individual facets? This is the post for you!
+  Bothered by the hassle of manipulating the axes for individual facets? This is the post for you!
 author:
   - name: Gen-Chang Hsu
 date: 2022-05-12
@@ -11,7 +11,6 @@ output:
 categories:
   - "2022"
 preview: ../../homepage_images/Post15.png
-draft: T
 ---
 
 <!-- Webpage style -->
@@ -90,49 +89,71 @@ knitr::opts_chunk$set(message = F,
 
 ## Background
 
+Faceting is arguably one of the most fantastic features of ggplots—it can quickly split the data into subsets by the given categorical variables and visualize these subsets in a grid of panels (facets). However, fine-tuning individual facets can be quite daunting. For example, I've been trying to reorder the items along the x-axis within each facet (i.e., different orders for different facets), or to adjust the axes of some specific facets. These tasks don't sound complicated on the surface, but there is actually no built-in ggplot function/argument to do so.
+
+After doing some search online, I found two extension packages: [`tidytext`](https://juliasilge.github.io/tidytext/index.html) and [`ggh4x`](https://teunbrand.github.io/ggh4x/reference/facetted_pos_scales.html), that have functions to deal with the two aforementioned issues. I feel that many ggplot users might have encountered similar problems before, and this is indeed the motivator for me to write something on them. So in this post, I'll share with you the two nice packages and hope they would come in handy for your own ggplots in the future!
+
+
+## 1. Reorder items for indiviudual facets
+
+Let's begin by creating a faceted plot using the [`diamonds`](https://ggplot2.tidyverse.org/reference/diamonds.html) dataset, which contains the attributes and prices of over 50,000 diamonds.
 
 ```{r, fig.width = 5, fig.height = 4, out.width = "70%"}
 library(tidyverse)
 
 ggplot(diamonds, aes(x = color, y = price)) + 
   stat_summary(geom = "pointrange", fun.data = mean_cl_normal) + 
-  facet_wrap(~cut, scales = "free_x") + 
-  theme_bw(base_size = 13)
-
-```
-
-
-
-## Reorder items in indiviudual facets
-
-```{r, fig.width = 5, fig.height = 4, out.width = "70%"}
-library(tidytext)
-
-ggplot(diamonds, aes(x = reorder_within(color, price, cut, fun = mean), color, y = price)) + 
-  stat_summary(geom = "pointrange", fun.data = mean_cl_normal) + 
-  facet_wrap(~cut, scales = "free_x") +  # need to set scales = "free_x" to allow the individual x-axes of facets to vary  
-  scale_x_reordered() + 
+  facet_wrap(~cut) + 
   labs(x = "Color", y = "Price") +
   theme_bw(base_size = 13)
 
 ```
 
+The above plot shows the means and 95% confidence intervals of the diamonds of different colors faceted by cut. 
+
+Now, we can reorder the points in an ascending fashion for individual facets, using the function `reorder_within()` and `scale_x_reordered()` from the package `tidytext`. 
+
+In `reorder_within(x, by, within, fun)`, the argument `x` is the factor you would like to reorder, `by` is the continuous variable based on which `x` is reordered, `within` is the faceting variable, and `fun` is the function to compute a statistics on the `by` variable that determines the ordering of levels in `x`. Ok, that's quite wordy. An example will make things clear: 
 
 ```{r, fig.width = 5, fig.height = 4, out.width = "70%"}
+# install.packages("tidytext")  # install the package if you haven't
+library(tidytext)
+
+ggplot(diamonds, aes(x = reorder_within(x = color, by = price, within = cut, fun = mean), y = price)) + 
+  stat_summary(geom = "pointrange", fun.data = mean_cl_normal) + 
+  facet_wrap(~cut, scales = "free_x") +  # need to set scales = "free_x" to allow for varying x-axes in individual facets  
+  scale_x_reordered() +  # specify "limits = rev" in the function to get descending points
+  labs(x = "Color", y = "Price") +
+  theme_bw(base_size = 13)
+
+```
+
+Reordered. Nice!
+
+Say we want to adjust the item order for just the facet "Fair". We can do so using the function `facetted_pos_scales()` from the package `ggh4x`:
+
+```{r, fig.width = 5, fig.height = 4, out.width = "70%"}
+# install.packages("ggh4x")  # install the package if you haven't
 library(ggh4x)
+
+# reordered color levels for "fair" diamonds
+ordered_levels_fair <- fct_reorder(.f = filter(diamonds, cut == "Fair")$color, 
+                                   .x = filter(diamonds, cut == "Fair")$price, 
+                                   .fun = mean) %>% 
+  levels()
 
 ggplot(diamonds, aes(x = color, y = price)) +
   stat_summary(geom = "pointrange", fun.data = mean_cl_normal) + 
   facet_wrap(~cut, scales = "free_x") + 
   labs(x = "Color", y = "Price") +
   theme_bw(base_size = 13) + 
-  facetted_pos_scales(x = list(cut == "Fair" ~ scale_x_discrete(limits = rev(levels(fct_reorder(filter(diamonds, cut == "Fair")$color, filter(diamonds, cut == "Fair")$price, mean))))))
+  facetted_pos_scales(x = list(cut == "Fair" ~ scale_x_discrete(limits = ordered_levels_fair)))  # x = list(...) means x-axis; cut == "Fair" identifies the facet "Fair"; ~ scale_x_discrete(limits = ) gives the new order for that facet   
 
 ```
+<br>
 
+## 2. Adjust axis ranges for specific facets
 
-
-## Customized axis ranges in individual facets
 
 ```{r, fig.width = 5, fig.height = 4, out.width = "70%"}
 library(ggh4x)

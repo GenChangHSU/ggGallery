@@ -7,7 +7,141 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 24 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 11 May 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #15. Manipulating the axes for individual facets with `ggtext` and `ggh4x`</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2022-05-12-post-15-manipulating-axis-scales-for-individual-facets</link>
+      <description>
+
+
+&lt;!-- Webpage style --&gt;
+&lt;style&gt;
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+&lt;/style&gt;
+&lt;!-- Start of the article --&gt;
+&lt;h2 id="background"&gt;Background&lt;/h2&gt;
+&lt;p&gt;Faceting is arguably one of the most fantastic features of ggplots—it can quickly split the data into subsets by the given categorical variables and visualize these subsets in a grid of panels (facets). However, fine-tuning individual facets can be quite daunting. For example, I’ve been trying to reorder the items along the x-axis within each facet (i.e., different orders for different facets), or to adjust the axes of some specific facets. These tasks don’t sound complicated on the surface, but there is actually no built-in ggplot function/argument to do so.&lt;/p&gt;
+&lt;p&gt;After doing some search online, I found two extension packages: &lt;a href="https://juliasilge.github.io/tidytext/index.html"&gt;&lt;code&gt;tidytext&lt;/code&gt;&lt;/a&gt; and &lt;a href="https://teunbrand.github.io/ggh4x/reference/facetted_pos_scales.html"&gt;&lt;code&gt;ggh4x&lt;/code&gt;&lt;/a&gt;, that have functions to deal with the two aforementioned issues. I feel that many ggplot users might have encountered similar problems before, and this is indeed the motivator for me to write something on them. So in this post, I’ll share with you the two nice packages and hope they would come in handy for your own ggplots in the future!&lt;/p&gt;
+&lt;h2 id="reorder-items-for-indiviudual-facets"&gt;1. Reorder items for indiviudual facets&lt;/h2&gt;
+&lt;p&gt;Let’s begin by creating a faceted plot using the &lt;a href="https://ggplot2.tidyverse.org/reference/diamonds.html"&gt;&lt;code&gt;diamonds&lt;/code&gt;&lt;/a&gt; dataset, which contains the attributes and prices of over 50,000 diamonds.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+
+ggplot(diamonds, aes(x = color, y = price)) + 
+  stat_summary(geom = &amp;quot;pointrange&amp;quot;, fun.data = mean_cl_normal) + 
+  facet_wrap(~cut) + 
+  labs(x = &amp;quot;Color&amp;quot;, y = &amp;quot;Price&amp;quot;) +
+  theme_bw(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file62d049f4340f_files/figure-html/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;The above plot shows the means and 95% confidence intervals of the diamonds of different colors faceted by cut.&lt;/p&gt;
+&lt;p&gt;Now, we can reorder the points in an ascending fashion for individual facets, using the function &lt;code&gt;reorder_within()&lt;/code&gt; and &lt;code&gt;scale_x_reordered()&lt;/code&gt; from the package &lt;code&gt;tidytext&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In &lt;code&gt;reorder_within(x, by, within, fun)&lt;/code&gt;, the argument &lt;code&gt;x&lt;/code&gt; is the factor you would like to reorder, &lt;code&gt;by&lt;/code&gt; is the continuous variable based on which &lt;code&gt;x&lt;/code&gt; is reordered, &lt;code&gt;within&lt;/code&gt; is the faceting variable, and &lt;code&gt;fun&lt;/code&gt; is the function to compute a statistics on the &lt;code&gt;by&lt;/code&gt; variable that determines the ordering of levels in &lt;code&gt;x&lt;/code&gt;. Ok, that’s quite wordy. An example will make things clear:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;tidytext&amp;quot;)  # install the package if you haven&amp;#39;t
+library(tidytext)
+
+ggplot(diamonds, aes(x = reorder_within(x = color, by = price, within = cut, fun = mean), y = price)) + 
+  stat_summary(geom = &amp;quot;pointrange&amp;quot;, fun.data = mean_cl_normal) + 
+  facet_wrap(~cut, scales = &amp;quot;free_x&amp;quot;) +  # need to set scales = &amp;quot;free_x&amp;quot; to allow for varying x-axes in individual facets  
+  scale_x_reordered() +  # specify &amp;quot;limits = rev&amp;quot; in the function to get descending points
+  labs(x = &amp;quot;Color&amp;quot;, y = &amp;quot;Price&amp;quot;) +
+  theme_bw(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file62d049f4340f_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Reordered. Nice!&lt;/p&gt;
+&lt;p&gt;Say we want to adjust the item order for just the facet “Fair”. We can do so using the function &lt;code&gt;facetted_pos_scales()&lt;/code&gt; from the package &lt;code&gt;ggh4x&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggh4x&amp;quot;)  # install the package if you haven&amp;#39;t
+library(ggh4x)
+
+# reordered color levels for &amp;quot;fair&amp;quot; diamonds
+ordered_levels_fair &amp;lt;- fct_reorder(.f = filter(diamonds, cut == &amp;quot;Fair&amp;quot;)$color, 
+                                   .x = filter(diamonds, cut == &amp;quot;Fair&amp;quot;)$price, 
+                                   .fun = mean) %&amp;gt;% 
+  levels()
+
+ggplot(diamonds, aes(x = color, y = price)) +
+  stat_summary(geom = &amp;quot;pointrange&amp;quot;, fun.data = mean_cl_normal) + 
+  facet_wrap(~cut, scales = &amp;quot;free_x&amp;quot;) + 
+  labs(x = &amp;quot;Color&amp;quot;, y = &amp;quot;Price&amp;quot;) +
+  theme_bw(base_size = 13) + 
+  facetted_pos_scales(x = list(cut == &amp;quot;Fair&amp;quot; ~ scale_x_discrete(limits = ordered_levels_fair)))  # x = list(...) means x-axis; cut == &amp;quot;Fair&amp;quot; identifies the facet &amp;quot;Fair&amp;quot;; ~ scale_x_discrete(limits = ) gives the new order for that facet   &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file62d049f4340f_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /&gt; &lt;br&gt;&lt;/p&gt;
+&lt;h2 id="adjust-axis-ranges-for-specific-facets"&gt;2. Adjust axis ranges for specific facets&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(ggh4x)
+
+ggplot(diamonds, aes(x = color, y = price)) +
+  stat_summary(geom = &amp;quot;pointrange&amp;quot;, fun.data = mean_cl_normal) + 
+  facet_wrap(~cut, scales = &amp;quot;free_x&amp;quot;) + 
+  labs(x = &amp;quot;Color&amp;quot;, y = &amp;quot;Price&amp;quot;) +
+  theme_bw(base_size = 13) + 
+  facetted_pos_scales(y = list(cut == &amp;quot;Fair&amp;quot; ~ scale_y_continuous()))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file62d049f4340f_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;p&gt;That’s it for now and hope the topic in this post would be helpful for you sometime in the future. And as always, don’t forget to leave your comments and suggestions below if you have any!&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>9dae62c8e12f42a19810ccdfc12a3cc3</distill:md5>
+      <category>2022</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2022-05-12-post-15-manipulating-axis-scales-for-individual-facets</guid>
+      <pubDate>Wed, 11 May 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-05-12-post-15-manipulating-axis-scales-for-individual-facets/post-15-manipulating-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="960" height="768"/>
+    </item>
     <item>
       <title>Post #14. Multiple color scales in one ggplot</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
