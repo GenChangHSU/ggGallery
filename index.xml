@@ -111,7 +111,7 @@ ggplot(diamonds, aes(x = color, y = price)) +
   facet_wrap(~cut) + 
   labs(x = &amp;quot;Color&amp;quot;, y = &amp;quot;Price&amp;quot;) +
   theme_bw(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file6441274362_files/figure-html/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filed90238852f1_files/figure-html/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;The above plot shows the means and 95% confidence intervals of the
 diamonds of different colors faceted by cut.&lt;/p&gt;
 &lt;p&gt;Now, we can reorder the points in an ascending fashion for individual
@@ -134,7 +134,7 @@ ggplot(diamonds, aes(x = reorder_within(x = color, by = price, within = cut, fun
   scale_x_reordered() +  # specify &amp;quot;limits = rev&amp;quot; in the function to get descending points
   labs(x = &amp;quot;Color&amp;quot;, y = &amp;quot;Price&amp;quot;) +
   theme_bw(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file6441274362_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filed90238852f1_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Reordered. Nice!&lt;/p&gt;
 &lt;p&gt;Say we want to adjust the item order for just the facet “Fair”. We
 can do so using the function &lt;code&gt;facetted_pos_scales()&lt;/code&gt; from the
@@ -154,7 +154,7 @@ ggplot(diamonds, aes(x = color, y = price)) +
   labs(x = &amp;quot;Color&amp;quot;, y = &amp;quot;Price&amp;quot;) +
   theme_bw(base_size = 13) + 
   facetted_pos_scales(x = list(cut == &amp;quot;Fair&amp;quot; ~ scale_x_discrete(limits = ordered_levels_fair)))  # x = list(...) means x-axis; cut == &amp;quot;Fair&amp;quot; identifies the facet &amp;quot;Fair&amp;quot;; ~ scale_x_discrete(limits = ) gives the new order for that facet   &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file6441274362_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;p&gt;&lt;img src="filed90238852f1_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 &lt;br&gt;&lt;/p&gt;
 &lt;h2 id="adjust-y-axis-scales-for-individual-facets"&gt;2. Adjust y-axis
 scales for individual facets&lt;/h2&gt;
@@ -167,7 +167,7 @@ previous figures, and the same goes for y-axis:&lt;/p&gt;
   facet_wrap(~cut, scales = &amp;quot;free_y&amp;quot;) + 
   labs(x = &amp;quot;Color&amp;quot;, y = &amp;quot;Price&amp;quot;) +
   theme_bw(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file6441274362_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filed90238852f1_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Now the y-axis is determined for each facet by the range of the data
 within. However, what if you want to truly customize the axes, say
 changing the positions and labels of the tick marks?
@@ -186,7 +186,7 @@ ggplot(diamonds, aes(x = color, y = price)) +
                                cut == &amp;quot;Premium&amp;quot; ~ scale_y_continuous(breaks = c(3500, 4200, 4900, 5600, 6300)),
                                cut == &amp;quot;Very Good&amp;quot; ~ scale_y_continuous(breaks = c(3000, 3600, 4200, 4800, 5400)),
                                cut == &amp;quot;Ideal&amp;quot; ~ scale_y_continuous(breaks = c(2400, 3100, 3800, 4500, 5200))))  # a list of panels to be modified&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file6441274362_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filed90238852f1_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Finally, we can combine both reordering and rescaling to create some
 cool visual effects:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(tidytext)
@@ -204,7 +204,7 @@ ggplot(diamonds, aes(x = reorder_within(x = color, by = price, within = cut, fun
                                cut == &amp;quot;Premium&amp;quot; ~ scale_y_continuous(limits = c(-5000, 9000), breaks = c(4625)),
                                
                                cut == &amp;quot;Ideal&amp;quot; ~ scale_y_continuous(limits = c(-8500, 4700), breaks = c(5000))))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file6441274362_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filed90238852f1_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Of course this plot is definitely &lt;strong&gt;NOT&lt;/strong&gt; appropriate
 for data communication; it’s so deceiving and misleading! Just for pure
 fun and also to see how versatile the two packages can be!!!&lt;/p&gt;
@@ -222,11 +222,11 @@ long way!&lt;/p&gt;
 for you sometime in the future. And as always, don’t forget to leave
 your comments and suggestions below if you have any!&lt;/p&gt;
 &lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
-      <distill:md5>538fef7d07f769662287ce7114087030</distill:md5>
+      <distill:md5>61dcc1ef8f777b34c96e05dd5a0ca84c</distill:md5>
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-05-12-post-15-manipulating-axis-scales-for-individual-facets</guid>
       <pubDate>Thu, 12 May 2022 00:00:00 +0000</pubDate>
-      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-05-12-post-15-manipulating-axis-scales-for-individual-facets/post-15-manipulating-axis-scales-for-individual-facets_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="960" height="768"/>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-05-12-post-15-manipulating-axis-scales-for-individual-facets/../../homepage_images/Post15.png" medium="image" type="image/png" width="960" height="768"/>
     </item>
     <item>
       <title>Post #14. Multiple color scales in one ggplot</title>
