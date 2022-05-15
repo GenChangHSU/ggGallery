@@ -1,5 +1,5 @@
 ---
-title: "Post #15. Manipulating the axes for individual facets with `ggtext` and `ggh4x`"
+title: "Post #15. Manipulating the axes for individual facets with `tidytext` and `ggh4x`"
 description: |
   Bothered by the hassle of manipulating the axes for individual facets? This is the post for you!
 author:
@@ -89,12 +89,12 @@ knitr::opts_chunk$set(message = F,
 
 ## Background
 
-Faceting is arguably one of the most fantastic features of ggplots—it can quickly split the data into subsets by the given categorical variables and visualize these subsets in a grid of panels (facets). However, fine-tuning individual facets can be quite daunting. For example, I've been trying to reorder the items along the x-axis within each facet (i.e., different orders for different facets), or to adjust the axes of some specific facets. These tasks don't sound complicated on the surface, but there is actually no built-in ggplot function/argument to do so.
+Faceting is arguably one of the most fantastic features of ggplots—it can quickly split the data into subsets by the given categorical variables and visualize these subsets in a grid of panels (facets). However, fine-tuning individual facets can be quite daunting. For example, I've been trying to reorder the items along the x-axis within each facet (i.e., different item orders for different facets), or to adjust the y-axis range and tick marks of some specific facets. These tasks don't sound complicated on the surface, but there is actually no built-in ggplot function/argument to do so.
 
-After doing some search online, I found two extension packages: [`tidytext`](https://juliasilge.github.io/tidytext/index.html) and [`ggh4x`](https://teunbrand.github.io/ggh4x/reference/facetted_pos_scales.html), that have functions to deal with the two aforementioned issues. I feel that many ggplot users might have encountered similar problems before, and this is indeed the motivator for me to write something on them. So in this post, I'll share with you the two nice packages and hope they would come in handy for your own ggplots in the future!
+After doing some search online, I found two extension packages: [`tidytext`](https://juliasilge.github.io/tidytext/index.html) and [`ggh4x`](https://teunbrand.github.io/ggh4x/reference/facetted_pos_scales.html), that have functions to deal with the these issues. I feel that many ggplot users might have encountered similar problems before, and this is indeed the motivator for me to write something on them. So in this post, I'll share with you the two nice packages and hope they would come in handy for your own ggplots in the future!
 
 
-## 1. Reorder items for indiviudual facets
+## 1. Reorder items along x-axis for indiviudual facets
 
 Let's begin by creating a faceted plot using the [`diamonds`](https://ggplot2.tidyverse.org/reference/diamonds.html) dataset, which contains the attributes and prices of over 50,000 diamonds.
 
@@ -152,27 +152,65 @@ ggplot(diamonds, aes(x = color, y = price)) +
 ```
 <br>
 
-## 2. Adjust axis ranges for specific facets
+## 2. Adjust y-axis scales for individual facets
 
+There is an argument `scales = ` in `facet_wrap()` that allows you to have varying axes for individual panels. You've seen `scales = "free_x"` in the previous figures, and the same goes for y-axis:
 
-```{r, fig.width = 5, fig.height = 4, out.width = "70%"}
+```{r, fig.width = 6, fig.height = 4, out.width = "80%"}
+ggplot(diamonds, aes(x = color, y = price)) + 
+  stat_summary(geom = "pointrange", fun.data = mean_cl_normal) + 
+  facet_wrap(~cut, scales = "free_y") + 
+  labs(x = "Color", y = "Price") +
+  theme_bw(base_size = 13)
+
+```
+
+Now the y-axis is determined for each facet by the range of the data within. However, what if you want to truly customize the axes, say changing the positions and labels of the tick marks? `facetted_pos_scales()` can do the trick!
+
+Let's add a few tick marks to the "Fair" and "Premium" panel and cut a few for the "Very Good" and "Ideal" panel so that each panel has five tick marks:
+
+```{r, fig.width = 6, fig.height = 4, out.width = "80%"}
 library(ggh4x)
 
 ggplot(diamonds, aes(x = color, y = price)) +
   stat_summary(geom = "pointrange", fun.data = mean_cl_normal) + 
-  facet_wrap(~cut, scales = "free_x") + 
+  facet_wrap(~cut, scales = "free_y") +  # need to set 'scales = "free_y"'
   labs(x = "Color", y = "Price") +
   theme_bw(base_size = 13) + 
-  facetted_pos_scales(y = list(cut == "Fair" ~ scale_y_continuous()))
+  facetted_pos_scales(y = list(cut == "Fair" ~ scale_y_continuous(breaks = c(3500, 4000, 4500, 5000, 5500)),
+                               cut == "Premium" ~ scale_y_continuous(breaks = c(3500, 4200, 4900, 5600, 6300)),
+                               cut == "Very Good" ~ scale_y_continuous(breaks = c(3000, 3600, 4200, 4800, 5400)),
+                               cut == "Ideal" ~ scale_y_continuous(breaks = c(2400, 3100, 3800, 4500, 5200))))  # a list of panels to be modified
 
 ```
 
+Finally, we can combine both reordering and rescaling to create some cool visual effects:
 
+```{r, fig.width = 8, fig.height = 4, out.width = "80%"}
+library(tidytext)
+library(ggh4x)
+
+ggplot(diamonds, aes(x = reorder_within(x = color, by = price, within = cut, fun = mean), y = price)) + 
+  stat_summary(geom = "pointrange", fun.data = mean_cl_normal) + 
+  facet_wrap(~cut, scales = "free", nrow = 1) +  
+  scale_x_reordered() + 
+  labs(x = "Color", y = "Price") +
+  theme_bw(base_size = 13) +
+  facetted_pos_scales(y = list(cut == "Fair" ~ scale_y_continuous(limits = c(3800, 12000), breaks = c(3500)), 
+                               cut == "Good" ~ scale_y_continuous(limits = c(1500, 11500), breaks = c(3875)),
+                               cut == "Very Good" ~ scale_y_continuous(limits = c(-1000, 10000), breaks = c(4250)),
+                               cut == "Premium" ~ scale_y_continuous(limits = c(-5000, 9000), breaks = c(4625)),
+                               
+                               cut == "Ideal" ~ scale_y_continuous(limits = c(-8500, 4700), breaks = c(5000))))
+
+```
+
+Of course this plot is definitely **NOT** appropriate for data communication; it's so deceiving and misleading! Just for pure fun and also to see how versatile the two packages can be!!!
 
 
 ## Summary
 
-
+To summarize what we've talked about, we learned (1) how to reorder the items along the x-axis for all individual facets using `reorder_within()` and `scale_x_reordered()` from the `tidytext` package, or for specific facet(s) using `facetted_pos_scales()` from the `ggh4x` package, and (2) how to adjust axis scales for individual facets using `facetted_pos_scales()` from the `ggh4x` package. Knowing these two techniques will certainly help every ggplot lover go a long way!  
 
 That's it for now and hope the topic in this post would be helpful for you sometime in the future. And as always, don't forget to leave your comments and suggestions below if you have any!
 
