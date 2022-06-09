@@ -1,0 +1,197 @@
+---
+title: "Post #16. ggplot Legend Tips Series No.5: Working on discrete legends with scale_XX functions"
+description: |
+  In this post, you will learn how to modify the appearance of discrete legends in ggplots using `scale_XX` family of functions.
+author:
+  - name: Gen-Chang Hsu
+date: 2022-06-09
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2022"
+preview: ../../homepage_images/Post16.png
+draft: True
+---
+
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+</style>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Background
+
+Welcome to another post of the **ggplot Legend Tips Series**! This post is a continuation of working on discrete legends in ggplots. In a [previous post](https://genchanghsu.github.io/ggGallery/posts/2022-01-28-post-10-ggplot-legend-tips-series-no1-working-on-discrete-scale-legends-with-guides/) in this series, I introduced how to modify the appearance of discrete legends with `guides()` (do take a look at the post if you're interested!) such as legend label font, legend key size, and legend direction and position.   
+
+Today, we will explore another way to modify discrete legends: using `scale_XX` functions. There 
+
+Although there aren't as many things you can do with `scale_XX` functions as you can do with `guides()`, there are three adjustments that are super handy: 
+
+
+
+We'll see them 
+
+
+
+
+## An example with scale_color_brewer()
+
+An example of the [`ChickWeight`](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/ChickWeight) dataset
+
+Average weight of chicks in each diet over time:
+
+```{r, fig.width = 6, fig.height = 4, out.width = "70%"}
+library(tidyverse)
+
+ChickWeight_avg <- ChickWeight %>% 
+  group_by(Diet, Time) %>% 
+  summarise(weight = mean(weight))
+
+P <- ggplot(ChickWeight_avg) + 
+  geom_line(aes(x = Time, y = weight, color = Diet)) + 
+  geom_point(aes(x = Time, y = weight, color = Diet)) +  
+  labs(x = "Week", y = "Weight (g)") + 
+  theme_classic(base_size = 14) + 
+  scale_color_brewer(palette = "Set1")
+
+
+
+
+```
+
+
+### (1) Change legend name and labels
+
+```{r, fig.width = 6, fig.height = 4, out.width = "70%"}
+library(tidyverse)
+
+ChickWeight_avg <- ChickWeight %>% 
+  group_by(Diet, Time) %>% 
+  summarise(weight = mean(weight))
+
+P <- ggplot(ChickWeight_avg) + 
+  geom_line(aes(x = Time, y = weight, color = Diet)) + 
+  geom_point(aes(x = Time, y = weight, color = Diet)) +  
+  labs(x = "Week", y = "Weight (g)") + 
+  theme_classic(base_size = 14) + 
+  scale_color_brewer(palette = "Set1")
+
+```
+
+
+
+### (2) Change the order of the legend key items items
+
+```{r, fig.width = 6, fig.height = 4, out.width = "70%"}
+library(tidyverse)
+
+ChickWeight_avg <- ChickWeight %>% 
+  group_by(Diet, Time) %>% 
+  summarise(weight = mean(weight))
+
+P <- ggplot(ChickWeight_avg) + 
+  geom_line(aes(x = Time, y = weight, color = Diet)) + 
+  geom_point(aes(x = Time, y = weight, color = Diet)) +  
+  labs(x = "Week", y = "Weight (g)") + 
+  theme_classic(base_size = 14) + 
+  scale_color_brewer(palette = "Set1")
+
+
+```
+
+
+### (3) Selectively display legend key
+```{r, fig.width = 6, fig.height = 4, out.width = "70%"}
+library(tidyverse)
+
+ChickWeight_avg <- ChickWeight %>% 
+  group_by(Diet, Time) %>% 
+  summarise(weight = mean(weight))
+
+P <- ggplot(ChickWeight_avg) + 
+  geom_line(aes(x = Time, y = weight, color = Diet)) + 
+  geom_point(aes(x = Time, y = weight, color = Diet)) +  
+  labs(x = "Week", y = "Weight (g)") + 
+  theme_classic(base_size = 14) + 
+  scale_color_brewer(palette = "Set1")
+
+
+```
+
+
+
+
+## Summary
+
+
+
+Hope you enjoy the reading and don't forget to leave your comments and suggestions below if you have any!
