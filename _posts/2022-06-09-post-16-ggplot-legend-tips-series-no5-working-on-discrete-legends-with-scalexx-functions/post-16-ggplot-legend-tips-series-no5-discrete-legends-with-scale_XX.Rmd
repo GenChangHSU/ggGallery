@@ -10,6 +10,7 @@ output:
     self_contained: false
 categories:
   - "2022"
+  - "Legend Tips Series"
 preview: ../../homepage_images/Post16.png
 ---
 
@@ -91,7 +92,7 @@ knitr::opts_chunk$set(message = F,
 
 Welcome to the fifth post of **ggplot Legend Tips Series**! This post is a continuation of a [previous post](https://genchanghsu.github.io/ggGallery/posts/2022-01-28-post-10-ggplot-legend-tips-series-no1-working-on-discrete-scale-legends-with-guides/), where I introduced how to modify the appearance of discrete legends in ggplots with `guides()`, such as legend label font, legend key size, and legend direction and position (give it a read if you're interested!).   
 
-Today, we will explore another way to modify discrete legends: using `scale_XX` functions. There are three handy adjustments you can do: 
+Today, we will explore another way to modify discrete legends: using `scale_XX` family of functions (e.g., `scale_color_manual()` and `scale_shape_manual()`). There are three handy adjustments you can do with these scale functions: 
 
 <span style="display: block; margin-top: 5px; margin-left: 10px"> **(1) Change legend name and labels**</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> **(2) Change the order of legend keys**</span>
@@ -101,9 +102,9 @@ Without further ado, let's jump right in!
 
 ## An example with scale_color_brewer()
 
-Here, we will be using the [`ChickWeight`](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/ChickWeight) dataset for our example plots. The dataset contains the body weights of chicks fed with four different protein diets recorded over a course of 20 days. 
+We will use the [`ChickWeight`](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/ChickWeight) dataset for our example plots. The dataset contains the body weights of chicks fed with four different protein diets recorded over a course of 20 days. 
 
-Let's compute the average weight of chicks in each diet treatment and plot the growth curve over time. We'll map diet treatment to the color aesthetic and use `scale_color_brewer()` to set the colors for the legend.
+Let's compute the average weight of chicks in each diet treatment and plot the growth curve over time. We'll map diet treatment to the "color" aesthetic and use `scale_color_brewer()` to set the colors for the legend.
 
 ```{r, fig.width = 5.5, fig.height = 3.5, out.width = "70%"}
 library(tidyverse)
@@ -137,9 +138,9 @@ P + scale_color_brewer(palette = "Set1",
 
 ### (2) Change the order of legend keys
 
-The second thing we can do is reordering the legend keys. As you can see, the chicks fed with "Green" diet seem to grow the best, followed by those fed with "Purple" and "Blue" diet, and those fed with "Red" diet grow the most slowly. So can we change the order of legend keys to reflect this ranking? 
+The second thing we can do is reordering the legend keys. As you can see, the chicks fed with "Green" diet grew the best, followed by those fed with "Purple" and "Blue" diet, and those fed with "Red" diet grew the worst. So can we change the order of legend keys to reflect this ranking? 
 
-Of course we can! The main argument for this is `break = `, which takes a vector of levels in the legend variable (in this example 1, 2, 3, and 4 in the factor "Diet"). The order of the levels passed to the argument will determine the order of key items displayed in the legend.
+Of course we can! The main argument for this is `break = `, which takes a vector of levels in the legend variable (in this example 1, 2, 3, and 4 in the factor `Diet`). The order of the levels passed to the argument will determine the order of key items displayed in the legend.
 
 ```{r, fig.width = 6, fig.height = 3.5, out.width = "75%"}
 P + scale_color_brewer(palette = "Set1", 
@@ -150,7 +151,7 @@ P + scale_color_brewer(palette = "Set1",
 
 ### (3) Selectively display certain legend keys
 
-Suppose we want to show only the best ("Green") and the worst diet ("Red") in the legend and hide the other two intermediate ones. We can do this by passing the selected levels (here 1 and 3) to the `break = ` argument in a desired order (3 first then 1):
+Suppose we want to show only the best ("Green") and the worst diet ("Red") in the legend and hide the other two intermediate ones. We can do this by passing the selected levels (here 1 and 3) to the `break = ` argument in the desired order (3 first then 1):
 
 ```{r, fig.width = 6, fig.height = 3.5, out.width = "75%"}
 P + scale_color_brewer(palette = "Set1", 
@@ -162,7 +163,7 @@ P + scale_color_brewer(palette = "Set1",
 ```
 <br>
 
-It is worth noting that there is a second way to selectively display certain legend keys, via the argument `limits = `. However, this argument will affect the main plot as well; the levels not specified in `limits =` will not be drawn in the plot! In fact, this is basically the same as dropping the levels in the factor, and the aesthetic mapping will change accordingly. See an example below:
+It is worth noting that there is a second way to selectively display certain legend keys, via the argument `limits = `. However, the argument will affect the main plot as well; the levels not specified in `limits =` will not be drawn in the plot! In fact, this is basically the same as dropping the levels in the factor, and so the aesthetic mapping will change accordingly. See an example below:
 
 ```{r, fig.width = 6, fig.height = 3.5, out.width = "75%"}
 P + scale_color_brewer(palette = "Set1", 
@@ -173,7 +174,9 @@ P + scale_color_brewer(palette = "Set1",
 ```
 <br>
 
-So depending on the purpose of your figure, you might want to use `breaks = ` or `limits = ` to select certain legend keys of interest. But just to keep in mind that the aesthetic mapping will differ between the two methods!
+As you can see, only the curves for the best and the worst diet are shown in the plot, and the colors of these two curves have also changed because the number of levels is no longer 4 but 2.
+
+So depending on the purpose of your figure, you might want to use `breaks = ` or `limits = ` to select certain legend keys of interest. But just keep in mind that the aesthetic mapping may differ between the two methods!
 
 ## Summary
 

@@ -7,7 +7,18 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Thu, 12 May 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 09 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #16. ggplot Legend Tips Series No.5: Working on discrete legends with scale_XX functions</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions</link>
+      <description>In this post, you will learn how to modify the appearance of discrete legends in ggplots using `scale_XX` family of functions.</description>
+      <category>2022</category>
+      <category>Legend Tips Series</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions</guid>
+      <pubDate>Thu, 09 Jun 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions/../../homepage_images/Post16.png" medium="image" type="image/png" width="1152" height="672"/>
+    </item>
     <item>
       <title>Post #15. Manipulating the axes for individual facets with `tidytext` and `ggh4x`</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>

@@ -6,21 +6,21 @@
       "description": "Welcome to ggGallery! Here is something you would like to know about this blog.",
       "author": [],
       "contents": "\r\n\r\n\r\nd-article a {\r\n    color: #2780e3 !important;\r\n    border-bottom: none !important;\r\n}\r\n\r\nd-article a:hover {\r\n    color: #2780e3 !important;\r\n    border-bottom: 2px solid !important;\r\n}\r\n\r\nd-title {\r\n    margin-left: -10%;\r\n}\r\n\r\nd-article {\r\n    margin-left: -10%;\r\n}\r\n\r\np {\r\n    width: 120%;\r\n}\r\n\r\nh1{\r\nfont-size: 40px;\r\n}\r\n\r\nWho\r\nI am Gen-Chang Hsu, a young budding scientist with a broad interest\r\nin ecology and evolutionary biology as well as data science, especially\r\ndata visualization. Check out my website for more information!\r\nWhat\r\nThis blog is a place for everything related to ggplots and ggplot\r\nextensions: proper usage of geoms and scales, handy tips for customizing\r\nthemes and legends, nice features of extension packages, and so on so\r\nforth. In each post, I’ll explore a graphic topic/issue in depth and\r\nprovide some worked examples to show you how to make the most out of\r\nggplots.\r\nWhy\r\nFor fun and enjoyment, for learning and practice, for brainstorming\r\nand communication, for achievement and satisfaction, for…\r\n\r\n\r\nGo wild and be creative!\r\n\r\n\r\n\r\n.text{\r\n font-size: 35px;\r\n text-align: center;\r\n font-weight: bold;\r\n font-style: italic;\r\n}\r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2022-06-09T09:17:22-07:00"
+      "last_modified": "2022-06-10T19:45:10-07:00"
     },
     {
       "path": "contact.html",
       "title": "Contact",
       "author": [],
       "contents": "\r\n\r\n\r\nd-article a {\r\n    color: #2780e3 !important;\r\n    border-bottom: none !important;\r\n}\r\n\r\nd-article a:hover {\r\n    color: #2780e3 !important;\r\n    border-bottom: 2px solid !important;\r\n}\r\n\r\ndiv.icon {\r\n    font-size: 120px; \r\n    display: inline-block;\r\n    display: -moz-inline-box;\r\n    zoom: 1;\r\n    width: 100%;\r\n    text-align: center;\r\n}\r\n\r\ndiv.icon a:hover {\r\n    border-bottom: none !important;\r\n}\r\n\r\nd-title {\r\n    margin-left: -10%;\r\n}\r\n\r\nd-article {\r\n    margin-left: -10%;\r\n}\r\n\r\np {\r\n    width: 120%;\r\n}\r\n\r\nAny cool ideas or suggestions? I would love to hear from you! Contact\r\nme by email or find me on GitHub, Twitter, and Facebook. Also visit my\r\nwebsite here!\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2022-06-09T09:17:23-07:00"
+      "last_modified": "2022-06-10T19:45:11-07:00"
     },
     {
       "path": "index.html",
       "title": "Posts",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2022-06-09T09:17:24-07:00"
+      "last_modified": "2022-06-10T19:45:12-07:00"
     }
   ],
   "collections": ["posts/posts.json"]

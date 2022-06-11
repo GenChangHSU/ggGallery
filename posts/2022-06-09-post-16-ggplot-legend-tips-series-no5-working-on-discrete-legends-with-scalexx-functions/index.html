@@ -122,7 +122,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Post #16. ggplot Legend Tips Series No.5: Working on discrete legends with scale_XX functions"]},{"type":"character","attributes":{},"value":["In this post, you will learn how to modify the appearance of discrete legends in ggplots using `scale_XX` family of functions."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2022-06-09"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2022"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post16.png"]},{"type":"character","attributes":{},"value":["https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions/"]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Post #16. ggplot Legend Tips Series No.5: Working on discrete legends with scale_XX functions"]},{"type":"character","attributes":{},"value":["In this post, you will learn how to modify the appearance of discrete legends in ggplots using `scale_XX` family of functions."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2022-06-09"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2022","Legend Tips Series"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post16.png"]},{"type":"character","attributes":{},"value":["https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions/"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -2601,6 +2601,7 @@ d-appendix d-footnote-list a.footnote-backlink {
 <!--radix_placeholder_categories-->
 <div class="dt-tags">
   <a href="../../index.html#category:2022" class="dt-tag">2022</a>
+  <a href="../../index.html#category:Legend_Tips_Series" class="dt-tag">Legend Tips Series</a>
 </div>
 <!--/radix_placeholder_categories-->
 <p><p>In this post, you will learn how to modify the appearance of
@@ -2688,8 +2689,10 @@ legends in ggplots with <code>guides()</code>, such as legend label
 font, legend key size, and legend direction and position (give it a read
 if you’re interested!).</p>
 <p>Today, we will explore another way to modify discrete legends: using
-<code>scale_XX</code> functions. There are three handy adjustments you
-can do:</p>
+<code>scale_XX</code> family of functions (e.g.,
+<code>scale_color_manual()</code> and
+<code>scale_shape_manual()</code>). There are three handy adjustments
+you can do with these scale functions:</p>
 <p><span style="display: block; margin-top: 5px; margin-left: 10px">
 <strong>(1) Change legend name and labels</strong></span> <span
 style="display: block; margin-top: 5px; margin-left: 10px"> <strong>(2)
@@ -2699,13 +2702,13 @@ Selectively display certain legend keys</strong></span></p>
 <p>Without further ado, let’s jump right in!</p>
 <h2 id="an-example-with-scale_color_brewer">An example with
 scale_color_brewer()</h2>
-<p>Here, we will be using the <a
+<p>We will use the <a
 href="https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/ChickWeight"><code>ChickWeight</code></a>
 dataset for our example plots. The dataset contains the body weights of
 chicks fed with four different protein diets recorded over a course of
 20 days.</p>
 <p>Let’s compute the average weight of chicks in each diet treatment and
-plot the growth curve over time. We’ll map diet treatment to the color
+plot the growth curve over time. We’ll map diet treatment to the “color”
 aesthetic and use <code>scale_color_brewer()</code> to set the colors
 for the legend.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -2749,15 +2752,15 @@ and pass a vector of labels to argument <code>labels =</code> in
 <h3 id="change-the-order-of-legend-keys">(2) Change the order of legend
 keys</h3>
 <p>The second thing we can do is reordering the legend keys. As you can
-see, the chicks fed with “Green” diet seem to grow the best, followed by
-those fed with “Purple” and “Blue” diet, and those fed with “Red” diet
-grow the most slowly. So can we change the order of legend keys to
-reflect this ranking?</p>
+see, the chicks fed with “Green” diet grew the best, followed by those
+fed with “Purple” and “Blue” diet, and those fed with “Red” diet grew
+the worst. So can we change the order of legend keys to reflect this
+ranking?</p>
 <p>Of course we can! The main argument for this is <code>break =</code>,
 which takes a vector of levels in the legend variable (in this example
-1, 2, 3, and 4 in the factor “Diet”). The order of the levels passed to
-the argument will determine the order of key items displayed in the
-legend.</p>
+1, 2, 3, and 4 in the factor <code>Diet</code>). The order of the levels
+passed to the argument will determine the order of key items displayed
+in the legend.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, 
@@ -2773,7 +2776,7 @@ certain legend keys</h3>
 <p>Suppose we want to show only the best (“Green”) and the worst diet
 (“Red”) in the legend and hide the other two intermediate ones. We can
 do this by passing the selected levels (here 1 and 3) to the
-<code>break =</code> argument in a desired order (3 first then 1):</p>
+<code>break =</code> argument in the desired order (3 first then 1):</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, 
@@ -2787,11 +2790,10 @@ do this by passing the selected levels (here 1 and 3) to the
 <p><br></p>
 <p>It is worth noting that there is a second way to selectively display
 certain legend keys, via the argument <code>limits =</code>. However,
-this argument will affect the main plot as well; the levels not
-specified in <code>limits =</code> will not be drawn in the plot! In
-fact, this is basically the same as dropping the levels in the factor,
-and the aesthetic mapping will change accordingly. See an example
-below:</p>
+the argument will affect the main plot as well; the levels not specified
+in <code>limits =</code> will not be drawn in the plot! In fact, this is
+basically the same as dropping the levels in the factor, and so the
+aesthetic mapping will change accordingly. See an example below:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>P</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, 
@@ -2803,10 +2805,13 @@ below:</p>
 <p><img src="post-16-ggplot-legend-tips-series-no5-discrete-legends-with-scale_XX_files/figure-html5/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /></p>
 </div>
 <p><br></p>
+<p>As you can see, only the curves for the best and the worst diet are
+shown in the plot, and the colors of these two curves have also changed
+because the number of levels is no longer 4 but 2.</p>
 <p>So depending on the purpose of your figure, you might want to use
 <code>breaks =</code> or <code>limits =</code> to select certain legend
-keys of interest. But just to keep in mind that the aesthetic mapping
-will differ between the two methods!</p>
+keys of interest. But just keep in mind that the aesthetic mapping may
+differ between the two methods!</p>
 <h2 id="summary">Summary</h2>
 <p>In this post, we looked at how to modify a discrete legend via the
 arguments in <code>scale_color_brewer()</code>: <code>names =</code> and
