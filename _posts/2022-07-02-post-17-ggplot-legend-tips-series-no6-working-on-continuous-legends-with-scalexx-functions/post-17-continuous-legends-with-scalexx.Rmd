@@ -1,0 +1,151 @@
+---
+title: "Post #17. ggplot Legend Tips Series No.6: Working on continuous legends with scale_XX functions"
+description: |
+  In this post, you will learn how to modify the appearance of continuous legends in ggplots using `scale_XX` family of functions.
+author:
+  - name: Gen-Chang Hsu
+date: 2022-07-03
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2022"
+  - "Legend Tips Series"
+preview: ../../homepage_images/Post17.png
+---
+
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+</style>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Background
+
+This is the part II of the [previous post](https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions/) where I introduced how one can adjust the discrete legends using the `scale_XX` family of functions. In this post, I'm going to talk about adjusting continuous legends, again using the `scale_XX` functions.
+
+## An example with scale_fill_gradient()
+
+Let's start with an example plot of eruption time vs. waiting time of the old faithful geyser using the [`faithful`](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/faithful.html) dataset. In the below code chunk, the function `geom_hex()` divides the plot panel into a grid of hexagons, counts the number of original data points in each hexagon, and maps the counts to the "fill" aesthetic. This is a useful way to avoid overlapping points (i.e., overplotting), especially when the dataset is huge.
+
+```{r, fig.width = 5.5, fig.height = 3.5, out.width = "70%"}
+library(tidyverse)
+
+ggplot(faithful, aes(x = eruptions, y = waiting)) + 
+  geom_hex(aes(fill = ..count..)) +  # hexagon bins 
+  labs(x = "Eruption time (min)", y = "Waiting time (min)") + 
+  theme_classic(base_size = 13)
+
+```
+
+Now, we can try to adjust the legend bar using the arguments in `scale_fill_gradient()`. Two main things to change are:
+
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (1) Legend range, controlled by the argument `limits`</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Legend tick positions, controlled by the argument `breaks` </span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Legend tick labels, controlled by the argument `labels` </span>
+
+```{r, fig.width = 5.5, fig.height = 3.5, out.width = "70%"}
+ggplot(faithful, aes(x = eruptions, y = waiting)) + 
+  geom_hex(aes(fill = ..count..)) +
+  scale_fill_gradient(limits = c(0, 6), 
+                      breaks = c(2, 3, 4),
+                      labels = c("2.0", "3.0", "4.0"),
+                      name = "Number of \n eruptions") + 
+  theme_classic(base_size = 13)
+
+```
+
+
+
+
+We can also cut the legend bar into several bins
+
+```{r, fig.width = 5.5, fig.height = 3.5, out.width = "70%"}
+ggplot(faithful, aes(x = eruptions, y = waiting)) + 
+  geom_hex(aes(fill = ..count..)) +  # hexagon bins 
+  scale_fill_gradient(limits = c(-1, 4), 
+                      breaks = c(2, 3, 4), 
+                      labels = c(letters[1:3]), 
+                      name = "ggg") + 
+  theme_classic(base_size = 13)
+
+```
+
+
+
+
+
+
+## Summary
+
+In this post, we looked at how to modify a discrete legend via the arguments in `scale_color_brewer()`: `names =` and `labels =` for legend name and labels, as well as `breaks =` and `limits =` for legend keys. The same principle applies to other discrete legend types too, for instance, linetype and shape.
+
+Hope you learn something useful and don't forget to leave your comments and suggestions below if you have any!
