@@ -90,7 +90,7 @@ knitr::opts_chunk$set(message = F,
 
 ## Background
 
-This is the part II of the [previous post](https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions/) where I introduced how one can adjust the discrete legends using the `scale_XX` family of functions. In this post, I'm going to talk about adjusting continuous legends, again using the `scale_XX` functions.
+This is the part II of the [previous post](https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions/) where I introduced how one can adjust the discrete legends in ggplots using the `scale_XX` family of functions. In this post, I'm going to talk about adjusting continuous legends, again using the `scale_XX` functions.
 
 ## An example with scale_fill_gradient()
 
