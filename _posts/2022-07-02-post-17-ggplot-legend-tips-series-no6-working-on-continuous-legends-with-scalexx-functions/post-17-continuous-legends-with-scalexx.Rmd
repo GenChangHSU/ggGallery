@@ -96,7 +96,7 @@ This is the part II of the [previous post](https://genchanghsu.github.io/ggGalle
 
 Let's start with an example plot of eruption time vs. waiting time of the old faithful geyser using the [`faithful`](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/faithful.html) dataset. In the below code chunk, the function `geom_hex()` divides the plot panel into a grid of hexagons, counts the number of original data points in each hexagon, and maps the counts to the "fill" aesthetic. This is a useful way to avoid overlapping points (i.e., overplotting), especially when the dataset is huge.
 
-```{r, fig.width = 5.5, fig.height = 3.5, out.width = "70%"}
+```{r, fig.width = 5, fig.height = 3.5, out.width = "70%"}
 library(tidyverse)
 
 ggplot(faithful, aes(x = eruptions, y = waiting)) + 
@@ -106,46 +106,48 @@ ggplot(faithful, aes(x = eruptions, y = waiting)) +
 
 ```
 
-Now, we can try to adjust the legend bar using the arguments in `scale_fill_gradient()`. Two main things to change are:
+<br>
+
+Now we can try to adjust the legend bar using the arguments in `scale_fill_gradient()`. Three main things to change are:
 
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (1) Legend range, controlled by the argument `limits`</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Legend tick positions, controlled by the argument `breaks` </span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Legend tick labels, controlled by the argument `labels` </span>
 
-```{r, fig.width = 5.5, fig.height = 3.5, out.width = "70%"}
+```{r, fig.width = 5, fig.height = 3.5, out.width = "70%"}
 ggplot(faithful, aes(x = eruptions, y = waiting)) + 
   geom_hex(aes(fill = ..count..)) +
-  scale_fill_gradient(limits = c(0, 6), 
-                      breaks = c(2, 3, 4),
-                      labels = c("2.0", "3.0", "4.0"),
-                      name = "Number of \n eruptions") + 
+  scale_fill_gradient(name = "Number of \n eruptions",
+                      limits = c(0, 6),  # legend range
+                      breaks = c(1, 2, 3, 4, 5),  # legend tick positions
+                      labels = format(c(1, 2, 3, 4, 5), nsmall = 1)) +  # legend tick labels
+  labs(x = "Eruption time (min)", y = "Waiting time (min)") + 
   theme_classic(base_size = 13)
 
 ```
 
+<br>
 
+We can also cut the legend bar into several bins by using the argument `guide = guide_colorsteps()`:
 
-
-We can also cut the legend bar into several bins
-
-```{r, fig.width = 5.5, fig.height = 3.5, out.width = "70%"}
+```{r, fig.width = 5, fig.height = 3.5, out.width = "70%"}
 ggplot(faithful, aes(x = eruptions, y = waiting)) + 
-  geom_hex(aes(fill = ..count..)) +  # hexagon bins 
-  scale_fill_gradient(limits = c(-1, 4), 
-                      breaks = c(2, 3, 4), 
-                      labels = c(letters[1:3]), 
-                      name = "ggg") + 
+  geom_hex(aes(fill = ..count..)) +
+  scale_fill_gradient(name = "Number of \n eruptions",
+                      limits = c(0, 6),  
+                      breaks = c(1, 2, 3, 4, 5),  
+                      labels = format(c(1, 2, 3, 4, 5), nsmall = 1),
+                      guide = guide_colorsteps()) +  # cut the legend bar into bins
+  labs(x = "Eruption time (min)", y = "Waiting time (min)") + 
   theme_classic(base_size = 13)
 
 ```
-
-
-
-
-
 
 ## Summary
 
-In this post, we looked at how to modify a discrete legend via the arguments in `scale_color_brewer()`: `names =` and `labels =` for legend name and labels, as well as `breaks =` and `limits =` for legend keys. The same principle applies to other discrete legend types too, for instance, linetype and shape.
+In this post, we've seen how to adjust a continuous legend via the arguments in `scale_fill_gradient()`: `limits` for setting the range of the legend bar, `breaks` for drawing the legend ticks, and `labels` for adding the tick labels. We can also convert the continuous legend bar into a discrete one by specifying `guide = guide_colorsteps()`. 
 
-Hope you learn something useful and don't forget to leave your comments and suggestions below if you have any!
+Hope you learn something useful from this simple post and don't forget to leave your comments and suggestions below if you have any!
+
+
+

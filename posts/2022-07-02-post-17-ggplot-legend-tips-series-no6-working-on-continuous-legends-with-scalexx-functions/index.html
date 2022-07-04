@@ -105,7 +105,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="og:description" content="In this post, you will learn how to modify the appearance of continuous legends in ggplots using `scale_XX` family of functions."/>
 <meta property="og:url" content="https://genchanghsu.github.io/ggGallery/posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions/"/>
 <meta property="og:image" content="https://genchanghsu.github.io/ggGallery/posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions/post-17-continuous-legends-with-scalexx_files/figure-html5/unnamed-chunk-1-1.png"/>
-<meta property="og:image:width" content="1056"/>
+<meta property="og:image:width" content="960"/>
 <meta property="og:image:height" content="672"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="ggGallery"/>
@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="twitter:description" content="In this post, you will learn how to modify the appearance of continuous legends in ggplots using `scale_XX` family of functions."/>
 <meta property="twitter:url" content="https://genchanghsu.github.io/ggGallery/posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions/"/>
 <meta property="twitter:image" content="https://genchanghsu.github.io/ggGallery/posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions/post-17-continuous-legends-with-scalexx_files/figure-html5/unnamed-chunk-1-1.png"/>
-<meta property="twitter:image:width" content="1056"/>
+<meta property="twitter:image:width" content="960"/>
 <meta property="twitter:image:height" content="672"/>
 
 <!--/radix_placeholder_meta_tags-->
@@ -128,7 +128,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-17-continuous-legends-with-scalexx_files/figure-html5/unnamed-chunk-1-1.png","post-17-continuous-legends-with-scalexx_files/figure-html5/unnamed-chunk-2-1.png","post-17-continuous-legends-with-scalexx_files/figure-html5/unnamed-chunk-3-1.png"]}
+  {"type":"character","attributes":{},"value":["post-17-continuous-legends-with-scalexx_files/anchor-4.2.2/anchor.min.js","post-17-continuous-legends-with-scalexx_files/bowser-1.9.3/bowser.min.js","post-17-continuous-legends-with-scalexx_files/distill-2.2.21/template.v2.js","post-17-continuous-legends-with-scalexx_files/figure-html5/unnamed-chunk-1-1.png","post-17-continuous-legends-with-scalexx_files/figure-html5/unnamed-chunk-2-1.png","post-17-continuous-legends-with-scalexx_files/figure-html5/unnamed-chunk-3-1.png","post-17-continuous-legends-with-scalexx_files/header-attrs-2.14/header-attrs.js","post-17-continuous-legends-with-scalexx_files/jquery-3.6.0/jquery-3.6.0.js","post-17-continuous-legends-with-scalexx_files/jquery-3.6.0/jquery-3.6.0.min.js","post-17-continuous-legends-with-scalexx_files/jquery-3.6.0/jquery-3.6.0.min.map","post-17-continuous-legends-with-scalexx_files/popper-2.6.0/popper.min.js","post-17-continuous-legends-with-scalexx_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-17-continuous-legends-with-scalexx_files/tippy-6.2.7/tippy-light-border.css","post-17-continuous-legends-with-scalexx_files/tippy-6.2.7/tippy.css","post-17-continuous-legends-with-scalexx_files/tippy-6.2.7/tippy.umd.min.js","post-17-continuous-legends-with-scalexx_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2600,7 +2600,7 @@ d-appendix d-footnote-list a.footnote-backlink {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #17. ggplot Legend Tips Series No.6: Working on continuous legends with scale_XX functions","description":"In this post, you will learn how to modify the appearance of continuous legends in ggplots using `scale_XX` family of functions.","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-07-03T00:00:00.000-07:00","citationText":"Hsu, 2022"}
+{"title":"Post #17. ggplot Legend Tips Series No.6: Working on continuous legends with scale_XX functions","description":"In this post, you will learn how to modify the appearance of continuous legends in ggplots using `scale_XX` family of functions.","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-07-03T00:00:00.000+08:00","citationText":"Hsu, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2729,17 +2729,19 @@ aesthetic. This is a useful way to avoid overlapping points (i.e.,
 overplotting), especially when the dataset is huge.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
-<span></span>
-<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>faithful</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>eruptions</span>, y <span class='op'>=</span> <span class='va'>waiting</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_hex.html'>geom_hex</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='va'>..count..</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># hexagon bins </span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Eruption time (min)"</span>, y <span class='op'>=</span> <span class='st'>"Waiting time (min)"</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>faithful</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>eruptions</span>, y <span class='op'>=</span> <span class='va'>waiting</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_hex.html'>geom_hex</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='va'>..count..</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># hexagon bins </span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Eruption time (min)"</span>, y <span class='op'>=</span> <span class='st'>"Waiting time (min)"</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span>
+</code></pre>
 </div>
 <p><img src="post-17-continuous-legends-with-scalexx_files/figure-html5/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
-<p>Now, we can try to adjust the legend bar using the arguments in
-<code>scale_fill_gradient()</code>. Two main things to change are:</p>
+<p><br></p>
+<p>Now we can try to adjust the legend bar using the arguments in
+<code>scale_fill_gradient()</code>. Three main things to change are:</p>
 <p><span style="display: block; margin-top: 5px; margin-left: 10px"> (1)
 Legend range, controlled by the argument <code>limits</code></span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (2)
@@ -2749,38 +2751,45 @@ style="display: block; margin-top: 5px; margin-left: 10px"> (3) Legend
 tick labels, controlled by the argument <code>labels</code> </span></p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>faithful</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>eruptions</span>, y <span class='op'>=</span> <span class='va'>waiting</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_hex.html'>geom_hex</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='va'>..count..</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_gradient.html'>scale_fill_gradient</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>6</span><span class='op'>)</span>, </span>
-<span>                      breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span><span class='op'>)</span>,</span>
-<span>                      labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2.0"</span>, <span class='st'>"3.0"</span>, <span class='st'>"4.0"</span><span class='op'>)</span>,</span>
-<span>                      name <span class='op'>=</span> <span class='st'>"Number of \n eruptions"</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>faithful</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>eruptions</span>, y <span class='op'>=</span> <span class='va'>waiting</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_hex.html'>geom_hex</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='va'>..count..</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_gradient.html'>scale_fill_gradient</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Number of \n eruptions"</span>,
+                      limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>6</span><span class='op'>)</span>,  <span class='co'># legend range</span>
+                      breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span><span class='op'>)</span>,  <span class='co'># legend tick positions</span>
+                      labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span><span class='op'>)</span>, nsmall <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># legend tick labels</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Eruption time (min)"</span>, y <span class='op'>=</span> <span class='st'>"Waiting time (min)"</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span>
+</code></pre>
 </div>
 <p><img src="post-17-continuous-legends-with-scalexx_files/figure-html5/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
-<p>We can also cut the legend bar into several bins</p>
+<p><br></p>
+<p>We can also cut the legend bar into several bins by using the
+argument <code>guide = guide_colorsteps()</code>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>faithful</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>eruptions</span>, y <span class='op'>=</span> <span class='va'>waiting</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_hex.html'>geom_hex</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='va'>..count..</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># hexagon bins </span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_gradient.html'>scale_fill_gradient</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1</span>, <span class='fl'>4</span><span class='op'>)</span>, </span>
-<span>                      breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span><span class='op'>)</span>, </span>
-<span>                      labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>, </span>
-<span>                      name <span class='op'>=</span> <span class='st'>"ggg"</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>faithful</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>eruptions</span>, y <span class='op'>=</span> <span class='va'>waiting</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_hex.html'>geom_hex</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='va'>..count..</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_gradient.html'>scale_fill_gradient</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Number of \n eruptions"</span>,
+                      limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>6</span><span class='op'>)</span>,  
+                      breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span><span class='op'>)</span>,  
+                      labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span><span class='op'>)</span>, nsmall <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
+                      guide <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guide_coloursteps.html'>guide_colorsteps</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># cut the legend bar into bins</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Eruption time (min)"</span>, y <span class='op'>=</span> <span class='st'>"Waiting time (min)"</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span>
+</code></pre>
 </div>
 <p><img src="post-17-continuous-legends-with-scalexx_files/figure-html5/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <h2 id="summary">Summary</h2>
-<p>In this post, we looked at how to modify a discrete legend via the
-arguments in <code>scale_color_brewer()</code>: <code>names =</code> and
-<code>labels =</code> for legend name and labels, as well as
-<code>breaks =</code> and <code>limits =</code> for legend keys. The
-same principle applies to other discrete legend types too, for instance,
-linetype and shape.</p>
-<p>Hope you learn something useful and don’t forget to leave your
-comments and suggestions below if you have any!</p>
+<p>In this post, we’ve seen how to adjust a continuous legend via the
+arguments in <code>scale_fill_gradient()</code>: <code>limits</code> for
+setting the range of the legend bar, <code>breaks</code> for drawing the
+legend ticks, and <code>labels</code> for adding the tick labels. We can
+also convert the continuous legend bar into a discrete one by specifying
+<code>guide = guide_colorsteps()</code>.</p>
+<p>Hope you learn something useful from this simple post and don’t
+forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
