@@ -89,15 +89,39 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
+Bump charts are a special type of line charts that plot the rankings of multiple objects over time. These charts are especially useful for comparing and highlighting trends. Honestly, I haven't really heard of this kind of charts before until recently I came across a [Tweet](https://mobile.twitter.com/rappa753/status/1548335653909250048/photo/1) about creating bump charts in ggplot. 
+
+I then took a deeper dive into it and felt that this would make an interesting topic to blog about (also I believe it might come in handy some day in the future)! 
+
+So without further ado, let's jump right in!
 
 
+
+
+## Prepare the data
+
+As mentioned earlier, bump charts are useful for visualizing changes in ranks of items over time. 
+
+Since I study ecology, and in this field, the journals from the British Ecological Society are  
+
+I'm quite interested in how the rankings of these journals, in terms of impact factor, change over the past decade. So I visited JCR and download the impact factor data of these journals (from 1997 to 2021). 
+
+Let's read in the datasets and do some data wrangling
+
+
+```{r, fig.width = 5, fig.height = 3.5, out.width = "70%"}
+library(tidyverse)
+
+
+```
 
 
 
 ## Basic bump chart
 
+
 ```{r, fig.width = 5, fig.height = 3.5, out.width = "70%"}
-library(tidyverse)
+
 
 
 ```
