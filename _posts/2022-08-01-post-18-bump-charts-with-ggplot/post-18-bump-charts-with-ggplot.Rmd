@@ -1,0 +1,136 @@
+---
+title: "Post #18. Bump charts with ggplot"
+description: |
+  Come and learn how to create nice bump charts in ggplot!
+author:
+  - name: Gen-Chang Hsu
+date: 2022-08-01
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2022"
+preview: ../../homepage_images/Post18.png
+---
+
+<!-- Webpage style -->
+<style>
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+</style>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+
+
+
+
+
+## Basic bump chart
+
+```{r, fig.width = 5, fig.height = 3.5, out.width = "70%"}
+library(tidyverse)
+
+
+```
+
+
+
+
+
+## A more elaborated bump chart with smooth lines
+
+
+
+
+
+
+## Ribbon bump chart
+
+
+
+
+
+
+
+## Summary
+
+
+Hope you learn something useful from this simple post and don't forget to leave your comments and suggestions below if you have any!
+
+
+
+
+
+
+
+
+

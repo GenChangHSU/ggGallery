@@ -1,5 +1,24 @@
 [
   {
+    "path": "posts/2022-08-01-post-18-bump-charts-with-ggplot/",
+    "title": "Post #18. Bump charts with ggplot",
+    "description": "Come and learn how to create nice bump charts in ggplot!",
+    "author": [
+      {
+        "name": "Gen-Chang Hsu",
+        "url": {}
+      }
+    ],
+    "date": "2022-08-01",
+    "categories": [
+      "2022"
+    ],
+    "contents": "\r\n\r\nIntroduction\r\nBasic bump chart\r\n\r\n\r\nlibrary(tidyverse)\r\n\r\n\r\nA more\r\nelaborated bump chart with smooth lines\r\nRibbon bump chart\r\nSummary\r\nHope you learn something useful from this simple post and don’t\r\nforget to leave your comments and suggestions below if you have any!\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2022-08-01T13:01:25+08:00",
+    "input_file": "post-18-bump-charts-with-ggplot.knit.md"
+  },
+  {
     "path": "posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions/",
     "title": "Post #17. ggplot Legend Tips Series No.6: Working on continuous legends with scale_XX functions",
     "description": "In this post, you will learn how to modify the appearance of continuous legends in ggplots using `scale_XX` family of functions.",
