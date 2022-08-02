@@ -2,7 +2,7 @@
   {
     "path": "posts/2022-08-01-post-18-bump-charts-with-ggplot/",
     "title": "Post #18. Bump charts with ggplot",
-    "description": "Come and learn how to create nice bump charts in ggplot!",
+    "description": "Come and learn how to create nice bump charts with ggplot!",
     "author": [
       {
         "name": "Gen-Chang Hsu",
@@ -13,9 +13,9 @@
     "categories": [
       "2022"
     ],
-    "contents": "\r\n\r\nIntroduction\r\nBasic bump chart\r\n\r\n\r\nlibrary(tidyverse)\r\n\r\n\r\nA more\r\nelaborated bump chart with smooth lines\r\nRibbon bump chart\r\nSummary\r\nHope you learn something useful from this simple post and don’t\r\nforget to leave your comments and suggestions below if you have any!\r\n\r\n\r\n\r\n",
+    "contents": "\r\n\r\nIntroduction\r\nBump charts are a special type of line charts that visualize the\r\nrankings of multiple objects over time. These charts are especially\r\nuseful for comparing and highlighting trends. Honestly, I haven’t really\r\nheard of this kind of charts before until recently I came across a Tweet\r\nabout creating bump charts using ggplot. I then took a deeper dive into\r\nit and felt that this would certainly make an interesting topic to blog\r\nabout. Also, I believe the charts will come in handy some day in the\r\nfuture, both for myself and for the reader like you!\r\nSo without further ado, let’s jump right in!\r\nPrepare the data\r\nAs mentioned earlier, bump charts are useful for visualizing rankings\r\nof items over time. Instead of using a built-in R dataset, this time\r\nI’ll prepare my own one, which focuses on the rankings of five\r\necological journals (Journal of\r\nEcology, Journal of Animal\r\nEcology, Journal of Applied\r\nEcology, Functional\r\nEcology, and Methods in\r\nEcology and Evolution) from the British\r\nEcological Society. Specifically, I would like to see how the\r\nrankings of these five journals, in terms of their impact factors,\r\nchange over the past decade.\r\nTo get the data, I visited Journal\r\nCitation Reports website and downloaded their impact factor\r\nrecords.\r\nLet’s read in the datasets and do some data wrangling.\r\n\r\n\r\nlibrary(tidyverse)\r\n\r\n\r\nBasic bump chart\r\n\r\n\r\n# Use color of the journals\r\n# Func: #e38d26\r\n# Animal: #7581bd\r\n# applied: #48a749\r\n# joe: #0e96d4\r\n# mee: #de2127\r\n\r\n\r\nA more\r\nelaborated bump chart with smooth lines\r\nRibbon bump chart\r\nSummary\r\nHope you learn something useful from this simple post and don’t\r\nforget to leave your comments and suggestions below if you have any!\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2022-08-01T13:01:25+08:00",
+    "last_modified": "2022-08-02T13:33:20+08:00",
     "input_file": "post-18-bump-charts-with-ggplot.knit.md"
   },
   {

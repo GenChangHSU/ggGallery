@@ -1,7 +1,7 @@
 ---
 title: "Post #18. Bump charts with ggplot"
 description: |
-  Come and learn how to create nice bump charts in ggplot!
+  Come and learn how to create nice bump charts with ggplot!
 author:
   - name: Gen-Chang Hsu
 date: 2022-08-01
@@ -89,40 +89,42 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-Bump charts are a special type of line charts that plot the rankings of multiple objects over time. These charts are especially useful for comparing and highlighting trends. Honestly, I haven't really heard of this kind of charts before until recently I came across a [Tweet](https://mobile.twitter.com/rappa753/status/1548335653909250048/photo/1) about creating bump charts in ggplot. 
-
-I then took a deeper dive into it and felt that this would make an interesting topic to blog about (also I believe it might come in handy some day in the future)! 
+Bump charts are a special type of line charts that visualize the rankings of multiple objects over time. These charts are especially useful for comparing and highlighting trends. Honestly, I haven't really heard of this kind of charts before until recently I came across a [Tweet](https://mobile.twitter.com/rappa753/status/1548335653909250048/photo/1) about creating bump charts using ggplot. I then took a deeper dive into it and felt that this would certainly make an interesting topic to blog about. Also, I believe the charts will come in handy some day in the future, both for myself and for the reader like you!
 
 So without further ado, let's jump right in!
 
-
-
-
 ## Prepare the data
 
-As mentioned earlier, bump charts are useful for visualizing changes in ranks of items over time. 
+As mentioned earlier, bump charts are useful for visualizing rankings of items over time. Instead of using a built-in R dataset, this time I'll prepare my own one, which focuses on the rankings of five ecological journals (<span style="color:#0E96D4">*Journal of Ecology*</span>, <span style="color:#7581BD">*Journal of Animal Ecology*</span>, <span style="color:#48A749">*Journal of Applied Ecology*</span>, <span style="color:#E38D26">*Functional Ecology*</span>, and <span style="color:#DE2127">*Methods in Ecology and Evolution*</span>) from the [British Ecological Society](https://www.britishecologicalsociety.org/publications/journals/). Specifically, I would like to see how the rankings of these five journals, in terms of their impact factors, change over the past decade.   
 
-Since I study ecology, and in this field, the journals from the British Ecological Society are  
+To get the data, I visited [Journal Citation Reports](https://clarivate.com/webofsciencegroup/solutions/journal-citation-reports/) website and downloaded their impact factor records. 
 
-I'm quite interested in how the rankings of these journals, in terms of impact factor, change over the past decade. So I visited JCR and download the impact factor data of these journals (from 1997 to 2021). 
-
-Let's read in the datasets and do some data wrangling
-
+Let's read in the datasets and do some data wrangling.
 
 ```{r, fig.width = 5, fig.height = 3.5, out.width = "70%"}
 library(tidyverse)
+aa <- read_delim("https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_journals_data/FUNCT_ECOL.csv", delim = "/")
 
+
+read_csv("")
 
 ```
 
 
+
+<br>
 
 ## Basic bump chart
 
 
 ```{r, fig.width = 5, fig.height = 3.5, out.width = "70%"}
 
-
+# Use color of the journals
+# Func: #e38d26
+# Animal: #7581bd
+# applied: #48a749
+# joe: #0e96d4
+# mee: #de2127
 
 ```
 

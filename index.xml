@@ -80,8 +80,43 @@ div.l-body img {
 &lt;/style&gt;
 &lt;!-- Start of the article --&gt;
 &lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
-&lt;h2 id="basic-bump-chart"&gt;Basic bump chart&lt;/h2&gt;
+&lt;p&gt;Bump charts are a special type of line charts that visualize the
+rankings of multiple objects over time. These charts are especially
+useful for comparing and highlighting trends. Honestly, I haven’t really
+heard of this kind of charts before until recently I came across a &lt;a
+href="https://mobile.twitter.com/rappa753/status/1548335653909250048/photo/1"&gt;Tweet&lt;/a&gt;
+about creating bump charts using ggplot. I then took a deeper dive into
+it and felt that this would certainly make an interesting topic to blog
+about. Also, I believe the charts will come in handy some day in the
+future, both for myself and for the reader like you!&lt;/p&gt;
+&lt;p&gt;So without further ado, let’s jump right in!&lt;/p&gt;
+&lt;h2 id="prepare-the-data"&gt;Prepare the data&lt;/h2&gt;
+&lt;p&gt;As mentioned earlier, bump charts are useful for visualizing rankings
+of items over time. Instead of using a built-in R dataset, this time
+I’ll prepare my own one, which focuses on the rankings of five
+ecological journals (&lt;span style="color:#0E96D4"&gt;&lt;em&gt;Journal of
+Ecology&lt;/em&gt;&lt;/span&gt;, &lt;span style="color:#7581BD"&gt;&lt;em&gt;Journal of Animal
+Ecology&lt;/em&gt;&lt;/span&gt;, &lt;span style="color:#48A749"&gt;&lt;em&gt;Journal of Applied
+Ecology&lt;/em&gt;&lt;/span&gt;, &lt;span style="color:#E38D26"&gt;&lt;em&gt;Functional
+Ecology&lt;/em&gt;&lt;/span&gt;, and &lt;span style="color:#DE2127"&gt;&lt;em&gt;Methods in
+Ecology and Evolution&lt;/em&gt;&lt;/span&gt;) from the &lt;a
+href="https://www.britishecologicalsociety.org/publications/journals/"&gt;British
+Ecological Society&lt;/a&gt;. Specifically, I would like to see how the
+rankings of these five journals, in terms of their impact factors,
+change over the past decade.&lt;/p&gt;
+&lt;p&gt;To get the data, I visited &lt;a
+href="https://clarivate.com/webofsciencegroup/solutions/journal-citation-reports/"&gt;Journal
+Citation Reports&lt;/a&gt; website and downloaded their impact factor
+records.&lt;/p&gt;
+&lt;p&gt;Let’s read in the datasets and do some data wrangling.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="basic-bump-chart"&gt;Basic bump chart&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Use color of the journals
+# Func: #e38d26
+# Animal: #7581bd
+# applied: #48a749
+# joe: #0e96d4
+# mee: #de2127&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="a-more-elaborated-bump-chart-with-smooth-lines"&gt;A more
 elaborated bump chart with smooth lines&lt;/h2&gt;
 &lt;h2 id="ribbon-bump-chart"&gt;Ribbon bump chart&lt;/h2&gt;
