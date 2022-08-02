@@ -103,10 +103,19 @@ Let's read in the datasets and do some data wrangling.
 
 ```{r, fig.width = 5, fig.height = 3.5, out.width = "70%"}
 library(tidyverse)
-aa <- read_delim("https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_journals_data/FUNCT_ECOL.csv", delim = "/")
+library(janitor)  # for the function "row_to_names()"
+
+BES_journals <- c("J_ECOL", "J_ANIM_ECOL", "J_APPL_ECOL", "FUNCT_ECOL", "METHODS_ECOL_EVOL")
+dataset_list <- str_glue("https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_journals_data/{BES_journals}.csv")
+
+data <- map(dataset_list, function(x){
+  read_csv(x)})
+aaa <- read_csv("https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_journals_data/FUNCT_ECOL.csv")
+
+data[[5]]
+aaa <- aaa %>% 
 
 
-read_csv("")
 
 ```
 
