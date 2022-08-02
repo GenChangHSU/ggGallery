@@ -99,31 +99,37 @@ As mentioned earlier, bump charts are useful for visualizing rankings of items o
 
 To get the data, I visited [Journal Citation Reports](https://clarivate.com/webofsciencegroup/solutions/journal-citation-reports/) website and downloaded their impact factor records. 
 
-Let's read in the datasets and do some data wrangling.
+Let's read in the datasets and do some data wrangling:
 
 ```{r, fig.width = 5, fig.height = 3.5, out.width = "70%"}
 library(tidyverse)
 library(janitor)  # for the function "row_to_names()"
 
+# Create a list of url paths
 BES_journals <- c("J_ECOL", "J_ANIM_ECOL", "J_APPL_ECOL", "FUNCT_ECOL", "METHODS_ECOL_EVOL")
-dataset_list <- str_glue("https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_journals_data/{BES_journals}.csv")
+dataset_urls <- str_glue("https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_journals_data/{BES_journals}.csv")
 
-data <- map(dataset_list, function(x){
-  read_csv(x)})
-aaa <- read_csv("https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_journals_data/FUNCT_ECOL.csv")
-
-data[[5]]
-aaa <- aaa %>% 
-
-
-
+# Loop through the url paths
+BES_journals_data <- map(dataset_urls, function(x){
+  read_csv(x) %>% 
+    row_to_names(row_number = 5) %>%  # set the fifth row as column names
+    slice_head(n = nrow(.)-4)  # remove the last four rows
+  }) %>%
+  `names<-`(BES_journals) %>%
+  bind_rows(.id = "Journal") %>%  # convert the list to a dataframe
+  select(Journal, Year, IF = `Journal impact factor`) %>%  
+  filter(Year >= 2011) %>%  # retain data starting from 2011
+  group_by(Year) %>% 
+  mutate(Ranking = row_number(desc(IF))) %>%  # add the journal rankings by year
+  arrange(Year, Journal)
+  
+head(BES_journals_data, n = 10)
 ```
-
-
 
 <br>
 
 ## Basic bump chart
+
 
 
 ```{r, fig.width = 5, fig.height = 3.5, out.width = "70%"}

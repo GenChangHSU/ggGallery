@@ -2730,12 +2730,44 @@ change over the past decade.</p>
 href="https://clarivate.com/webofsciencegroup/solutions/journal-citation-reports/">Journal
 Citation Reports</a> website and downloaded their impact factor
 records.</p>
-<p>Let’s read in the datasets and do some data wrangling.</p>
+<p>Let’s read in the datasets and do some data wrangling:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/sfirke/janitor'>janitor</a></span><span class='op'>)</span>  <span class='co'># for the function "row_to_names()"</span></span>
+<span></span>
+<span><span class='co'># Create a list of url paths</span></span>
+<span><span class='va'>BES_journals</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"J_ECOL"</span>, <span class='st'>"J_ANIM_ECOL"</span>, <span class='st'>"J_APPL_ECOL"</span>, <span class='st'>"FUNCT_ECOL"</span>, <span class='st'>"METHODS_ECOL_EVOL"</span><span class='op'>)</span></span>
+<span><span class='va'>dataset_urls</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_glue.html'>str_glue</a></span><span class='op'>(</span><span class='st'>"https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_journals_data/{BES_journals}.csv"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Loop through the url paths</span></span>
+<span><span class='va'>BES_journals_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='va'>dataset_urls</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span></span>
+<span>  <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>    <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/row_to_names.html'>row_to_names</a></span><span class='op'>(</span>row_number <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># set the fifth row as column names</span></span>
+<span>    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice_head</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>-</span><span class='fl'>4</span><span class='op'>)</span>  <span class='co'># remove the last four rows</span></span>
+<span>  <span class='op'>}</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>`names&lt;-`</span><span class='op'>(</span><span class='va'>BES_journals</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></span><span class='op'>(</span>.id <span class='op'>=</span> <span class='st'>"Journal"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>   <span class='co'># convert the list to a dataframe</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>Journal</span>, <span class='va'>Year</span>, IF <span class='op'>=</span> <span class='va'>`Journal impact factor`</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Year</span> <span class='op'>&gt;=</span> <span class='fl'>2011</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># retain data starting from 2011</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>Year</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Ranking <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>IF</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># add the journal rankings by year</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='va'>Year</span>, <span class='va'>Journal</span><span class='op'>)</span></span>
+<span>  </span>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>BES_journals_data</span><span class='op'>)</span></span></code></pre>
 </div>
+<pre><code># A tibble: 6 × 4
+# Groups:   Year [2]
+  Journal           Year  IF    Ranking
+  &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt;   &lt;int&gt;
+1 FUNCT_ECOL        2011  4.567       5
+2 J_ANIM_ECOL       2011  4.937       4
+3 J_APPL_ECOL       2011  5.045       2
+4 J_ECOL            2011  5.044       3
+5 METHODS_ECOL_EVOL 2011  5.093       1
+6 FUNCT_ECOL        2012  4.861       3</code></pre>
 </div>
+<p><br></p>
 <h2 id="basic-bump-chart">Basic bump chart</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2753,7 +2785,7 @@ elaborated bump chart with smooth lines</h2>
 <h2 id="summary">Summary</h2>
 <p>Hope you learn something useful from this simple post and don’t
 forget to leave your comments and suggestions below if you have any!</p>
-<div class="sourceCode" id="cb1"><pre
+<div class="sourceCode" id="cb2"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <div class="article-footer">
