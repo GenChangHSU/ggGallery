@@ -132,32 +132,35 @@ head(BES_journals_data, n = 10)
 
 
 
-```{r, fig.width = 7, fig.height = 5, out.width = "70%"}
+```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 library(ggtext)
 
 col_pal <- set_names(c("#0e96d4", "#7581bd", "#48a749", "#e38d26", "#de2127"), nm = BES_journals)
 
+Journal_label <- c("<span style = 'color: #de2127'>Methods in<br>Ecology and Evolution</span>",
+                   "<span style = 'color: #48a749'>Journal of<br>Applied Ecology",
+                   "<span style = 'color: #0e96d4'>Journal of Ecology</span>",
+                   "<span style = 'color: #7581bd'>Journal of<br>Animal Ecology</span>",
+                   "<span style = 'color: #e38d26'>Functional Ecology</span>")
+
 ggplot(BES_journals_data) + 
   geom_line(aes(x = Year, y = Ranking, color = Journal, group = Journal), size = 2) + 
   geom_point(aes(x = Year, y = Ranking, color = Journal), shape = 21, fill = "white", size = 4, stroke = 2) +
-  scale_y_reverse(position = "right") +
+  geom_text(data = data.frame(x = 11.5, y = 1:5), aes(x = x, y = y, label = y)) +
+  scale_y_reverse(labels = Journal_label) +
   scale_color_manual(values = col_pal) +
-  labs(title = "<img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo.png' width = '100'/>",
+  labs(title = "<img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo_tp.png' width = '100'/>",
        subtitle = "Journal rankings based on their impact factors each year",
        caption = "Data source: Journal Citation Reports") +
   theme_void() +
   theme(legend.position = "none",
-        plot.background = element_rect(fill = "#abb8c3", color = NA),
-        plot.title = element_markdown(margin = margin(b = 0, unit = "mm"), hjust = 0.05),
-        plot.subtitle = element_text(margin = margin(t = -10, b = 10, unit = "mm"), hjust = 0.7, face = "bold", size = 13),
+        plot.margin = margin(5, 5, 5, 5),
+        plot.background = element_rect(fill = "#b6e3d4", color = NA),
+        plot.title = element_markdown(margin = margin(b = 0, unit = "mm"), hjust = -0.1),
+        plot.subtitle = element_text(margin = margin(t = -10, b = 10, unit = "mm"), hjust = 0.35, face = "bold", size = 13),
         plot.caption = element_text(margin = margin(t = 5, unit = "mm"), face = "italic", color = "grey60"),
-        axis.text.x = element_text(size = 12),
-        axis.text.y = element_text(size = 12))
-
-
-
-
-
+        axis.text.x = element_text(margin = margin(t = 3, unit = "mm"), size = 10),
+        axis.text.y = element_markdown(margin = margin(r = -5, unit = "mm"), color = NULL, size = 11))
 
 ```
 
