@@ -101,7 +101,7 @@ To get the data, I visited [Journal Citation Reports](https://clarivate.com/webo
 
 Let's read in the datasets and do some data wrangling:
 
-```{r, fig.width = 5, fig.height = 3.5, out.width = "70%"}
+```{r}
 library(tidyverse)
 library(janitor)  # for the function "row_to_names()"
 
@@ -117,15 +117,15 @@ BES_journals_data <- map(dataset_urls, function(x){
   }) %>%
   `names<-`(BES_journals) %>%
   bind_rows(.id = "Journal") %>%  # convert the list to a dataframe
-  select(Journal, Year, IF = `Journal impact factor`) %>%  
+  select(Journal, Year, IF = `Journal impact factor`) %>% 
   filter(Year >= 2011) %>%  # retain data starting from 2011
   group_by(Year) %>% 
-  mutate(Ranking = row_number(desc(IF))) %>%  # add the journal rankings by year
+  mutate(IF = as.numeric(IF),
+         Ranking = row_number(desc(IF))) %>%  # add the journal rankings by year
   arrange(Year, Journal)
   
 head(BES_journals_data, n = 10)
 ```
-
 <br>
 
 ## Basic bump chart
@@ -133,13 +133,32 @@ head(BES_journals_data, n = 10)
 
 
 ```{r, fig.width = 5, fig.height = 3.5, out.width = "70%"}
+library(ggtext)
 
-# Use color of the journals
-# Func: #e38d26
-# Animal: #7581bd
-# applied: #48a749
-# joe: #0e96d4
-# mee: #de2127
+col_pal <- set_names(c("#0e96d4", "#7581bd", "#48a749", "#e38d26", "#de2127"), nm = BES_journals)
+
+ggplot(BES_journals_data) + 
+  geom_line(aes(x = Year, y = Ranking, color = Journal, group = Journal), size = 2) + 
+  geom_point(aes(x = Year, y = Ranking, color = Journal), shape = 21, fill = "white", size = 4, stroke = 2) +
+  scale_y_reverse(position = "right") +
+  scale_color_manual(values = col_pal) +
+  labs(title = "<img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2021-07-10-post-5-awesome-text-display-with-ggtext/IBO_logos/main.png'
+    width='100' />",
+       subtitle = "Journal rankings based on their impact factors each year",
+       caption = "Data source: Journal Citation Reports") +
+  theme_void() +
+  theme(legend.position = "none",
+        plot.background = element_rect(fill = , color = NA),
+        plot.title = element_markdown(margin = margin(b = 3, unit = "mm"), face = "bold", size = 20, hjust = 0.5),
+        plot.subtitle = element_text(margin = margin(b = 5, unit = "mm"), hjust = 0.5),
+        plot.caption = element_text(margin = margin(t = 5, unit = "mm"), face = "italic", color = "grey60"),
+        axis.text.x = element_text(size = 12),
+        axis.text.y = element_text(size = 12))
+
+
+
+
+
 
 ```
 

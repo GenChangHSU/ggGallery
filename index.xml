@@ -123,24 +123,28 @@ BES_journals_data &amp;lt;- map(dataset_urls, function(x){
     slice_head(n = nrow(.)-4)  # remove the last four rows
   }) %&amp;gt;%
   `names&amp;lt;-`(BES_journals) %&amp;gt;%
-  bind_rows(.id = &amp;quot;Journal&amp;quot;) %&amp;gt;%   # convert the list to a dataframe
+  bind_rows(.id = &amp;quot;Journal&amp;quot;) %&amp;gt;%  # convert the list to a dataframe
   select(Journal, Year, IF = `Journal impact factor`) %&amp;gt;%  
   filter(Year &amp;gt;= 2011) %&amp;gt;%  # retain data starting from 2011
   group_by(Year) %&amp;gt;% 
   mutate(Ranking = row_number(desc(IF))) %&amp;gt;%  # add the journal rankings by year
   arrange(Year, Journal)
   
-head(BES_journals_data)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;# A tibble: 6 × 4
+head(BES_journals_data, n = 10)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# A tibble: 10 × 4
 # Groups:   Year [2]
-  Journal           Year  IF    Ranking
-  &amp;lt;chr&amp;gt;             &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt;   &amp;lt;int&amp;gt;
-1 FUNCT_ECOL        2011  4.567       5
-2 J_ANIM_ECOL       2011  4.937       4
-3 J_APPL_ECOL       2011  5.045       2
-4 J_ECOL            2011  5.044       3
-5 METHODS_ECOL_EVOL 2011  5.093       1
-6 FUNCT_ECOL        2012  4.861       3&lt;/code&gt;&lt;/pre&gt;
+   Journal           Year  IF    Ranking
+   &amp;lt;chr&amp;gt;             &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt;   &amp;lt;int&amp;gt;
+ 1 FUNCT_ECOL        2011  4.567       5
+ 2 J_ANIM_ECOL       2011  4.937       4
+ 3 J_APPL_ECOL       2011  5.045       2
+ 4 J_ECOL            2011  5.044       3
+ 5 METHODS_ECOL_EVOL 2011  5.093       1
+ 6 FUNCT_ECOL        2012  4.861       3
+ 7 J_ANIM_ECOL       2012  4.841       4
+ 8 J_APPL_ECOL       2012  4.74        5
+ 9 J_ECOL            2012  5.431       2
+10 METHODS_ECOL_EVOL 2012  5.924       1&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;h2 id="basic-bump-chart"&gt;Basic bump chart&lt;/h2&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# Use color of the journals
