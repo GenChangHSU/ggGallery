@@ -132,7 +132,7 @@ head(BES_journals_data, n = 10)
 
 
 
-```{r, fig.width = 5, fig.height = 3.5, out.width = "70%"}
+```{r, fig.width = 7, fig.height = 5, out.width = "70%"}
 library(ggtext)
 
 col_pal <- set_names(c("#0e96d4", "#7581bd", "#48a749", "#e38d26", "#de2127"), nm = BES_journals)
@@ -142,15 +142,14 @@ ggplot(BES_journals_data) +
   geom_point(aes(x = Year, y = Ranking, color = Journal), shape = 21, fill = "white", size = 4, stroke = 2) +
   scale_y_reverse(position = "right") +
   scale_color_manual(values = col_pal) +
-  labs(title = "<img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2021-07-10-post-5-awesome-text-display-with-ggtext/IBO_logos/main.png'
-    width='100' />",
+  labs(title = "<img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo.png' width = '100'/>",
        subtitle = "Journal rankings based on their impact factors each year",
        caption = "Data source: Journal Citation Reports") +
   theme_void() +
   theme(legend.position = "none",
-        plot.background = element_rect(fill = , color = NA),
-        plot.title = element_markdown(margin = margin(b = 3, unit = "mm"), face = "bold", size = 20, hjust = 0.5),
-        plot.subtitle = element_text(margin = margin(b = 5, unit = "mm"), hjust = 0.5),
+        plot.background = element_rect(fill = "#abb8c3", color = NA),
+        plot.title = element_markdown(margin = margin(b = 0, unit = "mm"), hjust = 0.05),
+        plot.subtitle = element_text(margin = margin(t = -10, b = 10, unit = "mm"), hjust = 0.7, face = "bold", size = 13),
         plot.caption = element_text(margin = margin(t = 5, unit = "mm"), face = "italic", color = "grey60"),
         axis.text.x = element_text(size = 12),
         axis.text.y = element_text(size = 12))
