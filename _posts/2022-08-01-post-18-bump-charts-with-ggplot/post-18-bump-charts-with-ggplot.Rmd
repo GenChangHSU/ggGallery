@@ -133,23 +133,27 @@ head(BES_journals_data, n = 10)
 
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
-library(ggtext)
+# install.packages("ggtext")  # install the package if you haven't
+library(ggtext)  # for the function "element_markdown()"
 
+# A color palette for the journals
 col_pal <- set_names(c("#0e96d4", "#7581bd", "#48a749", "#e38d26", "#de2127"), nm = BES_journals)
 
+# The journal names on the left side of the figure (using css syntax for element_markdown())
 Journal_label <- c("<span style = 'color: #de2127'>Methods in<br>Ecology and Evolution</span>",
                    "<span style = 'color: #48a749'>Journal of<br>Applied Ecology",
                    "<span style = 'color: #0e96d4'>Journal of Ecology</span>",
                    "<span style = 'color: #7581bd'>Journal of<br>Animal Ecology</span>",
                    "<span style = 'color: #e38d26'>Functional Ecology</span>")
 
+# The bump chart
 ggplot(BES_journals_data) + 
   geom_line(aes(x = Year, y = Ranking, color = Journal, group = Journal), size = 2) + 
   geom_point(aes(x = Year, y = Ranking, color = Journal), shape = 21, fill = "white", size = 4, stroke = 2) +
   geom_text(data = data.frame(x = 11.5, y = 1:5), aes(x = x, y = y, label = y)) +
-  scale_y_reverse(labels = Journal_label) +
-  scale_color_manual(values = col_pal) +
-  labs(title = "<img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo_tp.png' width = '100'/>",
+  scale_y_reverse(labels = Journal_label) +  # the highest-ranking journal is on the top
+  scale_color_manual(values = col_pal) +  # use the customized color palette
+  labs(title = "<img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo_tp.png' width = '100'/>",  # add the BES logo using the HTML <img> tag
        subtitle = "Journal rankings based on their impact factors each year",
        caption = "Data source: Journal Citation Reports") +
   theme_void() +
@@ -161,6 +165,7 @@ ggplot(BES_journals_data) +
         plot.caption = element_text(margin = margin(t = 5, unit = "mm"), face = "italic", color = "grey60"),
         axis.text.x = element_text(margin = margin(t = 3, unit = "mm"), size = 10),
         axis.text.y = element_markdown(margin = margin(r = -5, unit = "mm"), color = NULL, size = 11))
+
 
 ```
 

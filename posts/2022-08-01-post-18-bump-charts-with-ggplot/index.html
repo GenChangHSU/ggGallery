@@ -2600,7 +2600,7 @@ d-appendix d-footnote-list a.footnote-backlink {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #18. Bump charts with ggplot","description":"Come and learn how to create nice bump charts with ggplot!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-08-01T00:00:00.000+08:00","citationText":"Hsu, 2022"}
+{"title":"Post #18. Bump charts with ggplot","description":"Come and learn how to create nice bump charts with ggplot!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-08-01T00:00:00.000-07:00","citationText":"Hsu, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2763,7 +2763,7 @@ records.</p>
 <span>  </span>
 <span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>BES_journals_data</span>, n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span></code></pre>
 </div>
-<pre><code># A tibble: 10 × 4
+<pre><code># A tibble: 10 x 4
 # Groups:   Year [2]
    Journal           Year     IF Ranking
    &lt;chr&gt;             &lt;chr&gt; &lt;dbl&gt;   &lt;int&gt;
@@ -2782,23 +2782,27 @@ records.</p>
 <h2 id="basic-bump-chart">Basic bump chart</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://wilkelab.org/ggtext/'>ggtext</a></span><span class='op'>)</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># install.packages("ggtext")  # install the package if you haven't</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://wilkelab.org/ggtext/'>ggtext</a></span><span class='op'>)</span>  <span class='co'># for the function "element_markdown()"</span></span>
 <span></span>
+<span><span class='co'># A color palette for the journals</span></span>
 <span><span class='va'>col_pal</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rlang.r-lib.org/reference/set_names.html'>set_names</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"#0e96d4"</span>, <span class='st'>"#7581bd"</span>, <span class='st'>"#48a749"</span>, <span class='st'>"#e38d26"</span>, <span class='st'>"#de2127"</span><span class='op'>)</span>, nm <span class='op'>=</span> <span class='va'>BES_journals</span><span class='op'>)</span></span>
 <span></span>
+<span><span class='co'># The journal names on the left side of the figure (using css syntax for element_markdown())</span></span>
 <span><span class='va'>Journal_label</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"&lt;span style = 'color: #de2127'&gt;Methods in&lt;br&gt;Ecology and Evolution&lt;/span&gt;"</span>,</span>
 <span>                   <span class='st'>"&lt;span style = 'color: #48a749'&gt;Journal of&lt;br&gt;Applied Ecology"</span>,</span>
 <span>                   <span class='st'>"&lt;span style = 'color: #0e96d4'&gt;Journal of Ecology&lt;/span&gt;"</span>,</span>
 <span>                   <span class='st'>"&lt;span style = 'color: #7581bd'&gt;Journal of&lt;br&gt;Animal Ecology&lt;/span&gt;"</span>,</span>
 <span>                   <span class='st'>"&lt;span style = 'color: #e38d26'&gt;Functional Ecology&lt;/span&gt;"</span><span class='op'>)</span></span>
 <span></span>
+<span><span class='co'># The bump chart</span></span>
 <span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>BES_journals_data</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Year</span>, y <span class='op'>=</span> <span class='va'>Ranking</span>, color <span class='op'>=</span> <span class='va'>Journal</span>, group <span class='op'>=</span> <span class='va'>Journal</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Year</span>, y <span class='op'>=</span> <span class='va'>Ranking</span>, color <span class='op'>=</span> <span class='va'>Journal</span><span class='op'>)</span>, shape <span class='op'>=</span> <span class='fl'>21</span>, fill <span class='op'>=</span> <span class='st'>"white"</span>, size <span class='op'>=</span> <span class='fl'>4</span>, stroke <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>11.5</span>, y <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, label <span class='op'>=</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_reverse</a></span><span class='op'>(</span>labels <span class='op'>=</span> <span class='va'>Journal_label</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_color_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='va'>col_pal</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"&lt;img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo_tp.png' width = '100'/&gt;"</span>,</span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_reverse</a></span><span class='op'>(</span>labels <span class='op'>=</span> <span class='va'>Journal_label</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># the highest-ranking journal is on the top</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_color_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='va'>col_pal</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># use the customized color palette</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"&lt;img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo_tp.png' width = '100'/&gt;"</span>,  <span class='co'># add the BES logo using the HTML &lt;img&gt; tag</span></span>
 <span>       subtitle <span class='op'>=</span> <span class='st'>"Journal rankings based on their impact factors each year"</span>,</span>
 <span>       caption <span class='op'>=</span> <span class='st'>"Data source: Journal Citation Reports"</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_void</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
