@@ -7,7 +7,7 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 31 Jul 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Aug 2022 00:00:00 +0000</lastBuildDate>
     <item>
       <title>Post #18. Bump charts with ggplot</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
@@ -132,7 +132,7 @@ BES_journals_data &amp;lt;- map(dataset_urls, function(x){
   arrange(Year, Journal)
   
 head(BES_journals_data, n = 10)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;# A tibble: 10 × 4
+&lt;pre&gt;&lt;code&gt;# A tibble: 10 x 4
 # Groups:   Year [2]
    Journal           Year     IF Ranking
    &amp;lt;chr&amp;gt;             &amp;lt;chr&amp;gt; &amp;lt;dbl&amp;gt;   &amp;lt;int&amp;gt;
@@ -152,7 +152,7 @@ head(BES_journals_data, n = 10)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Creating a basic bump chart is as simple as making a scatterplot (or
 dotplot) of time vs. rankings and “connecting the dots” with lines,
 which can be done with &lt;code&gt;geom_point()&lt;/code&gt; and
-&lt;code&gt;geom_line()&lt;/code&gt;. Next, you can use
+&lt;code&gt;geom_line()&lt;/code&gt;. Next, we can use
 &lt;code&gt;scale_y_reverse()&lt;/code&gt; to flip the y-axis so that the
 highest-ranking item stays on the top of the plot.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# A color palette for the journals
@@ -165,12 +165,15 @@ ggplot(BES_journals_data) +
   scale_y_reverse() +  # the highest-ranking journal is on the top
   scale_color_manual(values = col_pal) +  # use the customized color palette
   theme_classic()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c1067edaf9_files/figure-html/unnamed-chunk-2-1.png" width="85%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file13ac17aa321f_files/figure-html/unnamed-chunk-2-1.png" width="85%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Seems that &lt;span style="color:#DE2127"&gt;&lt;em&gt;Methods in Ecology and
+Evolution&lt;/em&gt;&lt;/span&gt; has been the leading journal of the five in recent
+years!&lt;/p&gt;
 &lt;p&gt;This figure looks fine, but we can make it shine. Let’s spice it
 up!&lt;/p&gt;
-&lt;p&gt;There are a few things we can modify for the plot:&lt;/p&gt;
+&lt;p&gt;There are a few things we can do to modify the chart:&lt;/p&gt;
 &lt;p&gt;&lt;span style="display: block; margin-top: 0px; margin-left: 10px"&gt; (1)
-Add a title, subtitle, and caption&lt;/span&gt; &lt;span
+Add a title, a subtitle, and a caption&lt;/span&gt; &lt;span
 style="display: block; margin-top: 5px; margin-left: 10px"&gt; (2) Remove
 the legend and annotate the items directly in the plot panel&lt;/span&gt;
 &lt;span style="display: block; margin-top: 5px; margin-left: 10px"&gt; (3)
@@ -181,7 +184,7 @@ library(ggtext)  # for the function &amp;quot;element_markdown()&amp;quot;
 # A color palette for the journals
 col_pal &amp;lt;- set_names(c(&amp;quot;#0e96d4&amp;quot;, &amp;quot;#7581bd&amp;quot;, &amp;quot;#48a749&amp;quot;, &amp;quot;#e38d26&amp;quot;, &amp;quot;#de2127&amp;quot;), nm = BES_journals)
 
-# The journal names on the left side of the figure (using css syntax for element_markdown())
+# The journal labels on the left
 Journal_label &amp;lt;- c(&amp;quot;&amp;lt;span style = &amp;#39;color: #de2127&amp;#39;&amp;gt;Methods in&amp;lt;br&amp;gt;Ecology and Evolution&amp;lt;/span&amp;gt;&amp;quot;,
                    &amp;quot;&amp;lt;span style = &amp;#39;color: #48a749&amp;#39;&amp;gt;Journal of&amp;lt;br&amp;gt;Applied Ecology&amp;quot;,
                    &amp;quot;&amp;lt;span style = &amp;#39;color: #0e96d4&amp;#39;&amp;gt;Journal of Ecology&amp;lt;/span&amp;gt;&amp;quot;,
@@ -193,9 +196,9 @@ ggplot(BES_journals_data) +
   geom_line(aes(x = Year, y = Ranking, color = Journal, group = Journal), size = 2) + 
   geom_point(aes(x = Year, y = Ranking, color = Journal), shape = 21, fill = &amp;quot;white&amp;quot;, size = 4, stroke = 2) +
   geom_text(data = data.frame(x = 11.5, y = 1:5), aes(x = x, y = y, label = y)) +
-  scale_y_reverse(labels = Journal_label) +
+  scale_y_reverse(labels = Journal_label) +  # add the journal labels
   scale_color_manual(values = col_pal) + 
-  labs(title = &amp;quot;&amp;lt;img src=&amp;#39;https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo_tp.png&amp;#39; width = &amp;#39;100&amp;#39;/&amp;gt;&amp;quot;,  # add the BES logo using the HTML &amp;lt;img&amp;gt; tag
+  labs(title = &amp;quot;&amp;lt;img src=&amp;#39;https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo_tp.png&amp;#39; width = &amp;#39;100&amp;#39;/&amp;gt;&amp;quot;,  # add the BES logo
        subtitle = &amp;quot;Journal rankings based on their impact factors each year&amp;quot;,
        caption = &amp;quot;Data source: Journal Citation Reports&amp;quot;) +
   theme_void() +
@@ -207,15 +210,17 @@ ggplot(BES_journals_data) +
         plot.caption = element_text(margin = margin(t = 5, unit = &amp;quot;mm&amp;quot;), face = &amp;quot;italic&amp;quot;, color = &amp;quot;grey60&amp;quot;),
         axis.text.x = element_text(margin = margin(t = 3, unit = &amp;quot;mm&amp;quot;), size = 10),
         axis.text.y = element_markdown(margin = margin(r = -5, unit = &amp;quot;mm&amp;quot;), color = NULL, size = 11))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c1067edaf9_files/figure-html/unnamed-chunk-3-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+&lt;p&gt;&lt;img src="file13ac17aa321f_files/figure-html/unnamed-chunk-3-1.png" width="85%" style="display: block; margin: auto;" /&gt;
 &lt;br&gt;&lt;/p&gt;
-&lt;p&gt;I also added a logo on the top using &lt;a
-href=""&gt;&lt;code&gt;ggtext&lt;/code&gt;&lt;/a&gt;, which has many nice functions to do
-text manipulations using HTML and css syntax (also check out this &lt;a
-href=""&gt;post&lt;/a&gt; I written before if interested!)&lt;/p&gt;
-&lt;p&gt;Seems that &lt;span style="color:#DE2127"&gt;&lt;em&gt;Methods in Ecology and
-Evolution&lt;/em&gt;&lt;/span&gt;) has been the leading journal of the five in
-recent years!&lt;/p&gt;
+&lt;p&gt;Here I used the function &lt;code&gt;element_markdown()&lt;/code&gt; in the
+package &lt;a href="https://wilkelab.org/ggtext/"&gt;&lt;code&gt;ggtext&lt;/code&gt;&lt;/a&gt;
+to embed a logo in the plot title via the HTML &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt;
+tag and to label the journals via the HTML &lt;code&gt;&amp;lt;span&amp;gt;&lt;/code&gt;
+tag. The package has many nice features for text manipulations in
+ggplots using HTML and CSS syntax. I won’t go into the details here, but
+do check out my previous &lt;a
+href="https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/"&gt;post&lt;/a&gt;
+on this topic if interested!&lt;/p&gt;
 &lt;h2 id="a-modified-bump-chart-with-smooth-lines"&gt;A modified bump chart
 with smooth lines&lt;/h2&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggbump&amp;quot;)  # install the package if you haven&amp;#39;t
@@ -252,7 +257,7 @@ ggplot(BES_journals_data) +
         plot.caption = element_text(margin = margin(t = 5, unit = &amp;quot;mm&amp;quot;), face = &amp;quot;italic&amp;quot;, color = &amp;quot;grey60&amp;quot;),
         axis.text.x = element_text(margin = margin(t = 3, unit = &amp;quot;mm&amp;quot;), size = 10),
         axis.text.y = element_markdown(margin = margin(r = -5, unit = &amp;quot;mm&amp;quot;), color = NULL, size = 11))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c1067edaf9_files/figure-html/unnamed-chunk-4-1.png" width="85%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file13ac17aa321f_files/figure-html/unnamed-chunk-4-1.png" width="85%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h2 id="ribbon-bump-chart"&gt;Ribbon bump chart&lt;/h2&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;Hope you learn something useful from this simple post and don’t
@@ -261,7 +266,7 @@ forget to leave your comments and suggestions below if you have any!&lt;/p&gt;
       <distill:md5>238170b742df56e4d60c3b735a710326</distill:md5>
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-08-01-post-18-bump-charts-with-ggplot</guid>
-      <pubDate>Sun, 31 Jul 2022 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 01 Aug 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-08-01-post-18-bump-charts-with-ggplot/post-18-bump-charts-with-ggplot_files/figure-html5/unnamed-chunk-2-1.png" medium="image" type="image/png" width="1728" height="960"/>
     </item>
     <item>

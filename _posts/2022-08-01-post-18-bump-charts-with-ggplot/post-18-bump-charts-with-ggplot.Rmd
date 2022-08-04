@@ -132,7 +132,7 @@ head(BES_journals_data, n = 10)
 
 Now we have our data at hand, it's time for the chart!
 
-Creating a basic bump chart is as simple as making a scatterplot (or dotplot) of time vs. rankings and "connecting the dots" with lines, which can be done with `geom_point()` and `geom_line()`. Next, you can use `scale_y_reverse()` to flip the y-axis so that the highest-ranking item stays on the top of the plot. 
+Creating a basic bump chart is as simple as making a scatterplot (or dotplot) of time vs. rankings and "connecting the dots" with lines, which can be done with `geom_point()` and `geom_line()`. Next, we can use `scale_y_reverse()` to flip the y-axis so that the highest-ranking item stays on the top of the plot. 
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 # A color palette for the journals
@@ -151,9 +151,9 @@ Seems that <span style="color:#DE2127">*Methods in Ecology and Evolution*</span>
 
 This figure looks fine, but we can make it shine. Let's spice it up!
 
-There are a few things we can do to modify the plot:
+There are a few things we can do to modify the chart:
 
-<span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Add a title, subtitle, and caption</span>
+<span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Add a title, a subtitle, and a caption</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Remove the legend and annotate the items directly in the plot panel</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Change the background color</span>
 
@@ -164,7 +164,7 @@ library(ggtext)  # for the function "element_markdown()"
 # A color palette for the journals
 col_pal <- set_names(c("#0e96d4", "#7581bd", "#48a749", "#e38d26", "#de2127"), nm = BES_journals)
 
-# The journal names on the left side of the figure (using css syntax for element_markdown())
+# The journal labels on the left
 Journal_label <- c("<span style = 'color: #de2127'>Methods in<br>Ecology and Evolution</span>",
                    "<span style = 'color: #48a749'>Journal of<br>Applied Ecology",
                    "<span style = 'color: #0e96d4'>Journal of Ecology</span>",
@@ -176,9 +176,9 @@ ggplot(BES_journals_data) +
   geom_line(aes(x = Year, y = Ranking, color = Journal, group = Journal), size = 2) + 
   geom_point(aes(x = Year, y = Ranking, color = Journal), shape = 21, fill = "white", size = 4, stroke = 2) +
   geom_text(data = data.frame(x = 11.5, y = 1:5), aes(x = x, y = y, label = y)) +
-  scale_y_reverse(labels = Journal_label) +
+  scale_y_reverse(labels = Journal_label) +  # add the journal labels
   scale_color_manual(values = col_pal) + 
-  labs(title = "<img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo_tp.png' width = '100'/>",  # add the BES logo using the HTML <img> tag
+  labs(title = "<img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo_tp.png' width = '100'/>",  # add the BES logo
        subtitle = "Journal rankings based on their impact factors each year",
        caption = "Data source: Journal Citation Reports") +
   theme_void() +
@@ -194,7 +194,7 @@ ggplot(BES_journals_data) +
 ```
 <br>
 
-Note that I used the package [`ggtext`](https://wilkelab.org/ggtext/) to embed a logo in the plot title with the HTML <img> tag and to label the journal names with the HTML <span> tag. The package has many nice features for text manipulations in ggplots using HTML and CSS syntax. I won't go into the details here as this is not the topic of the post, but do check out my previous [post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) on `ggtext` if interested!
+Here I used the function `element_markdown()` in the package [`ggtext`](https://wilkelab.org/ggtext/) to embed a logo in the plot title via the HTML `<img>` tag and to label the journals via the HTML `<span>` tag. The package has many nice features for text manipulations in ggplots using HTML and CSS syntax. I won't go into the details here, but do check out my previous [post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) on this topic if interested!
 
 ## A modified bump chart with smooth lines
 
