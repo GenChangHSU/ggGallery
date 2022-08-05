@@ -196,32 +196,31 @@ ggplot(BES_journals_data) +
 
 Here I used the function `element_markdown()` in the package [`ggtext`](https://wilkelab.org/ggtext/) to embed a logo in the plot title via the HTML `<img>` tag and to label the journals via the HTML `<span>` tag. The package has many nice features for text manipulations in ggplots using HTML and CSS syntax. I won't go into the details here, but do check out my previous [post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) on this topic if interested!
 
-## A modified bump chart with smooth lines
+## A modified bump chart with smooth curves
+
+Instead of connecting the dots with straight line segments like what we did in the above figure, we can use smooth curves. This is actually super easy: just replace `geom_line()` with `geom_bump()`! 
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 # install.packages("ggbump")  # install the package if you haven't
-# install.packages("ggtext")  # install the package if you haven't
 library(ggbump)
 library(ggtext)
 
-# A color palette for the journals
 col_pal <- set_names(c("#0e96d4", "#7581bd", "#48a749", "#e38d26", "#de2127"), nm = BES_journals)
 
-# The journal names on the left side of the figure (using css syntax for element_markdown())
 Journal_label <- c("<span style = 'color: #de2127'>Methods in<br>Ecology and Evolution</span>",
                    "<span style = 'color: #48a749'>Journal of<br>Applied Ecology",
                    "<span style = 'color: #0e96d4'>Journal of Ecology</span>",
                    "<span style = 'color: #7581bd'>Journal of<br>Animal Ecology</span>",
                    "<span style = 'color: #e38d26'>Functional Ecology</span>")
 
-# The bump chart
+# The modified bump chart using "geom_bump()"
 ggplot(BES_journals_data) + 
-  geom_line(aes(x = Year, y = Ranking, color = Journal, group = Journal), size = 2) + 
+  geom_bump(aes(x = Year, y = Ranking, color = Journal, group = Journal), size = 2) + 
   geom_point(aes(x = Year, y = Ranking, color = Journal), shape = 21, fill = "white", size = 4, stroke = 2) +
   geom_text(data = data.frame(x = 11.5, y = 1:5), aes(x = x, y = y, label = y)) +
-  scale_y_reverse(labels = Journal_label) +  # the highest-ranking journal is on the top
-  scale_color_manual(values = col_pal) +  # use the customized color palette
-  labs(title = "<img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo_tp.png' width = '100'/>",  # add the BES logo using the HTML <img> tag
+  scale_y_reverse(labels = Journal_label) +
+  scale_color_manual(values = col_pal) +
+  labs(title = "<img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo_tp.png' width = '100'/>",
        subtitle = "Journal rankings based on their impact factors each year",
        caption = "Data source: Journal Citation Reports") +
   theme_void() +
@@ -234,12 +233,11 @@ ggplot(BES_journals_data) +
         axis.text.x = element_text(margin = margin(t = 3, unit = "mm"), size = 10),
         axis.text.y = element_markdown(margin = margin(r = -5, unit = "mm"), color = NULL, size = 11))
 
-
 ```
 
+<div style="height: 1.2em;"></div>
 
-
-
+Looks pretty cool (a bit like subway maps)!
 
 ## Ribbon bump chart
 
@@ -250,6 +248,8 @@ ggplot(BES_journals_data) +
 
 
 ## Summary
+
+
 
 
 Hope you learn something useful from this simple post and don't forget to leave your comments and suggestions below if you have any!
