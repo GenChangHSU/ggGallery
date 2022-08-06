@@ -2600,7 +2600,7 @@ d-appendix d-footnote-list a.footnote-backlink {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #18. Bump charts with ggplot","description":"Come and learn how to create nice bump charts with ggplot!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-08-01T00:00:00.000+08:00","citationText":"Hsu, 2022"}
+{"title":"Post #18. Bump charts with ggplot","description":"Come and learn how to create nice bump charts with ggplot!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-08-01T00:00:00.000-07:00","citationText":"Hsu, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2763,7 +2763,7 @@ records.</p>
 <span>  </span>
 <span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>BES_journals_data</span>, n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span></code></pre>
 </div>
-<pre><code># A tibble: 10 × 4
+<pre><code># A tibble: 10 x 4
 # Groups:   Year [2]
    Journal           Year     IF Ranking
    &lt;chr&gt;             &lt;chr&gt; &lt;dbl&gt;   &lt;int&gt;
@@ -2907,11 +2907,69 @@ super easy: just replace <code>geom_line()</code> with
 
 </div>
 <p>Looks pretty cool (a bit like subway maps)!</p>
-<h2 id="ribbon-bump-chart">Ribbon bump chart</h2>
+<h2 id="advanced-topic---ribbon-bump-chart">Advanced topic - Ribbon bump
+chart</h2>
+<p>For the purpose of science communication, the bump charts we’ve
+created above are pretty much enough. But as a ggplot geek, it’s always
+fun to challenge myself a bit and go a step further to try out something
+cool. This is the motivation for this advanced topic! Also, a shout-out
+to the author of the <a
+href="https://mobile.twitter.com/rappa753/status/1548335653909250048/photo/1">Tweet</a>
+I mentioned at the beginning of the post. The idea was largely inspired
+by the chart he made and much of the code below is modified from his
+GitHub <a
+href="https://github.com/AlbertRapp/PublicTidyTuesday/blob/main/2022_w28_euroflights/2022_w28_euroflights.qmd">repository</a>.</p>
+<p>Creating a ribbon bump chart is not an easy task and requires some
+data manipulations. I’ll break down the process into five steps and try
+my best to explain what I’m doing in each step. I think this would make
+it easier to understand the underlying principles and hopefully you’ll
+be able to build your own chart in the future!</p>
+<p>So the five steps are: <span
+style="display: block; margin-top: 3px; margin-left: 10px"> (1) Compute
+the cumulative sums of journals’ impact factors each year</span> <span
+style="display: block; margin-top: 5px; margin-left: 10px"> (2) Create a
+stacked bar plot of journals’ impact factors each year</span> <span
+style="display: block; margin-top: 5px; margin-left: 10px"> (3)
+Determine the upper and lower curves that connect the bars of each
+journal</span> <span
+style="display: block; margin-top: 5px; margin-left: 10px"> (4) Add
+ribbons to the stacked bar plotr</span> <span
+style="display: block; margin-top: 5px; margin-left: 10px"> (5) Polish
+the appearance of the chart</span></p>
+<p>Let’s kick off the journey and see where we end!</p>
+<h3
+id="step-1.-compute-the-cumulative-sums-of-journals-impact-factors-each-year">Step
+1. Compute the cumulative sums of journals’ impact factors each
+year</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>BES_journals_data</span></span></code></pre>
+</div>
+<pre><code># A tibble: 55 x 4
+# Groups:   Year [11]
+   Journal           Year     IF Ranking
+   &lt;chr&gt;             &lt;chr&gt; &lt;dbl&gt;   &lt;int&gt;
+ 1 FUNCT_ECOL        2011   4.57       5
+ 2 J_ANIM_ECOL       2011   4.94       4
+ 3 J_APPL_ECOL       2011   5.04       2
+ 4 J_ECOL            2011   5.04       3
+ 5 METHODS_ECOL_EVOL 2011   5.09       1
+ 6 FUNCT_ECOL        2012   4.86       3
+ 7 J_ANIM_ECOL       2012   4.84       4
+ 8 J_APPL_ECOL       2012   4.74       5
+ 9 J_ECOL            2012   5.43       2
+10 METHODS_ECOL_EVOL 2012   5.92       1
+# ... with 45 more rows
+# i Use `print(n = ...)` to see more rows</code></pre>
+</div>
+<h3 id="step-2.">Step 2.</h3>
+<h3 id="step-3.">Step 3.</h3>
+<h3 id="step-4.">Step 4.</h3>
+<h3 id="step-5.">Step 5.</h3>
 <h2 id="summary">Summary</h2>
 <p>Hope you learn something useful from this simple post and don’t
 forget to leave your comments and suggestions below if you have any!</p>
-<div class="sourceCode" id="cb2"><pre
+<div class="sourceCode" id="cb3"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <div class="article-footer">
