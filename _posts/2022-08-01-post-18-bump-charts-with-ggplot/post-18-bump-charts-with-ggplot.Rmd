@@ -257,31 +257,77 @@ Let's kick off the journey and see where we end!
 ### Step 1. Compute the cumulative sums of journals' impact factors each year
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
-BES_journals_data_ribbon <- BES_journals_data %>% 
+BES_journals_data_bar <- BES_journals_data %>% 
   arrange(Year, desc(Ranking)) %>% 
   group_by(Year) %>% 
   mutate(y_start = c(0, cumsum(IF)[-length(IF)]),
-         y_end = cumsum(IF))
+         y_end = cumsum(IF)) %>% 
+  ungroup()
 
-head(BES_journals_data_ribbon, n = 10)
+head(BES_journals_data_bar, n = 10)
 
 ```
 
 ### Step 2. Create a stacked bar plot of journals' impact factors each year
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
-BES_journals_data %>% 
-  arrange(Year, desc(Ranking)) %>% 
-  group_by(Year) %>% 
-  mutate(y_start = c(0, cumsum(IF)[-length(IF)]),
-         y_end = cumsum(IF))
+# A color palette for the journals
+col_pal <- set_names(c("#0e96d4", "#7581bd", "#48a749", "#e38d26", "#de2127"), nm = BES_journals)
 
+ribbon_bumpchart <- ggplot(BES_journals_data_bar) + 
+  geom_rect(aes(xmin = as.numeric(Year) - 0.05, xmax = as.numeric(Year) + 0.05,
+                ymin = y_start, ymax = y_end, fill = Journal), color = "white") +   scale_color_manual(values = col_pal) +
+  theme_classic()
+
+ribbon_bumpchart
 ```
 
 
 ### Step 3. Determine the upper and lower curves that connect the bars of each journal
 
+```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
+BES_journals_data_ribbon <- BES_journals_data_bar %>% 
+  split(., .$Journal) %>% 
+  map(., function(data){
+    lower_curve <- data %>%
+      select(Journal, Year, y_start) %>% 
+      mutate(x_from = as.numeric(Year) + 0.05,
+             x_to = as.numeric(Year) + 1 - 0.05,
+             y_from = y_start,
+             y_to = c(y_start[-1], NA)) %>% 
+      filter(Year != "2021") %>% 
+      rowwise() %>% 
+      mutate(curve = list(sigmoid(x_from, x_to, y_from, y_to, n = 100, smooth = 8))) %>% 
+      unnest() %>% 
+      select(Journal, x, y_lower = y)
+    
+    upper_curve <- data %>% 
+        select(Journal, Year, y_end) %>% 
+        mutate(x_from = as.numeric(Year) + 0.05,
+         x_to = as.numeric(Year) + 1 - 0.05,
+         y_from = y_end,
+         y_to = c(y_end[-1], NA)) %>% 
+      filter(Year != "2021") %>% 
+      rowwise() %>% 
+      mutate(curve = list(sigmoid(x_from, x_to, y_from, y_to, n = 100, smooth = 8))) %>% 
+      unnest() %>% 
+      select(Journal, x, y_upper = y)
+    
+    curve <- left_join(lower_curve, upper_curve[, -1], by = "x")
+  }) %>% bind_rows()
+
+head(BES_journals_data_ribbon, 5)
+```
+
 ### Step 4. Add ribbons to the stacked bar plot
+
+```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
+ribbon_bumpchart
+  
+  
+  
+```
+
 
 ### Step 5. Polish the appearance of the chart
 
