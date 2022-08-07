@@ -123,10 +123,11 @@ BES_journals_data <- map(dataset_urls, function(x){
   mutate(IF = as.numeric(IF),
          Ranking = row_number(desc(IF))) %>%  # add the journal rankings by year
   arrange(Year, Journal)
-  
-head(BES_journals_data, n = 10)
+
+library(DT)  # for the function "datatable()"
+datatable(BES_journals_data, options = list(pageLength = 5))
+
 ```
-<br>
 
 ## Basic bump chart
 
@@ -192,7 +193,7 @@ ggplot(BES_journals_data) +
         axis.text.y = element_markdown(margin = margin(r = -5, unit = "mm"), color = NULL, size = 11))
 
 ```
-<br>
+<div style="height: 1.2em;"></div>
 
 Here I used the function `element_markdown()` in the package [`ggtext`](https://wilkelab.org/ggtext/) to embed a logo in the plot title via the HTML `<img>` tag and to label the journals via the HTML `<span>` tag. The package has many nice features for text manipulations in ggplots using HTML and CSS syntax. I won't go into the details here, but do check out my previous [post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) on this topic if interested!
 
@@ -257,14 +258,15 @@ Let's kick off the journey and see where we end!
 ### Step 1. Compute the cumulative sums of journals' impact factors each year
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
-BES_journals_data_bar <- BES_journals_data %>% 
+# Compute the cumulative sums of the journals' IF 
+BES_journals_data_barplot <- BES_journals_data %>% 
   arrange(Year, desc(Ranking)) %>% 
   group_by(Year) %>% 
   mutate(y_start = c(0, cumsum(IF)[-length(IF)]),
          y_end = cumsum(IF)) %>% 
   ungroup()
 
-head(BES_journals_data_bar, n = 10)
+datatable(BES_journals_data_barplot, options = list(pageLength = 5))
 
 ```
 
@@ -274,7 +276,8 @@ head(BES_journals_data_bar, n = 10)
 # A color palette for the journals
 col_pal <- set_names(c("#0e96d4", "#7581bd", "#48a749", "#e38d26", "#de2127"), nm = BES_journals)
 
-ribbon_bumpchart <- ggplot(BES_journals_data_bar) + 
+# Create a stacked barplot of the journals' IF each year
+ribbon_bumpchart <- ggplot(BES_journals_data_barplot) + 
   geom_rect(aes(xmin = as.numeric(Year) - 0.05, xmax = as.numeric(Year) + 0.05,
                 ymin = y_start, ymax = y_end, fill = Journal), color = "white") +   scale_fill_manual(values = col_pal) +
   theme_classic()
@@ -288,9 +291,22 @@ ribbon_bumpchart
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 library(ggbump)  # for the function "sigmoid()"
 
-BES_journals_data_ribbon <- BES_journals_data_bar %>% 
+# Compute the upper and lower boundaries of the ribbons connecting the bars
+BES_journals_data_ribbon <- BES_journals_data_barplot %>% 
   split(., .$Journal) %>% 
   map(., function(data){
+    upper_curve <- data %>% 
+      select(Journal, Year, y_end) %>% 
+      mutate(x_from = as.numeric(Year) + 0.05,
+             x_to = as.numeric(Year) + 1 - 0.05,
+             y_from = y_end - 0.1,
+             y_to = c(y_end[-1], NA) - 0.1) %>% 
+      filter(Year != "2021") %>% 
+      rowwise() %>% 
+      mutate(curve = list(sigmoid(x_from, x_to, y_from, y_to, n = 100, smooth = 8))) %>% 
+      unnest() %>% 
+      select(Journal, x, y_upper = y)
+        
     lower_curve <- data %>%
       select(Journal, Year, y_start) %>% 
       mutate(x_from = as.numeric(Year) + 0.05,
@@ -303,32 +319,23 @@ BES_journals_data_ribbon <- BES_journals_data_bar %>%
       unnest() %>% 
       select(Journal, x, y_lower = y)
     
-    upper_curve <- data %>% 
-        select(Journal, Year, y_end) %>% 
-        mutate(x_from = as.numeric(Year) + 0.05,
-         x_to = as.numeric(Year) + 1 - 0.05,
-         y_from = y_end - 0.1,
-         y_to = c(y_end[-1], NA) - 0.1) %>% 
-      filter(Year != "2021") %>% 
-      rowwise() %>% 
-      mutate(curve = list(sigmoid(x_from, x_to, y_from, y_to, n = 100, smooth = 8))) %>% 
-      unnest() %>% 
-      select(Journal, x, y_upper = y)
-    
-    curve <- left_join(lower_curve, upper_curve[, -1], by = "x")
+    curve <- left_join(upper_curve, lower_curve[, -1], by = "x")
   }) %>% bind_rows()
 
-head(BES_journals_data_ribbon, 5)
+datatable(BES_journals_data_ribbon, options = list(pageLength = 5))
 ```
 
 ### Step 4. Add ribbons to the stacked bar plot
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
+# Add the ribbons to the bar plot 
 ribbon_bumpchart <- ribbon_bumpchart + 
   geom_ribbon(data = BES_journals_data_ribbon, 
               aes(x = x, ymin = y_lower, ymax = y_upper, fill = Journal), alpha = 0.75)
-  
+
+# Move the bars to the top  
 library(gginnards)
+
 ribbon_bumpchart <- move_layers(ribbon_bumpchart, "GeomRect", position = "top")
 ribbon_bumpchart
 
@@ -337,15 +344,20 @@ ribbon_bumpchart
 ### Step 5. Polish the appearance of the chart
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
+# Journal labels
 Journal_label <- c("<span style = 'color: #de2127'>Methods in<br>Ecology and Evolution</span>",
                    "<span style = 'color: #48a749'>Journal of<br>Applied Ecology",
                    "<span style = 'color: #0e96d4'>Journal of Ecology</span>",
                    "<span style = 'color: #7581bd'>Journal of<br>Animal Ecology</span>",
                    "<span style = 'color: #e38d26'>Functional Ecology</span>")
 
+# Journal label positions
+Journal_label_position <- filter(BES_journals_data_barplot, Year == 2011)$y_end - filter(BES_journals_data_barplot, Year == 2011)$IF/2
+
+# Modify the appearance of the chart
 ribbon_bumpchart +
   scale_x_continuous(breaks = c(2011:2021)) + 
-  scale_y_continuous(breaks = filter(BES_journals_data_bar, Year == 2011)$y_end - filter(BES_journals_data_bar, Year == 2011)$IF/2, labels = rev(Journal_label)) +
+  scale_y_continuous(breaks = Journal_label_position, labels = rev(Journal_label)) +
   labs(title = "<img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo_tp.png' width = '100'/>",
        subtitle = "Journal rankings based on their impact factors each year",
        caption = "Data source: Journal Citation Reports") +
@@ -358,7 +370,6 @@ ribbon_bumpchart +
         plot.caption = element_text(margin = margin(t = 5, unit = "mm"), face = "italic", color = "grey60"),
         axis.text.x = element_text(margin = margin(t = 1, unit = "mm"), size = 10),
         axis.text.y = element_markdown(margin = margin(r = -5, unit = "mm"), color = NULL, size = 11))
-  
 
 ```
 
