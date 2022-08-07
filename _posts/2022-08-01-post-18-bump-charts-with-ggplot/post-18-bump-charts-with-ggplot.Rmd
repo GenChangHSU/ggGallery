@@ -276,7 +276,7 @@ col_pal <- set_names(c("#0e96d4", "#7581bd", "#48a749", "#e38d26", "#de2127"), n
 
 ribbon_bumpchart <- ggplot(BES_journals_data_bar) + 
   geom_rect(aes(xmin = as.numeric(Year) - 0.05, xmax = as.numeric(Year) + 0.05,
-                ymin = y_start, ymax = y_end, fill = Journal), color = "white") +   scale_color_manual(values = col_pal) +
+                ymin = y_start, ymax = y_end, fill = Journal), color = "white") +   scale_fill_manual(values = col_pal) +
   theme_classic()
 
 ribbon_bumpchart
@@ -286,6 +286,8 @@ ribbon_bumpchart
 ### Step 3. Determine the upper and lower curves that connect the bars of each journal
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
+library(ggbump)  # for the function "sigmoid()"
+
 BES_journals_data_ribbon <- BES_journals_data_bar %>% 
   split(., .$Journal) %>% 
   map(., function(data){
@@ -293,8 +295,8 @@ BES_journals_data_ribbon <- BES_journals_data_bar %>%
       select(Journal, Year, y_start) %>% 
       mutate(x_from = as.numeric(Year) + 0.05,
              x_to = as.numeric(Year) + 1 - 0.05,
-             y_from = y_start,
-             y_to = c(y_start[-1], NA)) %>% 
+             y_from = y_start + 0.1,
+             y_to = c(y_start[-1], NA) + 0.1) %>% 
       filter(Year != "2021") %>% 
       rowwise() %>% 
       mutate(curve = list(sigmoid(x_from, x_to, y_from, y_to, n = 100, smooth = 8))) %>% 
@@ -305,8 +307,8 @@ BES_journals_data_ribbon <- BES_journals_data_bar %>%
         select(Journal, Year, y_end) %>% 
         mutate(x_from = as.numeric(Year) + 0.05,
          x_to = as.numeric(Year) + 1 - 0.05,
-         y_from = y_end,
-         y_to = c(y_end[-1], NA)) %>% 
+         y_from = y_end - 0.1,
+         y_to = c(y_end[-1], NA) - 0.1) %>% 
       filter(Year != "2021") %>% 
       rowwise() %>% 
       mutate(curve = list(sigmoid(x_from, x_to, y_from, y_to, n = 100, smooth = 8))) %>% 
@@ -322,16 +324,43 @@ head(BES_journals_data_ribbon, 5)
 ### Step 4. Add ribbons to the stacked bar plot
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
+ribbon_bumpchart <- ribbon_bumpchart + 
+  geom_ribbon(data = BES_journals_data_ribbon, 
+              aes(x = x, ymin = y_lower, ymax = y_upper, fill = Journal), alpha = 0.75)
+  
+library(gginnards)
+ribbon_bumpchart <- move_layers(ribbon_bumpchart, "GeomRect", position = "top")
 ribbon_bumpchart
-  
-  
-  
-```
 
+```
 
 ### Step 5. Polish the appearance of the chart
 
+```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
+Journal_label <- c("<span style = 'color: #de2127'>Methods in<br>Ecology and Evolution</span>",
+                   "<span style = 'color: #48a749'>Journal of<br>Applied Ecology",
+                   "<span style = 'color: #0e96d4'>Journal of Ecology</span>",
+                   "<span style = 'color: #7581bd'>Journal of<br>Animal Ecology</span>",
+                   "<span style = 'color: #e38d26'>Functional Ecology</span>")
 
+ribbon_bumpchart +
+  scale_x_continuous(breaks = c(2011:2021)) + 
+  scale_y_continuous(breaks = filter(BES_journals_data_bar, Year == 2011)$y_end - filter(BES_journals_data_bar, Year == 2011)$IF/2, labels = rev(Journal_label)) +
+  labs(title = "<img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo_tp.png' width = '100'/>",
+       subtitle = "Journal rankings based on their impact factors each year",
+       caption = "Data source: Journal Citation Reports") +
+  theme_void() +
+  theme(legend.position = "none",
+        plot.margin = margin(5, 5, 5, 5),
+        plot.background = element_rect(fill = "#b6e3d4", color = NA),
+        plot.title = element_markdown(margin = margin(b = -5, unit = "mm"), hjust = -0.1),
+        plot.subtitle = element_text(margin = margin(t = -5, b = -10, unit = "mm"), hjust = 0.35, face = "bold", size = 13),
+        plot.caption = element_text(margin = margin(t = 5, unit = "mm"), face = "italic", color = "grey60"),
+        axis.text.x = element_text(margin = margin(t = 1, unit = "mm"), size = 10),
+        axis.text.y = element_markdown(margin = margin(r = -5, unit = "mm"), color = NULL, size = 11))
+  
+
+```
 
 
 

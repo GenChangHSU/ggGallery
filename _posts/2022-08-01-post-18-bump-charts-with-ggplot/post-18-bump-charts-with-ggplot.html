@@ -118,7 +118,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["BES_journals_data/FUNCT_ECOL.csv","BES_journals_data/J_ANIM_ECOL.csv","BES_journals_data/J_APPL_ECOL.csv","BES_journals_data/J_ECOL.csv","BES_journals_data/METHODS_ECOL_EVOL.csv","BES_logo_tp.png","post-18-bump-charts-with-ggplot_files/anchor-4.2.2/anchor.min.js","post-18-bump-charts-with-ggplot_files/bowser-1.9.3/bowser.min.js","post-18-bump-charts-with-ggplot_files/distill-2.2.21/template.v2.js","post-18-bump-charts-with-ggplot_files/figure-html5/unnamed-chunk-2-1.png","post-18-bump-charts-with-ggplot_files/figure-html5/unnamed-chunk-3-1.png","post-18-bump-charts-with-ggplot_files/figure-html5/unnamed-chunk-4-1.png","post-18-bump-charts-with-ggplot_files/header-attrs-2.14/header-attrs.js","post-18-bump-charts-with-ggplot_files/jquery-3.6.0/jquery-3.6.0.js","post-18-bump-charts-with-ggplot_files/jquery-3.6.0/jquery-3.6.0.min.js","post-18-bump-charts-with-ggplot_files/jquery-3.6.0/jquery-3.6.0.min.map","post-18-bump-charts-with-ggplot_files/popper-2.6.0/popper.min.js","post-18-bump-charts-with-ggplot_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-18-bump-charts-with-ggplot_files/tippy-6.2.7/tippy-light-border.css","post-18-bump-charts-with-ggplot_files/tippy-6.2.7/tippy.css","post-18-bump-charts-with-ggplot_files/tippy-6.2.7/tippy.umd.min.js","post-18-bump-charts-with-ggplot_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["BES_journals_data/FUNCT_ECOL.csv","BES_journals_data/J_ANIM_ECOL.csv","BES_journals_data/J_APPL_ECOL.csv","BES_journals_data/J_ECOL.csv","BES_journals_data/METHODS_ECOL_EVOL.csv","BES_logo_tp.png","post-18-bump-charts-with-ggplot_files/anchor-4.2.2/anchor.min.js","post-18-bump-charts-with-ggplot_files/bowser-1.9.3/bowser.min.js","post-18-bump-charts-with-ggplot_files/distill-2.2.21/template.v2.js","post-18-bump-charts-with-ggplot_files/figure-html5/unnamed-chunk-2-1.png","post-18-bump-charts-with-ggplot_files/figure-html5/unnamed-chunk-3-1.png","post-18-bump-charts-with-ggplot_files/figure-html5/unnamed-chunk-4-1.png","post-18-bump-charts-with-ggplot_files/figure-html5/unnamed-chunk-6-1.png","post-18-bump-charts-with-ggplot_files/figure-html5/unnamed-chunk-8-1.png","post-18-bump-charts-with-ggplot_files/figure-html5/unnamed-chunk-9-1.png","post-18-bump-charts-with-ggplot_files/header-attrs-2.14/header-attrs.js","post-18-bump-charts-with-ggplot_files/jquery-3.6.0/jquery-3.6.0.js","post-18-bump-charts-with-ggplot_files/jquery-3.6.0/jquery-3.6.0.min.js","post-18-bump-charts-with-ggplot_files/jquery-3.6.0/jquery-3.6.0.min.map","post-18-bump-charts-with-ggplot_files/popper-2.6.0/popper.min.js","post-18-bump-charts-with-ggplot_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-18-bump-charts-with-ggplot_files/tippy-6.2.7/tippy-light-border.css","post-18-bump-charts-with-ggplot_files/tippy-6.2.7/tippy.css","post-18-bump-charts-with-ggplot_files/tippy-6.2.7/tippy.umd.min.js","post-18-bump-charts-with-ggplot_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1805,7 +1805,7 @@ style="display: block; margin-top: 5px; margin-left: 10px"> (3)
 Determine the upper and lower curves that connect the bars of each
 journal</span> <span
 style="display: block; margin-top: 5px; margin-left: 10px"> (4) Add
-ribbons to the stacked bar plotr</span> <span
+ribbons to the stacked bar plot</span> <span
 style="display: block; margin-top: 5px; margin-left: 10px"> (5) Polish
 the appearance of the chart</span></p>
 <p>Let’s kick off the journey and see where we end!</p>
@@ -1815,33 +1815,141 @@ id="step-1.-compute-the-cumulative-sums-of-journals-impact-factors-each-year">St
 year</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>BES_journals_data</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>BES_journals_data_bar</span> <span class='op'>&lt;-</span> <span class='va'>BES_journals_data</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='va'>Year</span>, <span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>Ranking</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>Year</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>y_start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>IF</span><span class='op'>)</span><span class='op'>[</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>IF</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>,</span>
+<span>         y_end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>IF</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>BES_journals_data_bar</span>, n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span></code></pre>
 </div>
-<pre><code># A tibble: 55 x 4
-# Groups:   Year [11]
-   Journal           Year     IF Ranking
-   &lt;chr&gt;             &lt;chr&gt; &lt;dbl&gt;   &lt;int&gt;
- 1 FUNCT_ECOL        2011   4.57       5
- 2 J_ANIM_ECOL       2011   4.94       4
- 3 J_APPL_ECOL       2011   5.04       2
- 4 J_ECOL            2011   5.04       3
- 5 METHODS_ECOL_EVOL 2011   5.09       1
- 6 FUNCT_ECOL        2012   4.86       3
- 7 J_ANIM_ECOL       2012   4.84       4
- 8 J_APPL_ECOL       2012   4.74       5
- 9 J_ECOL            2012   5.43       2
-10 METHODS_ECOL_EVOL 2012   5.92       1
-# ... with 45 more rows
-# i Use `print(n = ...)` to see more rows</code></pre>
+<pre><code># A tibble: 10 x 6
+   Journal           Year     IF Ranking y_start y_end
+   &lt;chr&gt;             &lt;chr&gt; &lt;dbl&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt;
+ 1 FUNCT_ECOL        2011   4.57       5    0     4.57
+ 2 J_ANIM_ECOL       2011   4.94       4    4.57  9.50
+ 3 J_ECOL            2011   5.04       3    9.50 14.5 
+ 4 J_APPL_ECOL       2011   5.04       2   14.5  19.6 
+ 5 METHODS_ECOL_EVOL 2011   5.09       1   19.6  24.7 
+ 6 J_APPL_ECOL       2012   4.74       5    0     4.74
+ 7 J_ANIM_ECOL       2012   4.84       4    4.74  9.58
+ 8 FUNCT_ECOL        2012   4.86       3    9.58 14.4 
+ 9 J_ECOL            2012   5.43       2   14.4  19.9 
+10 METHODS_ECOL_EVOL 2012   5.92       1   19.9  25.8 </code></pre>
 </div>
-<h3 id="step-2.">Step 2.</h3>
-<h3 id="step-3.">Step 3.</h3>
-<h3 id="step-4.">Step 4.</h3>
-<h3 id="step-5.">Step 5.</h3>
+<h3
+id="step-2.-create-a-stacked-bar-plot-of-journals-impact-factors-each-year">Step
+2. Create a stacked bar plot of journals’ impact factors each year</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># A color palette for the journals</span></span>
+<span><span class='va'>col_pal</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rlang.r-lib.org/reference/set_names.html'>set_names</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"#0e96d4"</span>, <span class='st'>"#7581bd"</span>, <span class='st'>"#48a749"</span>, <span class='st'>"#e38d26"</span>, <span class='st'>"#de2127"</span><span class='op'>)</span>, nm <span class='op'>=</span> <span class='va'>BES_journals</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>ribbon_bumpchart</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>BES_journals_data_bar</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_tile.html'>geom_rect</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>xmin <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>Year</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>0.05</span>, xmax <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>Year</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>0.05</span>,</span>
+<span>                ymin <span class='op'>=</span> <span class='va'>y_start</span>, ymax <span class='op'>=</span> <span class='va'>y_end</span>, fill <span class='op'>=</span> <span class='va'>Journal</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='st'>"white"</span><span class='op'>)</span> <span class='op'>+</span>   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='va'>col_pal</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>ribbon_bumpchart</span></span></code></pre>
+</div>
+<p><img src="post-18-bump-charts-with-ggplot_files/figure-html5/unnamed-chunk-6-1.png" width="85%" style="display: block; margin: auto;" /></p>
+</div>
+<h3
+id="step-3.-determine-the-upper-and-lower-curves-that-connect-the-bars-of-each-journal">Step
+3. Determine the upper and lower curves that connect the bars of each
+journal</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>ggbump</span><span class='op'>)</span>  <span class='co'># for the function "sigmoid()"</span></span>
+<span></span>
+<span><span class='va'>BES_journals_data_ribbon</span> <span class='op'>&lt;-</span> <span class='va'>BES_journals_data_bar</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/base/split.html'>split</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='va'>.</span><span class='op'>$</span><span class='va'>Journal</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span><span class='op'>{</span></span>
+<span>    <span class='va'>lower_curve</span> <span class='op'>&lt;-</span> <span class='va'>data</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>      <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>Journal</span>, <span class='va'>Year</span>, <span class='va'>y_start</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>      <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>x_from <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>Year</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>0.05</span>,</span>
+<span>             x_to <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>Year</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>1</span> <span class='op'>-</span> <span class='fl'>0.05</span>,</span>
+<span>             y_from <span class='op'>=</span> <span class='va'>y_start</span> <span class='op'>+</span> <span class='fl'>0.1</span>,</span>
+<span>             y_to <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>y_start</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>]</span>, <span class='cn'>NA</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>0.1</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>      <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Year</span> <span class='op'>!=</span> <span class='st'>"2021"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>      <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>      <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>curve <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggbump/man/sigmoid.html'>sigmoid</a></span><span class='op'>(</span><span class='va'>x_from</span>, <span class='va'>x_to</span>, <span class='va'>y_from</span>, <span class='va'>y_to</span>, n <span class='op'>=</span> <span class='fl'>100</span>, smooth <span class='op'>=</span> <span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>      <span class='fu'><a href='https://tidyr.tidyverse.org/reference/nest.html'>unnest</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>      <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>Journal</span>, <span class='va'>x</span>, y_lower <span class='op'>=</span> <span class='va'>y</span><span class='op'>)</span></span>
+<span>    </span>
+<span>    <span class='va'>upper_curve</span> <span class='op'>&lt;-</span> <span class='va'>data</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>        <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>Journal</span>, <span class='va'>Year</span>, <span class='va'>y_end</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>        <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>x_from <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>Year</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>0.05</span>,</span>
+<span>         x_to <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>Year</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>1</span> <span class='op'>-</span> <span class='fl'>0.05</span>,</span>
+<span>         y_from <span class='op'>=</span> <span class='va'>y_end</span> <span class='op'>-</span> <span class='fl'>0.1</span>,</span>
+<span>         y_to <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>y_end</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>]</span>, <span class='cn'>NA</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>0.1</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>      <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Year</span> <span class='op'>!=</span> <span class='st'>"2021"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>      <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>      <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>curve <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggbump/man/sigmoid.html'>sigmoid</a></span><span class='op'>(</span><span class='va'>x_from</span>, <span class='va'>x_to</span>, <span class='va'>y_from</span>, <span class='va'>y_to</span>, n <span class='op'>=</span> <span class='fl'>100</span>, smooth <span class='op'>=</span> <span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>      <span class='fu'><a href='https://tidyr.tidyverse.org/reference/nest.html'>unnest</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>      <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>Journal</span>, <span class='va'>x</span>, y_upper <span class='op'>=</span> <span class='va'>y</span><span class='op'>)</span></span>
+<span>    </span>
+<span>    <span class='va'>curve</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>lower_curve</span>, <span class='va'>upper_curve</span><span class='op'>[</span>, <span class='op'>-</span><span class='fl'>1</span><span class='op'>]</span>, by <span class='op'>=</span> <span class='st'>"x"</span><span class='op'>)</span></span>
+<span>  <span class='op'>}</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>BES_journals_data_ribbon</span>, <span class='fl'>5</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 5 x 4
+  Journal        x y_lower y_upper
+  &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1 FUNCT_ECOL 2011.   0.103    4.47
+2 FUNCT_ECOL 2011.   0.104    4.47
+3 FUNCT_ECOL 2011.   0.104    4.47
+4 FUNCT_ECOL 2011.   0.105    4.47
+5 FUNCT_ECOL 2011.   0.106    4.47</code></pre>
+</div>
+<h3 id="step-4.-add-ribbons-to-the-stacked-bar-plot">Step 4. Add ribbons
+to the stacked bar plot</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>ribbon_bumpchart</span> <span class='op'>&lt;-</span> <span class='va'>ribbon_bumpchart</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_ribbon.html'>geom_ribbon</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>BES_journals_data_ribbon</span>, </span>
+<span>              <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, ymin <span class='op'>=</span> <span class='va'>y_lower</span>, ymax <span class='op'>=</span> <span class='va'>y_upper</span>, fill <span class='op'>=</span> <span class='va'>Journal</span><span class='op'>)</span>, alpha <span class='op'>=</span> <span class='fl'>0.75</span><span class='op'>)</span></span>
+<span>  </span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.r4photobiology.info'>gginnards</a></span><span class='op'>)</span></span>
+<span><span class='va'>ribbon_bumpchart</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/gginnards/man/delete_layers.html'>move_layers</a></span><span class='op'>(</span><span class='va'>ribbon_bumpchart</span>, <span class='st'>"GeomRect"</span>, position <span class='op'>=</span> <span class='st'>"top"</span><span class='op'>)</span></span>
+<span><span class='va'>ribbon_bumpchart</span></span></code></pre>
+</div>
+<p><img src="post-18-bump-charts-with-ggplot_files/figure-html5/unnamed-chunk-8-1.png" width="85%" style="display: block; margin: auto;" /></p>
+</div>
+<h3 id="step-5.-polish-the-appearance-of-the-chart">Step 5. Polish the
+appearance of the chart</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>Journal_label</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"&lt;span style = 'color: #de2127'&gt;Methods in&lt;br&gt;Ecology and Evolution&lt;/span&gt;"</span>,</span>
+<span>                   <span class='st'>"&lt;span style = 'color: #48a749'&gt;Journal of&lt;br&gt;Applied Ecology"</span>,</span>
+<span>                   <span class='st'>"&lt;span style = 'color: #0e96d4'&gt;Journal of Ecology&lt;/span&gt;"</span>,</span>
+<span>                   <span class='st'>"&lt;span style = 'color: #7581bd'&gt;Journal of&lt;br&gt;Animal Ecology&lt;/span&gt;"</span>,</span>
+<span>                   <span class='st'>"&lt;span style = 'color: #e38d26'&gt;Functional Ecology&lt;/span&gt;"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>ribbon_bumpchart</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_x_continuous</a></span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2011</span><span class='op'>:</span><span class='fl'>2021</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>BES_journals_data_bar</span>, <span class='va'>Year</span> <span class='op'>==</span> <span class='fl'>2011</span><span class='op'>)</span><span class='op'>$</span><span class='va'>y_end</span> <span class='op'>-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>BES_journals_data_bar</span>, <span class='va'>Year</span> <span class='op'>==</span> <span class='fl'>2011</span><span class='op'>)</span><span class='op'>$</span><span class='va'>IF</span><span class='op'>/</span><span class='fl'>2</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span><span class='op'>(</span><span class='va'>Journal_label</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"&lt;img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo_tp.png' width = '100'/&gt;"</span>,</span>
+<span>       subtitle <span class='op'>=</span> <span class='st'>"Journal rankings based on their impact factors each year"</span>,</span>
+<span>       caption <span class='op'>=</span> <span class='st'>"Data source: Journal Citation Reports"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_void</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"none"</span>,</span>
+<span>        plot.margin <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>margin</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span>,</span>
+<span>        plot.background <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_rect</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"#b6e3d4"</span>, color <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>,</span>
+<span>        plot.title <span class='op'>=</span> <span class='fu'><a href='https://wilkelab.org/ggtext/reference/element_markdown.html'>element_markdown</a></span><span class='op'>(</span>margin <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>margin</a></span><span class='op'>(</span>b <span class='op'>=</span> <span class='op'>-</span><span class='fl'>5</span>, unit <span class='op'>=</span> <span class='st'>"mm"</span><span class='op'>)</span>, hjust <span class='op'>=</span> <span class='op'>-</span><span class='fl'>0.1</span><span class='op'>)</span>,</span>
+<span>        plot.subtitle <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>margin <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>margin</a></span><span class='op'>(</span>t <span class='op'>=</span> <span class='op'>-</span><span class='fl'>5</span>, b <span class='op'>=</span> <span class='op'>-</span><span class='fl'>10</span>, unit <span class='op'>=</span> <span class='st'>"mm"</span><span class='op'>)</span>, hjust <span class='op'>=</span> <span class='fl'>0.35</span>, face <span class='op'>=</span> <span class='st'>"bold"</span>, size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span>,</span>
+<span>        plot.caption <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>margin <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>margin</a></span><span class='op'>(</span>t <span class='op'>=</span> <span class='fl'>5</span>, unit <span class='op'>=</span> <span class='st'>"mm"</span><span class='op'>)</span>, face <span class='op'>=</span> <span class='st'>"italic"</span>, color <span class='op'>=</span> <span class='st'>"grey60"</span><span class='op'>)</span>,</span>
+<span>        axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>margin <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>margin</a></span><span class='op'>(</span>t <span class='op'>=</span> <span class='fl'>3</span>, unit <span class='op'>=</span> <span class='st'>"mm"</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>,</span>
+<span>        axis.text.y <span class='op'>=</span> <span class='fu'><a href='https://wilkelab.org/ggtext/reference/element_markdown.html'>element_markdown</a></span><span class='op'>(</span>margin <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>margin</a></span><span class='op'>(</span>r <span class='op'>=</span> <span class='op'>-</span><span class='fl'>5</span>, unit <span class='op'>=</span> <span class='st'>"mm"</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='cn'>NULL</span>, size <span class='op'>=</span> <span class='fl'>11</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="post-18-bump-charts-with-ggplot_files/figure-html5/unnamed-chunk-9-1.png" width="85%" style="display: block; margin: auto;" /></p>
+</div>
 <h2 id="summary">Summary</h2>
 <p>Hope you learn something useful from this simple post and don’t
 forget to leave your comments and suggestions below if you have any!</p>
-<div class="sourceCode" id="cb3"><pre
+<div class="sourceCode" id="cb4"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
