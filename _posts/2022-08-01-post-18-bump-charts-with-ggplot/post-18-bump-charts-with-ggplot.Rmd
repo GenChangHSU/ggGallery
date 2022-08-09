@@ -244,102 +244,110 @@ Looks pretty cool (a bit like subway maps)!
 
 For the purpose of science communication, the bump charts we've created above are pretty much enough. But as a ggplot geek, it's always fun to challenge myself a bit and go a step further to try out something cool. This is the motivation for this advanced topic! Also, a shout-out to the author of the [Tweet](https://mobile.twitter.com/rappa753/status/1548335653909250048/photo/1) I mentioned at the beginning of the post. The idea was largely inspired by the chart he made and much of the code below is modified from his GitHub [repository](https://github.com/AlbertRapp/PublicTidyTuesday/blob/main/2022_w28_euroflights/2022_w28_euroflights.qmd).
 
-Creating a ribbon bump chart is not an easy task and requires some data manipulations. I'll break down the process into four steps and try my best to explain what I'm doing in each step. I think this would make it easier to understand the underlying principles and hopefully you'll be able to build your own chart in the future!
+Creating a ribbon bump chart is not an easy task and requires some data manipulations. I'll break down the process into four steps and explain what I'm doing in each step. I think this would make it easier to understand the underlying principles and hopefully you'll be able to build your own chart in the future!
 
 So the four steps are:
 <span style="display: block; margin-top: 3px; margin-left: 10px"> (1) Create a stacked barplot of journals' impact factors each year</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Determine the upper and lower curves that connect the bars of each journal</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Compute the curves that connect the upper/lower ends of the bars for each journal</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Add ribbons to the stacked bar plot</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (4) Polish the appearance of the chart</span>
 
 Let's kick off the journey and see where we end!
 
-### Step 1. Create a stacked barplot of journals' impact factors each year
+### Step 1. Create a stacked barplot of journals' impact factors over year
 
-To create a stacked barplot of journals' impact factors each year, we need to determine the lower and upper end of the bars. and we do this by first arranging the journals in a descending order by year (so the lowest-ranking journal will be the first) and then
-computing the cumulative sums of the journals' IF. For each journal, the upper end will be the cumulative sums 
+To create a stacked barplot of journals' impact factors, we need to determine the upper and lower ends of the bars. We'll do this by first arranging the journals in a descending order based on their rankings each year (so the lowest-ranking journal will be on the top of the dataframe) and then calculating the cumulative sums of the journals' IFs, which will be the upper ends of the bars. For the lower ends of the bars, they'll be the cumulative sums minus the journals' own IFs.  
 
-(which will be the upper end of the bar). The cumulative sums of the previous journal. 
-
-It's noteworthy that we do not use the conventional geom layer `geom_bar()` to create the barplot. The main reason to use `geom_rect()` rather than `geom_bar()` is that `geom_rect()` allow us to order the stacks differently for each year, whereas `geom_bar()` will place the stacks in the same order across years.   
-
-
+It's noteworthy that here we did not use the conventional geom layer `geom_bar()` to create the barplot, but instead we used `geom_rect()`. The main reason for using `geom_rect()` rather than `geom_bar()` is that `geom_rect()` allows us to order the bars differently for each year (since the journal rankings differ across years), whereas `geom_bar()` will place the bars in the same order across years.   
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
-# Compute the cumulative sums of the journals' IF 
+# Calculate the cumulative sums of the journals' IF 
 BES_journals_data_barplot <- BES_journals_data %>% 
   arrange(Year, desc(Ranking)) %>% 
   group_by(Year) %>% 
-  mutate(y_start = cumsum(IF)-IF,
-         y_end = cumsum(IF)) %>% 
+  mutate(y_upper = cumsum(IF),
+         y_lower = cumsum(IF) - IF) %>% 
   ungroup()
 
 # A color palette for the journals
 col_pal <- set_names(c("#0e96d4", "#7581bd", "#48a749", "#e38d26", "#de2127"), nm = BES_journals)
 
-# Create a stacked barplot of the journals' IF each year
-ribbon_bumpchart <- ggplot(BES_journals_data_barplot) + 
+# Create a stacked barplot of the journals' IFs each year
+ribbon_bumpchart_bars <- ggplot(BES_journals_data_barplot) + 
   geom_rect(aes(xmin = as.numeric(Year) - 0.05, xmax = as.numeric(Year) + 0.05,
-                ymin = y_start, ymax = y_end, fill = Journal), color = "white") +
+                ymin = y_lower, ymax = y_upper, fill = Journal), color = "white") +
   scale_fill_manual(values = col_pal) +
   theme_classic()
 
-ribbon_bumpchart
+ribbon_bumpchart_bars
 ```
 
-### Step 2. 
+### Step 2. Compute the curves that connect the upper/lower ends of the bars for each journal
 
+Now comes the core part of the process: computing the curves that connect the upper/lower ends of the bars for each journal. These upper and lower curves form the boundaries of the ribbons that we'll be adding to the plot later. 
 
+So for each journal, we'll need the curves that connect the upper/lower ends of the bars. To get the curve, we'll create four new columns each year: x_from, x_to, y_from, and y_to. x_from is the current year plus the bar width; x_to is the next year minus bar width, y_from is the upper/lower ends of the bars in current year, y_to is the upper/lower ends of the bars next year.  
 
-```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
+Also, I subtracted 0.1 from the upper boundary and added 0.1 to the lower boundary to create a margin between ribbons so that they will not get sticked to each other.
 
-```
+for each of the two adjacent years, we'll have two points, which will be x_from, x_to, y_from, and y_to. x_from and x_to are simply the years plus/minus the bar width. y_from, and y_to are the upper/lower ends of the two adjacent bars. 
 
+The y_to for the year 2022 was set to `NA` because there is no further bars to go from, and later the rows for 2022 were removed.
 
-### Step 3. Determine the upper and lower curves that connect the bars of each journal
+Finally, I used the function `sigmoid()` from the package `ggbump` to estimate a smooth sigmoid curve between the two points. 
+
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 library(ggbump)  # for the function "sigmoid()"
 
-# Compute the upper and lower boundaries of the ribbons connecting the bars
+# Compute the upper and lower curves connecting the bars
 BES_journals_data_ribbon <- BES_journals_data_barplot %>% 
   split(., .$Journal) %>% 
   map(., function(data){
+    
+    # the upper boundary
     upper_curve <- data %>% 
-      select(Journal, Year, y_end) %>% 
+      select(Journal, Year, y_upper) %>% 
       mutate(x_from = as.numeric(Year) + 0.05,
              x_to = as.numeric(Year) + 1 - 0.05,
-             y_from = y_end - 0.1,
-             y_to = c(y_end[-1], NA) - 0.1) %>% 
+             y_from = y_upper - 0.1,  # 0.1 sets the margin between the adjacent curves
+             y_to = c(y_upper[-1], NA) - 0.1) %>% 
       filter(Year != "2021") %>% 
       rowwise() %>% 
       mutate(curve = list(sigmoid(x_from, x_to, y_from, y_to, n = 100, smooth = 8))) %>% 
       unnest() %>% 
       select(Journal, x, y_upper = y)
-        
+    
+    # the lower boundary    
     lower_curve <- data %>%
-      select(Journal, Year, y_start) %>% 
+      select(Journal, Year, y_lower) %>% 
       mutate(x_from = as.numeric(Year) + 0.05,
              x_to = as.numeric(Year) + 1 - 0.05,
-             y_from = y_start + 0.1,
-             y_to = c(y_start[-1], NA) + 0.1) %>% 
+             y_from = y_lower + 0.1,
+             y_to = c(y_lower[-1], NA) + 0.1) %>% 
       filter(Year != "2021") %>% 
       rowwise() %>% 
       mutate(curve = list(sigmoid(x_from, x_to, y_from, y_to, n = 100, smooth = 8))) %>% 
       unnest() %>% 
       select(Journal, x, y_lower = y)
     
+    # put the two dataframes together
     curve <- left_join(upper_curve, lower_curve[, -1], by = "x")
   }) %>% bind_rows()
 
 datatable(BES_journals_data_ribbon, options = list(pageLength = 5))
 ```
 
-### Step 4. Add ribbons to the stacked bar plot
+
+
+
+
+
+### Step 3. Add ribbons to the stacked bar plot
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 # Add the ribbons to the bar plot 
-ribbon_bumpchart <- ribbon_bumpchart + 
+ribbon_bumpchart <- ribbon_bumpchart_bars + 
   geom_ribbon(data = BES_journals_data_ribbon, 
               aes(x = x, ymin = y_lower, ymax = y_upper, fill = Journal), alpha = 0.75)
 
@@ -351,7 +359,10 @@ ribbon_bumpchart
 
 ```
 
-### Step 5. Polish the appearance of the chart
+
+
+
+### Step 4. Polish the appearance of the chart
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 # Journal labels
@@ -362,10 +373,10 @@ Journal_label <- c("<span style = 'color: #de2127'>Methods in<br>Ecology and Evo
                    "<span style = 'color: #e38d26'>Functional Ecology</span>")
 
 # Journal label positions
-Journal_label_position <- filter(BES_journals_data_barplot, Year == 2011)$y_end - filter(BES_journals_data_barplot, Year == 2011)$IF/2
+Journal_label_position <- filter(BES_journals_data_barplot, Year == 2011)$y_upper - filter(BES_journals_data_barplot, Year == 2011)$IF/2
 
 # Modify the appearance of the chart
-ribbon_bumpchart +
+ribbon_bumpchart <- ribbon_bumpchart +
   scale_x_continuous(breaks = c(2011:2021)) + 
   scale_y_continuous(breaks = Journal_label_position, labels = rev(Journal_label)) +
   labs(title = "<img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2022-08-01-post-18-bump-charts-with-ggplot/BES_logo_tp.png' width = '100'/>",
@@ -381,6 +392,7 @@ ribbon_bumpchart +
         axis.text.x = element_text(margin = margin(t = 1, unit = "mm"), size = 10),
         axis.text.y = element_markdown(margin = margin(r = -5, unit = "mm"), color = NULL, size = 11))
 
+ribbon_bumpchart
 ```
 
 
