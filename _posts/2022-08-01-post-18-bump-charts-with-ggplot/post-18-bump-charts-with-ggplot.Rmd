@@ -244,45 +244,55 @@ Looks pretty cool (a bit like subway maps)!
 
 For the purpose of science communication, the bump charts we've created above are pretty much enough. But as a ggplot geek, it's always fun to challenge myself a bit and go a step further to try out something cool. This is the motivation for this advanced topic! Also, a shout-out to the author of the [Tweet](https://mobile.twitter.com/rappa753/status/1548335653909250048/photo/1) I mentioned at the beginning of the post. The idea was largely inspired by the chart he made and much of the code below is modified from his GitHub [repository](https://github.com/AlbertRapp/PublicTidyTuesday/blob/main/2022_w28_euroflights/2022_w28_euroflights.qmd).
 
-Creating a ribbon bump chart is not an easy task and requires some data manipulations. I'll break down the process into five steps and try my best to explain what I'm doing in each step. I think this would make it easier to understand the underlying principles and hopefully you'll be able to build your own chart in the future!
+Creating a ribbon bump chart is not an easy task and requires some data manipulations. I'll break down the process into four steps and try my best to explain what I'm doing in each step. I think this would make it easier to understand the underlying principles and hopefully you'll be able to build your own chart in the future!
 
-So the five steps are:
-<span style="display: block; margin-top: 3px; margin-left: 10px"> (1) Compute the cumulative sums of journals' impact factors each year</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Create a stacked bar plot of journals' impact factors each year</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Determine the upper and lower curves that connect the bars of each journal</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (4) Add ribbons to the stacked bar plot</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (5) Polish the appearance of the chart</span>
+So the four steps are:
+<span style="display: block; margin-top: 3px; margin-left: 10px"> (1) Create a stacked barplot of journals' impact factors each year</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Determine the upper and lower curves that connect the bars of each journal</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Add ribbons to the stacked bar plot</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (4) Polish the appearance of the chart</span>
 
 Let's kick off the journey and see where we end!
 
-### Step 1. Compute the cumulative sums of journals' impact factors each year
+### Step 1. Create a stacked barplot of journals' impact factors each year
+
+To create a stacked barplot of journals' impact factors each year, we need to determine the lower and upper end of the bars. and we do this by first arranging the journals in a descending order by year (so the lowest-ranking journal will be the first) and then
+computing the cumulative sums of the journals' IF. For each journal, the upper end will be the cumulative sums 
+
+(which will be the upper end of the bar). The cumulative sums of the previous journal. 
+
+It's noteworthy that we do not use the conventional geom layer `geom_bar()` to create the barplot. The main reason to use `geom_rect()` rather than `geom_bar()` is that `geom_rect()` allow us to order the stacks differently for each year, whereas `geom_bar()` will place the stacks in the same order across years.   
+
+
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 # Compute the cumulative sums of the journals' IF 
 BES_journals_data_barplot <- BES_journals_data %>% 
   arrange(Year, desc(Ranking)) %>% 
   group_by(Year) %>% 
-  mutate(y_start = c(0, cumsum(IF)[-length(IF)]),
+  mutate(y_start = cumsum(IF)-IF,
          y_end = cumsum(IF)) %>% 
   ungroup()
 
-datatable(BES_journals_data_barplot, options = list(pageLength = 5))
-
-```
-
-### Step 2. Create a stacked bar plot of journals' impact factors each year
-
-```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 # A color palette for the journals
 col_pal <- set_names(c("#0e96d4", "#7581bd", "#48a749", "#e38d26", "#de2127"), nm = BES_journals)
 
 # Create a stacked barplot of the journals' IF each year
 ribbon_bumpchart <- ggplot(BES_journals_data_barplot) + 
   geom_rect(aes(xmin = as.numeric(Year) - 0.05, xmax = as.numeric(Year) + 0.05,
-                ymin = y_start, ymax = y_end, fill = Journal), color = "white") +   scale_fill_manual(values = col_pal) +
+                ymin = y_start, ymax = y_end, fill = Journal), color = "white") +
+  scale_fill_manual(values = col_pal) +
   theme_classic()
 
 ribbon_bumpchart
+```
+
+### Step 2. 
+
+
+
+```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
+
 ```
 
 
