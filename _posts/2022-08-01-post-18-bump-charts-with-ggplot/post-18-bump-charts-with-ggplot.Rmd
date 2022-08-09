@@ -249,14 +249,14 @@ Creating a ribbon bump chart is not an easy task and requires some data manipula
 So the four steps are:
 <span style="display: block; margin-top: 3px; margin-left: 10px"> (1) Create a stacked barplot of journals' impact factors each year</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Compute the curves that connect the upper/lower ends of the bars for each journal</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Add ribbons to the stacked bar plot</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Add ribbons to the stacked barplot</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (4) Polish the appearance of the chart</span>
 
 Let's kick off the journey and see where we end!
 
 ### Step 1. Create a stacked barplot of journals' impact factors over year
 
-To create a stacked barplot of journals' impact factors, we need to determine the upper and lower ends of the bars. We'll do this by first arranging the journals in a descending order based on their rankings each year (so the lowest-ranking journal will be on the top of the dataframe) and then calculating the cumulative sums of the journals' IFs, which will be the upper ends of the bars. For the lower ends of the bars, they'll be the cumulative sums minus the journals' own IFs.  
+To create a stacked barplot of the journals' impact factors, we need to determine the upper and lower ends of the bars. We'll do this by first arranging the journals in a descending order based on their rankings each year (so the lowest-ranking journal will be on the top of the dataframe) and then calculating the cumulative sums of the journals' IFs, which will be the upper ends of the bars. For the lower ends, they'll be the cumulative sums minus the journals' own IFs.  
 
 It's noteworthy that here we did not use the conventional geom layer `geom_bar()` to create the barplot, but instead we used `geom_rect()`. The main reason for using `geom_rect()` rather than `geom_bar()` is that `geom_rect()` allows us to order the bars differently for each year (since the journal rankings differ across years), whereas `geom_bar()` will place the bars in the same order across years.   
 
@@ -286,13 +286,13 @@ ribbon_bumpchart_bars
 
 Now comes the core part of the process: computing the curves that connect the upper/lower ends of the bars for each journal. These upper/lower curves form the boundaries of the ribbons that we'll be adding to the plot later. 
 
-We'll split the original dataframe into individual subsets by journal and do the computation for each of them. For each subset, we'll then create four new columns: **x_from**, **x_to**, **y_from**, and **y_to**. **x_from** is the current year plus the bar width (which is 0.05); **x_to** is the next year minus bar width; **y_from** is the upper/lower ends of the bars in the current year; **y_to** is the upper/lower ends of the bars next year. Together, these four columns will serve as the x- and y-coordinates of the two points (**x_from**, **y_from**) and (**x_to**, **y_to**) that are used for computing a smooth curve.
+We'll split the original dataframe into individual subsets by journal and do the computation for each of them. For each subset, we'll create four new columns: **x_from**, **x_to**, **y_from**, and **y_to**. **x_from** is the current year plus the bar width (which is 0.05); **x_to** is the next year minus bar width; **y_from** is the upper/lower ends of the bars in the current year; **y_to** is the upper/lower ends of the bars next year. Together, these four columns serve as the x- and y-coordinate of the two points (**x_from**, **y_from**) and (**x_to**, **y_to**), between which a smooth connecting curve will be derived.
 
-Note that the **y_to** for the year 2022 was set to `NA` because there is no further bar to go next, and the row for that year was later removed. Also, I subtracted 0.1 from the upper end and added 0.1 to the lower end to create a margin between ribbons so that they will not get stuck to each other.
+Note that the **y_to** for the year 2022 was set to `NA` because there is no next bar to go, and the row for that year was then removed. Also, I subtracted 0.1 from the upper end and added 0.1 to the lower end to create a margin between ribbons so that the ribbons will not be packed shoulder to shoulder.
 
-Next,  I used the function `sigmoid()` from the package `ggbump` to compute a smooth sigmoid curve between the two points (**x_from**, **y_from**) and (**x_to**, **y_to**). The smoothness of the curve can be adjusted using the arguments `n` and `smooth` (play around with different values to see how the final chart changes!).
+Next, I used the function `sigmoid()` from the package `ggbump` to compute a smooth sigmoid curve between the two points (**x_from**, **y_from**) and (**x_to**, **y_to**). The smoothness of the curve can be adjusted via the arguments `n` and `smooth` (play around with different values to see how the ribbons change!).
 
-Finally, the results of each subset were merged and form a single dataframe with all the information we need for plotting the ribbons.
+Finally, the results (the x- and y-coordinate of the points forming the smooth curves) of each subset were merged into a single dataframe with all the information we need for plotting the ribbons.
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 library(ggbump)  # for the function "sigmoid()"
@@ -335,13 +335,17 @@ BES_journals_data_ribbons <- BES_journals_data_bars %>%
 datatable(BES_journals_data_ribbons, options = list(pageLength = 5))
 ```
 
-### Step 3. Add ribbons to the stacked bar plot
+### Step 3. Add ribbons to the stacked barplot
+
+It's time to draw the ribbons! We'll use `geom_ribbon()` and specify the upper (`ymax`) and lower (`y_min`) boundary. The ribbons were adjusted to be slightly transparent so that when two ribbons cross each other, the one beneath can still be seen.
+
+I also used the function `move_layers()` from the package `gginnards` to pull the bars (drawn in the geom_rect layer) to the top. Otherwise, the ribbons will completely cover the bars and we'll not be able to see the changes between two consecutive years clearly.
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
-# Add the ribbons to the bar plot 
+# Add the ribbons to the barplot 
 ribbon_bumpchart <- ribbon_bumpchart_bars + 
   geom_ribbon(data = BES_journals_data_ribbons, 
-              aes(x = x, ymin = y_lower, ymax = y_upper, fill = Journal), alpha = 0.75)
+              aes(x = x, ymax = y_upper, ymin = y_lower, fill = Journal), alpha = 0.75)
 
 # Move the bars to the top  
 library(gginnards)
@@ -351,10 +355,9 @@ ribbon_bumpchart
 
 ```
 
-
-
-
 ### Step 4. Polish the appearance of the chart
+
+Here we are at our final step: polishing the appearance of the chart! Again, we'll add a logo title, a subtitle, and a caption to the chart. We'll also label the years along the x-axis as well as the journals on the left of the ribbons.  
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 # Journal labels
@@ -387,18 +390,13 @@ ribbon_bumpchart <- ribbon_bumpchart +
 ribbon_bumpchart
 ```
 
-
-
-
-
-
+After a long trek through the code, we've now reached the destination of our plotting journey. Hooray! 
 
 ## Summary
 
+To recap what we did, we first created a basic bump charts with straight line segments from scratch. Next, we used `geom_bump()` to create a modified bump chart with smooth curves connecting the points. Lastly, we went on an adventure and created a ribbon bump chart step by step. Although I haven't used bump charts before, after doing this post, I think they're indeed quite handy and I should use them more often for communication. I believe you too!
 
-
-
-Hope you learn something useful from this simple post and don't forget to leave your comments and suggestions below if you have any!
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
 
 
