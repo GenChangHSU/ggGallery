@@ -288,11 +288,11 @@ Now comes the core part of the process: computing the curves that connect the up
 
 We'll split the original dataframe into individual subsets by journal and do the computation for each of them. For each subset, we'll create four new columns: **x_from**, **x_to**, **y_from**, and **y_to**. **x_from** is the current year plus the bar width (which is 0.05); **x_to** is the next year minus bar width; **y_from** is the upper/lower ends of the bars in the current year; **y_to** is the upper/lower ends of the bars next year. Together, these four columns serve as the x- and y-coordinate of the two points (**x_from**, **y_from**) and (**x_to**, **y_to**), between which a smooth connecting curve will be derived.
 
-Note that the **y_to** for the year 2022 was set to `NA` because there is no next bar to go, and the row for that year was then removed. Also, I subtracted 0.1 from the upper end and added 0.1 to the lower end to create a margin between ribbons so that the ribbons will not be packed shoulder to shoulder.
+Note that the **y_to** for the year 2022 was set to `NA` because there is no next bar to go, and the row for that year was later removed. Also, I subtracted 0.1 from the upper end and added 0.1 to the lower end to create a margin between ribbons so that the ribbons will not go shoulder to shoulder.
 
 Next, I used the function `sigmoid()` from the package `ggbump` to compute a smooth sigmoid curve between the two points (**x_from**, **y_from**) and (**x_to**, **y_to**). The smoothness of the curve can be adjusted via the arguments `n` and `smooth` (play around with different values to see how the ribbons change!).
 
-Finally, the results (the x- and y-coordinate of the points forming the smooth curves) of each subset were merged into a single dataframe with all the information we need for plotting the ribbons.
+Finally, the results (the x- and y-coordinate of the points forming the smooth curves) of each subset were merged into a single dataframe, which contains all the information we need for plotting the ribbons.
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 library(ggbump)  # for the function "sigmoid()"
@@ -307,7 +307,7 @@ BES_journals_data_ribbons <- BES_journals_data_bars %>%
       select(Journal, Year, y_upper) %>% 
       mutate(x_from = as.numeric(Year) + 0.05,
              x_to = as.numeric(Year) + 1 - 0.05,
-             y_from = y_upper - 0.1,  # 0.1 sets the margin between the adjacent ribbons
+             y_from = y_upper - 0.1,  # 0.1 sets the margin between adjacent ribbons
              y_to = c(y_upper[-1], NA) - 0.1) %>% 
       filter(Year != "2021") %>% 
       rowwise() %>% 
@@ -339,7 +339,7 @@ datatable(BES_journals_data_ribbons, options = list(pageLength = 5))
 
 It's time to draw the ribbons! We'll use `geom_ribbon()` and specify the upper (`ymax`) and lower (`y_min`) boundary. The ribbons were adjusted to be slightly transparent so that when two ribbons cross each other, the one beneath can still be seen.
 
-I also used the function `move_layers()` from the package `gginnards` to pull the bars (drawn in the geom_rect layer) to the top. Otherwise, the ribbons will completely cover the bars and we'll not be able to see the changes between two consecutive years clearly.
+I also used the function `move_layers()` from the package `gginnards` to pull the bars (drawn on the `geom_rect()` layer) to the top. Otherwise, the ribbons will completely cover the bars!
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 # Add the ribbons to the barplot 
@@ -357,7 +357,7 @@ ribbon_bumpchart
 
 ### Step 4. Polish the appearance of the chart
 
-Here we are at our final step: polishing the appearance of the chart! Again, we'll add a logo title, a subtitle, and a caption to the chart. We'll also label the years along the x-axis as well as the journals on the left of the ribbons.  
+Here we are at our final step: polishing the appearance of the chart! Again, we'll add a logo title, a subtitle, and a caption to it. We'll also label the years along the x-axis as well as the journals on the left of the ribbons.  
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 # Journal labels
@@ -390,11 +390,13 @@ ribbon_bumpchart <- ribbon_bumpchart +
 ribbon_bumpchart
 ```
 
+<div style="height: 1.2em;"></div>
+
 After a long trek through the code, we've now reached the destination of our plotting journey. Hooray! 
 
 ## Summary
 
-To recap what we did, we first created a basic bump charts with straight line segments from scratch. Next, we used `geom_bump()` to create a modified bump chart with smooth curves connecting the points. Lastly, we went on an adventure and created a ribbon bump chart step by step. Although I haven't used bump charts before, after doing this post, I think they're indeed quite handy and I should use them more often for communication. I believe you too!
+To recap what we did in this post, we first created a basic bump charts from scratch using `geom_line()` and `geom_point()`. Next, we used `geom_bump()` to create a modified bump chart with smooth curves connecting the points. Lastly, we went on an adventure and created a ribbon bump chart step by step, including some data manipulations to get the data we need for plotting. After doing this post, I found bump charts quite handy and I think I should use them more often for communication. I believe you think so too!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
