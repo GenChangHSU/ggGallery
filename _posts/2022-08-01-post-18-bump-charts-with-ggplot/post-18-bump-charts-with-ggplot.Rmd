@@ -89,15 +89,15 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-Bump charts are a special type of line charts that visualize the rankings of multiple objects over time. These charts are especially useful for comparing and highlighting trends. Honestly, I haven't really heard of this kind of charts before until recently I came across a [Tweet](https://mobile.twitter.com/rappa753/status/1548335653909250048/photo/1) about creating bump charts using ggplot. I then took a deeper dive into it and felt that this would certainly make an interesting topic to blog about. Also, I believe the charts will come in handy some day in the future, both for myself and for the reader like you!
+Bump charts are a special type of line charts that visualize the rankings of multiple objects over time. These charts are especially useful for comparing and highlighting trends. Honestly, I haven't really heard of this kind of charts before until recently I came across a [Tweet](https://mobile.twitter.com/rappa753/status/1548335653909250048/photo/1) about creating bump charts using ggplot. I then took a deeper dive into it and felt that this would certainly make an interesting blog topic. Also, I believe the charts will come in handy someday in the future, both for myself and for the readers like you!
 
 So without further ado, let's jump right in!
 
 ## Prepare the data
 
-As mentioned earlier, bump charts are useful for visualizing rankings of items over time. Instead of using a built-in R dataset, this time I'll prepare my own one, which focuses on the rankings of five ecological journals (<span style="color:#0E96D4">*Journal of Ecology*</span>, <span style="color:#7581BD">*Journal of Animal Ecology*</span>, <span style="color:#48A749">*Journal of Applied Ecology*</span>, <span style="color:#E38D26">*Functional Ecology*</span>, and <span style="color:#DE2127">*Methods in Ecology and Evolution*</span>) from the [British Ecological Society](https://www.britishecologicalsociety.org/publications/journals/). Specifically, I would like to see how the rankings of these five journals, in terms of their impact factors, change over the past decade.   
+As mentioned earlier, bump charts are useful for visualizing rankings of items over time. Instead of using a built-in R dataset, this time I'll prepare my own one, which focuses on the rankings of five ecological journals (<span style="color:#0E96D4">*Journal of Ecology*</span>, <span style="color:#7581BD">*Journal of Animal Ecology*</span>, <span style="color:#48A749">*Journal of Applied Ecology*</span>, <span style="color:#E38D26">*Functional Ecology*</span>, and <span style="color:#DE2127">*Methods in Ecology and Evolution*</span>) from the [British Ecological Society](https://www.britishecologicalsociety.org/publications/journals/). Specifically, I would like to see how the rankings of these five journals, in terms of their impact factors (IFs), change over the past decade.   
 
-To get the data, I visited [Journal Citation Reports](https://clarivate.com/webofsciencegroup/solutions/journal-citation-reports/) website and downloaded their impact factor records. 
+To get the data, I visited [Journal Citation Reports](https://clarivate.com/webofsciencegroup/solutions/journal-citation-reports/) website and downloaded the journals' IF records. 
 
 Let's read in the datasets and do some data wrangling:
 
@@ -131,9 +131,9 @@ datatable(BES_journals_data, options = list(pageLength = 5))
 
 ## Basic bump chart
 
-Now we have our data at hand, it's time for the chart!
+Now we have our data on hand, it's time for the chart!
 
-Creating a basic bump chart is as simple as making a scatterplot (or dotplot) of time vs. rankings and "connecting the dots" with lines, which can be done with `geom_point()` and `geom_line()`. Next, we can use `scale_y_reverse()` to flip the y-axis so that the highest-ranking item stays on the top of the plot. 
+Creating a basic bump chart is as simple as making a scatterplot (or dotplot) of time vs. rankings and "connecting the dots" with lines, which can be done with `geom_line()` and `geom_point()`. Also, we can use `scale_y_reverse()` to flip the y-axis so that the highest-ranking item stays on the top of the plot. 
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 # A color palette for the journals
@@ -195,7 +195,7 @@ ggplot(BES_journals_data) +
 ```
 <div style="height: 1.2em;"></div>
 
-Here I used the function `element_markdown()` in the package [`ggtext`](https://wilkelab.org/ggtext/) to embed a logo in the plot title via the HTML `<img>` tag and to label the journals via the HTML `<span>` tag. The package has many nice features for text manipulations in ggplots using HTML and CSS syntax. I won't go into the details here, but do check out my previous [post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) on this topic if interested!
+Here I used the function `element_markdown()` from the package [`ggtext`](https://wilkelab.org/ggtext/) to embed a logo in the plot title via the HTML `<img>` tag and to label the journals via the HTML `<span>` tag. The package has many nice features for text manipulations in ggplots using HTML and CSS syntax. I won't go into the details here, but do check out my previous [post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) on this topic if interested!
 
 ## A modified bump chart with smooth curves
 
@@ -242,26 +242,26 @@ Looks pretty cool (a bit like subway maps)!
 
 ## Advanced topic - Ribbon bump chart
 
-For the purpose of science communication, the bump charts we've created above are pretty much enough. But as a ggplot geek, it's always fun to challenge myself a bit and go a step further to try out something cool. This is the motivation for this advanced topic! Also, a shout-out to the author of the [Tweet](https://mobile.twitter.com/rappa753/status/1548335653909250048/photo/1) I mentioned at the beginning of the post. The idea was largely inspired by the chart he made and much of the code below is modified from his GitHub [repository](https://github.com/AlbertRapp/PublicTidyTuesday/blob/main/2022_w28_euroflights/2022_w28_euroflights.qmd).
+For the purpose of science communication, the bump charts we've created above are pretty much enough. But as a ggplot geek, it's always fun to challenge myself a bit and go a step further to try out something cool. This is the motive for this advanced topic! Also, a shout-out to the author of the [Tweet](https://mobile.twitter.com/rappa753/status/1548335653909250048/photo/1) I mentioned at the beginning of the post. The idea was largely inspired by the chart he made and much of the code below is modified from his GitHub [repository](https://github.com/AlbertRapp/PublicTidyTuesday/blob/main/2022_w28_euroflights/2022_w28_euroflights.qmd).
 
-Creating a ribbon bump chart is not an easy task and requires some data manipulations. I'll break down the process into four steps and explain what I'm doing in each step. I think this would make it easier to understand the underlying principles and hopefully you'll be able to build your own chart in the future!
+Creating a ribbon bump chart is not an easy task and requires some data manipulations. I'll break down the process into four steps and explain what I'm doing in each step. I think this would make it easier to understand the underlying principles and hopefully you'll be able to build your own chart in the future.
 
 So the four steps are:
-<span style="display: block; margin-top: 3px; margin-left: 10px"> (1) Create a stacked barplot of journals' impact factors each year</span>
+<span style="display: block; margin-top: 3px; margin-left: 10px"> (1) Create a stacked barplot of journals' impact factors over year</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Compute the curves that connect the upper/lower ends of the bars for each journal</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Add ribbons to the stacked barplot</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (4) Polish the appearance of the chart</span>
 
-Let's kick off the journey and see where we end!
+Let's kick off our plotting journey. Enjoy!
 
 ### Step 1. Create a stacked barplot of journals' impact factors over year
 
-To create a stacked barplot of the journals' impact factors, we need to determine the upper and lower ends of the bars. We'll do this by first arranging the journals in a descending order based on their rankings each year (so the lowest-ranking journal will be on the top of the dataframe) and then calculating the cumulative sums of the journals' IFs, which will be the upper ends of the bars. For the lower ends, they'll be the cumulative sums minus the journals' own IFs.  
+To create a stacked barplot of the journals' IFs, we need to determine the upper and lower ends of the bars. We'll do this by first arranging the journals in a descending order based on their rankings each year (so the lowest-ranking journal will be on the top of the dataframe) and then calculating the cumulative sums of the journals' IFs, which will be the upper ends of the bars. For the lower ends, they'll be the cumulative sums minus the journals' own IFs.  
 
-It's noteworthy that here we did not use the conventional geom layer `geom_bar()` to create the barplot, but instead we used `geom_rect()`. The main reason for using `geom_rect()` rather than `geom_bar()` is that `geom_rect()` allows us to order the bars differently for each year (since the journal rankings differ across years), whereas `geom_bar()` will place the bars in the same order across years.   
+It's noteworthy that here we won't use the conventional geom layer `geom_bar()` to create the barplot, but `geom_rect()` instead. The main reason for using `geom_rect()` rather than `geom_bar()` is that `geom_rect()` allows us to order the bars differently for each year, whereas `geom_bar()` will place the bars in the same order across years. Since the journal rankings varied across years, we should use the former.
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
-# Calculate the cumulative sums of the journals' IF 
+# Calculate the cumulative sums of the journals' IFs 
 BES_journals_data_bars <- BES_journals_data %>% 
   arrange(Year, desc(Ranking)) %>% 
   group_by(Year) %>% 
@@ -284,15 +284,15 @@ ribbon_bumpchart_bars
 
 ### Step 2. Compute the curves that connect the upper/lower ends of the bars for each journal
 
-Now comes the core part of the process: computing the curves that connect the upper/lower ends of the bars for each journal. These upper/lower curves form the boundaries of the ribbons that we'll be adding to the plot later. 
+Now comes the core part of the process: computing the curves that connect the upper/lower ends of the bars for each journal. These upper/lower curves form the boundaries of the ribbons that we'll be adding to the plot later. We'll split the original dataframe into individual subsets by journal and do the computation separately for each of them.  
 
-We'll split the original dataframe into individual subsets by journal and do the computation for each of them. For each subset, we'll create four new columns: **x_from**, **x_to**, **y_from**, and **y_to**. **x_from** is the current year plus the bar width (which is 0.05); **x_to** is the next year minus bar width; **y_from** is the upper/lower ends of the bars in the current year; **y_to** is the upper/lower ends of the bars next year. Together, these four columns serve as the x- and y-coordinate of the two points (**x_from**, **y_from**) and (**x_to**, **y_to**), between which a smooth connecting curve will be derived.
+First, for each subset, we'll create four new columns: **x_from**, **x_to**, **y_from**, and **y_to**. **x_from** is the current year plus the bar width (which is 0.05); **x_to** is the next year minus bar width; **y_from** is the upper/lower ends of the bars in the current year; **y_to** is the upper/lower ends of the bars next year. Together, these four columns serve as the x- and y-coordinates of the two points (**x_from**, **y_from**) and (**x_to**, **y_to**), between which a smooth connecting curve will be derived.
 
-Note that the **y_to** for the year 2022 was set to `NA` because there is no next bar to go, and the row for that year was later removed. Also, I subtracted 0.1 from the upper end and added 0.1 to the lower end to create a margin between ribbons so that the ribbons will not go shoulder to shoulder.
+Note that in the below code chunk, the **y_to** for the year 2022 was set to `NA` because there is no next bar to go, and the row for that year was later removed. Also, I subtracted 0.1 from the upper end and added 0.1 to the lower end to create a margin between ribbons so that the ribbons will not go shoulder to shoulder when we plot them later.
 
-Next, I used the function `sigmoid()` from the package `ggbump` to compute a smooth sigmoid curve between the two points (**x_from**, **y_from**) and (**x_to**, **y_to**). The smoothness of the curve can be adjusted via the arguments `n` and `smooth` (play around with different values to see how the ribbons change!).
+Next, we'll use the function `sigmoid()` from the package `ggbump` to compute a smooth sigmoid curve between the two points (**x_from**, **y_from**) and (**x_to**, **y_to**). The smoothness of the curve can be adjusted via the arguments `n` and `smooth` (play around with different values to see how the ribbons change!).
 
-Finally, the results (the x- and y-coordinate of the points forming the smooth curves) of each subset were merged into a single dataframe, which contains all the information we need for plotting the ribbons.
+Finally, we'll merge the results (the x- and y-coordinates of the points forming the smooth curves) of each subset into a single dataframe, which contains all the information we need for plotting the ribbons.
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 library(ggbump)  # for the function "sigmoid()"
@@ -337,9 +337,9 @@ datatable(BES_journals_data_ribbons, options = list(pageLength = 5))
 
 ### Step 3. Add ribbons to the stacked barplot
 
-It's time to draw the ribbons! We'll use `geom_ribbon()` and specify the upper (`ymax`) and lower (`y_min`) boundary. The ribbons were adjusted to be slightly transparent so that when two ribbons cross each other, the one beneath can still be seen.
+Ready to draw the ribbons! We'll use `geom_ribbon()` and specify the upper (`ymax = `) and lower (`y_min = `) boundary. The ribbons were adjusted to be slightly transparent so that when two ribbons cross each other, the one beneath can still be seen.
 
-I also used the function `move_layers()` from the package `gginnards` to pull the bars (drawn on the `geom_rect()` layer) to the top. Otherwise, the ribbons will completely cover the bars!
+We'll also use the function `move_layers()` from the package `gginnards` to pull the bars (which were drawn on the `geom_rect()` layer) to the top. Otherwise, the bars will be completely covered by the ribbons!
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 # Add the ribbons to the barplot 
@@ -357,7 +357,7 @@ ribbon_bumpchart
 
 ### Step 4. Polish the appearance of the chart
 
-Here we are at our final step: polishing the appearance of the chart! Again, we'll add a logo title, a subtitle, and a caption to it. We'll also label the years along the x-axis as well as the journals on the left of the ribbons.  
+Here we are at our final step: polishing the appearance of the chart! Again, we'll add a logo title, a subtitle, and a caption to it. We'll also label the years along the x-axis as well as the journal names on the left of the ribbons.  
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 # Journal labels
