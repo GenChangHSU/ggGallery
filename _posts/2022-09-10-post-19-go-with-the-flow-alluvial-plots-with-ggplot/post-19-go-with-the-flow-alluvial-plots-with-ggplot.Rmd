@@ -88,12 +88,29 @@ knitr::opts_chunk$set(message = F,
 <!-- Start of the article -->
 
 ## Introduction
+The alluvial diagram is a type of flow chart that represents changes in a network structure over time. In that sense, it helps identify patterns and trends. It is named after the alluvial fan, a stream of water extending over an area that becomes flat, so it refers to both its shape and flow.
+
+It works with categorical or qualitative variables, which are assigned to parallel vertical axes.
+
+These axes have several values in the form of blocks. Each block has a particular size and, flow streams pass through each with different proportions that change over time.
+
+According to the Data Viz Project, it serves to compare, correlate, distribute, and identify trends over time.
+
+Alluvial diagrams do not usually have labels for the value of the flow stream (the equivalent number), so you start from estimates in most cases. You can tell that one flow stream is more extensive than another, but not by how much. It gives you a general picture of the flows.
+
+
+Stacked barplot but instead of having the levels of the same variables as x-axis, it has different variables, and the levels in each variable become the individual stacks. 
+
+
 
 
 
 
 
 ## Create an alluvial plot with `ggalluvial`
+
+
+
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 # install.packages("ggalluvial")  # install the package if you haven't
@@ -105,8 +122,6 @@ library(tidyverse)
 
 
 ```
-
-
 
 
 
