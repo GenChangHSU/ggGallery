@@ -1,5 +1,24 @@
 [
   {
+    "path": "posts/2022-09-10-post-19-go-with-the-flow-alluvial-plots-with-ggplot/",
+    "title": "Post #19. Go with the flow - alluvial plots in ggplot",
+    "description": "In this post, we will learn how to create flowy alluvial plots in ggplot with the extension package `ggalluvial`.",
+    "author": [
+      {
+        "name": "Gen-Chang Hsu",
+        "url": {}
+      }
+    ],
+    "date": "2022-09-10",
+    "categories": [
+      "2022"
+    ],
+    "contents": "\r\n\r\nIntroduction\r\nCreate an alluvial plot\r\nwith ggalluvial\r\n\r\n\r\n# install.packages(\"ggalluvial\")  # install the package if you haven't\r\nlibrary(ggalluvial)\r\nlibrary(tidyverse)\r\n\r\n\r\nSummary\r\nHope you learn something useful from this post and don’t forget to\r\nleave your comments and suggestions below if you have any!\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2022-09-10T12:38:50+08:00",
+    "input_file": "post-19-go-with-the-flow-alluvial-plots-with-ggplot.knit.md"
+  },
+  {
     "path": "posts/2022-08-01-post-18-bump-charts-with-ggplot/",
     "title": "Post #18. Bump charts with ggplot",
     "description": "Come and learn how to create nice bump charts with ggplot!",
