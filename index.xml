@@ -9,7 +9,7 @@
     <generator>Distill</generator>
     <lastBuildDate>Fri, 09 Sep 2022 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>Post #19. Go with the flow - alluvial plots in ggplot</title>
+      <title>Post #19. Go with the flow - alluvial diagrams in ggplot</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
       <link>https://genchanghsu.github.io/ggGallery/posts/2022-09-10-post-19-go-with-the-flow-alluvial-plots-with-ggplot</link>
       <description>
@@ -80,6 +80,15 @@ div.l-body img {
 &lt;/style&gt;
 &lt;!-- Start of the article --&gt;
 &lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;An alluvial diagram is a type of chart that shows the relationships
+between levels of categorical variables for a given quantity (number of
+people, amount of energy, etc.) It looks like a stacked barplot with
+flow streams connecting the stacks of adjacent bars (that’s why it gets
+its name!). Alluvial diagrams are useful for visualizing pathways and
+trends across variables. Another similar chart is &lt;a
+href="https://genchanghsu.github.io/ggGallery/posts/2022-08-01-post-18-bump-charts-with-ggplot/"&gt;bump
+charts&lt;/a&gt;, which emphasize the change in rankings of multiple objects
+over time.&lt;/p&gt;
 &lt;h2 id="create-an-alluvial-plot-with-ggalluvial"&gt;Create an alluvial plot
 with &lt;code&gt;ggalluvial&lt;/code&gt;&lt;/h2&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggalluvial&amp;quot;)  # install the package if you haven&amp;#39;t

@@ -1,8 +1,8 @@
 [
   {
     "path": "posts/2022-09-10-post-19-go-with-the-flow-alluvial-plots-with-ggplot/",
-    "title": "Post #19. Go with the flow - alluvial plots in ggplot",
-    "description": "In this post, we will learn how to create flowy alluvial plots in ggplot with the extension package `ggalluvial`.",
+    "title": "Post #19. Go with the flow - alluvial diagrams in ggplot",
+    "description": "Let's create flowy alluvial diagrams in ggplot using the extension package `ggalluvial`!",
     "author": [
       {
         "name": "Gen-Chang Hsu",
@@ -13,9 +13,9 @@
     "categories": [
       "2022"
     ],
-    "contents": "\r\n\r\nIntroduction\r\nCreate an alluvial plot\r\nwith ggalluvial\r\n\r\n\r\n# install.packages(\"ggalluvial\")  # install the package if you haven't\r\nlibrary(ggalluvial)\r\nlibrary(tidyverse)\r\n\r\n\r\nSummary\r\nHope you learn something useful from this post and don’t forget to\r\nleave your comments and suggestions below if you have any!\r\n\r\n\r\n\r\n",
+    "contents": "\r\n\r\nIntroduction\r\nAn alluvial diagram is a type of chart that shows the relationships\r\nbetween levels of categorical variables for a given quantity (number of\r\npeople, amount of energy, etc.) It looks like a stacked barplot with\r\nflow streams connecting the stacks of adjacent bars (that’s why it gets\r\nits name!). Alluvial diagrams are useful for visualizing pathways and\r\ntrends across variables. Another similar chart is bump\r\ncharts, which emphasize the change in rankings of multiple objects\r\nover time.\r\nCreate an alluvial plot\r\nwith ggalluvial\r\n\r\n\r\n# install.packages(\"ggalluvial\")  # install the package if you haven't\r\nlibrary(ggalluvial)\r\nlibrary(tidyverse)\r\n\r\n\r\nSummary\r\nHope you learn something useful from this post and don’t forget to\r\nleave your comments and suggestions below if you have any!\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2022-09-10T12:38:50+08:00",
+    "last_modified": "2022-09-11T09:54:54+08:00",
     "input_file": "post-19-go-with-the-flow-alluvial-plots-with-ggplot.knit.md"
   },
   {
