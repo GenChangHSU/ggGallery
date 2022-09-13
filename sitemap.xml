@@ -2,94 +2,90 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" version="1.0">
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/about.html</loc>
-    <lastmod>2022-05-30T11:12:10+08:00</lastmod>
+    <lastmod>2022-05-29T08:05:18-07:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/contact.html</loc>
-    <lastmod>2021-08-27T15:38:41+08:00</lastmod>
+    <lastmod>2021-02-26T08:53:15-08:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/</loc>
-    <lastmod>2021-08-27T15:38:41+08:00</lastmod>
-  </url>
-  <url>
-    <loc>https://genchanghsu.github.io/ggGallery/posts/2022-09-10-post-19-go-with-the-flow-alluvial-plots-with-ggplot/</loc>
-    <lastmod>2022-09-13T14:10:16+08:00</lastmod>
+    <lastmod>2021-02-19T00:27:41-08:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2022-08-01-post-18-bump-charts-with-ggplot/</loc>
-    <lastmod>2022-08-11T15:05:12+08:00</lastmod>
+    <lastmod>2022-08-11T07:03:53-07:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions/</loc>
-    <lastmod>2022-07-05T11:11:41+08:00</lastmod>
+    <lastmod>2022-07-04T07:16:46-07:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions/</loc>
-    <lastmod>2022-06-12T11:23:37+08:00</lastmod>
+    <lastmod>2022-07-02T21:44:40-07:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2022-05-12-post-15-manipulating-axis-scales-for-individual-facets/</loc>
-    <lastmod>2022-05-16T11:06:44+08:00</lastmod>
+    <lastmod>2022-05-16T07:31:40-07:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2022-04-24-post-14-multiple-color-scales-in-one-ggplot/</loc>
-    <lastmod>2022-04-29T15:33:01+08:00</lastmod>
+    <lastmod>2022-04-29T07:40:51-07:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2022-03-02-post-13-ggplot-legend-tips-series-no4-merging-ggplot-legends/</loc>
-    <lastmod>2022-03-07T13:47:19+08:00</lastmod>
+    <lastmod>2022-03-07T06:57:44-08:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2022-02-05-post-12-ggplot-legend-tips-series-no3-three-ways-to-turn-off-ggplot-legends/</loc>
-    <lastmod>2022-02-07T12:45:11+08:00</lastmod>
+    <lastmod>2022-02-06T06:47:12-08:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2022-02-01-post-11-ggplot-legend-tips-series-no2-working-on-continuous-legends-with-guides/</loc>
-    <lastmod>2022-02-02T09:45:52+08:00</lastmod>
+    <lastmod>2022-02-04T08:06:26-08:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2022-01-28-post-10-ggplot-legend-tips-series-no1-working-on-discrete-scale-legends-with-guides/</loc>
-    <lastmod>2022-02-02T09:46:40+08:00</lastmod>
+    <lastmod>2022-02-04T08:06:26-08:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/</loc>
-    <lastmod>2022-01-28T12:58:08+08:00</lastmod>
+    <lastmod>2021-12-23T05:31:35-08:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2021-10-01-post-8-pokemon-phylogeny-with-ggdendro/</loc>
-    <lastmod>2021-10-01T14:13:00+08:00</lastmod>
+    <lastmod>2021-09-30T19:55:03-07:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2021-09-11-post-7-customize-the-axis-scales-for-individual-facets/</loc>
-    <lastmod>2021-09-15T14:31:15+08:00</lastmod>
+    <lastmod>2021-09-14T18:34:15-07:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2021-08-02-post-6-play-good-music-for-your-data-violin-plots-with-ggplot/</loc>
-    <lastmod>2021-08-27T15:38:41+08:00</lastmod>
+    <lastmod>2021-08-11T06:57:41-07:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/</loc>
-    <lastmod>2021-08-27T15:38:41+08:00</lastmod>
+    <lastmod>2021-08-12T20:23:01-07:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2021-06-26-post-4-consistent-colors-of-the-same-factor-levels-across-figures/</loc>
-    <lastmod>2021-09-13T15:33:40+08:00</lastmod>
+    <lastmod>2021-09-11T21:00:16-07:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2021-06-18-post-3-pie-charts-with-ggplot/</loc>
-    <lastmod>2021-08-27T15:38:41+08:00</lastmod>
+    <lastmod>2021-07-12T02:54:04-07:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2021-05-26-guest-post-1-communicating-the-essence-of-your-data/</loc>
-    <lastmod>2021-08-27T15:38:41+08:00</lastmod>
+    <lastmod>2021-06-07T08:49:52-07:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2021-05-07-post-2-three-ways-to-create-log-axes-in-ggplots-which-one-should-you-use/</loc>
-    <lastmod>2021-08-27T15:38:41+08:00</lastmod>
+    <lastmod>2021-06-07T19:33:34-07:00</lastmod>
   </url>
   <url>
     <loc>https://genchanghsu.github.io/ggGallery/posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots/</loc>
-    <lastmod>2021-08-27T15:38:41+08:00</lastmod>
+    <lastmod>2021-06-07T19:27:27-07:00</lastmod>
   </url>
 </urlset>
