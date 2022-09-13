@@ -11,6 +11,7 @@ output:
 categories:
   - "2022"
 preview: ../../homepage_images/Post19.png
+draft: True
 ---
 
 <!-- Webpage style -->
@@ -93,31 +94,14 @@ An alluvial diagram is a type of chart that shows the relationships between leve
 
 ## Create alluvial diagrams with `ggalluvial`
 
-We'll be using the extension package `ggalluvial` to create alluvial diagrams in ggplot. There are two types of alluvial diagrams:
+We'll be using the extension package [`ggalluvial`](https://corybrunson.github.io/ggalluvial/) to create alluvial diagrams in ggplot. The functions in `ggalluvial` can take data in both wide and long format, and we'll start with the wide format here 
 
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (1) Diagrams with the same strata (bar stacks) along the alluvia</span>
-<span style="display: block; margin-top: 0px; margin-left: 10px"> (2) Diagrams with different strata along the alluvia</span>
-
-These two types of alluvial diagrams work with different data formats and also differ in their geom and aesthetic specifications. Let's take a look at them now!
-
-### (1) 
+First, let's prepare our data using the `diamonds` dataset:
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
-# install.packages("ggalluvial")  # install the package if you haven't
-library(ggalluvial)
 library(tidyverse)
 
 
-data("selfesteem", package = "datarium")
-
-```
-
-
-
-
-### (2) 
-
-```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 alluvial_data_diamonds <- diamonds %>% 
   mutate(price_cat = case_when(price < quantile(price, 0.33) ~ "Low",
                                price > quantile(price, 0.67) ~ "High",
@@ -125,6 +109,35 @@ alluvial_data_diamonds <- diamonds %>%
          carat_cat = ifelse(carat > median(carat), "Large", "Small")) %>% 
   group_by(carat_cat, cut, color, price_cat) %>%
   summarise(count = n())
+
+
+```
+
+
+Now, we can use 
+
+```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
+# install.packages("ggalluvial")  # install the package if you haven't
+library(ggalluvial)
+
+
+
+alluvial_data_diamonds <- diamonds %>% 
+  mutate(price_cat = case_when(price < quantile(price, 0.33) ~ "Low",
+                               price > quantile(price, 0.67) ~ "High",
+                               TRUE ~ "Mid"),
+         carat_cat = ifelse(carat > median(carat), "Large", "Small")) %>% 
+  group_by(carat_cat, cut, color, price_cat) %>%
+  summarise(count = n())
+
+
+```
+
+
+As mentioned earlier, we can also use long format for plotting. The main difference from the first approach is that now we can color the flows between adjacent strata in differently
+
+ 
+```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 
 
 
