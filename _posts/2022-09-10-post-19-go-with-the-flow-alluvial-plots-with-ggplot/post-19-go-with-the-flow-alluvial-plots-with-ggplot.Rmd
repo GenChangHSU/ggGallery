@@ -91,15 +91,16 @@ knitr::opts_chunk$set(message = F,
 
 An alluvial diagram is a type of chart that shows the relationships between levels of categorical variables for a given quantity (number of people, amount of energy, etc.) It looks like a stacked barplot with flow streams connecting the stacks of adjacent bars (that's why it gets its name!). Alluvial diagrams are useful for visualizing pathways and trends across variables. Another similar chart is [bump charts](https://genchanghsu.github.io/ggGallery/posts/2022-08-01-post-18-bump-charts-with-ggplot/), which emphasize the change in rankings of multiple objects over time. 
 
-## Create an alluvial plot with `ggalluvial`
+## Create alluvial diagrams with `ggalluvial`
 
-Three types of alluvial charts:
-1. bars with different levels and colored by another var
-2. bars with different levels and colored by one of the bar vars
-3. bars with the same levels and colored by another var
-4. bars with the same levels and colored by the bar var
+We'll be using the extension package `ggalluvial` to create alluvial diagrams in ggplot. There are two types of alluvial diagrams:
 
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (1) Diagrams with the same strata (bar stacks) along the alluvia</span>
+<span style="display: block; margin-top: 0px; margin-left: 10px"> (2) Diagrams with different strata along the alluvia</span>
 
+These two types of alluvial diagrams work with different data formats and also differ in their geom and aesthetic specifications. Let's take a look at them now!
+
+### (1) 
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 # install.packages("ggalluvial")  # install the package if you haven't
@@ -107,12 +108,28 @@ library(ggalluvial)
 library(tidyverse)
 
 
-
-
+data("selfesteem", package = "datarium")
 
 ```
 
 
+
+
+### (2) 
+
+```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
+alluvial_data_diamonds <- diamonds %>% 
+  mutate(price_cat = case_when(price < quantile(price, 0.33) ~ "Low",
+                               price > quantile(price, 0.67) ~ "High",
+                               TRUE ~ "Mid"),
+         carat_cat = ifelse(carat > median(carat), "Large", "Small")) %>% 
+  group_by(carat_cat, cut, color, price_cat) %>%
+  summarise(count = n())
+
+
+
+
+```
 
 
 ## Summary

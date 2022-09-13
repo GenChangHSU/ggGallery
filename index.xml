@@ -89,8 +89,19 @@ trends across variables. Another similar chart is &lt;a
 href="https://genchanghsu.github.io/ggGallery/posts/2022-08-01-post-18-bump-charts-with-ggplot/"&gt;bump
 charts&lt;/a&gt;, which emphasize the change in rankings of multiple objects
 over time.&lt;/p&gt;
-&lt;h2 id="create-an-alluvial-plot-with-ggalluvial"&gt;Create an alluvial plot
-with &lt;code&gt;ggalluvial&lt;/code&gt;&lt;/h2&gt;
+&lt;h2 id="create-alluvial-diagrams-with-ggalluvial"&gt;Create alluvial
+diagrams with &lt;code&gt;ggalluvial&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;We’ll be using the extension package &lt;code&gt;ggalluvial&lt;/code&gt; to
+create alluvial diagrams in ggplot. There are two types of alluvial
+diagrams:&lt;/p&gt;
+&lt;p&gt;&lt;span style="display: block; margin-top: 5px; margin-left: 10px"&gt; (1)
+Diagrams with the same strata (bar stacks) along the alluvia&lt;/span&gt;
+&lt;span style="display: block; margin-top: 0px; margin-left: 10px"&gt; (2)
+Diagrams with different strata along the alluvia&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;These two types of alluvial diagrams work with different data formats
+and also differ in their geom and aesthetic specifications. Let’s take a
+look at them now!&lt;/p&gt;
+&lt;h3 id="section"&gt;(1)&lt;/h3&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggalluvial&amp;quot;)  # install the package if you haven&amp;#39;t
 library(ggalluvial)
 library(tidyverse)&lt;/code&gt;&lt;/pre&gt;
