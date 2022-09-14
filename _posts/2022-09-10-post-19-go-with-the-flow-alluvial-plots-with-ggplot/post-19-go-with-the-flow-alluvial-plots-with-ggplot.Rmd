@@ -94,51 +94,103 @@ An alluvial diagram is a type of chart that shows the relationships between leve
 
 ## Create alluvial diagrams with `ggalluvial`
 
-We'll be using the extension package [`ggalluvial`](https://corybrunson.github.io/ggalluvial/) to create alluvial diagrams in ggplot. The functions in `ggalluvial` can take data in both wide and long format, and we'll start with the wide format here 
+We'll be using the extension package [`ggalluvial`](https://corybrunson.github.io/ggalluvial/) to create alluvial diagrams in ggplot. The functions in `ggalluvial` can take data in both wide and long format, and we'll start with the wide format here. 
 
-First, let's prepare our data using the `diamonds` dataset:
+First, let's prepare our data using the `diamonds` dataset: We'll convert the carat of the diamonds into "Large" and "Small" as well as the price into "Low", "Mid", and "High", and tally the numbers of diamonds by carat, cut, and price.
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 library(tidyverse)
 
-
-alluvial_data_diamonds <- diamonds %>% 
+# Prepare wide-format diamonds data
+diamonds_wide <- diamonds %>% 
   mutate(price_cat = case_when(price < quantile(price, 0.33) ~ "Low",
                                price > quantile(price, 0.67) ~ "High",
                                TRUE ~ "Mid"),
-         carat_cat = ifelse(carat > median(carat), "Large", "Small")) %>% 
-  group_by(carat_cat, cut, color, price_cat) %>%
-  summarise(count = n())
+         price_cat = factor(price_cat, levels = c("High", "Mid", "Low")),
+         carat_cat = ifelse(carat > median(carat), "Large", "Small"),
+         cut = fct_rev(cut)) %>% 
+  group_by(carat_cat, cut, price_cat) %>%
+  summarise(count = n()) %>% 
+  ungroup()
 
+head(diamonds_wide)
 
 ```
 
+<br>
 
-Now, we can use 
+With the appropriate data on hand, we can now visualize the relationships between carat, cut, and price in an alluvial diagram. There are a few things worth noting:
 
-```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
+<span style="display: block; margin-top: 3px; margin-left: 10px"> (1) The flow streams and bars are drawn using `geom_alluvium()` and `geom_stratum()`, respectively</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) The bars are specified using the arguments `axis1`, `axis2`, ... in `aes()`</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (3) The function `geom_stratum()` will create a new internal variable `stratum` that can be used to label the bars via `label = after_stat(stratum)`</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (4) The alluvia are colored by price</span>
+
+```{r, fig.width = 8, fig.height = 4, out.width = "85%"}
 # install.packages("ggalluvial")  # install the package if you haven't
 library(ggalluvial)
+library(scales)  # for the function "comma_format()"
 
+ggplot(diamonds_wide, aes(axis1 = carat_cat, axis2 = cut, axis3 = price_cat, y = count)) +
+  geom_alluvium(aes(fill = price_cat), width = 1/5) +
+  geom_stratum(width = 1/5, fill = "grey70", color = "black") +
+  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2.5) +
+  scale_x_discrete(limits = c("Carat", "Cut", "Price"), expand = c(0, 0.2)) +
+  scale_y_continuous(expand = c(0, 0), labels = comma_format()) + 
+  labs(y = "Count") + 
+  scale_fill_brewer(name = "Price", palette = "Set1") + 
+  theme_classic(base_size = 13) + 
+  theme(axis.line.x = element_blank(),
+        axis.ticks.x = element_blank())
 
+```
+Seems that no large diamond has low price, and no small diamond has high price, regardless of their cut quality.
 
-alluvial_data_diamonds <- diamonds %>% 
-  mutate(price_cat = case_when(price < quantile(price, 0.33) ~ "Low",
-                               price > quantile(price, 0.67) ~ "High",
-                               TRUE ~ "Mid"),
-         carat_cat = ifelse(carat > median(carat), "Large", "Small")) %>% 
-  group_by(carat_cat, cut, color, price_cat) %>%
-  summarise(count = n())
+We can also adjust the width, the knot position, and the orientation to produce the so-called ["parallel sets"](https://dataforvisualization.com/charts/parallel-sets-plot/)
 
+```{r, fig.width = 7, fig.height = 5, out.width = "75%"}
+ggplot(diamonds_wide, aes(axis1 = carat_cat, axis2 = cut, axis3 = price_cat, y = count)) +
+  geom_alluvium(aes(fill = price_cat), width = 0, knot.pos = 0, show.legend = F) +
+  geom_stratum(width = 0.02, fill = "black", color = "white") +
+  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2.5, nudge_x = 0.05) +
+  scale_x_discrete(limits = c("Carat", "Cut", "Price"), expand = c(0, 0.1)) +
+  scale_y_continuous(expand = c(0, 0), labels = comma_format()) + 
+  labs(y = "Count") + 
+  scale_fill_brewer(palette = "Set1") + 
+  coord_flip() +
+  theme_classic(base_size = 13) + 
+  theme(axis.line.y = element_blank(),
+        axis.ticks.y = element_blank())
 
 ```
 
+As mentioned earlier, we can also pass data in long format to the function. We need to add an ID to each row and convert the wide data into long format. The specifications for it are a bit different from the previous ones:
 
-As mentioned earlier, we can also use long format for plotting. The main difference from the first approach is that now we can color the flows between adjacent strata in differently
+<span style="display: block; margin-top: 3px; margin-left: 10px"> (1) Create a stacked barplot of journals' impact factors over year</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Compute the curves that connect the upper/lower ends of the bars for each journal</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Add ribbons to the stacked barplot</span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (4) Polish the appearance of the chart</span>
+
+The main advantage of using this method is that now we can color the flows between adjacent bars (strata) based on each variable
 
  
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
 
+diamonds_long <- diamonds_wide %>%
+  mutate(alluvium = row_number()) %>% 
+  pivot_longer(-c(count, alluvium))
+
+ggplot(diamonds_long, aes(x = name, y = count, stratum = value, alluvium = alluvium)) +
+  geom_flow(aes(fill = value)) +
+  geom_stratum(aes(fill = value), alpha = .5) +
+  geom_text(stat = "stratum", aes(label = value), size = 3) +
+  scale_x_discrete(labels = c("Carat", "Cut", "Price"), expand = c(0, 0.2)) +
+  scale_y_continuous(expand = c(0, 0), labels = comma_format()) + 
+  labs(y = "Count") + 
+  scale_fill_brewer(name = "Price", palette = "Set1") + 
+  theme_classic(base_size = 13) + 
+  theme(axis.line.x = element_blank(),
+        axis.ticks.x = element_blank())
 
 
 
