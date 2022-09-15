@@ -162,34 +162,30 @@ ggplot(diamonds_wide, aes(axis1 = carat_cat, axis2 = cut, axis3 = price_cat, y =
 
 ```
 
+As mentioned earlier, `ggalluvial` also works with data in long format. So let's convert the wide data into long format. Note that we need to add an ID column for each row of the wide data before melting the data into long format so that the functions will know how to connect the flow segments between adjacent bars (i.e., each ID represents a flow stream across all the bars). 
 
+```{r, fig.width = 8, fig.height = 4.5, out.width = "75%"}
+# Convert the wide data into long format
+diamonds_long <- diamonds_wide %>%
+  mutate(alluvium_ID = row_number()) %>%  # add an ID for each row
+  pivot_longer(cols = -c(count, alluvium_ID), names_to = "variable", values_to = "level") %>% 
+  mutate(level = factor(level, levels = c("Large", "Small", "Ideal", "Premium", "Very Good", "Good", "Fair", "High", "Mid", "Low")))  # adjust the level order for later plotting
 
+head(diamonds_long)
+```
 
-
-
-As mentioned earlier, we can also pass data in long format to the function. We need to add an ID to each row and convert the wide data into long format. The specifications for it are a bit different from the previous ones:
+Great. It's time to make the diagram! As the data are now in long format, the function specifications are a bit different from those we used in previous plots:
 
 <span style="display: block; margin-top: 3px; margin-left: 10px"> (1) Create a stacked barplot of journals' impact factors over year</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Compute the curves that connect the upper/lower ends of the bars for each journal</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Add ribbons to the stacked barplot</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (4) Polish the appearance of the chart</span>
 
-The main advantage of using this method is that now we can color the flows between adjacent bars (strata) based on each variable
-
- 
 ```{r, fig.width = 8, fig.height = 4.5, out.width = "75%"}
-# Convert the data into long format
-diamonds_long <- diamonds_wide %>%
-  mutate(alluvium = row_number()) %>%  # add an ID for each alluvium 
-  pivot_longer(cols = -c(count, alluvium), names_to = "variable", values_to = "level") %>% 
-  mutate(level = factor(level, levels = c("Large", "Small", "Ideal", "Premium", "Very Good", "Good", "Fair", "High", "Mid", "Low")))  # adjust the level order for plotting
-
-head(diamonds_long)
-
 # Create a color palette for the bars
 color_pal <- set_names(c("#bdbdbd", "#525252", "#fde725", "#7ad151", "#22a884", "#2a788e", "#414487", "#e41a1c", "#377eb8", "#4daf4a"), nm = levels(diamonds_long$level))
 
-ggplot(diamonds_long, aes(x = variable, y = count, stratum = level, alluvium = alluvium)) +
+ggplot(diamonds_long, aes(x = variable, y = count, stratum = level, alluvium = alluvium_ID)) +
   geom_flow(aes(fill = level), width = 1/5) +
   geom_stratum(aes(fill = level), alpha = 0.75, width = 1/5) +
   geom_text(stat = "stratum", aes(label = level), size = 3) +
@@ -204,11 +200,14 @@ ggplot(diamonds_long, aes(x = variable, y = count, stratum = level, alluvium = a
 
 ```
 
+Do you notice the main difference from the previous alluvial diagrams created with wide format data? You're right! The colors are different for the flows and bars! The main advantage of using this method is that now we can color the flows between adjacent bars based on each variable.
+
+
 
 ## Summary
 
-To recap what we've done in this post, we started by creating a standard alluvial diagram with wide format `diamonds` data using the package `ggalluvial`. We then modified the diagram to produce "parallel sets". Finally, we've converted the data into long format and create another alluvial diagram that had different flow stream colors between adjacent bars.
+To recap what we've done in this post, we started by creating a standard alluvial diagram with wide format `diamonds` data using the package `ggalluvial`. We then modified the diagram to produce "parallel sets". Finally, we converted the data into long format and created another alluvial diagram that had different flow colors between adjacent bars.
 
-Again, alluvial diagrams are best for visualizing the relationships between categorical variables. And if the bars are ordered along the axis, for example, by time, distance, or some kind of environmental gradients, the diagrams can help reveal trends.
+As mentioned in the beginning, alluvial diagrams are best for visualizing the relationships between categorical variables. Additionally, if the bars in the diagrams are ordered along the axis by time, distance, or some kind of environmental gradients, then they can help reveal trends.
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
