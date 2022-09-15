@@ -1629,7 +1629,6 @@ the numbers of diamonds by carat, cut, and price.</p>
 5 Large     Premium   Low           2
 6 Large     Very Good High       4135</code></pre>
 </div>
-<p><br></p>
 <p>With the appropriate data on hand, we can now visualize the
 relationships between carat, cut, and price in an alluvial diagram.
 There are a few things worth noting:</p>
@@ -1637,12 +1636,13 @@ There are a few things worth noting:</p>
 The flow streams and bars are drawn using <code>geom_alluvium()</code>
 and <code>geom_stratum()</code>, respectively</span> <span
 style="display: block; margin-top: 5px; margin-left: 10px"> (2) The bars
-are specified using the arguments <code>axis1</code>,
-<code>axis2</code>, … in <code>aes()</code></span> <span
-style="display: block; margin-top: 5px; margin-left: 10px"> (3) The
-function <code>geom_stratum()</code> will create a new internal variable
-<code>stratum</code> that can be used to label the bars via
-<code>label = after_stat(stratum)</code></span> <span
+are positioned along the horizontal axis using the arguments
+<code>axis1</code>, <code>axis2</code>, … in <code>aes()</code></span>
+<span style="display: block; margin-top: 5px; margin-left: 10px"> (3)
+The function <code>geom_stratum()</code> will create a new internal
+variable “<code>stratum</code>” that can be used to label the bars by
+specifying <code>label = after_stat(stratum)</code> in
+<code>geom_text()</code></span> <span
 style="display: block; margin-top: 5px; margin-left: 10px"> (4) The
 alluvia are colored by price</span></p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1653,7 +1653,7 @@ alluvia are colored by price</span></p>
 <span></span>
 <span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>diamonds_wide</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>axis1 <span class='op'>=</span> <span class='va'>carat_cat</span>, axis2 <span class='op'>=</span> <span class='va'>cut</span>, axis3 <span class='op'>=</span> <span class='va'>price_cat</span>, y <span class='op'>=</span> <span class='va'>count</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='http://corybrunson.github.io/ggalluvial/reference/geom_alluvium.html'>geom_alluvium</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='va'>price_cat</span><span class='op'>)</span>, width <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>5</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='http://corybrunson.github.io/ggalluvial/reference/geom_stratum.html'>geom_stratum</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>5</span>, fill <span class='op'>=</span> <span class='st'>"grey70"</span>, color <span class='op'>=</span> <span class='st'>"black"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='http://corybrunson.github.io/ggalluvial/reference/geom_stratum.html'>geom_stratum</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>5</span>, fill <span class='op'>=</span> <span class='st'>"#fee6ce"</span>, color <span class='op'>=</span> <span class='st'>"black"</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"stratum"</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>label <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes_eval.html'>after_stat</a></span><span class='op'>(</span><span class='va'>stratum</span><span class='op'>)</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>2.5</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_discrete.html'>scale_x_discrete</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Carat"</span>, <span class='st'>"Cut"</span>, <span class='st'>"Price"</span><span class='op'>)</span>, expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0.2</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://scales.r-lib.org/reference/comma.html'>comma_format</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
@@ -1665,23 +1665,24 @@ alluvia are colored by price</span></p>
 </div>
 <p><img src="post-19-go-with-the-flow-alluvial-plots-with-ggplot_files/figure-html5/unnamed-chunk-2-1.png" width="85%" style="display: block; margin: auto;" /></p>
 </div>
-<p>Seems that no large diamond has low price, and no small diamond has
-high price, regardless of their cut quality.</p>
-<p>We can also adjust the width, the knot position, and the orientation
-to produce the so-called <a
+<p>It seems that no large diamond has a low price and no small diamond
+has a high price, regardless of the cut quality.</p>
+<p>From this plot, we can further adjust the width of the bars, the knot
+position (the inflection point) of the flow streams, and the orientation
+of the diagram to produce the so-called <a
 href="https://dataforvisualization.com/charts/parallel-sets-plot/">“parallel
-sets”</a></p>
+sets”</a>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>diamonds_wide</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>axis1 <span class='op'>=</span> <span class='va'>carat_cat</span>, axis2 <span class='op'>=</span> <span class='va'>cut</span>, axis3 <span class='op'>=</span> <span class='va'>price_cat</span>, y <span class='op'>=</span> <span class='va'>count</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='http://corybrunson.github.io/ggalluvial/reference/geom_alluvium.html'>geom_alluvium</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='va'>price_cat</span><span class='op'>)</span>, width <span class='op'>=</span> <span class='fl'>0</span>, knot.pos <span class='op'>=</span> <span class='fl'>0</span>, show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='http://corybrunson.github.io/ggalluvial/reference/geom_stratum.html'>geom_stratum</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>0.02</span>, fill <span class='op'>=</span> <span class='st'>"black"</span>, color <span class='op'>=</span> <span class='st'>"white"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='http://corybrunson.github.io/ggalluvial/reference/geom_alluvium.html'>geom_alluvium</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='va'>price_cat</span><span class='op'>)</span>, width <span class='op'>=</span> <span class='fl'>0</span>, knot.pos <span class='op'>=</span> <span class='fl'>0</span>, show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># knot.pos = 0 produces straight flow streams</span></span>
+<span>  <span class='fu'><a href='http://corybrunson.github.io/ggalluvial/reference/geom_stratum.html'>geom_stratum</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>0.02</span>, fill <span class='op'>=</span> <span class='st'>"black"</span>, color <span class='op'>=</span> <span class='st'>"white"</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># reduce the bar width to create thick lines</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"stratum"</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>label <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes_eval.html'>after_stat</a></span><span class='op'>(</span><span class='va'>stratum</span><span class='op'>)</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>2.5</span>, nudge_x <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_discrete.html'>scale_x_discrete</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Carat"</span>, <span class='st'>"Cut"</span>, <span class='st'>"Price"</span><span class='op'>)</span>, expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://scales.r-lib.org/reference/comma.html'>comma_format</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>y <span class='op'>=</span> <span class='st'>"Count"</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_fill_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># flip the plot</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.line.y <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span>,</span>
 <span>        axis.ticks.y <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
@@ -1715,8 +1716,8 @@ flows between adjacent bars (strata) based on each variable</p>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"stratum"</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>label <span class='op'>=</span> <span class='va'>value</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_discrete.html'>scale_x_discrete</a></span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Carat"</span>, <span class='st'>"Cut"</span>, <span class='st'>"Price"</span><span class='op'>)</span>, expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0.2</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://scales.r-lib.org/reference/comma.html'>comma_format</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>y <span class='op'>=</span> <span class='st'>"Count"</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_fill_brewer</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Price"</span>, palette <span class='op'>=</span> <span class='st'>"Set1"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>""</span>, y <span class='op'>=</span> <span class='st'>"Count"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.line.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span>,</span>
 <span>        axis.ticks.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
@@ -1724,6 +1725,16 @@ flows between adjacent bars (strata) based on each variable</p>
 <p><img src="post-19-go-with-the-flow-alluvial-plots-with-ggplot_files/figure-html5/unnamed-chunk-4-1.png" width="85%" style="display: block; margin: auto;" /></p>
 </div>
 <h2 id="summary">Summary</h2>
+<p>To recap what we’ve done in this post, we started by creating a
+standard alluvial diagram with wide format <code>diamonds</code> data
+using the package <code>ggalluvial</code>. We then modified the diagram
+to produce “parallel sets”. Finally, we’ve converted the data into long
+format and create another alluvial diagram that had different flow
+stream colors between adjacent bars.</p>
+<p>Again, alluvial diagrams are best for visualizing the relationships
+between categorical variables. And if the bars are ordered along the
+axis, for example, by time, distance, or some kind of environmental
+gradients, the diagrams can help reveal trends.</p>
 <p>Hope you learn something useful from this post and don’t forget to
 leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb2"><pre
