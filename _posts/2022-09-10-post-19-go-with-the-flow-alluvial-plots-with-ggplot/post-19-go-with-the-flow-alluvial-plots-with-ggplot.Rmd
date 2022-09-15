@@ -131,7 +131,7 @@ library(scales)  # for the function "comma_format()"
 
 ggplot(diamonds_wide, aes(axis1 = carat_cat, axis2 = cut, axis3 = price_cat, y = count)) +
   geom_alluvium(aes(fill = price_cat), width = 1/5) +
-  geom_stratum(width = 1/5, fill = "#fee6ce", color = "black") +
+  geom_stratum(width = 1/5, fill = "#fee6ce", color = "grey30") +
   geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2.5) +
   scale_x_discrete(limits = c("Carat", "Cut", "Price"), expand = c(0, 0.2)) +
   scale_y_continuous(expand = c(0, 0), labels = comma_format()) + 
@@ -177,20 +177,27 @@ As mentioned earlier, we can also pass data in long format to the function. We n
 The main advantage of using this method is that now we can color the flows between adjacent bars (strata) based on each variable
 
  
-```{r, fig.width = 7, fig.height = 4, out.width = "85%"}
-
+```{r, fig.width = 8, fig.height = 4.5, out.width = "75%"}
+# Convert the data into long format
 diamonds_long <- diamonds_wide %>%
-  mutate(alluvium = row_number()) %>% 
-  pivot_longer(-c(count, alluvium))
+  mutate(alluvium = row_number()) %>%  # add an ID for each alluvium 
+  pivot_longer(cols = -c(count, alluvium), names_to = "variable", values_to = "level") %>% 
+  mutate(level = factor(level, levels = c("Large", "Small", "Ideal", "Premium", "Very Good", "Good", "Fair", "High", "Mid", "Low")))  # adjust the level order for plotting
 
-ggplot(diamonds_long, aes(x = name, y = count, stratum = value, alluvium = alluvium)) +
-  geom_flow(aes(fill = value)) +
-  geom_stratum(aes(fill = value), alpha = .5) +
-  geom_text(stat = "stratum", aes(label = value), size = 3) +
+head(diamonds_long)
+
+# Create a color palette for the bars
+color_pal <- set_names(c("#bdbdbd", "#525252", "#fde725", "#7ad151", "#22a884", "#2a788e", "#414487", "#e41a1c", "#377eb8", "#4daf4a"), nm = levels(diamonds_long$level))
+
+ggplot(diamonds_long, aes(x = variable, y = count, stratum = level, alluvium = alluvium)) +
+  geom_flow(aes(fill = level), width = 1/5) +
+  geom_stratum(aes(fill = level), alpha = 0.75, width = 1/5) +
+  geom_text(stat = "stratum", aes(label = level), size = 3) +
   scale_x_discrete(labels = c("Carat", "Cut", "Price"), expand = c(0, 0.2)) +
   scale_y_continuous(expand = c(0, 0), labels = comma_format()) + 
   labs(x = "", y = "Count") +
   guides(fill = "none") + 
+  scale_fill_manual(values = color_pal) +
   theme_classic(base_size = 13) + 
   theme(axis.line.x = element_blank(),
         axis.ticks.x = element_blank())
