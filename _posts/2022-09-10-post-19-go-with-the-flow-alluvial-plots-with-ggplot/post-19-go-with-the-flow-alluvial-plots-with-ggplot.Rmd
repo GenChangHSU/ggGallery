@@ -11,7 +11,6 @@ output:
 categories:
   - "2022"
 preview: ../../homepage_images/Post19.png
-draft: True
 ---
 
 <!-- Webpage style -->
@@ -96,6 +95,8 @@ An alluvial diagram is a type of chart that shows the relationships between leve
 
 We'll be using the extension package [`ggalluvial`](https://corybrunson.github.io/ggalluvial/) to create alluvial diagrams in ggplot. The functions in `ggalluvial` can take data in both wide and long format, and we'll start with the wide format here. 
 
+### Working with wide format data
+
 First, let's prepare our data using the `diamonds` dataset: We'll convert the carat of the diamonds into "Large" and "Small" as well as the price into "Low", "Mid", and "High", and tally the numbers of diamonds by carat, cut, and price.
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "85%"}
@@ -117,12 +118,53 @@ head(diamonds_wide)
 
 ```
 
+<br>
+
 With the appropriate data on hand, we can now visualize the relationships between carat, cut, and price in an alluvial diagram. There are a few things worth noting:
 
-<span style="display: block; margin-top: 3px; margin-left: 10px"> (1) The flow streams and bars are drawn using `geom_alluvium()` and `geom_stratum()`, respectively</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) The bars are positioned along the horizontal axis using the arguments `axis1`, `axis2`, ... in `aes()`</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (3) The function `geom_stratum()` will create a new internal variable "`stratum`" that can be used to label the bars by specifying `label = after_stat(stratum)` in `geom_text()`</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (4) The alluvia are colored by price</span>
+<span id = "aa" style="display: block; margin-top: 0px; margin-left: 50px">The flow streams and bars are drawn using `geom_alluvium()` and `geom_stratum()`, respectively</span>
+
+<span id = "bb" style="display: block; margin-top: 5px; margin-left: 50px">The bars are positioned along the horizontal axis using the arguments `aes(axis1 = , axis2 = , ...)`</span>
+
+<span id = "cc" style="display: block; margin-top: 5px; margin-left: 50px">The function `geom_stratum()` will create a new internal variable "`stratum`" that can be used to label the bars by specifying `aes(label = after_stat(stratum))` in `geom_text()`</span>
+
+<span id = "dd" style="display: block; margin-top: 5px; margin-left: 50px">The alluvia are colored by price</span>
+
+<style>
+
+d-article p span#aa:before { 
+  content: "(1) "; 
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+}
+
+d-article p span#bb:before { 
+  content: "(2) "; 
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+}
+
+d-article p span#cc:before { 
+  content: "(3) "; 
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+}
+
+d-article p span#dd:before { 
+  content: "(3) "; 
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+}
+
+d-article table.lightable-paper {
+  margin-bottom: 0px; 
+}
+
+</style>
 
 ```{r, fig.width = 8, fig.height = 4, out.width = "85%"}
 # install.packages("ggalluvial")  # install the package if you haven't
@@ -144,7 +186,7 @@ ggplot(diamonds_wide, aes(axis1 = carat_cat, axis2 = cut, axis3 = price_cat, y =
 ```
 It seems that no large diamond has a low price and no small diamond has a high price, regardless of the cut quality.
 
-From this plot, we can further adjust the width of the bars, the knot position (the inflection point) of the flow streams, and the orientation of the diagram to produce the so-called ["parallel sets"](https://dataforvisualization.com/charts/parallel-sets-plot/).
+From this plot, we can further adjust the width of the bars, the knot position (the inflection point) of the flow streams, and the orientation of the diagram to produce the so-called ["parallel sets"](https://dataforvisualization.com/charts/parallel-sets-plot/):
 
 ```{r, fig.width = 7, fig.height = 5, out.width = "75%"}
 ggplot(diamonds_wide, aes(axis1 = carat_cat, axis2 = cut, axis3 = price_cat, y = count)) +
@@ -162,7 +204,11 @@ ggplot(diamonds_wide, aes(axis1 = carat_cat, axis2 = cut, axis3 = price_cat, y =
 
 ```
 
-As mentioned earlier, `ggalluvial` also works with data in long format. So let's convert the wide data into long format. Note that we need to add an ID column for each row of the wide data before melting the data into long format so that the functions will know how to connect the flow segments between adjacent bars (i.e., each ID represents a flow stream across all the bars). 
+<br>
+
+### Working with long format data
+
+As mentioned earlier, `ggalluvial` also works with data in long format. So let's convert the data now. Note that we need to add an ID column to the dataframe before melting it into long format. These ID's will tell the functions the flow connections between adjacent bars (each ID represents a flow stream across all the bars).
 
 ```{r, fig.width = 8, fig.height = 4.5, out.width = "75%"}
 # Convert the wide data into long format
@@ -174,12 +220,44 @@ diamonds_long <- diamonds_wide %>%
 head(diamonds_long)
 ```
 
-Great. It's time to make the diagram! As the data are now in long format, the function specifications are a bit different from those we used in previous plots:
+<br>
 
-<span style="display: block; margin-top: 3px; margin-left: 10px"> (1) Create a stacked barplot of journals' impact factors over year</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Compute the curves that connect the upper/lower ends of the bars for each journal</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Add ribbons to the stacked barplot</span>
-<span style="display: block; margin-top: 5px; margin-left: 10px"> (4) Polish the appearance of the chart</span>
+Great. It's time to make the diagram! As the data are now in long format, the argument specifications are a bit different from those we used for previous plots:
+
+<span id = "aaa" style="display: block; margin-top: 0px; margin-left: 50px">The flow streams are drawn using `geom_flow()` instead of `geom_alluvium()`, and the alluvium ID's are specified via the argument `aes(alluvium = alluvium_ID)`</span>
+
+<span id = "bbb" style="display: block; margin-top: 5px; margin-left: 50px">The positions of the bars along the x-axis are specified via `aes(x = variable)`, and the stacks of the bars are specified via `aes(stratum = level)`</span>
+
+<span id = "ccc" style="display: block; margin-top: 5px; margin-left: 50px">The bars are labeled directly via the argument `aes(label = )` without having to call `after_stat()`</span>
+
+<style>
+
+d-article p span#aaa:before { 
+  content: "(1) "; 
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+}
+
+d-article p span#bbb:before { 
+  content: "(2) "; 
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+}
+
+d-article p span#ccc:before { 
+  content: "(3) "; 
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+}
+
+d-article table.lightable-paper {
+  margin-bottom: 0px; 
+}
+
+</style>
 
 ```{r, fig.width = 8, fig.height = 4.5, out.width = "75%"}
 # Create a color palette for the bars
@@ -200,14 +278,14 @@ ggplot(diamonds_long, aes(x = variable, y = count, stratum = level, alluvium = a
 
 ```
 
-Do you notice the main difference from the previous alluvial diagrams created with wide format data? You're right! The colors are different for the flows and bars! The main advantage of using this method is that now we can color the flows between adjacent bars based on each variable.
-
-
+Do you notice the difference from the previous alluvial diagrams created with wide format data? You're right! The bars and flows have their own colors now! With this method, we are able to color the bars and flows between adjacent bars by the corresponding levels.
 
 ## Summary
 
-To recap what we've done in this post, we started by creating a standard alluvial diagram with wide format `diamonds` data using the package `ggalluvial`. We then modified the diagram to produce "parallel sets". Finally, we converted the data into long format and created another alluvial diagram that had different flow colors between adjacent bars.
+To recap what we've done in this post, we started by creating a standard alluvial diagram with wide format `diamonds` data using the package `ggalluvial`. We then modified the diagram to produce parallel sets. Finally, we converted the data into long format and created another alluvial diagram that had different flow colors between adjacent bars.
 
-As mentioned in the beginning, alluvial diagrams are best for visualizing the relationships between categorical variables. Additionally, if the bars in the diagrams are ordered along the axis by time, distance, or some kind of environmental gradients, then they can help reveal trends.
+As mentioned in the beginning, alluvial diagrams are best for visualizing the relationships between categorical variables. Additionally, if the bars along the axis are ordered by time, distance, or some kind of environmental gradients, then they can help reveal trends.
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
+

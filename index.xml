@@ -7,7 +7,328 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 01 Aug 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 09 Sep 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #19. Go with the flow - alluvial diagrams in ggplot</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2022-09-10-post-19-go-with-the-flow-alluvial-plots-with-ggplot</link>
+      <description>
+
+
+&lt;!-- Webpage style --&gt;
+&lt;style&gt;
+d-article a {
+    color: #2780e3 !important;
+    border-bottom: none !important;
+}
+
+d-article a:hover {
+    color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+    margin-left: -10% !important;
+}
+
+d-title {
+    margin-left: -10%;
+}
+
+d-title h1{
+    font-size: 45px;
+    width: 130%;
+}
+
+d-article {
+    margin-left: -10%;
+}
+
+p {
+    width: 120%;
+}
+
+d-article h2 {
+    width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+    width: 120%;
+}
+
+d-article div.sourceCode { 
+    width: 120% !important;
+}
+
+d-article pre { 
+    width: 120% !important;
+}
+
+div.l-body {
+    width: 120% !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+&lt;/style&gt;
+&lt;!-- Start of the article --&gt;
+&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;An alluvial diagram is a type of chart that shows the relationships
+between levels of categorical variables for a given quantity (number of
+people, amount of energy, etc.) It looks like a stacked barplot with
+flow streams connecting the stacks of adjacent bars (that’s why it gets
+its name!). Alluvial diagrams are useful for visualizing pathways and
+trends across variables. Another similar chart is &lt;a
+href="https://genchanghsu.github.io/ggGallery/posts/2022-08-01-post-18-bump-charts-with-ggplot/"&gt;bump
+charts&lt;/a&gt;, which emphasize the change in rankings of multiple objects
+over time.&lt;/p&gt;
+&lt;h2 id="create-alluvial-diagrams-with-ggalluvial"&gt;Create alluvial
+diagrams with &lt;code&gt;ggalluvial&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;We’ll be using the extension package &lt;a
+href="https://corybrunson.github.io/ggalluvial/"&gt;&lt;code&gt;ggalluvial&lt;/code&gt;&lt;/a&gt;
+to create alluvial diagrams in ggplot. The functions in
+&lt;code&gt;ggalluvial&lt;/code&gt; can take data in both wide and long format, and
+we’ll start with the wide format here.&lt;/p&gt;
+&lt;h3 id="working-with-wide-format-data"&gt;Working with wide format
+data&lt;/h3&gt;
+&lt;p&gt;First, let’s prepare our data using the &lt;code&gt;diamonds&lt;/code&gt;
+dataset: We’ll convert the carat of the diamonds into “Large” and
+“Small” as well as the price into “Low”, “Mid”, and “High”, and tally
+the numbers of diamonds by carat, cut, and price.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+
+# Prepare wide-format diamonds data
+diamonds_wide &amp;lt;- diamonds %&amp;gt;% 
+  mutate(price_cat = case_when(price &amp;lt; quantile(price, 0.33) ~ &amp;quot;Low&amp;quot;,
+                               price &amp;gt; quantile(price, 0.67) ~ &amp;quot;High&amp;quot;,
+                               TRUE ~ &amp;quot;Mid&amp;quot;),
+         price_cat = factor(price_cat, levels = c(&amp;quot;High&amp;quot;, &amp;quot;Mid&amp;quot;, &amp;quot;Low&amp;quot;)),
+         carat_cat = ifelse(carat &amp;gt; median(carat), &amp;quot;Large&amp;quot;, &amp;quot;Small&amp;quot;),
+         cut = fct_rev(cut)) %&amp;gt;% 
+  group_by(carat_cat, cut, price_cat) %&amp;gt;%
+  summarise(count = n()) %&amp;gt;% 
+  ungroup()
+
+head(diamonds_wide)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# A tibble: 6 × 4
+  carat_cat cut       price_cat count
+  &amp;lt;chr&amp;gt;     &amp;lt;ord&amp;gt;     &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;
+1 Large     Ideal     High       5808
+2 Large     Ideal     Mid        2648
+3 Large     Premium   High       5649
+4 Large     Premium   Mid        2283
+5 Large     Premium   Low           2
+6 Large     Very Good High       4135&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;With the appropriate data on hand, we can now visualize the
+relationships between carat, cut, and price in an alluvial diagram.
+There are a few things worth noting:&lt;/p&gt;
+&lt;p&gt;&lt;span id="aa"
+style="display: block; margin-top: 0px; margin-left: 50px"&gt;The flow
+streams and bars are drawn using &lt;code&gt;geom_alluvium()&lt;/code&gt; and
+&lt;code&gt;geom_stratum()&lt;/code&gt;, respectively&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span id="bb"
+style="display: block; margin-top: 5px; margin-left: 50px"&gt;The bars are
+positioned along the horizontal axis using the arguments
+&lt;code&gt;aes(axis1 = , axis2 = , ...)&lt;/code&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span id="cc"
+style="display: block; margin-top: 5px; margin-left: 50px"&gt;The function
+&lt;code&gt;geom_stratum()&lt;/code&gt; will create a new internal variable
+“&lt;code&gt;stratum&lt;/code&gt;” that can be used to label the bars by specifying
+&lt;code&gt;aes(label = after_stat(stratum))&lt;/code&gt; in
+&lt;code&gt;geom_text()&lt;/code&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span id="dd"
+style="display: block; margin-top: 5px; margin-left: 50px"&gt;The alluvia
+are colored by price&lt;/span&gt;&lt;/p&gt;
+&lt;style&gt;
+
+d-article p span#aa:before { 
+  content: "(1) "; 
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+}
+
+d-article p span#bb:before { 
+  content: "(2) "; 
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+}
+
+d-article p span#cc:before { 
+  content: "(3) "; 
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+}
+
+d-article p span#dd:before { 
+  content: "(3) "; 
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+}
+
+d-article table.lightable-paper {
+  margin-bottom: 0px; 
+}
+
+&lt;/style&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggalluvial&amp;quot;)  # install the package if you haven&amp;#39;t
+library(ggalluvial)
+library(scales)  # for the function &amp;quot;comma_format()&amp;quot;
+
+ggplot(diamonds_wide, aes(axis1 = carat_cat, axis2 = cut, axis3 = price_cat, y = count)) +
+  geom_alluvium(aes(fill = price_cat), width = 1/5) +
+  geom_stratum(width = 1/5, fill = &amp;quot;#fee6ce&amp;quot;, color = &amp;quot;grey30&amp;quot;) +
+  geom_text(stat = &amp;quot;stratum&amp;quot;, aes(label = after_stat(stratum)), size = 2.5) +
+  scale_x_discrete(limits = c(&amp;quot;Carat&amp;quot;, &amp;quot;Cut&amp;quot;, &amp;quot;Price&amp;quot;), expand = c(0, 0.2)) +
+  scale_y_continuous(expand = c(0, 0), labels = comma_format()) + 
+  labs(y = &amp;quot;Count&amp;quot;) + 
+  scale_fill_brewer(name = &amp;quot;Price&amp;quot;, palette = &amp;quot;Set1&amp;quot;) + 
+  theme_classic(base_size = 13) + 
+  theme(axis.line.x = element_blank(),
+        axis.ticks.x = element_blank())&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file29c85eb12f34_files/figure-html/unnamed-chunk-2-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+It seems that no large diamond has a low price and no small diamond has
+a high price, regardless of the cut quality.&lt;/p&gt;
+&lt;p&gt;From this plot, we can further adjust the width of the bars, the knot
+position (the inflection point) of the flow streams, and the orientation
+of the diagram to produce the so-called &lt;a
+href="https://dataforvisualization.com/charts/parallel-sets-plot/"&gt;“parallel
+sets”&lt;/a&gt;:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(diamonds_wide, aes(axis1 = carat_cat, axis2 = cut, axis3 = price_cat, y = count)) +
+  geom_alluvium(aes(fill = price_cat), width = 0, knot.pos = 0, show.legend = F) +  # knot.pos = 0 produces straight flow streams
+  geom_stratum(width = 0.02, fill = &amp;quot;black&amp;quot;, color = &amp;quot;white&amp;quot;) +  # reduce the bar width to create thick lines
+  geom_text(stat = &amp;quot;stratum&amp;quot;, aes(label = after_stat(stratum)), size = 2.5, nudge_x = 0.05) +
+  scale_x_discrete(limits = c(&amp;quot;Carat&amp;quot;, &amp;quot;Cut&amp;quot;, &amp;quot;Price&amp;quot;), expand = c(0, 0.1)) +
+  scale_y_continuous(expand = c(0, 0), labels = comma_format()) + 
+  labs(y = &amp;quot;Count&amp;quot;) + 
+  scale_fill_brewer(palette = &amp;quot;Set1&amp;quot;) + 
+  coord_flip() +  # flip the plot
+  theme_classic(base_size = 13) + 
+  theme(axis.line.y = element_blank(),
+        axis.ticks.y = element_blank())&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file29c85eb12f34_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h3 id="working-with-long-format-data"&gt;Working with long format
+data&lt;/h3&gt;
+&lt;p&gt;As mentioned earlier, &lt;code&gt;ggalluvial&lt;/code&gt; also works with data in
+long format. So let’s convert the data now. Note that we need to add an
+ID column to the dataframe before melting it into long format. These
+ID’s will tell the functions the flow connections between adjacent bars
+(each ID represents a flow stream across all the bars).&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Convert the wide data into long format
+diamonds_long &amp;lt;- diamonds_wide %&amp;gt;%
+  mutate(alluvium_ID = row_number()) %&amp;gt;%  # add an ID for each row
+  pivot_longer(cols = -c(count, alluvium_ID), names_to = &amp;quot;variable&amp;quot;, values_to = &amp;quot;level&amp;quot;) %&amp;gt;% 
+  mutate(level = factor(level, levels = c(&amp;quot;Large&amp;quot;, &amp;quot;Small&amp;quot;, &amp;quot;Ideal&amp;quot;, &amp;quot;Premium&amp;quot;, &amp;quot;Very Good&amp;quot;, &amp;quot;Good&amp;quot;, &amp;quot;Fair&amp;quot;, &amp;quot;High&amp;quot;, &amp;quot;Mid&amp;quot;, &amp;quot;Low&amp;quot;)))  # adjust the level order for later plotting
+
+head(diamonds_long)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# A tibble: 6 × 4
+  count alluvium_ID variable  level
+  &amp;lt;int&amp;gt;       &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;     &amp;lt;fct&amp;gt;
+1  5808           1 carat_cat Large
+2  5808           1 cut       Ideal
+3  5808           1 price_cat High 
+4  2648           2 carat_cat Large
+5  2648           2 cut       Ideal
+6  2648           2 price_cat Mid  &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Great. It’s time to make the diagram! As the data are now in long
+format, the argument specifications are a bit different from those we
+used for previous plots:&lt;/p&gt;
+&lt;p&gt;&lt;span id="aaa"
+style="display: block; margin-top: 0px; margin-left: 50px"&gt;The flow
+streams are drawn using &lt;code&gt;geom_flow()&lt;/code&gt; instead of
+&lt;code&gt;geom_alluvium()&lt;/code&gt;, and the alluvium ID’s are specified via
+the argument &lt;code&gt;aes(alluvium = alluvium_ID)&lt;/code&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span id="bbb"
+style="display: block; margin-top: 5px; margin-left: 50px"&gt;The positions
+of the bars along the x-axis are specified via
+&lt;code&gt;aes(x = variable)&lt;/code&gt;, and the stacks of the bars are specified
+via &lt;code&gt;aes(stratum = level)&lt;/code&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span id="ccc"
+style="display: block; margin-top: 5px; margin-left: 50px"&gt;The bars are
+labeled directly via the argument &lt;code&gt;aes(label = )&lt;/code&gt; without
+having to call &lt;code&gt;after_stat()&lt;/code&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;style&gt;
+
+d-article p span#aaa:before { 
+  content: "(1) "; 
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+}
+
+d-article p span#bbb:before { 
+  content: "(2) "; 
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+}
+
+d-article p span#ccc:before { 
+  content: "(3) "; 
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+}
+
+d-article table.lightable-paper {
+  margin-bottom: 0px; 
+}
+
+&lt;/style&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Create a color palette for the bars
+color_pal &amp;lt;- set_names(c(&amp;quot;#bdbdbd&amp;quot;, &amp;quot;#525252&amp;quot;, &amp;quot;#fde725&amp;quot;, &amp;quot;#7ad151&amp;quot;, &amp;quot;#22a884&amp;quot;, &amp;quot;#2a788e&amp;quot;, &amp;quot;#414487&amp;quot;, &amp;quot;#e41a1c&amp;quot;, &amp;quot;#377eb8&amp;quot;, &amp;quot;#4daf4a&amp;quot;), nm = levels(diamonds_long$level))
+
+ggplot(diamonds_long, aes(x = variable, y = count, stratum = level, alluvium = alluvium_ID)) +
+  geom_flow(aes(fill = level), width = 1/5) +
+  geom_stratum(aes(fill = level), alpha = 0.75, width = 1/5) +
+  geom_text(stat = &amp;quot;stratum&amp;quot;, aes(label = level), size = 3) +
+  scale_x_discrete(labels = c(&amp;quot;Carat&amp;quot;, &amp;quot;Cut&amp;quot;, &amp;quot;Price&amp;quot;), expand = c(0, 0.2)) +
+  scale_y_continuous(expand = c(0, 0), labels = comma_format()) + 
+  labs(x = &amp;quot;&amp;quot;, y = &amp;quot;Count&amp;quot;) +
+  guides(fill = &amp;quot;none&amp;quot;) + 
+  scale_fill_manual(values = color_pal) +
+  theme_classic(base_size = 13) + 
+  theme(axis.line.x = element_blank(),
+        axis.ticks.x = element_blank())&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file29c85eb12f34_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Do you notice the difference from the previous alluvial diagrams
+created with wide format data? You’re right! The bars and flows have
+their own colors now! With this method, we are able to color the bars
+and flows between adjacent bars by the corresponding levels.&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;p&gt;To recap what we’ve done in this post, we started by creating a
+standard alluvial diagram with wide format &lt;code&gt;diamonds&lt;/code&gt; data
+using the package &lt;code&gt;ggalluvial&lt;/code&gt;. We then modified the diagram
+to produce parallel sets. Finally, we converted the data into long
+format and created another alluvial diagram that had different flow
+colors between adjacent bars.&lt;/p&gt;
+&lt;p&gt;As mentioned in the beginning, alluvial diagrams are best for
+visualizing the relationships between categorical variables.
+Additionally, if the bars along the axis are ordered by time, distance,
+or some kind of environmental gradients, then they can help reveal
+trends.&lt;/p&gt;
+&lt;p&gt;Hope you learn something useful from this post and don’t forget to
+leave your comments and suggestions below if you have any!&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>f91b88434751f8fa953ac7a5683571b0</distill:md5>
+      <category>2022</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2022-09-10-post-19-go-with-the-flow-alluvial-plots-with-ggplot</guid>
+      <pubDate>Fri, 09 Sep 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-09-10-post-19-go-with-the-flow-alluvial-plots-with-ggplot/../../homepage_images/Post19.png" medium="image" type="image/png" width="1536" height="864"/>
+    </item>
     <item>
       <title>Post #18. Bump charts with ggplot</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
