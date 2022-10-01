@@ -1,5 +1,25 @@
 [
   {
+    "path": "posts/2022-10-01-post-20-ggplot-legend-tips-series-no7-working-on-legends-with-theme/",
+    "title": "Post #20. ggplot Legend Tips Series No.7: Working on legends with theme()",
+    "description": "In this post, you will learn how to modify the appearance of legends in ggplots using the arguments in `theme()`.",
+    "author": [
+      {
+        "name": "Gen-Chang Hsu",
+        "url": {}
+      }
+    ],
+    "date": "2022-10-01",
+    "categories": [
+      "2022",
+      "Legend Tips Series"
+    ],
+    "contents": "\r\n\r\nIntroduction\r\ntheme\r\n\r\n\r\nlibrary(tidyverse)\r\n\r\n\r\nSummary\r\nHope you learn something useful from this post and don’t forget to\r\nleave your comments and suggestions below if you have any!\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2022-10-01T13:16:48+08:00",
+    "input_file": "post-20-ggplot-legend-tips-series-no7-working-on-legends-with-theme.knit.md"
+  },
+  {
     "path": "posts/2022-09-10-post-19-go-with-the-flow-alluvial-plots-with-ggplot/",
     "title": "Post #19. Go with the flow - alluvial diagrams in ggplot",
     "description": "Let's make flowy alluvial diagrams in ggplot using the extension package `ggalluvial`!",
