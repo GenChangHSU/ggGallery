@@ -4,7 +4,7 @@ description: |
     In this post, you will learn how to modify the appearance of ggplot legends using the arguments in `theme()`.
 author:
   - name: Gen-Chang Hsu
-date: 2022-10-01
+date: 2022-10-04
 output:
   distill::distill_article:
     self_contained: false
@@ -12,70 +12,62 @@ categories:
   - "2022"
   - "Legend Tips Series"
 preview: ../../homepage_images/Post20.png
-draft: true
 ---
 
 <!-- Webpage style -->
+
 <style>
 d-article a {
     color: #2780e3 !important;
-    border-bottom: none !important;
+      border-bottom: none !important;
 }
 
 d-article a:hover {
-    color: #2780e3 !important;
+  color: #2780e3 !important;
     border-bottom: 2px solid !important;
 }
 
 d-byline {
-    margin-left: -10% !important;
+  margin-left: -10% !important;
 }
 
 d-title {
-    margin-left: -10%;
+  margin-left: -10%;
 }
 
 d-title h1{
-    font-size: 45px;
-    width: 130%;
+  font-size: 45px;
+  width: 130%;
 }
 
 d-article {
-    margin-left: -10%;
+  margin-left: -10%;
 }
 
 p {
-    width: 120%;
+  width: 120%;
 }
 
 d-article h2 {
-    width: 120%;
-}
-
-d-article h3 {
   width: 120%;
-  font-size: 28px;
 }
 
 div.article-footer{
-    width: 120%;
+  width: 120%;
 }
 
 d-article div.sourceCode { 
-    width: 120% !important;
+  width: 120% !important;
 }
 
 d-article pre { 
-    width: 120% !important;
+  width: 120% !important;
 }
 
 div.l-body {
-    width: 120% !important;
+  width: 120% !important;
 }
 
-div.l-body img {
-    margin-right: 20% !important;
-    
 d-article table thead tr {
   height: 60px !important;
   width: 210px !important;
@@ -91,10 +83,15 @@ d-article table tbody tr td {
   font-size: 21px !important;
   height: 60px !important;
   text-align: center !important;
-  width: 210px !important;    
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
 }
 
 </style>
+
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(message = F, 
@@ -108,12 +105,12 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-There are three main groups of functions that work on ggplot legends: `guides()`, `scale_XX` family of functions, and `theme()`. In my previous posts, I introduced how we can modify discrete and continuous legends using the first two function groups (check theme out here! [Post #10](https://genchanghsu.github.io/ggGallery/posts/2022-01-28-post-10-ggplot-legend-tips-series-no1-working-on-discrete-scale-legends-with-guides/), [Post #11](https://genchanghsu.github.io/ggGallery/posts/2022-02-01-post-11-ggplot-legend-tips-series-no2-working-on-continuous-legends-with-guides/), [Post #16](https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions/), and [Post #17](https://genchanghsu.github.io/ggGallery/posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions/)). In this post, I will continue to introduce to you the third function "`theme()`". I'll also wrap up this topic by comparing the three function groups and discuss their best usages. Hopefully, you will be able to make the most of these functions to achieve your ggplot goals after the journey! 
+There are three main legend-related function groups in ggplots: `guides()`, `scale_XX` family of functions, and `theme()`. In my previous posts, I introduced how we can modify discrete and continuous legends using the first two function groups (check theme out here! [Post #10](https://genchanghsu.github.io/ggGallery/posts/2022-01-28-post-10-ggplot-legend-tips-series-no1-working-on-discrete-scale-legends-with-guides/), [Post #11](https://genchanghsu.github.io/ggGallery/posts/2022-02-01-post-11-ggplot-legend-tips-series-no2-working-on-continuous-legends-with-guides/), [Post #16](https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions/), and [Post #17](https://genchanghsu.github.io/ggGallery/posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions/)). In this post, I will continue to introduce to you the third function "`theme()`". I'll also wrap up this topic by summarizing the features of these three function groups and discuss their usages.  After the reading journey, I believe you will be able to make the most of these functions to achieve your ggplot goals!
 
 
 ## The `theme()` function
 
-`theme()` is one of the main components of ggplots and controls many aspects of the plot appearance: plot title, panel background, axis labels, grid lines, facet strips, and of course legends. There are a bunch of legend-related arguments focusing on different parts of the legends, and here I classify them into four main categories: 
+`theme()` is one of the key components of ggplots and controls various aspects of the plot appearance: plot title, panel background, axis labels, grid lines, facet strips, and of course legends. There are quite a few legend-related arguments in `theme()`. To make life easier, I classify them into four main categories based on their focal parts of the legends:
 
 <span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Arguments for legend box</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Arguments for legend keys</span>
@@ -138,16 +135,16 @@ P
 
 ### (1) Arguments for legend box
 
-These arguments control the appearance and margin of the entire legend area as well as individual legend boxes, the arrangement of multiple legends, and the spacing between panel area and legend area: 
+These arguments control the appearance and margin of entire legend area as well as individual legend boxes, the arrangement of multiple legends, and the spacing between panel area and legend area: 
 
 ```{r, fig.width = 9, fig.height = 5, out.width = "80%"}
-P + theme(# the appearance of the entire legend area
+P + theme(# the appearance of entire legend area
           legend.box.background = element_rect(fill = "green1",
                                                color = "black",
                                                size = 1,
                                                linetype = "dashed"),
           
-          # the margin of the entire legend area
+          # the margin of entire legend area
           legend.box.margin = margin(t = 50, r = 10, b = 50, l = 10),
           
           # the appearance of individual legend boxes
@@ -168,7 +165,7 @@ P + theme(# the appearance of the entire legend area
 
 ```
 
-Did you notice that both legends were modified in the same manner? This is an important feature of `theme()`: **it changes everything in the plot (i.e., global effect)**. So if you want to modify just a certain legend, or modify the legends differently (i.e., local effect), you should use `guides()` and specify the specific aesthetic mappings instead.
+Did you notice that both legends were modified in the same manner? This is an important feature of `theme()`: **it changes everything in the plot (i.e., global effect)**. So if you want to modify just a certain legend, or modify the legends differently (i.e., local effect), you should use `guides()` instead and specify a specific legend (e.g., the legend for "color" aesthetics).
 
 ### (2) Arguments for legend keys
 
@@ -217,14 +214,14 @@ P + theme(# the appearance of legend title
 
 ```
 
-Here I centered the long title "CO~2~ uptake rate" by specifying a negative left margin to pull the title to the left. Check out my [very first post](https://genchanghsu.github.io/ggGallery/posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots/) on this trick if interested!
+In the above figure, I centered the long title "CO~2~ uptake rate" by specifying a negative left margin, which pulled the title to the left. Check out my [very first post](https://genchanghsu.github.io/ggGallery/posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots/) on this trick if interested!
 
 ### (4) Arguments for legend layout
 
-These arguments control the position of the legend area and the direction of legend items:
+These arguments control the position of legend area and the direction of legend items:
 
 ```{r, fig.width = 7, fig.height = 5, out.width = "75%"}
-P + theme(# the position of the legend area
+P + theme(# the position of legend area
           legend.position = "top",  # can pass a vector c(x, y) as well
           
           # the direction of legend items
@@ -232,45 +229,46 @@ P + theme(# the position of the legend area
 
 ```
 
-For the argument `legend.position`, besides the built-in positions ("top", "right", "bottom", "left"), you can also pass a vector of length two `c(x, y)` (between 0 and 1) as the x- and y-coordinate of the legend area relative to the plotting area.
+For the argument `legend.position`, besides the built-in positions ("top", "right", "bottom", "left"), you can also place the legend inside the plot by passing a vector of length two `c(x, y)` (between 0 and 1) as the x- and y-coordinate relative to the plot area. 
 
-<br>
 
-## Overvall comparison of the three function groups
+## Comparisons of the three function groups
+
+Here is a summary table of the key features of the three legend-related function groups:
 
 ```{r, echo = FALSE}
 library(knitr)
 library(kableExtra)
 
 Sum_table <- data.frame(
-  "x" = c("General appearance of legend items",
-          "Arrangement/layout of legend area/items",
-          "Actual text of legend title/labels",
-          "Scales (e.g., range) of legend keys",
+  "x" = c("General appearance of legends",
+          "Arrangement/layout of legends",
+          "Scales (e.g., range) of legends",
+          "Text of legend title/labels",
           "Order of legend keys",
-          "Override default mappings",
+          "Override default legend keys",
           "Effect"),
-  "guides()" = c("Transformed",
-                                    "Equally-spaced",
-                                    "Equally-distanced",
-                                    "After transformation",
-                                    "Not affected",
+  "guides()" = c("X",
+                 "X",
                  "",
-                 ""),
-  "scale_XX functions" = c("Original",
-                                 "Equally-spaced",
-                                 "Not equally-distanced",
-                                 "After transformation",
-                                 "Not affected",
+                 "",
+                 "",
+                 "X",
+                 "Local"),
+  "scale_XX functions" = c("",
                            "",
-                           ""),
-  "theme()" = c("Original",
-                                      "Not equally-spaced",
-                                      "Equally-distanced",
-                                      "Before transformation",
-                                      "Might be affected*",
+                           "X",
+                           "X",
+                           "X",
+                           "",
+                           "Local"),
+  "theme()" = c("X",
+                "X",
                 "",
-                "")) %>%
+                "",
+                "",
+                "",
+                "Global")) %>%
   `colnames<-`(c("", 
                  "guides()", 
                  "scale_XX functions",
@@ -284,24 +282,15 @@ kable(Sum_table, align = "ccc") %>%
   column_spec(1, italic = T)
 
 ```
+<br>
 
-In general, theme and guides have similar effects on legend, focusing more on the physical appearance of the legend items, whereas scales focus more on the actual text (what words should be displayed) and legend scale (the legend range, the legend tick positions, the order of the legend keys). 
-
-There are some specific control for certain methods. For example, guides for override.
-
-Finally, the effects of the funtions differ: theme for global (every legend in the plot) and guides and scales for local (a particular legend).
+In general, `guides()` and `theme()` resemble each other, controlling the physical appearance of legends, whereas `scale_XX` functions control the scales (legend range, legend tick positions, etc.) and text (the words displayed in title and labels) of legends. Additionally, there are some specific legend modifications that certain functions can make. For example, `scale_XX` functions can be used to reorder the legend items; `guides()` can be used to overwrite the default aesthetic mappings of legend keys. Finally, the effects of these three functions differ: `theme()` affects every legend in the plot, whereas `guides()` and `scale_XX` functions affect only the specified legend(s).
 
 
 ## Summary
 
-In this post, I showed how you can modify the appearance of ggplot legends using various `theme()` arguments: legend box, legend keys, legend title and labels, and legend layout. I also summarized the three methods for legend modifications and offered some suggestions for when to use them. Of course, the best thing is to have a combination of different methods to achieve the desired outcome! 
+In this post, I showed how you can use various `theme()` arguments to modify the appearance of ggplot legends: legend box, legend keys, legend title and labels, and legend layout. I also summarized the features of three legend-related function groups (`guides()`, `scale_XX`, and `theme()`) and offered some tips for using them. Of course, having a combination of these functions is the best way to achieve the desired outcome!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
-
-
-
-
-
-
 
 
