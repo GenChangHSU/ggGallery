@@ -7,16 +7,384 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 04 Oct 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 03 Oct 2022 00:00:00 +0000</lastBuildDate>
     <item>
       <title>Post #20. ggplot Legend Tips Series No.7: Working on legends with theme()</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
       <link>https://genchanghsu.github.io/ggGallery/posts/2022-10-01-post-20-ggplot-legend-tips-series-no7-working-on-legends-with-theme</link>
-      <description>In this post, you will learn how to modify the appearance of ggplot legends using the arguments in `theme()`.</description>
+      <description>
+
+
+&lt;!-- Webpage style --&gt;
+&lt;style&gt;
+d-article a {
+    color: #2780e3 !important;
+      border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+&lt;/style&gt;
+&lt;!-- Start of the article --&gt;
+&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;There are three main legend-related function groups in ggplots:
+&lt;code&gt;guides()&lt;/code&gt;, &lt;code&gt;scale_XX&lt;/code&gt; family of functions, and
+&lt;code&gt;theme()&lt;/code&gt;. In my previous posts, I showed how we can modify
+discrete and continuous legends using the first two function groups
+(check theme out here! &lt;a
+href="https://genchanghsu.github.io/ggGallery/posts/2022-01-28-post-10-ggplot-legend-tips-series-no1-working-on-discrete-scale-legends-with-guides/"&gt;Post
+#10&lt;/a&gt;, &lt;a
+href="https://genchanghsu.github.io/ggGallery/posts/2022-02-01-post-11-ggplot-legend-tips-series-no2-working-on-continuous-legends-with-guides/"&gt;Post
+#11&lt;/a&gt;, &lt;a
+href="https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions/"&gt;Post
+#16&lt;/a&gt;, and &lt;a
+href="https://genchanghsu.github.io/ggGallery/posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions/"&gt;Post
+#17&lt;/a&gt;). In this post, I will continue to introduce to you the third
+function “&lt;code&gt;theme()&lt;/code&gt;”. I’ll also wrap up this topic by
+summarizing the features of these three function groups and discuss
+their usages. After this journey, I believe you will be able to make the
+most of these functions to achieve your ggplot goals!&lt;/p&gt;
+&lt;h2 id="the-theme-function"&gt;The &lt;code&gt;theme()&lt;/code&gt; function&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;theme()&lt;/code&gt; is one of the key components of ggplots and
+controls various aspects of the plot appearance: plot title, panel
+background, axis labels, grid lines, facet strips, and of course
+legends. There are quite a few legend-related arguments in
+&lt;code&gt;theme()&lt;/code&gt;. To make life easier, I classify them into four
+main categories based on which parts of the legends they focus on:&lt;/p&gt;
+&lt;p&gt;&lt;span style="display: block; margin-top: 0px; margin-left: 10px"&gt; (1)
+Arguments for legend box&lt;/span&gt; &lt;span
+style="display: block; margin-top: 5px; margin-left: 10px"&gt; (2)
+Arguments for legend keys&lt;/span&gt; &lt;span
+style="display: block; margin-top: 5px; margin-left: 10px"&gt; (3)
+Arguments for legend title and labels&lt;/span&gt; &lt;span
+style="display: block; margin-top: 5px; margin-left: 10px"&gt; (4)
+Arguments for legend layout&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Let’s kick things off by creating an example plot with two legends,
+one discrete and one continuous, using the &lt;a
+href="https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/zCO2.html"&gt;&lt;code&gt;CO2&lt;/code&gt;&lt;/a&gt;
+data set:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+
+P &amp;lt;- ggplot(data = CO2) + 
+  geom_boxplot(aes(x = Treatment, y = uptake, color = Treatment), width = 0.5) + 
+  geom_point(aes(x = Treatment, y = uptake, fill = uptake), position = position_jitter(width = 0.05), shape = 21, size = 2, color = &amp;quot;transparent&amp;quot;) + 
+  labs(x = &amp;quot;Treatment&amp;quot;, y = expression(paste(CO[2], &amp;quot; uptake rate&amp;quot;))) + 
+  theme_classic(base_size = 14) + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
+  scale_fill_viridis_c(name = expression(paste(CO[2], &amp;quot; uptake rate&amp;quot;)))
+
+P&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file468887079d6_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="arguments-for-legend-box"&gt;(1) Arguments for legend box&lt;/h3&gt;
+&lt;p&gt;These arguments control the appearance and margin of entire legend
+area as well as individual legend boxes, the arrangement of multiple
+legends, and the spacing between panel area and legend area:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;P + theme(# the appearance of entire legend area
+          legend.box.background = element_rect(fill = &amp;quot;green1&amp;quot;,
+                                               color = &amp;quot;black&amp;quot;,
+                                               size = 1,
+                                               linetype = &amp;quot;dashed&amp;quot;),
+          
+          # the margin of entire legend area
+          legend.box.margin = margin(t = 50, r = 10, b = 50, l = 10),
+          
+          # the appearance of individual legend boxes
+          legend.background = element_rect(fill = &amp;quot;grey90&amp;quot;,
+                                           color = &amp;quot;black&amp;quot;,
+                                           size = 0.5,
+                                           linetype = &amp;quot;dotted&amp;quot;),
+          
+          # the margin of individual legend boxes
+          legend.margin = margin(t = 5, r = 15, b = 5, l = 15),
+          
+          # the arrangement of the legends
+          legend.box = &amp;quot;horizontal&amp;quot;,
+          legend.box.just = &amp;quot;right&amp;quot;,
+          
+          # the spacing between panel area and legend area
+          legend.box.spacing = unit(0, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file468887079d6_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Did you notice that both legends were modified in the same manner?
+This is an important feature of &lt;code&gt;theme()&lt;/code&gt;: &lt;strong&gt;it changes
+everything in the plot (i.e., global effect)!&lt;/strong&gt; So if you want to
+modify just a certain legend, or modify the legends differently (i.e.,
+local effect), you should use &lt;code&gt;guides()&lt;/code&gt; instead and specify
+a specific legend (e.g., the legend for “color” aesthetics) to
+modify.&lt;/p&gt;
+&lt;h3 id="arguments-for-legend-keys"&gt;(2) Arguments for legend keys&lt;/h3&gt;
+&lt;p&gt;These arguments control the appearance and size (height and width) of
+legend keys:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;P + theme(# the appearance of legend keys
+          legend.key = element_rect(fill = &amp;quot;orange&amp;quot;,
+                                    color = &amp;quot;black&amp;quot;,
+                                    size = 0.5,
+                                    linetype = &amp;quot;solid&amp;quot;),
+          
+          # the height of legend keys
+          legend.key.height = unit(0.3, &amp;quot;inch&amp;quot;),
+          
+          # the width of legend keys
+          legend.key.width = unit(0.6, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file468887079d6_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="arguments-for-legend-title-and-labels"&gt;(3) Arguments for legend
+title and labels&lt;/h3&gt;
+&lt;p&gt;These arguments control the appearance and alignment of legend title
+and labels, the spacing between legend keys and labels, and the spacing
+between legend title and keys/labels:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;P + theme(# the appearance of legend title
+          legend.title = element_text(size = 15,
+                                      margin = margin(l = -10)),
+          
+          # the alignment of legend title
+          legend.title.align = 0.5,
+          
+          # the appearance of legend labels
+          legend.text = element_text(color = &amp;quot;red&amp;quot;, 
+                                     face = &amp;quot;bold&amp;quot;,
+                                     angle = 45),
+          
+          # the alignment of legend labels
+          legend.text.align = 0.5,
+          
+          # the spacing between legend keys and labels
+          legend.spacing.x = unit(0.5, &amp;quot;inch&amp;quot;),
+          
+          # the spacing between legend title and keys/labels
+          legend.spacing.y = unit(0.2, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file468887079d6_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;In the above figure, I centered the long title “CO&lt;sub&gt;2&lt;/sub&gt; uptake
+rate” by specifying a negative left margin, which pulled the title to
+the left. Check out my &lt;a
+href="https://genchanghsu.github.io/ggGallery/posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots/"&gt;very
+first post&lt;/a&gt; on this trick if interested!&lt;/p&gt;
+&lt;h3 id="arguments-for-legend-layout"&gt;(4) Arguments for legend
+layout&lt;/h3&gt;
+&lt;p&gt;These arguments control the position of legend area and the direction
+of legend items:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;P + theme(# the position of legend area
+          legend.position = &amp;quot;top&amp;quot;,  # can pass a vector c(x, y) as well
+          
+          # the direction of legend items
+          legend.direction = &amp;quot;horizontal&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file468887079d6_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;For the argument &lt;code&gt;legend.position&lt;/code&gt;, besides the built-in
+positions (“top”, “right”, “bottom”, “left”), you can also place the
+legend(s) inside the plot by passing a vector of length two
+&lt;code&gt;c(x, y)&lt;/code&gt; (between 0 and 1) as the x- and y-coordinate
+relative to the plot area. For instance,
+&lt;code&gt;legend.position = c(0.5, 0.5)&lt;/code&gt; will place the legend(s) in
+the middle of the plot.&lt;/p&gt;
+&lt;h2 id="comparisons-of-the-three-function-groups"&gt;Comparisons of the
+three function groups&lt;/h2&gt;
+&lt;p&gt;Here is a summary table of the key features of the three
+legend-related function groups:&lt;/p&gt;
+&lt;table class=" lightable-paper" style="font-size: 35px; font-family: Arial; margin-left: auto; margin-right: auto;"&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align:center;font-weight: bold;color: black !important;"&gt;
+&lt;/th&gt;
+&lt;th style="text-align:center;font-weight: bold;color: black !important;"&gt;
+guides()
+&lt;/th&gt;
+&lt;th style="text-align:center;font-weight: bold;color: black !important;"&gt;
+scale_XX functions
+&lt;/th&gt;
+&lt;th style="text-align:center;font-weight: bold;color: black !important;"&gt;
+theme()
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align:center;font-style: italic;"&gt;
+General appearance of legends
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+X
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+X
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:center;font-style: italic;"&gt;
+Arrangement/layout of legends
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+X
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+X
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:center;font-style: italic;"&gt;
+Scales (e.g., range) of legends
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+X
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:center;font-style: italic;"&gt;
+Text of legend title/labels
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+X
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:center;font-style: italic;"&gt;
+Order of legend keys
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+X
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:center;font-style: italic;"&gt;
+Override default legend keys
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+X
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:center;font-style: italic;"&gt;
+Effect
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+Local
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+Local
+&lt;/td&gt;
+&lt;td style="text-align:center;"&gt;
+Global
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;In general, &lt;code&gt;guides()&lt;/code&gt; and &lt;code&gt;theme()&lt;/code&gt; resemble
+each other and both control the physical appearance of legends, whereas
+&lt;code&gt;scale_XX&lt;/code&gt; functions control the scales (legend range, legend
+tick positions, etc.) and text (the words displayed in title and labels)
+of legends. Additionally, there are some specific legend modifications
+that certain functions can make. For example, &lt;code&gt;scale_XX&lt;/code&gt;
+functions can be used to reorder the legend items; &lt;code&gt;guides()&lt;/code&gt;
+can be used to overwrite the default aesthetic mappings of legend keys.
+Finally, these three functions differ in their effects:
+&lt;code&gt;theme()&lt;/code&gt; affects every legend in the plot, whereas
+&lt;code&gt;guides()&lt;/code&gt; and &lt;code&gt;scale_XX&lt;/code&gt; functions affect only
+the specified legend(s).&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;p&gt;In this post, I showed how you can use various &lt;code&gt;theme()&lt;/code&gt;
+arguments to modify the appearance of ggplot legends: legend box, legend
+keys, legend title and labels, and legend layout. I also summarized the
+features of three legend-related function groups (&lt;code&gt;guides()&lt;/code&gt;,
+&lt;code&gt;scale_XX&lt;/code&gt;, and &lt;code&gt;theme()&lt;/code&gt;) and offered some tips
+for using them. Of course, having a combination of these functions is
+the best way to achieve the desired outcome!&lt;/p&gt;
+&lt;p&gt;Hope you learn something useful from this post and don’t forget to
+leave your comments and suggestions below if you have any!&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>6b65ed5cf03f5d5d5fa85be0440ad406</distill:md5>
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-10-01-post-20-ggplot-legend-tips-series-no7-working-on-legends-with-theme</guid>
-      <pubDate>Tue, 04 Oct 2022 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 03 Oct 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-10-01-post-20-ggplot-legend-tips-series-no7-working-on-legends-with-theme/../../homepage_images/Post20.png" medium="image" type="image/png" width="1344" height="768"/>
     </item>
     <item>

@@ -52,6 +52,11 @@ d-article h2 {
   width: 120%;
 }
 
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
 div.article-footer{
   width: 120%;
 }
@@ -105,19 +110,19 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-There are three main legend-related function groups in ggplots: `guides()`, `scale_XX` family of functions, and `theme()`. In my previous posts, I introduced how we can modify discrete and continuous legends using the first two function groups (check theme out here! [Post #10](https://genchanghsu.github.io/ggGallery/posts/2022-01-28-post-10-ggplot-legend-tips-series-no1-working-on-discrete-scale-legends-with-guides/), [Post #11](https://genchanghsu.github.io/ggGallery/posts/2022-02-01-post-11-ggplot-legend-tips-series-no2-working-on-continuous-legends-with-guides/), [Post #16](https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions/), and [Post #17](https://genchanghsu.github.io/ggGallery/posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions/)). In this post, I will continue to introduce to you the third function "`theme()`". I'll also wrap up this topic by summarizing the features of these three function groups and discuss their usages.  After the reading journey, I believe you will be able to make the most of these functions to achieve your ggplot goals!
+There are three main legend-related function groups in ggplots: `guides()`, `scale_XX` family of functions, and `theme()`. In my previous posts, I showed how we can modify discrete and continuous legends using the first two function groups (check theme out here! [Post #10](https://genchanghsu.github.io/ggGallery/posts/2022-01-28-post-10-ggplot-legend-tips-series-no1-working-on-discrete-scale-legends-with-guides/), [Post #11](https://genchanghsu.github.io/ggGallery/posts/2022-02-01-post-11-ggplot-legend-tips-series-no2-working-on-continuous-legends-with-guides/), [Post #16](https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions/), and [Post #17](https://genchanghsu.github.io/ggGallery/posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions/)). In this post, I will continue to introduce to you the third function "`theme()`". I'll also wrap up this topic by summarizing the features of these three function groups and discuss their usages.  After this journey, I believe you will be able to make the most of these functions to achieve your ggplot goals!
 
 
 ## The `theme()` function
 
-`theme()` is one of the key components of ggplots and controls various aspects of the plot appearance: plot title, panel background, axis labels, grid lines, facet strips, and of course legends. There are quite a few legend-related arguments in `theme()`. To make life easier, I classify them into four main categories based on their focal parts of the legends:
+`theme()` is one of the key components of ggplots and controls various aspects of the plot appearance: plot title, panel background, axis labels, grid lines, facet strips, and of course legends. There are quite a few legend-related arguments in `theme()`. To make life easier, I classify them into four main categories based on which parts of the legends they focus on:
 
 <span style="display: block; margin-top: 0px; margin-left: 10px"> (1) Arguments for legend box</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (2) Arguments for legend keys</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (3) Arguments for legend title and labels</span>
 <span style="display: block; margin-top: 5px; margin-left: 10px"> (4) Arguments for legend layout</span>
 
-Let's first create an example plot with two legends, one discrete and one continuous, using the [`CO2`](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/zCO2.html) data set:
+Let's kick things off by creating an example plot with two legends, one discrete and one continuous, using the [`CO2`](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/zCO2.html) data set:
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 library(tidyverse)
@@ -165,7 +170,7 @@ P + theme(# the appearance of entire legend area
 
 ```
 
-Did you notice that both legends were modified in the same manner? This is an important feature of `theme()`: **it changes everything in the plot (i.e., global effect)**. So if you want to modify just a certain legend, or modify the legends differently (i.e., local effect), you should use `guides()` instead and specify a specific legend (e.g., the legend for "color" aesthetics).
+Did you notice that both legends were modified in the same manner? This is an important feature of `theme()`: **it changes everything in the plot (i.e., global effect)!** So if you want to modify just a certain legend, or modify the legends differently (i.e., local effect), you should use `guides()` instead and specify a specific legend (e.g., the legend for "color" aesthetics) to modify.
 
 ### (2) Arguments for legend keys
 
@@ -229,7 +234,7 @@ P + theme(# the position of legend area
 
 ```
 
-For the argument `legend.position`, besides the built-in positions ("top", "right", "bottom", "left"), you can also place the legend inside the plot by passing a vector of length two `c(x, y)` (between 0 and 1) as the x- and y-coordinate relative to the plot area. 
+For the argument `legend.position`, besides the built-in positions ("top", "right", "bottom", "left"), you can also place the legend(s) inside the plot by passing a vector of length two `c(x, y)` (between 0 and 1) as the x- and y-coordinate relative to the plot area. For instance, `legend.position = c(0.5, 0.5)` will place the legend(s) in the middle of the plot.
 
 
 ## Comparisons of the three function groups
@@ -284,7 +289,7 @@ kable(Sum_table, align = "ccc") %>%
 ```
 <br>
 
-In general, `guides()` and `theme()` resemble each other, controlling the physical appearance of legends, whereas `scale_XX` functions control the scales (legend range, legend tick positions, etc.) and text (the words displayed in title and labels) of legends. Additionally, there are some specific legend modifications that certain functions can make. For example, `scale_XX` functions can be used to reorder the legend items; `guides()` can be used to overwrite the default aesthetic mappings of legend keys. Finally, the effects of these three functions differ: `theme()` affects every legend in the plot, whereas `guides()` and `scale_XX` functions affect only the specified legend(s).
+In general, `guides()` and `theme()` resemble each other and both control the physical appearance of legends, whereas `scale_XX` functions control the scales (legend range, legend tick positions, etc.) and text (the words displayed in title and labels) of legends. Additionally, there are some specific legend modifications that certain functions can make. For example, `scale_XX` functions can be used to reorder the legend items; `guides()` can be used to overwrite the default aesthetic mappings of legend keys. Finally, these three functions differ in their effects: `theme()` affects every legend in the plot, whereas `guides()` and `scale_XX` functions affect only the specified legend(s).
 
 
 ## Summary
