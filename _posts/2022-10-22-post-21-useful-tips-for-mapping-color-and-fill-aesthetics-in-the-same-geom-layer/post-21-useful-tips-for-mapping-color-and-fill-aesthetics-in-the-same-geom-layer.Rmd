@@ -1,0 +1,185 @@
+---
+title: "Post #21. Useful tips for mapping color and fill aesthetics in the same geom layer"
+description: |
+  A short description of the post.
+author:
+  - name: Gen-Chang Hsu
+date: 2022-10-22
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2022"
+preview: ../../homepage_images/Post21.png
+draft: true
+---
+
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+    color: #2780e3 !important;
+      border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Background
+
+
+## Various mappings of color and fill aesthetics
+
+
+```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+library(tidyverse)
+
+### fill
+ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+  geom_boxplot(aes(fill = Species)) +
+  scale_fill_brewer(palette = "Set1") + 
+  labs(x = "Species", y = "Sepal length") + 
+  theme_classic(base_size = 13)
+
+### color
+ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+  geom_boxplot(aes(color = Species)) +
+  scale_fill_brewer(palette = "Set1") + 
+  labs(x = "Species", y = "Sepal length") + 
+  theme_classic(base_size = 13)
+
+### both
+ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+  geom_boxplot(aes(fill = Species, color = after_scale(fill))) +
+  scale_fill_brewer(palette = "Set1") + 
+  labs(x = "Species", y = "Sepal length") + 
+  theme_classic(base_size = 13)
+
+ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+  geom_boxplot(aes(color = Species, fill = Species)) +
+  scale_fill_brewer(palette = "Set1") + 
+  scale_color_brewer(palette = "Set1") + 
+  labs(x = "Species", y = "Sepal length") + 
+  theme_classic(base_size = 13)
+
+### lighten color
+ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+  geom_boxplot(aes(fill = Species, color = after_scale(alpha(fill, 0.1)))) +
+  scale_fill_brewer(palette = "Set1") + 
+  labs(x = "Species", y = "Sepal length") + 
+  theme_classic(base_size = 13)
+
+### lighten fill
+ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+  geom_boxplot(aes(fill = Species, fill = after_scale(alpha(fill, 0.4)), color = after_scale(fill))) +
+  scale_fill_brewer(palette = "Set1") + 
+  labs(x = "Species", y = "Sepal length") + 
+  theme_classic(base_size = 13)
+
+### lighten fill but point too
+ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+  geom_boxplot(aes(color = Species, fill = Species), alpha = 0.4) +
+  scale_fill_brewer(palette = "Set1") + 
+  scale_color_brewer(palette = "Set1") + 
+  labs(x = "Species", y = "Sepal length") + 
+  theme_classic(base_size = 13)
+
+```
+
+
+## Summary
+
+
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
+
+
+
+
+
+
