@@ -1,7 +1,7 @@
 ---
 title: "Post #21. Useful tips for mapping color and fill aesthetics in the same geom layer"
 description: |
-  A short description of the post.
+  In this quick post, I will show you how to use color and fill aesthetics together in the same geom layer to achieve the desired outcome!
 author:
   - name: Gen-Chang Hsu
 date: 2022-10-22
@@ -13,7 +13,6 @@ categories:
 preview: ../../homepage_images/Post21.png
 draft: true
 ---
-
 
 <!-- Webpage style -->
 
@@ -111,8 +110,11 @@ knitr::opts_chunk$set(message = F,
 
 ## Background
 
+Color and fill aesthetics often come hand in hand in ggplots, and knowing how to use them together will help achieve the desired plotting outcome and also save lots of your time searching the internet for solutions. In this quick post, I will use a simple boxplot example to demonstrate it.
 
 ## Various mappings of color and fill aesthetics
+
+
 
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
