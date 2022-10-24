@@ -114,58 +114,66 @@ Color and fill aesthetics often come hand in hand in ggplots, and knowing how to
 
 ## Various mappings of color and fill aesthetics
 
-
-
+Below is a boxplot showing the sepal length of the three species using the `iris` dataset, with box lines colored by species:
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 library(tidyverse)
 
-### fill
-ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
-  geom_boxplot(aes(fill = Species)) +
-  scale_fill_brewer(palette = "Set1") + 
-  labs(x = "Species", y = "Sepal length") + 
-  theme_classic(base_size = 13)
-
-### color
 ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
   geom_boxplot(aes(color = Species)) +
-  scale_fill_brewer(palette = "Set1") + 
-  labs(x = "Species", y = "Sepal length") + 
-  theme_classic(base_size = 13)
-
-### both
-ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
-  geom_boxplot(aes(fill = Species, color = after_scale(fill))) +
-  scale_fill_brewer(palette = "Set1") + 
-  labs(x = "Species", y = "Sepal length") + 
-  theme_classic(base_size = 13)
-
-ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
-  geom_boxplot(aes(color = Species, fill = Species)) +
-  scale_fill_brewer(palette = "Set1") + 
   scale_color_brewer(palette = "Set1") + 
   labs(x = "Species", y = "Sepal length") + 
   theme_classic(base_size = 13)
 
-### lighten color
+```
+
+Suppose that we want to fill the boxes by species as well. We can do it by specifying `fill = species` in `aes()` and `scale_fill_brewer(palette = "Set1")`:
+
+```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
-  geom_boxplot(aes(fill = Species, color = after_scale(alpha(fill, 0.1)))) +
-  scale_fill_brewer(palette = "Set1") + 
+  geom_boxplot(aes(color = Species, fill = Species)) +
+  scale_color_brewer(palette = "Set1") + 
+  scale_fill_brewer(palette = "Set1") +
   labs(x = "Species", y = "Sepal length") + 
   theme_classic(base_size = 13)
 
-### lighten fill
+```
+
+But there is a shortcut for doing this: the function `after_scale()`. What this function does is that it will apply the scale of a previous aesthetic (in this case "color") to another aesthetic (in this case "fill") so that the latter aesthetic will follow the scale of the previous one. Also, With `after_scale()`, you don't need to specify `scale_fill_brewer(palette = "Set1")` as we did in the previous figure.
+
+```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
-  geom_boxplot(aes(fill = Species, fill = after_scale(alpha(fill, 0.4)), color = after_scale(fill))) +
-  scale_fill_brewer(palette = "Set1") + 
+  geom_boxplot(aes(color = Species, fill = after_scale(color))) +
+  scale_color_brewer(palette = "Set1") +
   labs(x = "Species", y = "Sepal length") + 
   theme_classic(base_size = 13)
 
-### lighten fill but point too
+```
+
+
+```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
-  geom_boxplot(aes(color = Species, fill = Species), alpha = 0.4) +
-  scale_fill_brewer(palette = "Set1") + 
+  geom_boxplot(aes(color = Species, fill = after_scale(color),
+                   color = after_scale(alpha(color, 0.1)))) +
+  scale_color_brewer(palette = "Set1") + 
+  labs(x = "Species", y = "Sepal length") + 
+  theme_classic(base_size = 13)
+
+```
+
+
+```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+  geom_boxplot(aes(color = Species, fill = after_scale(alpha(color, 0.1)))) +
+  scale_color_brewer(palette = "Set1") + 
+  labs(x = "Species", y = "Sepal length") + 
+  theme_classic(base_size = 13)
+
+```
+
+```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+  geom_boxplot(aes(color = Species, fill = after_scale(color)), alpha = 0.1) +
   scale_color_brewer(palette = "Set1") + 
   labs(x = "Species", y = "Sepal length") + 
   theme_classic(base_size = 13)
