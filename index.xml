@@ -7,7 +7,183 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 03 Oct 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 21 Oct 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #21. Useful tips for mapping color and fill aesthetic in the same geom layer</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2022-10-22-post-21-useful-tips-for-mapping-color-and-fill-aesthetics-in-the-same-geom-layer</link>
+      <description>
+
+
+&lt;!-- Webpage style --&gt;
+&lt;style&gt;
+d-article a {
+    color: #2780e3 !important;
+      border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+&lt;/style&gt;
+&lt;!-- Start of the article --&gt;
+&lt;h2 id="background"&gt;Background&lt;/h2&gt;
+&lt;p&gt;Color and fill aesthetic often come hand in hand in ggplots, and
+knowing how to use them together will be handy and save lots of your
+time searching the internet. In this quick post, I will use a simple
+boxplot example to demonstrate their use.&lt;/p&gt;
+&lt;h2 id="various-mappings-of-color-and-fill-aesthetics"&gt;Various mappings
+of color and fill aesthetics&lt;/h2&gt;
+&lt;p&gt;The boxplot below shows the sepal length of the three species in the
+&lt;code&gt;iris&lt;/code&gt; dataset, with box lines colored by species:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+
+ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+  geom_boxplot(aes(color = Species)) +
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
+  labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
+  theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file339049f97aaf_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Suppose that we want to fill the boxes by species too. We can do this
+by specifying &lt;code&gt;fill = species&lt;/code&gt; in &lt;code&gt;aes()&lt;/code&gt; and
+adding &lt;code&gt;scale_fill_brewer(palette = "Set1")&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+  geom_boxplot(aes(color = Species, fill = Species)) +
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
+  scale_fill_brewer(palette = &amp;quot;Set1&amp;quot;) +
+  labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
+  theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file339049f97aaf_files/figure-html/unnamed-chunk-2-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;But there is a shortcut for doing this: using the function
+&lt;code&gt;after_scale()&lt;/code&gt;. So this function will reuse the scale of a
+previous aesthetic (in this case “color”) for another aesthetic (in this
+case “fill”) so that the latter aesthetic will follow the scale of the
+previous one (sounds a bit abstract? See the code and figure below!).
+Also, with &lt;code&gt;after_scale()&lt;/code&gt;, you don’t need to add
+&lt;code&gt;scale_fill_brewer(palette = "Set1")&lt;/code&gt; as what we did in the
+previous figure.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+  geom_boxplot(aes(color = Species, fill = after_scale(color))) + # use &amp;quot;after_scale()&amp;quot; to reuse the scale of color aesthetic for the fill aesthetic
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) +
+  labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
+  theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file339049f97aaf_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Now, let’s say we want to change the transparency of the box lines.
+We can do this by applying &lt;code&gt;after_scale()&lt;/code&gt; to a second color
+aesthetic to modify the scale of the first color aesthetic and change
+its transparency:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+  geom_boxplot(aes(color = Species, fill = after_scale(color),
+                   color = after_scale(alpha(color, 0.1)))) +  # use &amp;quot;after_scale()&amp;quot; to modify the scale of first color aesthetic
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
+  labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
+  theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file339049f97aaf_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;
+Likewise, we can apply the same method to the fill aesthetic to change
+the transparency of the boxes:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+  geom_boxplot(aes(color = Species, fill = after_scale(alpha(color, 0.1)))) +  # use &amp;quot;after_scale()&amp;quot; to reuse and modify the scale of color aesthetic for the fill aesthetic
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
+  labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
+  theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file339049f97aaf_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Note that you can also change the transparency of the boxes by
+directly specifying the “alpha” argument outside &lt;code&gt;aes()&lt;/code&gt;. But
+did you notice the subtle difference from the previous figure? There you
+go: The outlier point in the bottom right corner has become partially
+transparent now!&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+  geom_boxplot(aes(color = Species, fill = after_scale(color)), alpha = 0.1) +
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
+  labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
+  theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file339049f97aaf_files/figure-html/unnamed-chunk-6-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;p&gt;To recap, we learned how to use the function
+&lt;code&gt;after_scale()&lt;/code&gt; to tweak the color and fill aesthetic in the
+same geom layer. As its name suggests, this function reuses the scale of
+an aesthetic for another aesthetic after the mapping of the first
+aesthetic, or modifies the scale of an aesthetic after the first mapping
+of that aesthetic.&lt;/p&gt;
+&lt;p&gt;Hope you learn something useful from this post and don’t forget to
+leave your comments and suggestions below if you have any!&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>a4d5d1a5c235b4a3cbad50b54655f68b</distill:md5>
+      <category>2022</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2022-10-22-post-21-useful-tips-for-mapping-color-and-fill-aesthetics-in-the-same-geom-layer</guid>
+      <pubDate>Fri, 21 Oct 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-10-22-post-21-useful-tips-for-mapping-color-and-fill-aesthetics-in-the-same-geom-layer/../../homepage_images/Post21.png" medium="image" type="image/png" width="1152" height="768"/>
+    </item>
     <item>
       <title>Post #20. ggplot Legend Tips Series No.7: Working on legends with theme()</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
@@ -145,7 +321,7 @@ P &amp;lt;- ggplot(data = CO2) +
   scale_fill_viridis_c(name = expression(paste(CO[2], &amp;quot; uptake rate&amp;quot;)))
 
 P&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file468887079d6_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file339076c152f5_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="arguments-for-legend-box"&gt;(1) Arguments for legend box&lt;/h3&gt;
 &lt;p&gt;These arguments control the appearance and margin of entire legend
 area as well as individual legend boxes, the arrangement of multiple
@@ -174,7 +350,7 @@ legends, and the spacing between panel area and legend area:&lt;/p&gt;
           
           # the spacing between panel area and legend area
           legend.box.spacing = unit(0, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file468887079d6_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file339076c152f5_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Did you notice that both legends were modified in the same manner?
 This is an important feature of &lt;code&gt;theme()&lt;/code&gt;: &lt;strong&gt;it changes
 everything in the plot (i.e., global effect)!&lt;/strong&gt; So if you want to
@@ -196,7 +372,7 @@ legend keys:&lt;/p&gt;
           
           # the width of legend keys
           legend.key.width = unit(0.6, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file468887079d6_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file339076c152f5_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="arguments-for-legend-title-and-labels"&gt;(3) Arguments for legend
 title and labels&lt;/h3&gt;
 &lt;p&gt;These arguments control the appearance and alignment of legend title
@@ -222,7 +398,7 @@ between legend title and keys/labels:&lt;/p&gt;
           
           # the spacing between legend title and keys/labels
           legend.spacing.y = unit(0.2, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file468887079d6_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file339076c152f5_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;In the above figure, I centered the long title “CO&lt;sub&gt;2&lt;/sub&gt; uptake
 rate” by specifying a negative left margin, which pulled the title to
 the left. Check out my &lt;a
@@ -237,7 +413,7 @@ of legend items:&lt;/p&gt;
           
           # the direction of legend items
           legend.direction = &amp;quot;horizontal&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file468887079d6_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file339076c152f5_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;For the argument &lt;code&gt;legend.position&lt;/code&gt;, besides the built-in
 positions (“top”, “right”, “bottom”, “left”), you can also place the
 legend(s) inside the plot by passing a vector of length two
@@ -384,7 +560,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-10-01-post-20-ggplot-legend-tips-series-no7-working-on-legends-with-theme</guid>
-      <pubDate>Mon, 03 Oct 2022 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 04 Oct 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-10-01-post-20-ggplot-legend-tips-series-no7-working-on-legends-with-theme/../../homepage_images/Post20.png" medium="image" type="image/png" width="1344" height="768"/>
     </item>
     <item>

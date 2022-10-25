@@ -1,7 +1,7 @@
 ---
-title: "Post #21. Useful tips for mapping color and fill aesthetics in the same geom layer"
+title: "Post #21. Useful tips for mapping color and fill aesthetic in the same geom layer"
 description: |
-  In this quick post, I will show you how to use color and fill aesthetics together in the same geom layer to achieve the desired outcome!
+  In this quick post, I will show you how to use color and fill aesthetic together in the same geom layer to achieve the desired outcome!
 author:
   - name: Gen-Chang Hsu
 date: 2022-10-22
@@ -11,7 +11,6 @@ output:
 categories:
   - "2022"
 preview: ../../homepage_images/Post21.png
-draft: true
 ---
 
 <!-- Webpage style -->
@@ -110,11 +109,11 @@ knitr::opts_chunk$set(message = F,
 
 ## Background
 
-Color and fill aesthetics often come hand in hand in ggplots, and knowing how to use them together will help achieve the desired plotting outcome and also save lots of your time searching the internet for solutions. In this quick post, I will use a simple boxplot example to demonstrate it.
+Color and fill aesthetic often come hand in hand in ggplots, and knowing how to use them together will be handy and save lots of your time searching the internet. In this quick post, I will use a simple boxplot example to demonstrate their use.
 
 ## Various mappings of color and fill aesthetics
 
-Below is a boxplot showing the sepal length of the three species using the `iris` dataset, with box lines colored by species:
+The boxplot below shows the sepal length of the three species in the `iris` dataset, with box lines colored by species:
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 library(tidyverse)
@@ -127,7 +126,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
 
 ```
 
-Suppose that we want to fill the boxes by species as well. We can do it by specifying `fill = species` in `aes()` and `scale_fill_brewer(palette = "Set1")`:
+Suppose that we want to fill the boxes by species too. We can do this by specifying `fill = species` in `aes()` and adding `scale_fill_brewer(palette = "Set1")`:
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
@@ -139,37 +138,40 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
 
 ```
 
-But there is a shortcut for doing this: the function `after_scale()`. What this function does is that it will apply the scale of a previous aesthetic (in this case "color") to another aesthetic (in this case "fill") so that the latter aesthetic will follow the scale of the previous one. Also, With `after_scale()`, you don't need to specify `scale_fill_brewer(palette = "Set1")` as we did in the previous figure.
+But there is a shortcut for doing this: using the function `after_scale()`. So this function will reuse the scale of a previous aesthetic (in this case "color") for another aesthetic (in this case "fill") so that the latter aesthetic will follow the scale of the previous one (sounds a bit abstract? See the code and figure below!). Also, with `after_scale()`, you don't need to add `scale_fill_brewer(palette = "Set1")` as what we did in the previous figure.
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
-  geom_boxplot(aes(color = Species, fill = after_scale(color))) +
+  geom_boxplot(aes(color = Species, fill = after_scale(color))) + # use "after_scale()" to reuse the scale of color aesthetic for the fill aesthetic
   scale_color_brewer(palette = "Set1") +
   labs(x = "Species", y = "Sepal length") + 
   theme_classic(base_size = 13)
 
 ```
 
+Now, let's say we want to change the transparency of the box lines. We can do this by applying `after_scale()` to a second color aesthetic to modify the scale of the first color aesthetic and change its transparency: 
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
   geom_boxplot(aes(color = Species, fill = after_scale(color),
-                   color = after_scale(alpha(color, 0.1)))) +
+                   color = after_scale(alpha(color, 0.1)))) +  # use "after_scale()" to modify the scale of first color aesthetic
   scale_color_brewer(palette = "Set1") + 
   labs(x = "Species", y = "Sepal length") + 
   theme_classic(base_size = 13)
 
 ```
-
+Likewise, we can apply the same method to the fill aesthetic to change the transparency of the boxes: 
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
-  geom_boxplot(aes(color = Species, fill = after_scale(alpha(color, 0.1)))) +
+  geom_boxplot(aes(color = Species, fill = after_scale(alpha(color, 0.1)))) +  # use "after_scale()" to reuse and modify the scale of color aesthetic for the fill aesthetic
   scale_color_brewer(palette = "Set1") + 
   labs(x = "Species", y = "Sepal length") + 
   theme_classic(base_size = 13)
 
 ```
+
+Note that you can also change the transparency of the boxes by directly specifying the "alpha" argument outside `aes()`. But did you notice the subtle difference from the previous figure? There you go: The outlier point in the bottom right corner has become partially transparent now!
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
@@ -180,10 +182,9 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
 
 ```
 
-
 ## Summary
 
-
+To recap, we learned how to use the function `after_scale()` to tweak the color and fill aesthetic in the same geom layer. As its name suggests, this function reuses the scale of an aesthetic for another aesthetic after the mapping of the first aesthetic, or modifies the scale of an aesthetic after the first mapping of that aesthetic.  
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
