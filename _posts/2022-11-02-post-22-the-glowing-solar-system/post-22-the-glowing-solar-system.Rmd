@@ -1,7 +1,7 @@
 ---
-title: "Post #22. An epic ggplot journey through the glowing Solar System"
+title: "Post #22. An epic ggplot journey through the glowing solar system"
 description: |
-  Ready for an epic ggplot journey through the glowing Solar System? Let's go!   
+  Ready for an epic ggplot journey through the glowing solar system? Let's go!   
 author:
   - name: Gen-Chang Hsu
 date: 2022-11-02
@@ -108,19 +108,20 @@ knitr::opts_chunk$set(message = F,
 
 <!-- Start of the article -->
 
-## Introduction
+## Background
 
-Do 
-1. Inspired by a recent post by XXX
-2. A combination of data scraping, data wrangling, and data visualization techniques
-3. Have fun and integrate different skills to produce an interesting figure  
+Recently, I stumbled upon a [post](https://www.behance.net/gallery/100683383/Travelling-to-Outer-Space) by data visualization designer Cédric Scherer, and I was completely blown away: I could never imagine how amazing ggplots can be (I believe you'll be in awe of it too)! Inspired by this, I hope to create my own one as well, both for fun and for learning and practicing. In fact, I think this is an excellent opportunity to bring together different data science skills: data scraping, data wrangling, and data visualization.
 
-Excited? Take a deep breath and let's get start our space journey!!!
+Now take a deep breath. The rocket is about to lift off and we are ready for our space travel!!!
+
+## Step-by-step guide to the solar system
 
 
-## Create our Solar System step by step
 
-### 1. Scrape the planet data
+
+### Step 1. Scrape planetary data
+
+Scrape the table
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 library(tidyverse)
@@ -129,18 +130,56 @@ library(rvest)
 
 ```
 
+### Step 2. Add url paths to the planet images
 
-### 2. Crop the planet images
+Add wiki url paths to the images
 
-### 3. Create a barplot
+```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 
-### 4. Create a polar barplot
 
-### 5. Polish the plot 
 
+```
+
+### Step 3. Create a line chart of planets
+
+line chart with distance to sun as x axis (reverse the axis) and size as y axis
+blurry points with planet sizes as area size, color by dist to sun
+add solid opaque points
+color the line by distance to sun
+
+```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+
+
+
+```
+
+### Step 4. Create a polar barplot
+
+make the plot circular
+add the planet images and labels (white)
+add a sun in the middle
+
+```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+
+
+
+```
+
+
+### Step 5. Polish the figure 
+
+black background
+add random dots as stars
+add some annotations
+
+```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+
+
+
+```
+
+We're at the very end of the solar system. It's time to get back to Earth. 
 
 ## Summary
 
-
-
-Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+What a memorable journey! Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
