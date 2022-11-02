@@ -1,0 +1,146 @@
+---
+title: "Post #22. An epic ggplot journey through the glowing Solar System"
+description: |
+  Ready for an epic ggplot journey through the glowing Solar System? Let's go!   
+author:
+  - name: Gen-Chang Hsu
+date: 2022-11-02
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2022"
+preview: ../../homepage_images/Post22.png
+draft: true
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+    color: #2780e3 !important;
+      border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+Do 
+1. Inspired by a recent post by XXX
+2. A combination of data scraping, data wrangling, and data visualization techniques
+3. Have fun and integrate different skills to produce an interesting figure  
+
+Excited? Take a deep breath and let's get start our space journey!!!
+
+
+## Create our Solar System step by step
+
+### 1. Scrape the planet data
+
+```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+library(tidyverse)
+library(rvest)
+
+
+```
+
+
+### 2. Crop the planet images
+
+### 3. Create a barplot
+
+### 4. Create a polar barplot
+
+### 5. Polish the plot 
+
+
+## Summary
+
+
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
