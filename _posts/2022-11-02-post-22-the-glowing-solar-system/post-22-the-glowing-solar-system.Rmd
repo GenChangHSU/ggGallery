@@ -116,44 +116,55 @@ The rocket is about to lift off now. Take a deep breath and we are ready for our
 
 ## A leg-by-leg journey to the solar system
 
-Since this entire journey is quite long, I'll break it down into several legs so that we can explore the scenery in more details. 
+This is quite a long journey, and so I'll break it down into several legs so that we can explore the scenery in more details.
 
 ### Leg 1. Scrape the planetary data
 
-Our first leg is to prepare the planetary data for our plot. We'll do so by scraping the information from the website and then organizing it into a tidy table.
+Our first leg is to prepare the planetary data for our plot. We'll do so by scraping the information from the website and organizing it into a tidy table.
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 library(tidyverse)
-library(rvest)
+library(rvest)  # for scraping the website
 library(janitor)  # for the function "clean_names()"
 
+### Read the website content 
 html <- read_html("https://www.encyclopedia.com/reference/encyclopedias-almanacs-transcripts-and-maps/major-planets-solar-system-table")
 
+### Extract and organize the table
 planetary_dat <- html %>% 
-  html_element("table") %>% 
-  html_table() %>% 
-  slice(., -c(1, 2, 4)) %>% 
-  select(where(function(x){!is.na(x) %>% any()})) %>% 
-  `colnames<-`(.[1, ]) %>% 
-  .[-1, ] %>% 
-  mutate(across(c(2, 5, 6, 7), as.numeric)) %>% 
-  clean_names()
+  html_element("table") %>%  # find the <table> element in the content
+  html_table() %>%  # parse the table into a dataframe
+  slice(-c(1, 2, 4)) %>%  # remove row 1, 2, and 4
+  select(where(function(x){!is.na(x) %>% any()})) %>%  # remove the columns with NAs
+  `colnames<-`(.[1, ]) %>%  # set the first row as the header
+  .[-1, ] %>%  # remove the first row
+  mutate(across(c(2, 5, 6, 7), as.numeric)) %>%  # convert the columns to numeric
+  rowid_to_column(var = "row_id") %>%  # add a row id
+  clean_names()  # clean the column names
 
-head(planetary_dat, 5)  
+head(planetary_dat, 5)
 
 ```
 
-### Step 2. Add url paths to the planet images
+### Step 2. Add the url paths to the planet images
 
-Add wiki url paths to the images
+Our next leg is to add a new column to the planetary data with the url paths to the planet images. We'll use these url paths later on for our plot. 
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
-
-
+planetary_dat <- planetary_dat %>%
+  mutate(image_url = c(
+    "https://en.wikipedia.org/wiki/Mercury_(planet)#/media/File:Mercury_in_true_color.jpg",
+    "https://en.wikipedia.org/wiki/Venus#/media/File:Venus_-_December_23_2016.png",
+    "https://cdn.britannica.com/25/160325-050-EB1C8FB7/image-instruments-Earth-satellite-NASA-Suomi-National-2012.jpg",
+    "https://cdn.britannica.com/64/73464-050-56C80D3A/view-composite-images-Mars-spacecraft-Global-Surveyor-April-1999.jpg",
+    "https://en.wikipedia.org/wiki/Jupiter#/media/File:Jupiter_New_Horizons.jpg",
+    "https://cdn.britannica.com/80/145480-050-24BF0658/image-Hubble-Space-Telescope-Saturn-moons-shadow.jpg",
+    "https://en.wikipedia.org/wiki/Uranus#/media/File:Uranus_as_seen_by_NASA's_Voyager_2_(remastered)_-_JPEG_converted.jpg",
+    "https://en.wikipedia.org/wiki/Neptune#/media/File:Neptune_-_Voyager_2_(29347980845)_flatten_crop.jpg"))
 
 ```
 
-### Step 3. Create a line chart of planets
+### Leg 3. Create a line chart of planets
 
 line chart with distance to sun as x axis (reverse the axis) and size as y axis
 blurry points with planet sizes as area size, color by dist to sun
@@ -161,8 +172,15 @@ add solid opaque points
 color the line by distance to sun
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
-
-
+ggplot() + 
+  geom_point(data = planetary_dat, aes(x = 1:8, y = distance_from_the_sun_au)) + 
+  geom_segment(data = planetary_dat, aes(x = 1:8,
+                                         y = 0, 
+                                         xend = 1:8, 
+                                         yend = distance_from_the_sun_au)) + 
+  scale_x_continuous(limits = c(-1, 8)) + 
+  scale_y_continuous(limits = c(0, 35)) +
+  coord_polar(theta = "y", start = 4.71, clip = "off")
 
 ```
 
