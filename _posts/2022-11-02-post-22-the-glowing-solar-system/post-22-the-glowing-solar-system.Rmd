@@ -140,7 +140,8 @@ planetary_dat <- html %>%
   .[-1, ] %>%  # remove the first row
   mutate(across(c(2, 5, 6, 7), as.numeric)) %>%  # convert the columns to numeric
   rowid_to_column(var = "row_id") %>%  # add a row id
-  clean_names()  # clean the column names
+  clean_names() %>%  # clean the column names
+  mutate(volume_earth_1 = (diameter_earth_1)^3)  # volumes of the planets relative to Earth
 
 head(planetary_dat, 5)
 
@@ -151,44 +152,69 @@ head(planetary_dat, 5)
 Our next leg is to add a new column to the planetary data with the url paths to the planet images. We'll use these url paths later on for our plot. 
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+library(glue)
+
 planetary_dat <- planetary_dat %>%
   mutate(image_url = c(
-    "https://en.wikipedia.org/wiki/Mercury_(planet)#/media/File:Mercury_in_true_color.jpg",
-    "https://en.wikipedia.org/wiki/Venus#/media/File:Venus_-_December_23_2016.png",
+    "https://upload.wikimedia.org/wikipedia/commons/4/4a/Mercury_in_true_color.jpg",
+    "https://cdn.britannica.com/86/21186-050-C48F8AA1/radar-clouds-Scientists-surface-Venus-computer-image.jpg",
     "https://cdn.britannica.com/25/160325-050-EB1C8FB7/image-instruments-Earth-satellite-NASA-Suomi-National-2012.jpg",
     "https://cdn.britannica.com/64/73464-050-56C80D3A/view-composite-images-Mars-spacecraft-Global-Surveyor-April-1999.jpg",
-    "https://en.wikipedia.org/wiki/Jupiter#/media/File:Jupiter_New_Horizons.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/c/c1/Jupiter_New_Horizons.jpg",
     "https://cdn.britannica.com/80/145480-050-24BF0658/image-Hubble-Space-Telescope-Saturn-moons-shadow.jpg",
-    "https://en.wikipedia.org/wiki/Uranus#/media/File:Uranus_as_seen_by_NASA's_Voyager_2_(remastered)_-_JPEG_converted.jpg",
-    "https://en.wikipedia.org/wiki/Neptune#/media/File:Neptune_-_Voyager_2_(29347980845)_flatten_crop.jpg"))
+    "https://upload.wikimedia.org/wikipedia/commons/c/c9/Uranus_as_seen_by_NASA%27s_Voyager_2_%28remastered%29_-_JPEG_converted.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/6/63/Neptune_-_Voyager_2_%2829347980845%29_flatten_crop.jpg")) %>%
+  mutate(image_width = c(20, 20, 20, 20, 20, 20, 20, 20)) %>% 
+  mutate(image_tag = glue("<img src='{image_url}' width = '{image_width}'/>"))
 
 ```
 
-### Leg 3. Create a line chart of planets
-
-line chart with distance to sun as x axis (reverse the axis) and size as y axis
-blurry points with planet sizes as area size, color by dist to sun
-add solid opaque points
-color the line by distance to sun
+### Leg 3. Create a basic polar line chart of planets
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
-ggplot() + 
-  geom_point(data = planetary_dat, aes(x = 1:8, y = distance_from_the_sun_au)) + 
-  geom_segment(data = planetary_dat, aes(x = 1:8,
-                                         y = 0, 
-                                         xend = 1:8, 
-                                         yend = distance_from_the_sun_au)) + 
+library(ggblur)
+
+P_solar_system <- ggplot() + 
+  geom_point_blur(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au,
+                                            color = row_id, size = volume_earth_1,
+                                            blur_size = volume_earth_1)) +
+  geom_point(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au,
+                                       color = row_id, size = volume_earth_1)) + 
+  geom_segment(data = planetary_dat, aes(x = row_id, y = 0, xend = row_id, 
+                                         yend = distance_from_the_sun_au,
+                                         color = row_id), size = 1) + 
   scale_x_continuous(limits = c(-1, 8)) + 
   scale_y_continuous(limits = c(0, 35)) +
-  coord_polar(theta = "y", start = 4.71, clip = "off")
+  guides(color = "none", size = "none", blur_size = "none") + 
+  coord_polar(theta = "y", clip = "off")
+
+P_solar_system
 
 ```
 
-### Step 4. Create a polar barplot
+### Leg 4. Add planet images
 
-make the plot circular
-add the planet images and labels (white)
-add a sun in the middle
+```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+library(ggtext)
+
+P_solar_system <- P_solar_system + 
+    geom_richtext(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au, 
+                                            label = image_tag), 
+                  color = NA, fill = NA, 
+                  nudge_x = c(0, 0.1, 0.1, 0.2, 0.2, 0.2, 0.2, 0), 
+                  nudge_y = c(2.5, 2.2, 1.8, 1.6, 1.5, 1.1, 0.8, 0.5)) + 
+    geom_richtext(aes(x = -1, y = 0, label = "<img src='https://res.cloudinary.com/dtpgi0zck/image/upload/s--fMAvJ-9u--/c_fit,h_580,w_860/v1/EducationHub/photos/sun-blasts-a-m66-flare.jpg' width='40'/>"), 
+                  color = NA, fill = NA)
+
+P_solar_system
+
+```
+
+### Leg 5. Make the lines and points glow
+
+black background
+adjust colors
+add x-axis line (with row_id as color gradient)
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 
@@ -196,12 +222,11 @@ add a sun in the middle
 
 ```
 
+### Leg 6. Polish the figure 
 
-### Step 5. Polish the figure 
-
-black background
 add random dots as stars
-add some annotations
+add some text annotations
+add planet labels
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 
