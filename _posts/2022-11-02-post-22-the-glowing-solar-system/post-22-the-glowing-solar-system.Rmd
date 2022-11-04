@@ -147,7 +147,7 @@ head(planetary_dat, 5)
 
 ```
 
-### Step 2. Add the url paths to the planet images
+### Leg 2. Add the url paths to the planet images
 
 Our next leg is to add a new column to the planetary data with the url paths to the planet images. We'll use these url paths later on for our plot. 
 
@@ -173,16 +173,19 @@ planetary_dat <- planetary_dat %>%
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 library(ggblur)
+library(ggforce)
+library(colorspace)
 
 P_solar_system <- ggplot() + 
   geom_point_blur(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au,
                                             color = row_id, size = volume_earth_1,
                                             blur_size = volume_earth_1)) +
   geom_point(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au,
-                                       color = row_id, size = volume_earth_1)) + 
-  geom_segment(data = planetary_dat, aes(x = row_id, y = 0, xend = row_id, 
+                                       color = row_id, size = volume_earth_1
+                                       )) + 
+  geom_link(data = planetary_dat, aes(x = row_id, y = 0, xend = row_id, 
                                          yend = distance_from_the_sun_au,
-                                         color = row_id), size = 1) + 
+                                         color = row_id, color = after_scale(desaturate(color, 0.3))), size = 0.75, n = 300) + 
   scale_x_continuous(limits = c(-1, 8)) + 
   scale_y_continuous(limits = c(0, 35)) +
   guides(color = "none", size = "none", blur_size = "none") + 
@@ -192,7 +195,25 @@ P_solar_system
 
 ```
 
-### Leg 4. Add planet images
+### Leg 4. Make the lines and points glow
+
+```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+library(ggthemes)
+
+col_pal <- rev(tableau_div_gradient_pal(palette = "Sunset-Sunrise Diverging")(seq(0, 1, length = 8)))  # create a customized color palette
+           
+P_solar_system <- P_solar_system + 
+  geom_link2(aes(x = 1:8, y = 0, xend = 2:9, yend = 0, color = 1:8), n = 100) +
+  scale_color_gradientn(colors = col_pal) + 
+  theme_void() + 
+  theme(plot.background = element_rect(fill = "black"),
+        plot.margin = margin(0, 0, 0, 0))
+
+P_solar_system
+
+```
+
+### Leg 5. Add planet images
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 library(ggtext)
@@ -210,23 +231,12 @@ P_solar_system
 
 ```
 
-### Leg 5. Make the lines and points glow
-
-black background
-adjust colors
-add x-axis line (with row_id as color gradient)
-
-```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
-
-
-
-```
 
 ### Leg 6. Polish the figure 
 
 add random dots as stars
 add some text annotations
-add planet labels
+add planet labels as x ticks
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
 
