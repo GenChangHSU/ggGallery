@@ -224,7 +224,7 @@ P_solar_system <- P_solar_system +
                   color = NA, fill = NA,
                   nudge_x = c(0, 0, 0, 0, -0.3, -0.2, 0, 0),
                   nudge_y = c(2.4, 1.7, 1.3, 1, 1.4, 1.1, 0.7, 0.6)) +
-    geom_richtext(aes(x = -1, y = 0, label = "<img src='https://res.cloudinary.com/dtpgi0zck/image/upload/s--fMAvJ-9u--/c_fit,h_580,w_860/v1/EducationHub/photos/sun-blasts-a-m66-flare.jpg' width='50'/>"), 
+    geom_richtext(aes(x = -1, y = 0, label = "<img src='https://res.cloudinary.com/dtpgi0zck/image/upload/s--fMAvJ-9u--/c_fit,h_580,w_860/v1/EducationHub/photos/sun-blasts-a-m66-flare.jpg' width='60'/>"), 
                   color = NA, fill = NA)
 
 map_chr(P_solar_system$layers, function(x){class(x$geom)[1]})
@@ -235,17 +235,38 @@ P_solar_system
 
 ```
 
-### Leg 6. Polish the figure 
+### Leg 6. Add text annotations 
 
-add random dots as stars
-add some text annotations
-add planet labels as x ticks
+```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
+planetary_dat <- planetary_dat %>% 
+  mutate(planet_pad = ifelse(nchar(planet)%%2 == 0, 
+                             str_pad(planet, width = 50, side = "both"),
+                             str_pad(planet, width = 51, side = "both")))
 
-```{r, fig.width = 8, fig.height = 8, out.width = "80%"}
-
+P_solar_system + 
+  geom_text(data = planetary_dat, aes(x = row_id, y = 0, color = row_id,
+                                          label = glue("{planet_pad}")),
+            size = 2.5, fontface = "bold", hjust = 0.7) + 
+  geom_richtext(data = planetary_dat, 
+      aes(
+        x = 4,
+        y = 20,
+        label = "<b style='font-size:20pt;'>Travelling to Outer Space</b><br><br>st mission<br>"
+      ),
+      size = 5,
+      color = NA,
+      text.color = "#c0c0c0",
+      lineheight = 1.5,
+      hjust = 0,
+      vjust = 0,
+      fill = NA
+    )
 
 
 ```
+### Leg 7. Stars 
+
+
 
 We're at the very end of the solar system. It's time to get back to Earth. 
 
