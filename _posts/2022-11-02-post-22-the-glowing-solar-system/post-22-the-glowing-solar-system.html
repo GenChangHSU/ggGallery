@@ -118,7 +118,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-22-the-glowing-solar-system_files/anchor-4.2.2/anchor.min.js","post-22-the-glowing-solar-system_files/bowser-1.9.3/bowser.min.js","post-22-the-glowing-solar-system_files/distill-2.2.21/template.v2.js","post-22-the-glowing-solar-system_files/header-attrs-2.14/header-attrs.js","post-22-the-glowing-solar-system_files/jquery-3.6.0/jquery-3.6.0.js","post-22-the-glowing-solar-system_files/jquery-3.6.0/jquery-3.6.0.min.js","post-22-the-glowing-solar-system_files/jquery-3.6.0/jquery-3.6.0.min.map","post-22-the-glowing-solar-system_files/popper-2.6.0/popper.min.js","post-22-the-glowing-solar-system_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-22-the-glowing-solar-system_files/tippy-6.2.7/tippy-light-border.css","post-22-the-glowing-solar-system_files/tippy-6.2.7/tippy.css","post-22-the-glowing-solar-system_files/tippy-6.2.7/tippy.umd.min.js","post-22-the-glowing-solar-system_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["post-22-the-glowing-solar-system_files/anchor-4.2.2/anchor.min.js","post-22-the-glowing-solar-system_files/bowser-1.9.3/bowser.min.js","post-22-the-glowing-solar-system_files/distill-2.2.21/template.v2.js","post-22-the-glowing-solar-system_files/figure-html5/unnamed-chunk-3-1.png","post-22-the-glowing-solar-system_files/figure-html5/unnamed-chunk-4-1.png","post-22-the-glowing-solar-system_files/figure-html5/unnamed-chunk-5-1.png","post-22-the-glowing-solar-system_files/header-attrs-2.14/header-attrs.js","post-22-the-glowing-solar-system_files/jquery-3.6.0/jquery-3.6.0.js","post-22-the-glowing-solar-system_files/jquery-3.6.0/jquery-3.6.0.min.js","post-22-the-glowing-solar-system_files/jquery-3.6.0/jquery-3.6.0.min.map","post-22-the-glowing-solar-system_files/popper-2.6.0/popper.min.js","post-22-the-glowing-solar-system_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-22-the-glowing-solar-system_files/tippy-6.2.7/tippy-light-border.css","post-22-the-glowing-solar-system_files/tippy-6.2.7/tippy.css","post-22-the-glowing-solar-system_files/tippy-6.2.7/tippy.umd.min.js","post-22-the-glowing-solar-system_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1637,45 +1637,122 @@ tidy table.</p>
 <span>  <span class='fu'>`colnames&lt;-`</span><span class='op'>(</span><span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span>, <span class='op'>]</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># set the first row as the header</span></span>
 <span>  <span class='va'>.</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>]</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># remove the first row</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/across.html'>across</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>7</span><span class='op'>)</span>, <span class='va'>as.numeric</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># convert the columns to numeric</span></span>
-<span>  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/clean_names.html'>clean_names</a></span><span class='op'>(</span><span class='op'>)</span>  <span class='co'># clean the column names</span></span>
+<span>  <span class='fu'><a href='https://tibble.tidyverse.org/reference/rownames.html'>rowid_to_column</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"row_id"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># add a row id</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/clean_names.html'>clean_names</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># clean the column names</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>volume_earth_1 <span class='op'>=</span> <span class='op'>(</span><span class='va'>diameter_earth_1</span><span class='op'>)</span><span class='op'>^</span><span class='fl'>3</span><span class='op'>)</span>  <span class='co'># volumes of the planets relative to Earth</span></span>
 <span></span>
 <span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>planetary_dat</span>, <span class='fl'>5</span><span class='op'>)</span></span></code></pre>
 </div>
-<pre><code># A tibble: 5 × 7
-  planet  distance_from_the_…¹ perio…² perio…³ mass_…⁴ diame…⁵ numbe…⁶
-  &lt;chr&gt;                  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-1 Mercury                 0.39 88 days 59 days    0.06    0.38       0
-2 Venus                   0.72 225 da… 243 da…    0.82    0.95       0
-3 Earth                   1    365 da… 24 hou…    1       1          1
-4 Mars                    1.52 687 da… 25 hou…    0.11    0.53       2
-5 Jupiter                 5.2  12 yea… 10 hou…  318.     11.2       63
-# … with abbreviated variable names ¹​distance_from_the_sun_au,
-#   ²​period_of_revolution, ³​period_of_rotation, ⁴​mass_earth_1,
-#   ⁵​diameter_earth_1, ⁶​number_of_confirmed_satellites</code></pre>
+<pre><code># A tibble: 5 × 9
+  row_id planet  distance_fr…¹ perio…² perio…³ mass_…⁴ diame…⁵ numbe…⁶
+   &lt;int&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1      1 Mercury          0.39 88 days 59 days    0.06    0.38       0
+2      2 Venus            0.72 225 da… 243 da…    0.82    0.95       0
+3      3 Earth            1    365 da… 24 hou…    1       1          1
+4      4 Mars             1.52 687 da… 25 hou…    0.11    0.53       2
+5      5 Jupiter          5.2  12 yea… 10 hou…  318.     11.2       63
+# … with 1 more variable: volume_earth_1 &lt;dbl&gt;, and abbreviated
+#   variable names ¹​distance_from_the_sun_au, ²​period_of_revolution,
+#   ³​period_of_rotation, ⁴​mass_earth_1, ⁵​diameter_earth_1,
+#   ⁶​number_of_confirmed_satellites</code></pre>
 </div>
-<h3 id="step-2.-add-url-paths-to-the-planet-images">Step 2. Add url
-paths to the planet images</h3>
-<p>Add wiki url paths to the images</p>
+<h3 id="leg-2.-add-the-url-paths-to-the-planet-images">Leg 2. Add the
+url paths to the planet images</h3>
+<p>Our next leg is to add a new column to the planetary data with the
+url paths to the planet images. We’ll use these url paths later on for
+our plot.</p>
 <div class="layout-chunk" data-layout="l-body">
-
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/tidyverse/glue'>glue</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>planetary_dat</span> <span class='op'>&lt;-</span> <span class='va'>planetary_dat</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>image_url <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span>    <span class='st'>"https://scx2.b-cdn.net/gfx/news/hires/2015/whatsimporta.jpg"</span>,</span>
+<span>    <span class='st'>"https://cdn.britannica.com/86/21186-050-C48F8AA1/radar-clouds-Scientists-surface-Venus-computer-image.jpg"</span>,</span>
+<span>    <span class='st'>"https://cdn.britannica.com/25/160325-050-EB1C8FB7/image-instruments-Earth-satellite-NASA-Suomi-National-2012.jpg"</span>,</span>
+<span>    <span class='st'>"https://mars.nasa.gov/system/content_pages/main_images/256_Webp.net-resizeimage_%284%29.jpg"</span>,</span>
+<span>    <span class='st'>"https://upload.wikimedia.org/wikipedia/commons/c/c1/Jupiter_New_Horizons.jpg"</span>,</span>
+<span>    <span class='st'>"https://cdn.britannica.com/80/145480-050-24BF0658/image-Hubble-Space-Telescope-Saturn-moons-shadow.jpg"</span>,</span>
+<span>    <span class='st'>"https://upload.wikimedia.org/wikipedia/commons/c/c9/Uranus_as_seen_by_NASA%27s_Voyager_2_%28remastered%29_-_JPEG_converted.jpg"</span>,</span>
+<span>    <span class='st'>"https://upload.wikimedia.org/wikipedia/commons/6/63/Neptune_-_Voyager_2_%2829347980845%29_flatten_crop.jpg"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>image_width <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>11.5</span>, <span class='fl'>12</span>, <span class='fl'>13</span>, <span class='fl'>26.5</span>, <span class='fl'>27</span>, <span class='fl'>45</span>, <span class='fl'>18</span>, <span class='fl'>16.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>image_tag <span class='op'>=</span> <span class='fu'><a href='https://glue.tidyverse.org/reference/glue.html'>glue</a></span><span class='op'>(</span><span class='st'>"&lt;img src='{image_url}' width = '{image_width}'/&gt;"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
-<h3 id="step-3.-create-a-line-chart-of-planets">Step 3. Create a line
-chart of planets</h3>
-<p>line chart with distance to sun as x axis (reverse the axis) and size
-as y axis blurry points with planet sizes as area size, color by dist to
-sun add solid opaque points color the line by distance to sun</p>
+</div>
+<h3 id="leg-3.-create-a-basic-polar-line-chart-of-planets">Leg 3. Create
+a basic polar line chart of planets</h3>
 <div class="layout-chunk" data-layout="l-body">
-
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>ggblur</span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggforce.data-imaginist.com'>ggforce</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://colorspace.R-Forge.R-project.org/'>colorspace</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>P_solar_system</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggblur/man/geom_point_blur.html'>geom_point_blur</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>planetary_dat</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>row_id</span>, y <span class='op'>=</span> <span class='va'>distance_from_the_sun_au</span>,</span>
+<span>                                            color <span class='op'>=</span> <span class='va'>row_id</span>, size <span class='op'>=</span> <span class='va'>volume_earth_1</span>,</span>
+<span>                                            blur_size <span class='op'>=</span> <span class='va'>volume_earth_1</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggforce.data-imaginist.com/reference/geom_link.html'>geom_link</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>planetary_dat</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>row_id</span>, y <span class='op'>=</span> <span class='fl'>0</span>, xend <span class='op'>=</span> <span class='va'>row_id</span>, </span>
+<span>                                      yend <span class='op'>=</span> <span class='va'>distance_from_the_sun_au</span>,</span>
+<span>                                      color <span class='op'>=</span> <span class='va'>row_id</span>, color <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes_eval.html'>after_scale</a></span><span class='op'>(</span><span class='fu'><a href='https://colorspace.R-Forge.R-project.org/reference/desaturate.html'>desaturate</a></span><span class='op'>(</span><span class='va'>color</span>, <span class='fl'>0.3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>, </span>
+<span>            size <span class='op'>=</span> <span class='fl'>0.75</span>, n <span class='op'>=</span> <span class='fl'>300</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>planetary_dat</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>row_id</span>, y <span class='op'>=</span> <span class='va'>distance_from_the_sun_au</span>, </span>
+<span>                                       color <span class='op'>=</span> <span class='va'>row_id</span>, size <span class='op'>=</span> <span class='va'>volume_earth_1</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_x_continuous</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1</span>, <span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>35</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"none"</span>, size <span class='op'>=</span> <span class='st'>"none"</span>, blur_size <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_polar.html'>coord_polar</a></span><span class='op'>(</span>theta <span class='op'>=</span> <span class='st'>"y"</span>, clip <span class='op'>=</span> <span class='st'>"off"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>P_solar_system</span></span></code></pre>
 </div>
-<h3 id="step-4.-create-a-polar-barplot">Step 4. Create a polar
-barplot</h3>
-<p>make the plot circular add the planet images and labels (white) add a
-sun in the middle</p>
+<p><img src="post-22-the-glowing-solar-system_files/figure-html5/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /></p>
+</div>
+<h3 id="leg-4.-make-the-lines-and-points-glow">Leg 4. Make the lines and
+points glow</h3>
 <div class="layout-chunk" data-layout="l-body">
-
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/jrnold/ggthemes'>ggthemes</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>col_pal</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggthemes/man/tableau_gradient_pal.html'>tableau_div_gradient_pal</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Sunset-Sunrise Diverging"</span><span class='op'>)</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, length <span class='op'>=</span> <span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>  <span class='co'># create a customized color palette</span></span>
+<span>           </span>
+<span><span class='va'>P_solar_system</span> <span class='op'>&lt;-</span> <span class='va'>P_solar_system</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggforce.data-imaginist.com/reference/geom_link.html'>geom_link2</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, y <span class='op'>=</span> <span class='fl'>0</span>, xend <span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>9</span>, yend <span class='op'>=</span> <span class='fl'>0</span>, color <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_gradient.html'>scale_color_gradientn</a></span><span class='op'>(</span>colors <span class='op'>=</span> <span class='va'>col_pal</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_void</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>plot.background <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_rect</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"black"</span><span class='op'>)</span>,</span>
+<span>        plot.margin <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>margin</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>P_solar_system</span></span></code></pre>
 </div>
-<h3 id="step-5.-polish-the-figure">Step 5. Polish the figure</h3>
-<p>black background add random dots as stars add some annotations</p>
+<p><img src="post-22-the-glowing-solar-system_files/figure-html5/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /></p>
+</div>
+<h3 id="leg-5.-add-planet-images">Leg 5. Add planet images</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://wilkelab.org/ggtext/'>ggtext</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>P_solar_system</span> <span class='op'>&lt;-</span> <span class='va'>P_solar_system</span> <span class='op'>+</span> </span>
+<span>    <span class='fu'><a href='https://wilkelab.org/ggtext/reference/geom_richtext.html'>geom_richtext</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>planetary_dat</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>row_id</span>, y <span class='op'>=</span> <span class='va'>distance_from_the_sun_au</span>,</span>
+<span>                                            label <span class='op'>=</span> <span class='va'>image_tag</span><span class='op'>)</span>,</span>
+<span>                  color <span class='op'>=</span> <span class='cn'>NA</span>, fill <span class='op'>=</span> <span class='cn'>NA</span>,</span>
+<span>                  nudge_x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='op'>-</span><span class='fl'>0.3</span>, <span class='op'>-</span><span class='fl'>0.2</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,</span>
+<span>                  nudge_y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2.4</span>, <span class='fl'>1.7</span>, <span class='fl'>1.3</span>, <span class='fl'>1</span>, <span class='fl'>1.4</span>, <span class='fl'>1.1</span>, <span class='fl'>0.7</span>, <span class='fl'>0.6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>    <span class='fu'><a href='https://wilkelab.org/ggtext/reference/geom_richtext.html'>geom_richtext</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>, y <span class='op'>=</span> <span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"&lt;img src='https://res.cloudinary.com/dtpgi0zck/image/upload/s--fMAvJ-9u--/c_fit,h_580,w_860/v1/EducationHub/photos/sun-blasts-a-m66-flare.jpg' width='50'/&gt;"</span><span class='op'>)</span>, </span>
+<span>                  color <span class='op'>=</span> <span class='cn'>NA</span>, fill <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_chr</a></span><span class='op'>(</span><span class='va'>P_solar_system</span><span class='op'>$</span><span class='va'>layers</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='va'>geom</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>}</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>[1] &quot;GeomPointBlur&quot;       &quot;GeomPath&quot;            &quot;GeomPoint&quot;          
+[4] &quot;GeomPathInterpolate&quot; &quot;GeomRichText&quot;        &quot;GeomRichText&quot;       </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.r4photobiology.info'>gginnards</a></span><span class='op'>)</span></span>
+<span><span class='va'>P_solar_system</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/gginnards/man/delete_layers.html'>move_layers</a></span><span class='op'>(</span><span class='va'>P_solar_system</span>, <span class='st'>"GeomRichText"</span>, position <span class='op'>=</span> <span class='st'>"bottom"</span><span class='op'>)</span></span>
+<span><span class='va'>P_solar_system</span></span></code></pre>
+</div>
+<p><img src="post-22-the-glowing-solar-system_files/figure-html5/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /></p>
+</div>
+<h3 id="leg-6.-polish-the-figure">Leg 6. Polish the figure</h3>
+<p>add random dots as stars add some text annotations add planet labels
+as x ticks</p>
 <div class="layout-chunk" data-layout="l-body">
 
 </div>
@@ -1685,7 +1762,7 @@ Earth.</p>
 <p>What a memorable journey! Hope you learn something useful from this
 post and don’t forget to leave your comments and suggestions below if
 you have any!</p>
-<div class="sourceCode" id="cb2"><pre
+<div class="sourceCode" id="cb3"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

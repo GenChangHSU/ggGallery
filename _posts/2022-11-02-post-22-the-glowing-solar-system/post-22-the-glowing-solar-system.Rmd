@@ -122,7 +122,7 @@ This is quite a long journey, and so I'll break it down into several legs so tha
 
 Our first leg is to prepare the planetary data for our plot. We'll do so by scraping the information from the website and organizing it into a tidy table.
 
-```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+```{r, fig.width = 8, fig.height = 8, out.width = "80%"}
 library(tidyverse)
 library(rvest)  # for scraping the website
 library(janitor)  # for the function "clean_names()"
@@ -151,27 +151,27 @@ head(planetary_dat, 5)
 
 Our next leg is to add a new column to the planetary data with the url paths to the planet images. We'll use these url paths later on for our plot. 
 
-```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+```{r, fig.width = 8, fig.height = 8, out.width = "80%"}
 library(glue)
 
 planetary_dat <- planetary_dat %>%
   mutate(image_url = c(
-    "https://upload.wikimedia.org/wikipedia/commons/4/4a/Mercury_in_true_color.jpg",
+    "https://scx2.b-cdn.net/gfx/news/hires/2015/whatsimporta.jpg",
     "https://cdn.britannica.com/86/21186-050-C48F8AA1/radar-clouds-Scientists-surface-Venus-computer-image.jpg",
     "https://cdn.britannica.com/25/160325-050-EB1C8FB7/image-instruments-Earth-satellite-NASA-Suomi-National-2012.jpg",
-    "https://cdn.britannica.com/64/73464-050-56C80D3A/view-composite-images-Mars-spacecraft-Global-Surveyor-April-1999.jpg",
+    "https://mars.nasa.gov/system/content_pages/main_images/256_Webp.net-resizeimage_%284%29.jpg",
     "https://upload.wikimedia.org/wikipedia/commons/c/c1/Jupiter_New_Horizons.jpg",
     "https://cdn.britannica.com/80/145480-050-24BF0658/image-Hubble-Space-Telescope-Saturn-moons-shadow.jpg",
     "https://upload.wikimedia.org/wikipedia/commons/c/c9/Uranus_as_seen_by_NASA%27s_Voyager_2_%28remastered%29_-_JPEG_converted.jpg",
     "https://upload.wikimedia.org/wikipedia/commons/6/63/Neptune_-_Voyager_2_%2829347980845%29_flatten_crop.jpg")) %>%
-  mutate(image_width = c(20, 20, 20, 20, 20, 20, 20, 20)) %>% 
+  mutate(image_width = c(11.5, 12, 13, 26.5, 27, 45, 18, 16.5)) %>% 
   mutate(image_tag = glue("<img src='{image_url}' width = '{image_width}'/>"))
 
 ```
 
 ### Leg 3. Create a basic polar line chart of planets
 
-```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+```{r, fig.width = 8, fig.height = 8, out.width = "80%"}
 library(ggblur)
 library(ggforce)
 library(colorspace)
@@ -180,12 +180,12 @@ P_solar_system <- ggplot() +
   geom_point_blur(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au,
                                             color = row_id, size = volume_earth_1,
                                             blur_size = volume_earth_1)) +
-  geom_point(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au,
-                                       color = row_id, size = volume_earth_1
-                                       )) + 
   geom_link(data = planetary_dat, aes(x = row_id, y = 0, xend = row_id, 
-                                         yend = distance_from_the_sun_au,
-                                         color = row_id, color = after_scale(desaturate(color, 0.3))), size = 0.75, n = 300) + 
+                                      yend = distance_from_the_sun_au,
+                                      color = row_id, color = after_scale(desaturate(color, 0.3))), 
+            size = 0.75, n = 300) +
+  geom_point(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au, 
+                                       color = row_id, size = volume_earth_1)) + 
   scale_x_continuous(limits = c(-1, 8)) + 
   scale_y_continuous(limits = c(0, 35)) +
   guides(color = "none", size = "none", blur_size = "none") + 
@@ -197,7 +197,7 @@ P_solar_system
 
 ### Leg 4. Make the lines and points glow
 
-```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+```{r, fig.width = 8, fig.height = 8, out.width = "80%"}
 library(ggthemes)
 
 col_pal <- rev(tableau_div_gradient_pal(palette = "Sunset-Sunrise Diverging")(seq(0, 1, length = 8)))  # create a customized color palette
@@ -215,22 +215,25 @@ P_solar_system
 
 ### Leg 5. Add planet images
 
-```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+```{r, fig.width = 8, fig.height = 8, out.width = "80%"}
 library(ggtext)
 
 P_solar_system <- P_solar_system + 
-    geom_richtext(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au, 
-                                            label = image_tag), 
-                  color = NA, fill = NA, 
-                  nudge_x = c(0, 0.1, 0.1, 0.2, 0.2, 0.2, 0.2, 0), 
-                  nudge_y = c(2.5, 2.2, 1.8, 1.6, 1.5, 1.1, 0.8, 0.5)) + 
-    geom_richtext(aes(x = -1, y = 0, label = "<img src='https://res.cloudinary.com/dtpgi0zck/image/upload/s--fMAvJ-9u--/c_fit,h_580,w_860/v1/EducationHub/photos/sun-blasts-a-m66-flare.jpg' width='40'/>"), 
+    geom_richtext(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au,
+                                            label = image_tag),
+                  color = NA, fill = NA,
+                  nudge_x = c(0, 0, 0, 0, -0.3, -0.2, 0, 0),
+                  nudge_y = c(2.4, 1.7, 1.3, 1, 1.4, 1.1, 0.7, 0.6)) +
+    geom_richtext(aes(x = -1, y = 0, label = "<img src='https://res.cloudinary.com/dtpgi0zck/image/upload/s--fMAvJ-9u--/c_fit,h_580,w_860/v1/EducationHub/photos/sun-blasts-a-m66-flare.jpg' width='50'/>"), 
                   color = NA, fill = NA)
 
+map_chr(P_solar_system$layers, function(x){class(x$geom)[1]})
+
+library(gginnards)
+P_solar_system <- move_layers(P_solar_system, "GeomRichText", position = "bottom")
 P_solar_system
 
 ```
-
 
 ### Leg 6. Polish the figure 
 
@@ -238,7 +241,7 @@ add random dots as stars
 add some text annotations
 add planet labels as x ticks
 
-```{r, fig.width = 6, fig.height = 4, out.width = "75%"}
+```{r, fig.width = 8, fig.height = 8, out.width = "80%"}
 
 
 
