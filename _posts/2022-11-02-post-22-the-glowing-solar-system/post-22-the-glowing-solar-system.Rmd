@@ -147,7 +147,7 @@ head(planetary_dat, 5)
 
 ```
 
-### Leg 2. Add the url paths to the planet images
+### Leg 2. Retrieve the url paths to the planet images
 
 Our next leg is to add a new column to the planetary data with the url paths to the planet images. We'll use these url paths later on for our plot. 
 
@@ -178,8 +178,8 @@ library(colorspace)
 
 P_solar_system <- ggplot() + 
   geom_point_blur(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au,
-                                            color = row_id, size = volume_earth_1,
-                                            blur_size = volume_earth_1)) +
+                                            color = row_id, color = after_scale(lighten(color, 0.5, space = "HLS")),
+                                            size = volume_earth_1, blur_size = volume_earth_1)) +
   geom_link(data = planetary_dat, aes(x = row_id, y = 0, xend = row_id, 
                                       yend = distance_from_the_sun_au,
                                       color = row_id, color = after_scale(desaturate(color, 0.3))), 
@@ -213,7 +213,7 @@ P_solar_system
 
 ```
 
-### Leg 5. Add planet images
+### Leg 5. Add the planet images
 
 ```{r, fig.width = 8, fig.height = 8, out.width = "80%"}
 library(ggtext)
@@ -235,7 +235,7 @@ P_solar_system
 
 ```
 
-### Leg 6. Add text annotations 
+### Leg 6. Add a title and planet labels  
 
 ```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
 planetary_dat <- planetary_dat %>% 
@@ -243,33 +243,42 @@ planetary_dat <- planetary_dat %>%
                              str_pad(planet, width = 50, side = "both"),
                              str_pad(planet, width = 51, side = "both")))
 
-P_solar_system + 
+P_solar_system <- P_solar_system + 
   geom_text(data = planetary_dat, aes(x = row_id, y = 0, color = row_id,
                                           label = glue("{planet_pad}")),
             size = 2.5, fontface = "bold", hjust = 0.7) + 
-  geom_richtext(data = planetary_dat, 
-      aes(
-        x = 4,
-        y = 20,
-        label = "<b style='font-size:20pt;'>Travelling to Outer Space</b><br><br>st mission<br>"
-      ),
-      size = 5,
-      color = NA,
-      text.color = "#c0c0c0",
-      lineheight = 1.5,
-      hjust = 0,
-      vjust = 0,
-      fill = NA
-    )
+  geom_richtext(data = planetary_dat, aes(x = 3.5, y = 17.5,
+                                          label = "<b><span style = 'font-size:25pt'>A</span>n<span> </span><span style = 'font-size:25pt'>E</span>pic<span> </span><span style = 'font-size:25pt'>J</span>ourney<span> </span>to<span> </span>the<span> </span><span style = 'font-size:25pt'>S</span>olar<span> </span><span style = 'font-size:25pt'>S</span>ystem</b><br>"),
+                size = 5, 
+                color = NA,
+                fill = NA,
+                text.color = "#09bab7",
+                family = "Bookman",
+                fontface = "bold.italic")
 
+P_solar_system
 
 ```
-### Leg 7. Stars 
+
+### Leg 7. Sprinkle some glittering stars
+
+```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
+stars_df <- data.frame(x = runif(100, min = -5, max = 12),
+                       y = runif(100, min = -10, max = 100),
+                       size = runif(100, min = 0, max = 1))
+
+P_solar_system <- P_solar_system + 
+  geom_point_blur(data = stars_df, aes(x = x, y = y, size = size),
+                  color = "white", position = position_nudge(x = 5)) + 
+  scale_blur_size_continuous(range = c(0, 0.1))
+
+P_solar_system
+
+```
 
 
-
-We're at the very end of the solar system. It's time to get back to Earth. 
+We're at the very end of the solar system. It's time to go back to the Earth. See you next time!
 
 ## Summary
 
-What a memorable journey! Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+Hope you enjoy the memorable journey and don't forget to leave your comments and suggestions below if you have any!
