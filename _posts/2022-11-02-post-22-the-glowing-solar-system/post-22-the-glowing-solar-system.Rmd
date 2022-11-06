@@ -146,9 +146,10 @@ planetary_dat <- html %>%
 head(planetary_dat, 5)
 
 ```
+
 ### Leg 2. Retrieve the url paths to the planet images
 
-Our next leg is to add a new column to the planetary data with the url paths to the planet images. We'll use these url paths later on for our plot. 
+Our next leg is to add the urls of planet images to our planetary data and create HTML `<img>` tags for later plotting. The column `image_width` specifies the sizes of the images that will show up in the figure later.
 
 ```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
 library(glue)
@@ -162,18 +163,22 @@ planetary_dat <- planetary_dat %>%
     "https://upload.wikimedia.org/wikipedia/commons/c/c1/Jupiter_New_Horizons.jpg",
     "https://cdn.britannica.com/80/145480-050-24BF0658/image-Hubble-Space-Telescope-Saturn-moons-shadow.jpg",
     "https://upload.wikimedia.org/wikipedia/commons/c/c9/Uranus_as_seen_by_NASA%27s_Voyager_2_%28remastered%29_-_JPEG_converted.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/6/63/Neptune_-_Voyager_2_%2829347980845%29_flatten_crop.jpg")) %>%
-  mutate(image_width = c(11.5, 12, 13, 26.5, 27, 45, 18, 16.5)) %>% 
-  mutate(image_tag = glue("<img src='{image_url}' width = '{image_width}'/>"))
+    "https://upload.wikimedia.org/wikipedia/commons/6/63/Neptune_-_Voyager_2_%2829347980845%29_flatten_crop.jpg")) %>%  # the urls of planet images
+  mutate(image_width = c(11.5, 12, 13, 26.5, 27, 45, 18, 16.5)) %>%  # image sizes
+  mutate(image_tag = glue("<img src='{image_url}' width = '{image_width}'/>"))  # HTML <img> tags
 
 ```
 
-### Leg 3. Create a basic polar line chart of planets
+### Leg 3. Create a basic polar line-dot chart of planets
+
+The previous two legs were mostly data preparation, and now we are ready to roll up our sleeves and do some heavy lifting. In our third leg, we will create a polar line-dot chart for the planets, with the length of the line/curve proportional to the distance of the planet to the Sun, and the size of the point proportional to the volume of the planet.
+
+Here I used the function `geom_point_blur()` from the package `ggblur` to add blurry points, and the functions `lighten()` and `desaturate()` to modify the color of the points and lines. Also, I extended the lower limit of the x-axis to -1 to create some space at the center of the figure where we will be adding an image later, and extended the upper limit of the y-axis to 35 to prevent the longest line from sticking too close to the origin.  
 
 ```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
-library(ggblur)
-library(ggforce)
-library(colorspace)
+library(ggblur)  # for the function "geom_point_blur()"
+library(ggforce)  # for the function "geom_link()"
+library(colorspace)  # for the function "lighten()" and "desaturate()"
 
 P_solar_system <- ggplot() + 
   geom_point_blur(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au,
@@ -185,8 +190,8 @@ P_solar_system <- ggplot() +
             size = 0.75, n = 300) +
   geom_point(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au, 
                                        color = row_id, size = volume_earth_1)) + 
-  scale_x_continuous(limits = c(-1, 8)) + 
-  scale_y_continuous(limits = c(0, 35)) +
+  scale_x_continuous(limits = c(-1, 8)) +  # extend the lower limit of the x-axis
+  scale_y_continuous(limits = c(0, 35)) +  # extend the upper limit of the y-axis
   scale_blur_size_continuous(range = c(5, 20)) + 
   guides(color = "none", size = "none", blur_size = "none") + 
   coord_polar(theta = "y", clip = "off")
@@ -195,7 +200,7 @@ P_solar_system
 
 ```
 
-### Leg 4. Make the lines and points glow
+### Leg 4. Make the lines and points shine
 
 ```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
 library(ggthemes)
@@ -291,4 +296,7 @@ We're at the very end of the solar system. It's time to go back to the Earth. Se
 
 ## Summary
 
-Hope you enjoy the memorable journey and don't forget to leave your comments and suggestions below if you have any!
+Hope you enjoy the memorable ggplot space journey and don't forget to leave your comments and suggestions below if you have any!
+
+
+
