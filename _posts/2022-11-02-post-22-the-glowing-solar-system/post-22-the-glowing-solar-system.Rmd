@@ -116,11 +116,11 @@ The rocket is about to lift off now. Take a deep breath and we are ready for our
 
 ## A leg-by-leg journey to the solar system
 
-This is quite a long journey, and so I'll break it down into several legs so that we can explore the scenery in more details.
+This is quite a long journey, and so I'll break it down into several legs so that we can fully explore the scenery along the way.
 
 ### Leg 1. Scrape the planetary data
 
-Our first leg is to prepare the planetary data for our plot. We'll do so by scraping the information from the website and organizing it into a tidy table.
+Our first leg is to prepare the planetary data for our figure. We'll do so by scraping the information from the website and organizing it into a tidy table.
 
 ```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
 library(tidyverse)
@@ -138,7 +138,7 @@ planetary_dat <- html %>%
   select(where(function(x){!is.na(x) %>% any()})) %>%  # remove the columns with NAs
   `colnames<-`(.[1, ]) %>%  # set the first row as the header
   .[-1, ] %>%  # remove the first row
-  mutate(across(c(2, 5, 6, 7), as.numeric)) %>%  # convert the columns to numeric
+  mutate(across(c(2, 5, 6, 7), as.numeric)) %>%  # convert these columns to numeric
   rowid_to_column(var = "row_id") %>%  # add a row id
   clean_names() %>%  # clean the column names
   mutate(volume_earth_1 = (diameter_earth_1)^3)  # volumes of the planets relative to Earth
@@ -146,7 +146,6 @@ planetary_dat <- html %>%
 head(planetary_dat, 5)
 
 ```
-
 ### Leg 2. Retrieve the url paths to the planet images
 
 Our next leg is to add a new column to the planetary data with the url paths to the planet images. We'll use these url paths later on for our plot. 
