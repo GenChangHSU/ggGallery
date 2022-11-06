@@ -122,7 +122,7 @@ This is quite a long journey, and so I'll break it down into several legs so tha
 
 Our first leg is to prepare the planetary data for our plot. We'll do so by scraping the information from the website and organizing it into a tidy table.
 
-```{r, fig.width = 8, fig.height = 8, out.width = "80%"}
+```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
 library(tidyverse)
 library(rvest)  # for scraping the website
 library(janitor)  # for the function "clean_names()"
@@ -151,7 +151,7 @@ head(planetary_dat, 5)
 
 Our next leg is to add a new column to the planetary data with the url paths to the planet images. We'll use these url paths later on for our plot. 
 
-```{r, fig.width = 8, fig.height = 8, out.width = "80%"}
+```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
 library(glue)
 
 planetary_dat <- planetary_dat %>%
@@ -171,7 +171,7 @@ planetary_dat <- planetary_dat %>%
 
 ### Leg 3. Create a basic polar line chart of planets
 
-```{r, fig.width = 8, fig.height = 8, out.width = "80%"}
+```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
 library(ggblur)
 library(ggforce)
 library(colorspace)
@@ -188,6 +188,7 @@ P_solar_system <- ggplot() +
                                        color = row_id, size = volume_earth_1)) + 
   scale_x_continuous(limits = c(-1, 8)) + 
   scale_y_continuous(limits = c(0, 35)) +
+  scale_blur_size_continuous(range = c(5, 20)) + 
   guides(color = "none", size = "none", blur_size = "none") + 
   coord_polar(theta = "y", clip = "off")
 
@@ -197,7 +198,7 @@ P_solar_system
 
 ### Leg 4. Make the lines and points glow
 
-```{r, fig.width = 8, fig.height = 8, out.width = "80%"}
+```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
 library(ggthemes)
 
 col_pal <- rev(tableau_div_gradient_pal(palette = "Sunset-Sunrise Diverging")(seq(0, 1, length = 8)))  # create a customized color palette
@@ -215,7 +216,7 @@ P_solar_system
 
 ### Leg 5. Add the planet images
 
-```{r, fig.width = 8, fig.height = 8, out.width = "80%"}
+```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
 library(ggtext)
 
 P_solar_system <- P_solar_system + 
@@ -247,7 +248,7 @@ P_solar_system <- P_solar_system +
   geom_text(data = planetary_dat, aes(x = row_id, y = 0, color = row_id,
                                           label = glue("{planet_pad}")),
             size = 2.5, fontface = "bold", hjust = 0.7) + 
-  geom_richtext(data = planetary_dat, aes(x = 3.5, y = 17.5,
+  geom_richtext(data = planetary_dat, aes(x = 3.3, y = 17.5,
                                           label = "<b><span style = 'font-size:25pt'>A</span>n<span> </span><span style = 'font-size:25pt'>E</span>pic<span> </span><span style = 'font-size:25pt'>J</span>ourney<span> </span>to<span> </span>the<span> </span><span style = 'font-size:25pt'>S</span>olar<span> </span><span style = 'font-size:25pt'>S</span>ystem</b><br>"),
                 size = 5, 
                 color = NA,
@@ -263,19 +264,29 @@ P_solar_system
 ### Leg 7. Sprinkle some glittering stars
 
 ```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
-stars_df <- data.frame(x = runif(100, min = -5, max = 12),
-                       y = runif(100, min = -10, max = 100),
-                       size = runif(100, min = 0, max = 1))
+set.seed(123)
+stars_df <- data.frame(x = runif(50),
+                       y = runif(50),
+                       size = runif(50))
 
-P_solar_system <- P_solar_system + 
-  geom_point_blur(data = stars_df, aes(x = x, y = y, size = size),
-                  color = "white", position = position_nudge(x = 5)) + 
-  scale_blur_size_continuous(range = c(0, 0.1))
+P_stars <- ggplot() + 
+  geom_point_blur(data = stars_df, aes(x = x, y = y, size = size,
+                                       blur_size = size), 
+                  color = "white", alpha = 0.5, show.legend = F) + 
+  scale_blur_size_continuous(range = c(0, 2)) +
+  scale_size_continuous(range = c(0, 0.35)) + 
+  theme_void() + 
+  theme(plot.background = element_rect(fill = "transparent", 
+                                       color = "transparent"))
 
-P_solar_system
+library(cowplot)
+
+P_final <- ggdraw(P_solar_system) + 
+  draw_plot(P_stars)
+
+P_final
 
 ```
-
 
 We're at the very end of the solar system. It's time to go back to the Earth. See you next time!
 
