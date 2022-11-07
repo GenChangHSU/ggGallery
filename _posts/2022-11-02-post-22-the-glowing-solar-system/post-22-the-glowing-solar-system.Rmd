@@ -114,9 +114,9 @@ Recently, I stumbled upon a [post](https://www.behance.net/gallery/100683383/Tra
 
 The rocket is about to lift off now. Take a deep breath and we are ready for our space journey!!!
 
-## A leg-by-leg journey to the solar system
+## A leg-by-leg journey through the solar system
 
-This is quite a long journey, and so I'll break it down into several legs so that we can fully explore the scenery along the way.
+This is quite a long journey, and so I'll break it down into several legs so that we can fully explore the great scenery of the outer space along the way.
 
 ### Leg 1. Scrape the planetary data
 
@@ -226,7 +226,7 @@ Leg five is an exciting one: adding the planet images! We'll achieve this by map
 
 Oh, did you notice that the lower left corner of the Saturn image covered the curve? How can we fix this? Easy-peasy: just move the image layer to the very bottom! The function `move_layers()` in the package `gginnards` will do the trick. 
 
-```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
+```{r, fig.width = 9, fig.height = 9, out.width = "80%", eval = F}
 library(ggtext)
 
 P_solar_system <- P_solar_system + 
@@ -255,6 +255,7 @@ I think you might wonder why I padded the planet labels. Actually, when I just a
 After some trial and error, the labels seemed to be fairly centered. Sometimes it does take a while to experiment and fine-tune the values when you adjust the item positions (and this could even a bit irritating!). But isn't this the most fun and fulfilling part of making figures?!
 
 ```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
+library(ggtext)
 planetary_dat <- planetary_dat %>% 
   mutate(planet_pad = ifelse(nchar(planet)%%2 == 0, 
                              str_pad(planet, width = 50, side = "both"),
@@ -265,8 +266,8 @@ P_solar_system <- P_solar_system +
                                           label = glue("{planet_pad}")),
             size = 2.5, fontface = "bold", hjust = 0.7) + 
   geom_richtext(data = planetary_dat, aes(x = 3.3, y = 18.2,
-                                          label = "<b><span style = 'font-size:25pt'>A</span>n<span> </span><span style = 'font-size:25pt'>E</span>pic<span> </span><span style = 'font-size:25pt'>J</span>ourney<span> </span>to<span> </span>the<span> </span><span style = 'font-size:25pt'>G</span>lowing<span> </span><span style = 'font-size:25pt'>S</span>olar<span> </span><span style = 'font-size:25pt'>S</span>ystem</b><br>"),
-                size = 5, 
+                                          label = "<b><span style = 'font-size:24pt'>A</span>n<span> </span><span style = 'font-size:24pt'>E</span>pic<span> </span><span style = 'font-size:24pt'>J</span>ourney<span> </span>through<span> </span>the<span> </span><span style = 'font-size:24pt'>G</span>lowing<span> </span><span style = 'font-size:24pt'>S</span>olar<span> </span><span style = 'font-size:24pt'>S</span>ystem</b><br>"),
+                size = 4.5, 
                 color = NA,
                 fill = NA,
                 text.color = "#09bab7",
@@ -279,11 +280,13 @@ P_solar_system
 
 ### Leg 7. Sprinkle some glittering stars
 
+We're almost done! Our final leg is to embellish the figure with some glittering stars. We'll do this by first creating another ggplot with random blurry points scattered across a transparent background, and then overlaying it on the original planet figure using the functions in the package `cowplot`.
+
 ```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
 set.seed(123)
 stars_df <- data.frame(x = runif(50),
                        y = runif(50),
-                       size = runif(50))
+                       size = runif(50))  # stars of random positions and sizes
 
 P_stars <- ggplot() + 
   geom_point_blur(data = stars_df, aes(x = x, y = y, size = size,
@@ -293,22 +296,21 @@ P_stars <- ggplot() +
   scale_size_continuous(range = c(0, 0.35)) + 
   theme_void() + 
   theme(plot.background = element_rect(fill = "transparent", 
-                                       color = "transparent"))
+                                       color = "transparent"),
+        plot.margin = margin(0, 0, 0, 0))
 
 library(cowplot)
 
 P_final <- ggdraw(P_solar_system) + 
-  draw_plot(P_stars)
+  draw_plot(P_stars)  # overlay the stars on the planet figure
 
 P_final
 
 ```
 
-We're at the very end of the solar system. It's time to go back to the Earth. See you next time!
+Well done! We make it to the very end of the journey. This is absolutely an amazing journey. Unfortunately, our rocket is running out of fuel and so it's time to go back to the Earth. Hope you enjoy this memorable trip and will see you soon next time!
 
 ## Summary
 
-Hope you enjoy the memorable ggplot space journey and don't forget to leave your comments and suggestions below if you have any!
-
-
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
