@@ -113,7 +113,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","draft"]}},"value":[{"type":"character","attributes":{},"value":["Post #22. An epic ggplot journey through the glowing solar system"]},{"type":"character","attributes":{},"value":["Ready for an epic ggplot journey through the glowing solar system? Let's go!   \n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2022-11-02"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2022"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post22.png"]},{"type":"logical","attributes":{},"value":[true]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview"]}},"value":[{"type":"character","attributes":{},"value":["Post #22. An epic ggplot journey through the glowing solar system"]},{"type":"character","attributes":{},"value":["Ready for an epic ggplot journey through the glowing solar system? Let's go!   \n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2022-11-02"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2022"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post22.png"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1489,7 +1489,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #22. An epic ggplot journey through the glowing solar system","description":"Ready for an epic ggplot journey through the glowing solar system? Let's go!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-11-02T00:00:00.000-07:00","citationText":"Hsu, 2022"}
+{"title":"Post #22. An epic ggplot journey through the glowing solar system","description":"Ready for an epic ggplot journey through the glowing solar system? Let's go!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-11-02T00:00:00.000+08:00","citationText":"Hsu, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1606,15 +1606,15 @@ blown away: I could never imagine how amazing ggplots can be (I believe
 you’ll be in awe of it too)! Inspired by this, I hope to create my own
 one as well, both for fun and for learning and practicing. In fact, I
 think this is an excellent opportunity to bring together different data
-science skills: data scraping, data wrangling, and data
-visualization.</p>
+science skills: data scraping, data wrangling, and data visualization,
+to produce something cool and interesting.</p>
 <p>The rocket is about to lift off now. Take a deep breath and we are
 ready for our space journey!!!</p>
 <h2 id="a-leg-by-leg-journey-through-the-solar-system">A leg-by-leg
 journey through the solar system</h2>
 <p>This is quite a long journey, and so I’ll break it down into several
 legs so that we can fully explore the great scenery of the outer space
-along the way.</p>
+along our trip.</p>
 <h3 id="leg-1.-scrape-the-planetary-data">Leg 1. Scrape the planetary
 data</h3>
 <p>Our first leg is to prepare the planetary data for our figure. We’ll
@@ -1644,29 +1644,30 @@ into a tidy table.</p>
 <span></span>
 <span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>planetary_dat</span>, <span class='fl'>5</span><span class='op'>)</span></span></code></pre>
 </div>
-<pre><code># A tibble: 5 x 9
-  row_id planet  distance_fr~1 perio~2 perio~3 mass_~4 diame~5 numbe~6
+<pre><code># A tibble: 5 × 9
+  row_id planet  distance_fr…¹ perio…² perio…³ mass_…⁴ diame…⁵ numbe…⁶
    &lt;int&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
 1      1 Mercury          0.39 88 days 59 days    0.06    0.38       0
-2      2 Venus            0.72 225 da~ 243 da~    0.82    0.95       0
-3      3 Earth            1    365 da~ 24 hou~    1       1          1
-4      4 Mars             1.52 687 da~ 25 hou~    0.11    0.53       2
-5      5 Jupiter          5.2  12 yea~ 10 hou~  318.     11.2       63
-# ... with 1 more variable: volume_earth_1 &lt;dbl&gt;, and abbreviated
-#   variable names 1: distance_from_the_sun_au,
-#   2: period_of_revolution, 3: period_of_rotation, 4: mass_earth_1,
-#   5: diameter_earth_1, 6: number_of_confirmed_satellites</code></pre>
+2      2 Venus            0.72 225 da… 243 da…    0.82    0.95       0
+3      3 Earth            1    365 da… 24 hou…    1       1          1
+4      4 Mars             1.52 687 da… 25 hou…    0.11    0.53       2
+5      5 Jupiter          5.2  12 yea… 10 hou…  318.     11.2       63
+# … with 1 more variable: volume_earth_1 &lt;dbl&gt;, and abbreviated
+#   variable names ¹​distance_from_the_sun_au, ²​period_of_revolution,
+#   ³​period_of_rotation, ⁴​mass_earth_1, ⁵​diameter_earth_1,
+#   ⁶​number_of_confirmed_satellites</code></pre>
 </div>
 <h3 id="leg-2.-retrieve-the-url-paths-to-the-planet-images">Leg 2.
 Retrieve the url paths to the planet images</h3>
 <p>Our next leg is to add the urls of planet images to our planetary
-data and create HTML <code>&lt;img&gt;</code> tags for later plotting.
-The column <code>image_width</code> specifies the sizes of the images
-that will show up in the figure later.</p>
+data and create HTML <code>&lt;img&gt;</code> tags for plotting. The
+column <code>image_width</code> specifies the sizes of the images that
+will show up in the figure later.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/tidyverse/glue'>glue</a></span><span class='op'>)</span></span>
 <span></span>
+<span><span class='co'>### The urls of planet images and HTML &lt;img&gt; tags</span></span>
 <span><span class='va'>planetary_dat</span> <span class='op'>&lt;-</span> <span class='va'>planetary_dat</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>image_url <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
 <span>    <span class='st'>"https://scx2.b-cdn.net/gfx/news/hires/2015/whatsimporta.jpg"</span>,</span>
@@ -1677,7 +1678,7 @@ that will show up in the figure later.</p>
 <span>    <span class='st'>"https://cdn.britannica.com/80/145480-050-24BF0658/image-Hubble-Space-Telescope-Saturn-moons-shadow.jpg"</span>,</span>
 <span>    <span class='st'>"https://upload.wikimedia.org/wikipedia/commons/c/c9/Uranus_as_seen_by_NASA%27s_Voyager_2_%28remastered%29_-_JPEG_converted.jpg"</span>,</span>
 <span>    <span class='st'>"https://upload.wikimedia.org/wikipedia/commons/6/63/Neptune_-_Voyager_2_%2829347980845%29_flatten_crop.jpg"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># the urls of planet images</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>image_width <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>11.5</span>, <span class='fl'>12</span>, <span class='fl'>13</span>, <span class='fl'>26.5</span>, <span class='fl'>27</span>, <span class='fl'>45</span>, <span class='fl'>18</span>, <span class='fl'>16.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># image sizes</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>image_width <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>15</span>, <span class='fl'>16</span>, <span class='fl'>17</span>, <span class='fl'>30</span>, <span class='fl'>31</span>, <span class='fl'>50</span>, <span class='fl'>22</span>, <span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># image sizes</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>image_tag <span class='op'>=</span> <span class='fu'><a href='https://glue.tidyverse.org/reference/glue.html'>glue</a></span><span class='op'>(</span><span class='st'>"&lt;img src='{image_url}' width = '{image_width}'/&gt;"</span><span class='op'>)</span><span class='op'>)</span>  <span class='co'># HTML &lt;img&gt; tags</span></span></code></pre>
 </div>
 </div>
@@ -1686,23 +1687,24 @@ Create a basic polar line-dot chart of planets</h3>
 <p>The previous two legs were mostly about data preparation, and now we
 are ready to roll up our sleeves and do some heavy lifting. In our third
 leg, we will create a polar line-dot chart for the planets, with the
-length of the line/curve proportional to the distance of the planet to
-the Sun, and the size of the point proportional to the volume of the
+length of the curve proportional to the distance of the planet to the
+Sun, and the size of the point proportional to the volume of the
 planet.</p>
-<p>Here I used the function <code>geom_point_blur()</code> in the
+<p>Here we’ll use the function <code>geom_point_blur()</code> in the
 package <code>ggblur</code> to add blurry points, and the functions
 <code>lighten()</code> and <code>desaturate()</code> in the package
 <code>colorspace</code> to modify the color of the points and lines.
-Also, I extended the lower limit of the x-axis to -1 to create some
+We’ll also extend the lower limit of the x-axis to -1 to create some
 extra space at the center of the figure where we will be adding an image
-later, and extended the upper limit of the y-axis to 35 to prevent the
-longest line from sticking too close to the origin.</p>
+later, and extend the upper limit of the y-axis to 35 to prevent the
+longest curve from sticking too close to the origin.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>ggblur</span><span class='op'>)</span>  <span class='co'># for the function "geom_point_blur()"</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggforce.data-imaginist.com'>ggforce</a></span><span class='op'>)</span>  <span class='co'># for the function "geom_link()"</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://colorspace.R-Forge.R-project.org/'>colorspace</a></span><span class='op'>)</span>  <span class='co'># for the function "lighten()" and "desaturate()"</span></span>
 <span></span>
+<span><span class='co'>### A basic polar line-dot chart of planets</span></span>
 <span><span class='va'>P_solar_system</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://rdrr.io/pkg/ggblur/man/geom_point_blur.html'>geom_point_blur</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>planetary_dat</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>row_id</span>, y <span class='op'>=</span> <span class='va'>distance_from_the_sun_au</span>,</span>
 <span>                                            color <span class='op'>=</span> <span class='va'>row_id</span>, color <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes_eval.html'>after_scale</a></span><span class='op'>(</span><span class='fu'><a href='https://colorspace.R-Forge.R-project.org/reference/lighten.html'>lighten</a></span><span class='op'>(</span><span class='va'>color</span>, <span class='fl'>0.5</span>, space <span class='op'>=</span> <span class='st'>"HLS"</span><span class='op'>)</span><span class='op'>)</span>,</span>
@@ -1726,21 +1728,23 @@ longest line from sticking too close to the origin.</p>
 <h3 id="leg-4.-make-the-lines-and-points-shine">Leg 4. Make the lines
 and points shine</h3>
 <p>Our forth leg is to change the appearance of the basic chart we just
-made earlier. Specifically, I change the color of the lines and points
-using a customized color palette created with the function
+made earlier. Specifically, we’ll change the color of the lines and
+points using a customized color palette created with the function
 <code>tableau_div_gradient_pal()</code> in the package
-<code>ggtheme</code>. I also added a vertical line at the origin using
-the function <code>geom_link2()</code> in the package
+<code>ggthemes</code>. We’ll then add a vertical line at the origin
+using the function <code>geom_link2()</code> in the package
 <code>ggforce</code>, which allows for continuous color gradients along
 the line. I think this vertical line serves as an anchor for the curves
-so that they don’t seem to be floating. Lastly, I set the background to
-black.</p>
+so that they don’t seem to be floating. Lastly, we’ll set the background
+to black.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/jrnold/ggthemes'>ggthemes</a></span><span class='op'>)</span>  <span class='co'># for the function "tableau_div_gradient_pal()"</span></span>
 <span></span>
-<span><span class='va'>col_pal</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggthemes/man/tableau_gradient_pal.html'>tableau_div_gradient_pal</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Sunset-Sunrise Diverging"</span><span class='op'>)</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, length <span class='op'>=</span> <span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>  <span class='co'># create a customized color palette</span></span>
-<span>           </span>
+<span><span class='co'>### Create a customized color palette</span></span>
+<span><span class='va'>col_pal</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggthemes/man/tableau_gradient_pal.html'>tableau_div_gradient_pal</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Sunset-Sunrise Diverging"</span><span class='op'>)</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, length <span class='op'>=</span> <span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>  </span>
+<span></span>
+<span><span class='co'>### Glowing lines and points           </span></span>
 <span><span class='va'>P_solar_system</span> <span class='op'>&lt;-</span> <span class='va'>P_solar_system</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggforce.data-imaginist.com/reference/geom_link.html'>geom_link2</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, y <span class='op'>=</span> <span class='fl'>0</span>, xend <span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>9</span>, yend <span class='op'>=</span> <span class='fl'>0</span>, color <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_gradient.html'>scale_color_gradientn</a></span><span class='op'>(</span>colors <span class='op'>=</span> <span class='va'>col_pal</span><span class='op'>)</span> <span class='op'>+</span> </span>
@@ -1754,10 +1758,11 @@ black.</p>
 </div>
 <h3 id="leg-5.-add-the-planet-images">Leg 5. Add the planet images</h3>
 <p>Leg five is an exciting one: adding the planet images! We’ll achieve
-this by mapping the HTML <img> tags we created in leg two to the chart,
-using the function <code>geom_richtext()</code> in the package
-<code>ggtext</code>. By the way, <code>ggtext</code> is a super handy
-package for text manipulations in ggplots. Check out my <a
+this by mapping the HTML <code>&lt;img&gt;</code> tags we created
+earlier in leg two to the figure, using the function
+<code>geom_richtext()</code> in the package <code>ggtext</code>. By the
+way, <code>ggtext</code> is a super handy package for text manipulations
+in ggplots. Check out my <a
 href="https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/">previous
 post</a> for more details if interested!</p>
 <p>Oh, did you notice that the lower left corner of the Saturn image
@@ -1768,51 +1773,60 @@ package <code>gginnards</code> will do the trick.</p>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://wilkelab.org/ggtext/'>ggtext</a></span><span class='op'>)</span></span>
 <span></span>
+<span><span class='co'>### Add planet images to the figure</span></span>
 <span><span class='va'>P_solar_system</span> <span class='op'>&lt;-</span> <span class='va'>P_solar_system</span> <span class='op'>+</span> </span>
 <span>    <span class='fu'><a href='https://wilkelab.org/ggtext/reference/geom_richtext.html'>geom_richtext</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>planetary_dat</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>row_id</span>, y <span class='op'>=</span> <span class='va'>distance_from_the_sun_au</span>,</span>
 <span>                                            label <span class='op'>=</span> <span class='va'>image_tag</span><span class='op'>)</span>,</span>
 <span>                  color <span class='op'>=</span> <span class='cn'>NA</span>, fill <span class='op'>=</span> <span class='cn'>NA</span>,</span>
 <span>                  nudge_x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='op'>-</span><span class='fl'>0.3</span>, <span class='op'>-</span><span class='fl'>0.2</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,</span>
 <span>                  nudge_y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2.4</span>, <span class='fl'>1.7</span>, <span class='fl'>1.3</span>, <span class='fl'>1</span>, <span class='fl'>1.4</span>, <span class='fl'>1.1</span>, <span class='fl'>0.7</span>, <span class='fl'>0.6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>    <span class='fu'><a href='https://wilkelab.org/ggtext/reference/geom_richtext.html'>geom_richtext</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>, y <span class='op'>=</span> <span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"&lt;img src='https://res.cloudinary.com/dtpgi0zck/image/upload/s--fMAvJ-9u--/c_fit,h_580,w_860/v1/EducationHub/photos/sun-blasts-a-m66-flare.jpg' width='60'/&gt;"</span><span class='op'>)</span>, </span>
+<span>    <span class='fu'><a href='https://wilkelab.org/ggtext/reference/geom_richtext.html'>geom_richtext</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>, y <span class='op'>=</span> <span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"&lt;img src='https://res.cloudinary.com/dtpgi0zck/image/upload/s--fMAvJ-9u--/c_fit,h_580,w_860/v1/EducationHub/photos/sun-blasts-a-m66-flare.jpg' width='70'/&gt;"</span><span class='op'>)</span>, </span>
 <span>                  color <span class='op'>=</span> <span class='cn'>NA</span>, fill <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span></span>
 <span></span>
+<span><span class='co'>### Move the layer "GeomRichText" to the bottom</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.r4photobiology.info'>gginnards</a></span><span class='op'>)</span></span>
 <span></span>
-<span><span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_chr</a></span><span class='op'>(</span><span class='va'>P_solar_system</span><span class='op'>$</span><span class='va'>layers</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='va'>geom</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>}</span><span class='op'>)</span>  <span class='co'># get the layer names</span></span>
-<span><span class='va'>P_solar_system</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/gginnards/man/delete_layers.html'>move_layers</a></span><span class='op'>(</span><span class='va'>P_solar_system</span>, <span class='st'>"GeomRichText"</span>, position <span class='op'>=</span> <span class='st'>"bottom"</span><span class='op'>)</span>  <span class='co'># move the layer "GeomRichText" to the bottom  </span></span>
+<span><span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_chr</a></span><span class='op'>(</span><span class='va'>P_solar_system</span><span class='op'>$</span><span class='va'>layers</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='va'>geom</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>}</span><span class='op'>)</span>  <span class='co'># get the layer names</span></span></code></pre>
+</div>
+<pre><code>[1] &quot;GeomPointBlur&quot;       &quot;GeomPath&quot;            &quot;GeomPoint&quot;          
+[4] &quot;GeomPathInterpolate&quot; &quot;GeomRichText&quot;        &quot;GeomRichText&quot;       </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>P_solar_system</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/gginnards/man/delete_layers.html'>move_layers</a></span><span class='op'>(</span><span class='va'>P_solar_system</span>, <span class='st'>"GeomRichText"</span>, position <span class='op'>=</span> <span class='st'>"bottom"</span><span class='op'>)</span>    </span>
 <span><span class='va'>P_solar_system</span></span></code></pre>
 </div>
+<p><img src="post-22-the-glowing-solar-system_files/figure-html5/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="leg-6.-add-a-title-and-planet-labels">Leg 6. Add a title and
 planet labels</h3>
-<p>Our sixth leg is to add a title and planet labels to the chart. Here
-I used <code>geom_text()</code> to map the planet labels to the desired
-positions, and again <code>geom_richtext()</code> to add a title using
-the HTML syntax.</p>
-<p>I think you might wonder why I padded the planet labels. Actually,
-when I just added the labels and adjusted their positions to the left of
-the vertical line by setting <code>hjust = 1</code>, these labels were
+<p>Our sixth leg is to add a title and planet labels to the figure.
+We’ll use <code>geom_text()</code> to map the planet labels to the
+desired positions, and again <code>geom_richtext()</code> to add a title
+using the HTML syntax.</p>
+<p>You might wonder why I padded the planet labels. Actually, when I
+just added the labels and set <code>hjust = 1</code> to adjust their
+positions to the left of the vertical line, these labels were
 left-shifted but right-aligned (which didn’t look so pleasant in my
-opinion). This is mainly due to the fact that the labels are of
-different lengths. I wanted the labels to be centered, and so I used
-this padding trick to make the labels extremely long and of similar
-lengths. In this way, I don’t have to adjust the positions that much
+opinion; I wanted the labels to be centered!). This is mainly due to the
+fact that the labels are of different lengths. Therefore, I used this
+padding trick to make the labels extremely long and of similar lengths.
+In this way, I don’t have to adjust the positions that much
 (<code>hjust = 0.7</code> would be enough to shift the labels to the
 left), and this will largely reduce the right-alignment problem.</p>
 <p>After some trial and error, the labels seemed to be fairly centered.
 Sometimes it does take a while to experiment and fine-tune the values
-when you adjust the item positions (and this could even a bit
-irritating!). But isn’t this the most fun and fulfilling part of making
-figures?!</p>
+when you adjust the item positions (which could even a bit irritating!).
+But isn’t this the most fun and fulfilling part of ggplots?!</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://wilkelab.org/ggtext/'>ggtext</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Pad the planet labels</span></span>
 <span><span class='va'>planetary_dat</span> <span class='op'>&lt;-</span> <span class='va'>planetary_dat</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>planet_pad <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nchar.html'>nchar</a></span><span class='op'>(</span><span class='va'>planet</span><span class='op'>)</span><span class='op'><a href='https://rdrr.io/r/base/Arithmetic.html'>%%</a></span><span class='fl'>2</span> <span class='op'>==</span> <span class='fl'>0</span>, </span>
 <span>                             <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_pad.html'>str_pad</a></span><span class='op'>(</span><span class='va'>planet</span>, width <span class='op'>=</span> <span class='fl'>50</span>, side <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span>,</span>
-<span>                             <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_pad.html'>str_pad</a></span><span class='op'>(</span><span class='va'>planet</span>, width <span class='op'>=</span> <span class='fl'>51</span>, side <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>  <span class='co'># pad the labels</span></span>
+<span>                             <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_pad.html'>str_pad</a></span><span class='op'>(</span><span class='va'>planet</span>, width <span class='op'>=</span> <span class='fl'>51</span>, side <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
+<span><span class='co'>### Add a title to the figure</span></span>
 <span><span class='va'>P_solar_system</span> <span class='op'>&lt;-</span> <span class='va'>P_solar_system</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>planetary_dat</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>row_id</span>, y <span class='op'>=</span> <span class='fl'>0</span>, color <span class='op'>=</span> <span class='va'>row_id</span>,</span>
 <span>                                          label <span class='op'>=</span> <span class='fu'><a href='https://glue.tidyverse.org/reference/glue.html'>glue</a></span><span class='op'>(</span><span class='st'>"{planet_pad}"</span><span class='op'>)</span><span class='op'>)</span>,</span>
@@ -1832,18 +1846,20 @@ figures?!</p>
 </div>
 <h3 id="leg-7.-sprinkle-some-glittering-stars">Leg 7. Sprinkle some
 glittering stars</h3>
-<p>We’re almost done! Our final leg is to embellish the figure with some
-glittering stars. We’ll do this by first creating another ggplot with
-random blurry points scattered across a transparent background, and then
-overlaying it on the original planet figure using the functions in the
-package <code>cowplot</code>.</p>
+<p>We’re almost done with our trip! The final leg is to embellish the
+figure with some glittering stars. We’ll do this by first creating
+another ggplot with random blurry points scattered across a transparent
+background, and then overlaying it on the original planet figure using
+the functions in the package <code>cowplot</code>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Stars of random positions and sizes</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span></span>
 <span><span class='va'>stars_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>50</span><span class='op'>)</span>,</span>
 <span>                       y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>50</span><span class='op'>)</span>,</span>
-<span>                       size <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>  <span class='co'># stars of random positions and sizes</span></span>
+<span>                       size <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>  </span>
 <span></span>
+<span><span class='co'>### The ggplot for the stars</span></span>
 <span><span class='va'>P_stars</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://rdrr.io/pkg/ggblur/man/geom_point_blur.html'>geom_point_blur</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>stars_df</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, size <span class='op'>=</span> <span class='va'>size</span>,</span>
 <span>                                       blur_size <span class='op'>=</span> <span class='va'>size</span><span class='op'>)</span>, </span>
@@ -1855,23 +1871,24 @@ package <code>cowplot</code>.</p>
 <span>                                       color <span class='op'>=</span> <span class='st'>"transparent"</span><span class='op'>)</span>,</span>
 <span>        plot.margin <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>margin</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
+<span><span class='co'>### Overlay the stars on the planet figure</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://wilkelab.org/cowplot/'>cowplot</a></span><span class='op'>)</span></span>
 <span></span>
 <span><span class='va'>P_final</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://wilkelab.org/cowplot/reference/ggdraw.html'>ggdraw</a></span><span class='op'>(</span><span class='va'>P_solar_system</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://wilkelab.org/cowplot/reference/draw_plot.html'>draw_plot</a></span><span class='op'>(</span><span class='va'>P_stars</span><span class='op'>)</span>  <span class='co'># overlay the stars on the planet figure</span></span>
+<span>  <span class='fu'><a href='https://wilkelab.org/cowplot/reference/draw_plot.html'>draw_plot</a></span><span class='op'>(</span><span class='va'>P_stars</span><span class='op'>)</span>  </span>
 <span></span>
 <span><span class='va'>P_final</span></span></code></pre>
 </div>
 <p><img src="post-22-the-glowing-solar-system_files/figure-html5/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
-<p>Well done! We make it to the very end of the journey. This is
-absolutely an amazing journey. Unfortunately, our rocket is running out
-of fuel and so it’s time to go back to the Earth. Hope you enjoy this
-memorable trip and will see you soon next time!</p>
+<p>Well done! We make it to the very end. This is absolutely an amazing
+journey. Unfortunately, our rocket is running out of fuel and so it’s
+time to go back to Earth. Hope you enjoy this memorable trip and will
+see you soon next time!</p>
 <h2 id="summary">Summary</h2>
 <p>Hope you learn something useful from this post and don’t forget to
 leave your comments and suggestions below if you have any!</p>
-<div class="sourceCode" id="cb2"><pre
+<div class="sourceCode" id="cb3"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

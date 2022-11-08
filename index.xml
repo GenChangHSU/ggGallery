@@ -7,7 +7,363 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Fri, 21 Oct 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 01 Nov 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #22. An epic ggplot journey through the glowing solar system</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2022-11-02-post-22-the-glowing-solar-system</link>
+      <description>
+
+
+&lt;!-- Webpage style --&gt;
+&lt;style&gt;
+d-article a {
+    color: #2780e3 !important;
+      border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+&lt;/style&gt;
+&lt;!-- Start of the article --&gt;
+&lt;h2 id="background"&gt;Background&lt;/h2&gt;
+&lt;p&gt;Recently, I stumbled upon a &lt;a
+href="https://www.behance.net/gallery/100683383/Travelling-to-Outer-Space"&gt;post&lt;/a&gt;
+by data visualization designer Cédric Scherer, and I was completely
+blown away: I could never imagine how amazing ggplots can be (I believe
+you’ll be in awe of it too)! Inspired by this, I hope to create my own
+one as well, both for fun and for learning and practicing. In fact, I
+think this is an excellent opportunity to bring together different data
+science skills: data scraping, data wrangling, and data visualization,
+to produce something cool and interesting.&lt;/p&gt;
+&lt;p&gt;The rocket is about to lift off now. Take a deep breath and we are
+ready for our space journey!!!&lt;/p&gt;
+&lt;h2 id="a-leg-by-leg-journey-through-the-solar-system"&gt;A leg-by-leg
+journey through the solar system&lt;/h2&gt;
+&lt;p&gt;This is quite a long journey, and so I’ll break it down into several
+legs so that we can fully explore the great scenery of the outer space
+along our trip.&lt;/p&gt;
+&lt;h3 id="leg-1.-scrape-the-planetary-data"&gt;Leg 1. Scrape the planetary
+data&lt;/h3&gt;
+&lt;p&gt;Our first leg is to prepare the planetary data for our figure. We’ll
+do so by scraping the information from the website and organizing it
+into a tidy table.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+library(rvest)  # for scraping the website
+library(janitor)  # for the function &amp;quot;clean_names()&amp;quot;
+
+### Read the website content 
+html &amp;lt;- read_html(&amp;quot;https://www.encyclopedia.com/reference/encyclopedias-almanacs-transcripts-and-maps/major-planets-solar-system-table&amp;quot;)
+
+### Extract and organize the table
+planetary_dat &amp;lt;- html %&amp;gt;% 
+  html_element(&amp;quot;table&amp;quot;) %&amp;gt;%  # find the &amp;lt;table&amp;gt; element in the content
+  html_table() %&amp;gt;%  # parse the table into a dataframe
+  slice(-c(1, 2, 4)) %&amp;gt;%  # remove row 1, 2, and 4
+  select(where(function(x){!is.na(x) %&amp;gt;% any()})) %&amp;gt;%  # remove the columns with NAs
+  `colnames&amp;lt;-`(.[1, ]) %&amp;gt;%  # set the first row as the header
+  .[-1, ] %&amp;gt;%  # remove the first row
+  mutate(across(c(2, 5, 6, 7), as.numeric)) %&amp;gt;%  # convert these columns to numeric
+  rowid_to_column(var = &amp;quot;row_id&amp;quot;) %&amp;gt;%  # add a row id
+  clean_names() %&amp;gt;%  # clean the column names
+  mutate(volume_earth_1 = (diameter_earth_1)^3)  # volumes of the planets relative to Earth
+
+head(planetary_dat, 5)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# A tibble: 5 × 9
+  row_id planet  distance_fr…¹ perio…² perio…³ mass_…⁴ diame…⁵ numbe…⁶
+   &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;           &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;   &amp;lt;chr&amp;gt;     &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;
+1      1 Mercury          0.39 88 days 59 days    0.06    0.38       0
+2      2 Venus            0.72 225 da… 243 da…    0.82    0.95       0
+3      3 Earth            1    365 da… 24 hou…    1       1          1
+4      4 Mars             1.52 687 da… 25 hou…    0.11    0.53       2
+5      5 Jupiter          5.2  12 yea… 10 hou…  318.     11.2       63
+# … with 1 more variable: volume_earth_1 &amp;lt;dbl&amp;gt;, and abbreviated
+#   variable names ¹​distance_from_the_sun_au, ²​period_of_revolution,
+#   ³​period_of_rotation, ⁴​mass_earth_1, ⁵​diameter_earth_1,
+#   ⁶​number_of_confirmed_satellites&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id="leg-2.-retrieve-the-url-paths-to-the-planet-images"&gt;Leg 2.
+Retrieve the url paths to the planet images&lt;/h3&gt;
+&lt;p&gt;Our next leg is to add the urls of planet images to our planetary
+data and create HTML &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt; tags for plotting. The
+column &lt;code&gt;image_width&lt;/code&gt; specifies the sizes of the images that
+will show up in the figure later.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(glue)
+
+### The urls of planet images and HTML &amp;lt;img&amp;gt; tags
+planetary_dat &amp;lt;- planetary_dat %&amp;gt;%
+  mutate(image_url = c(
+    &amp;quot;https://scx2.b-cdn.net/gfx/news/hires/2015/whatsimporta.jpg&amp;quot;,
+    &amp;quot;https://cdn.britannica.com/86/21186-050-C48F8AA1/radar-clouds-Scientists-surface-Venus-computer-image.jpg&amp;quot;,
+    &amp;quot;https://cdn.britannica.com/25/160325-050-EB1C8FB7/image-instruments-Earth-satellite-NASA-Suomi-National-2012.jpg&amp;quot;,
+    &amp;quot;https://mars.nasa.gov/system/content_pages/main_images/256_Webp.net-resizeimage_%284%29.jpg&amp;quot;,
+    &amp;quot;https://upload.wikimedia.org/wikipedia/commons/c/c1/Jupiter_New_Horizons.jpg&amp;quot;,
+    &amp;quot;https://cdn.britannica.com/80/145480-050-24BF0658/image-Hubble-Space-Telescope-Saturn-moons-shadow.jpg&amp;quot;,
+    &amp;quot;https://upload.wikimedia.org/wikipedia/commons/c/c9/Uranus_as_seen_by_NASA%27s_Voyager_2_%28remastered%29_-_JPEG_converted.jpg&amp;quot;,
+    &amp;quot;https://upload.wikimedia.org/wikipedia/commons/6/63/Neptune_-_Voyager_2_%2829347980845%29_flatten_crop.jpg&amp;quot;)) %&amp;gt;%  # the urls of planet images
+  mutate(image_width = c(15, 16, 17, 30, 31, 50, 22, 20)) %&amp;gt;%  # image sizes
+  mutate(image_tag = glue(&amp;quot;&amp;lt;img src=&amp;#39;{image_url}&amp;#39; width = &amp;#39;{image_width}&amp;#39;/&amp;gt;&amp;quot;))  # HTML &amp;lt;img&amp;gt; tags&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id="leg-3.-create-a-basic-polar-line-dot-chart-of-planets"&gt;Leg 3.
+Create a basic polar line-dot chart of planets&lt;/h3&gt;
+&lt;p&gt;The previous two legs were mostly about data preparation, and now we
+are ready to roll up our sleeves and do some heavy lifting. In our third
+leg, we will create a polar line-dot chart for the planets, with the
+length of the curve proportional to the distance of the planet to the
+Sun, and the size of the point proportional to the volume of the
+planet.&lt;/p&gt;
+&lt;p&gt;Here we’ll use the function &lt;code&gt;geom_point_blur()&lt;/code&gt; in the
+package &lt;code&gt;ggblur&lt;/code&gt; to add blurry points, and the functions
+&lt;code&gt;lighten()&lt;/code&gt; and &lt;code&gt;desaturate()&lt;/code&gt; in the package
+&lt;code&gt;colorspace&lt;/code&gt; to modify the color of the points and lines.
+We’ll also extend the lower limit of the x-axis to -1 to create some
+extra space at the center of the figure where we will be adding an image
+later, and extend the upper limit of the y-axis to 35 to prevent the
+longest curve from sticking too close to the origin.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(ggblur)  # for the function &amp;quot;geom_point_blur()&amp;quot;
+library(ggforce)  # for the function &amp;quot;geom_link()&amp;quot;
+library(colorspace)  # for the function &amp;quot;lighten()&amp;quot; and &amp;quot;desaturate()&amp;quot;
+
+### A basic polar line-dot chart of planets
+P_solar_system &amp;lt;- ggplot() + 
+  geom_point_blur(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au,
+                                            color = row_id, color = after_scale(lighten(color, 0.5, space = &amp;quot;HLS&amp;quot;)),
+                                            size = volume_earth_1, blur_size = volume_earth_1)) +
+  geom_link(data = planetary_dat, aes(x = row_id, y = 0, xend = row_id, 
+                                      yend = distance_from_the_sun_au,
+                                      color = row_id, color = after_scale(desaturate(color, 0.3))), 
+            size = 0.75, n = 300) +
+  geom_point(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au, 
+                                       color = row_id, size = volume_earth_1)) + 
+  scale_x_continuous(limits = c(-1, 8)) +  # extend the lower limit of the x-axis
+  scale_y_continuous(limits = c(0, 35)) +  # extend the upper limit of the y-axis
+  scale_blur_size_continuous(range = c(5, 20)) + 
+  guides(color = &amp;quot;none&amp;quot;, size = &amp;quot;none&amp;quot;, blur_size = &amp;quot;none&amp;quot;) + 
+  coord_polar(theta = &amp;quot;y&amp;quot;, clip = &amp;quot;off&amp;quot;)
+
+P_solar_system&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file42d09e31c2f_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="leg-4.-make-the-lines-and-points-shine"&gt;Leg 4. Make the lines
+and points shine&lt;/h3&gt;
+&lt;p&gt;Our forth leg is to change the appearance of the basic chart we just
+made earlier. Specifically, we’ll change the color of the lines and
+points using a customized color palette created with the function
+&lt;code&gt;tableau_div_gradient_pal()&lt;/code&gt; in the package
+&lt;code&gt;ggthemes&lt;/code&gt;. We’ll then add a vertical line at the origin
+using the function &lt;code&gt;geom_link2()&lt;/code&gt; in the package
+&lt;code&gt;ggforce&lt;/code&gt;, which allows for continuous color gradients along
+the line. I think this vertical line serves as an anchor for the curves
+so that they don’t seem to be floating. Lastly, we’ll set the background
+to black.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(ggthemes)  # for the function &amp;quot;tableau_div_gradient_pal()&amp;quot;
+
+### Create a customized color palette
+col_pal &amp;lt;- rev(tableau_div_gradient_pal(palette = &amp;quot;Sunset-Sunrise Diverging&amp;quot;)(seq(0, 1, length = 8)))  
+
+### Glowing lines and points           
+P_solar_system &amp;lt;- P_solar_system + 
+  geom_link2(aes(x = 1:8, y = 0, xend = 2:9, yend = 0, color = 1:8), n = 100) +
+  scale_color_gradientn(colors = col_pal) + 
+  theme_void() + 
+  theme(plot.background = element_rect(fill = &amp;quot;black&amp;quot;),  # black background
+        plot.margin = margin(0, 0, 0, 0))
+
+P_solar_system&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file42d09e31c2f_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="leg-5.-add-the-planet-images"&gt;Leg 5. Add the planet images&lt;/h3&gt;
+&lt;p&gt;Leg five is an exciting one: adding the planet images! We’ll achieve
+this by mapping the HTML &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt; tags we created
+earlier in leg two to the figure, using the function
+&lt;code&gt;geom_richtext()&lt;/code&gt; in the package &lt;code&gt;ggtext&lt;/code&gt;. By the
+way, &lt;code&gt;ggtext&lt;/code&gt; is a super handy package for text manipulations
+in ggplots. Check out my &lt;a
+href="https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/"&gt;previous
+post&lt;/a&gt; for more details if interested!&lt;/p&gt;
+&lt;p&gt;Oh, did you notice that the lower left corner of the Saturn image
+covered the curve? How can we fix this? Easy-peasy: just move the image
+layer to the very bottom! The function &lt;code&gt;move_layers()&lt;/code&gt; in the
+package &lt;code&gt;gginnards&lt;/code&gt; will do the trick.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(ggtext)
+
+### Add planet images to the figure
+P_solar_system &amp;lt;- P_solar_system + 
+    geom_richtext(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au,
+                                            label = image_tag),
+                  color = NA, fill = NA,
+                  nudge_x = c(0, 0, 0, 0, -0.3, -0.2, 0, 0),
+                  nudge_y = c(2.4, 1.7, 1.3, 1, 1.4, 1.1, 0.7, 0.6)) +
+    geom_richtext(aes(x = -1, y = 0, label = &amp;quot;&amp;lt;img src=&amp;#39;https://res.cloudinary.com/dtpgi0zck/image/upload/s--fMAvJ-9u--/c_fit,h_580,w_860/v1/EducationHub/photos/sun-blasts-a-m66-flare.jpg&amp;#39; width=&amp;#39;70&amp;#39;/&amp;gt;&amp;quot;), 
+                  color = NA, fill = NA)
+
+### Move the layer &amp;quot;GeomRichText&amp;quot; to the bottom
+library(gginnards)
+
+map_chr(P_solar_system$layers, function(x){class(x$geom)[1]})  # get the layer names&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;GeomPointBlur&amp;quot;       &amp;quot;GeomPath&amp;quot;            &amp;quot;GeomPoint&amp;quot;          
+[4] &amp;quot;GeomPathInterpolate&amp;quot; &amp;quot;GeomRichText&amp;quot;        &amp;quot;GeomRichText&amp;quot;       &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;P_solar_system &amp;lt;- move_layers(P_solar_system, &amp;quot;GeomRichText&amp;quot;, position = &amp;quot;bottom&amp;quot;)    
+P_solar_system&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file42d09e31c2f_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="leg-6.-add-a-title-and-planet-labels"&gt;Leg 6. Add a title and
+planet labels&lt;/h3&gt;
+&lt;p&gt;Our sixth leg is to add a title and planet labels to the figure.
+We’ll use &lt;code&gt;geom_text()&lt;/code&gt; to map the planet labels to the
+desired positions, and again &lt;code&gt;geom_richtext()&lt;/code&gt; to add a title
+using the HTML syntax.&lt;/p&gt;
+&lt;p&gt;You might wonder why I padded the planet labels. Actually, when I
+just added the labels and set &lt;code&gt;hjust = 1&lt;/code&gt; to adjust their
+positions to the left of the vertical line, these labels were
+left-shifted but right-aligned (which didn’t look so pleasant in my
+opinion; I wanted the labels to be centered!). This is mainly due to the
+fact that the labels are of different lengths. Therefore, I used this
+padding trick to make the labels extremely long and of similar lengths.
+In this way, I don’t have to adjust the positions that much
+(&lt;code&gt;hjust = 0.7&lt;/code&gt; would be enough to shift the labels to the
+left), and this will largely reduce the right-alignment problem.&lt;/p&gt;
+&lt;p&gt;After some trial and error, the labels seemed to be fairly centered.
+Sometimes it does take a while to experiment and fine-tune the values
+when you adjust the item positions (which could even a bit irritating!).
+But isn’t this the most fun and fulfilling part of ggplots?!&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(ggtext)
+
+### Pad the planet labels
+planetary_dat &amp;lt;- planetary_dat %&amp;gt;% 
+  mutate(planet_pad = ifelse(nchar(planet)%%2 == 0, 
+                             str_pad(planet, width = 50, side = &amp;quot;both&amp;quot;),
+                             str_pad(planet, width = 51, side = &amp;quot;both&amp;quot;)))
+
+### Add a title to the figure
+P_solar_system &amp;lt;- P_solar_system + 
+  geom_text(data = planetary_dat, aes(x = row_id, y = 0, color = row_id,
+                                          label = glue(&amp;quot;{planet_pad}&amp;quot;)),
+            size = 2.5, fontface = &amp;quot;bold&amp;quot;, hjust = 0.7) + 
+  geom_richtext(data = planetary_dat, aes(x = 3.3, y = 18.2,
+                                          label = &amp;quot;&amp;lt;b&amp;gt;&amp;lt;span style = &amp;#39;font-size:24pt&amp;#39;&amp;gt;A&amp;lt;/span&amp;gt;n&amp;lt;span&amp;gt; &amp;lt;/span&amp;gt;&amp;lt;span style = &amp;#39;font-size:24pt&amp;#39;&amp;gt;E&amp;lt;/span&amp;gt;pic&amp;lt;span&amp;gt; &amp;lt;/span&amp;gt;&amp;lt;span style = &amp;#39;font-size:24pt&amp;#39;&amp;gt;J&amp;lt;/span&amp;gt;ourney&amp;lt;span&amp;gt; &amp;lt;/span&amp;gt;through&amp;lt;span&amp;gt; &amp;lt;/span&amp;gt;the&amp;lt;span&amp;gt; &amp;lt;/span&amp;gt;&amp;lt;span style = &amp;#39;font-size:24pt&amp;#39;&amp;gt;G&amp;lt;/span&amp;gt;lowing&amp;lt;span&amp;gt; &amp;lt;/span&amp;gt;&amp;lt;span style = &amp;#39;font-size:24pt&amp;#39;&amp;gt;S&amp;lt;/span&amp;gt;olar&amp;lt;span&amp;gt; &amp;lt;/span&amp;gt;&amp;lt;span style = &amp;#39;font-size:24pt&amp;#39;&amp;gt;S&amp;lt;/span&amp;gt;ystem&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;&amp;quot;),
+                size = 4.5, 
+                color = NA,
+                fill = NA,
+                text.color = &amp;quot;#09bab7&amp;quot;,
+                family = &amp;quot;Bookman&amp;quot;,
+                fontface = &amp;quot;bold.italic&amp;quot;)
+
+P_solar_system&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file42d09e31c2f_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="leg-7.-sprinkle-some-glittering-stars"&gt;Leg 7. Sprinkle some
+glittering stars&lt;/h3&gt;
+&lt;p&gt;We’re almost done with our trip! The final leg is to embellish the
+figure with some glittering stars. We’ll do this by first creating
+another ggplot with random blurry points scattered across a transparent
+background, and then overlaying it on the original planet figure using
+the functions in the package &lt;code&gt;cowplot&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Stars of random positions and sizes
+set.seed(123)
+stars_df &amp;lt;- data.frame(x = runif(50),
+                       y = runif(50),
+                       size = runif(50))  
+
+### The ggplot for the stars
+P_stars &amp;lt;- ggplot() + 
+  geom_point_blur(data = stars_df, aes(x = x, y = y, size = size,
+                                       blur_size = size), 
+                  color = &amp;quot;white&amp;quot;, alpha = 0.5, show.legend = F) + 
+  scale_blur_size_continuous(range = c(0, 2)) +
+  scale_size_continuous(range = c(0, 0.35)) + 
+  theme_void() + 
+  theme(plot.background = element_rect(fill = &amp;quot;transparent&amp;quot;, 
+                                       color = &amp;quot;transparent&amp;quot;),
+        plot.margin = margin(0, 0, 0, 0))
+
+### Overlay the stars on the planet figure
+library(cowplot)
+
+P_final &amp;lt;- ggdraw(P_solar_system) + 
+  draw_plot(P_stars)  
+
+P_final&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file42d09e31c2f_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Well done! We make it to the very end. This is absolutely an amazing
+journey. Unfortunately, our rocket is running out of fuel and so it’s
+time to go back to Earth. Hope you enjoy this memorable trip and will
+see you soon next time!&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;p&gt;Hope you learn something useful from this post and don’t forget to
+leave your comments and suggestions below if you have any!&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>f3b17c7040363e0280e437476786d02a</distill:md5>
+      <category>2022</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2022-11-02-post-22-the-glowing-solar-system</guid>
+      <pubDate>Tue, 01 Nov 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-11-02-post-22-the-glowing-solar-system/post-22-the-glowing-solar-system_files/figure-html5/unnamed-chunk-3-1.png" medium="image" type="image/png" width="1728" height="1728"/>
+    </item>
     <item>
       <title>Post #21. Useful tips for mapping color and fill aesthetic in the same geom layer</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
@@ -113,7 +469,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file339049f97aaf_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file42d031ee3632_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Suppose that we want to fill the boxes by species too. We can do this
 by specifying &lt;code&gt;fill = species&lt;/code&gt; in &lt;code&gt;aes()&lt;/code&gt; and
 adding &lt;code&gt;scale_fill_brewer(palette = "Set1")&lt;/code&gt;:&lt;/p&gt;
@@ -123,7 +479,7 @@ adding &lt;code&gt;scale_fill_brewer(palette = "Set1")&lt;/code&gt;:&lt;/p&gt;
   scale_fill_brewer(palette = &amp;quot;Set1&amp;quot;) +
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file339049f97aaf_files/figure-html/unnamed-chunk-2-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file42d031ee3632_files/figure-html/unnamed-chunk-2-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;But there is a shortcut for doing this: using the function
 &lt;code&gt;after_scale()&lt;/code&gt;. So this function will reuse the scale of a
 previous aesthetic (in this case “color”) for another aesthetic (in this
@@ -137,7 +493,7 @@ previous figure.&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) +
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file339049f97aaf_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file42d031ee3632_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Now, let’s say we want to change the transparency of the box lines.
 We can do this by applying &lt;code&gt;after_scale()&lt;/code&gt; to a second color
 aesthetic to modify the scale of the first color aesthetic and change
@@ -148,7 +504,7 @@ its transparency:&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file339049f97aaf_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;
+&lt;p&gt;&lt;img src="file42d031ee3632_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;
 Likewise, we can apply the same method to the fill aesthetic to change
 the transparency of the boxes:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
@@ -156,7 +512,7 @@ the transparency of the boxes:&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file339049f97aaf_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file42d031ee3632_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Note that you can also change the transparency of the boxes by
 directly specifying the “alpha” argument outside &lt;code&gt;aes()&lt;/code&gt;. But
 did you notice the subtle difference from the previous figure? There you
@@ -167,7 +523,7 @@ transparent now!&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file339049f97aaf_files/figure-html/unnamed-chunk-6-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file42d031ee3632_files/figure-html/unnamed-chunk-6-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;To recap, we learned how to use the function
 &lt;code&gt;after_scale()&lt;/code&gt; to tweak the color and fill aesthetic in the
@@ -181,7 +537,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <distill:md5>a4d5d1a5c235b4a3cbad50b54655f68b</distill:md5>
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-10-22-post-21-useful-tips-for-mapping-color-and-fill-aesthetics-in-the-same-geom-layer</guid>
-      <pubDate>Fri, 21 Oct 2022 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 22 Oct 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-10-22-post-21-useful-tips-for-mapping-color-and-fill-aesthetics-in-the-same-geom-layer/../../homepage_images/Post21.png" medium="image" type="image/png" width="1152" height="768"/>
     </item>
     <item>
@@ -321,7 +677,7 @@ P &amp;lt;- ggplot(data = CO2) +
   scale_fill_viridis_c(name = expression(paste(CO[2], &amp;quot; uptake rate&amp;quot;)))
 
 P&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file339076c152f5_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file42d01e4d6622_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="arguments-for-legend-box"&gt;(1) Arguments for legend box&lt;/h3&gt;
 &lt;p&gt;These arguments control the appearance and margin of entire legend
 area as well as individual legend boxes, the arrangement of multiple
@@ -350,7 +706,7 @@ legends, and the spacing between panel area and legend area:&lt;/p&gt;
           
           # the spacing between panel area and legend area
           legend.box.spacing = unit(0, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file339076c152f5_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file42d01e4d6622_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Did you notice that both legends were modified in the same manner?
 This is an important feature of &lt;code&gt;theme()&lt;/code&gt;: &lt;strong&gt;it changes
 everything in the plot (i.e., global effect)!&lt;/strong&gt; So if you want to
@@ -372,7 +728,7 @@ legend keys:&lt;/p&gt;
           
           # the width of legend keys
           legend.key.width = unit(0.6, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file339076c152f5_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file42d01e4d6622_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="arguments-for-legend-title-and-labels"&gt;(3) Arguments for legend
 title and labels&lt;/h3&gt;
 &lt;p&gt;These arguments control the appearance and alignment of legend title
@@ -398,7 +754,7 @@ between legend title and keys/labels:&lt;/p&gt;
           
           # the spacing between legend title and keys/labels
           legend.spacing.y = unit(0.2, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file339076c152f5_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file42d01e4d6622_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;In the above figure, I centered the long title “CO&lt;sub&gt;2&lt;/sub&gt; uptake
 rate” by specifying a negative left margin, which pulled the title to
 the left. Check out my &lt;a
@@ -413,7 +769,7 @@ of legend items:&lt;/p&gt;
           
           # the direction of legend items
           legend.direction = &amp;quot;horizontal&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file339076c152f5_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file42d01e4d6622_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;For the argument &lt;code&gt;legend.position&lt;/code&gt;, besides the built-in
 positions (“top”, “right”, “bottom”, “left”), you can also place the
 legend(s) inside the plot by passing a vector of length two

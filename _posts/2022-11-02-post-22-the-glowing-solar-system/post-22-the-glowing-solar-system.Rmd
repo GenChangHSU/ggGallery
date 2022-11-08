@@ -11,7 +11,6 @@ output:
 categories:
   - "2022"
 preview: ../../homepage_images/Post22.png
-draft: true
 ---
 
 <!-- Webpage style -->
@@ -110,13 +109,13 @@ knitr::opts_chunk$set(message = F,
 
 ## Background
 
-Recently, I stumbled upon a [post](https://www.behance.net/gallery/100683383/Travelling-to-Outer-Space) by data visualization designer Cédric Scherer, and I was completely blown away: I could never imagine how amazing ggplots can be (I believe you'll be in awe of it too)! Inspired by this, I hope to create my own one as well, both for fun and for learning and practicing. In fact, I think this is an excellent opportunity to bring together different data science skills: data scraping, data wrangling, and data visualization.
+Recently, I stumbled upon a [post](https://www.behance.net/gallery/100683383/Travelling-to-Outer-Space) by data visualization designer Cédric Scherer, and I was completely blown away: I could never imagine how amazing ggplots can be (I believe you'll be in awe of it too)! Inspired by this, I hope to create my own one as well, both for fun and for learning and practicing. In fact, I think this is an excellent opportunity to bring together different data science skills: data scraping, data wrangling, and data visualization, to produce something cool and interesting.
 
 The rocket is about to lift off now. Take a deep breath and we are ready for our space journey!!!
 
 ## A leg-by-leg journey through the solar system
 
-This is quite a long journey, and so I'll break it down into several legs so that we can fully explore the great scenery of the outer space along the way.
+This is quite a long journey, and so I'll break it down into several legs so that we can fully explore the great scenery of the outer space along our trip.
 
 ### Leg 1. Scrape the planetary data
 
@@ -149,11 +148,12 @@ head(planetary_dat, 5)
 
 ### Leg 2. Retrieve the url paths to the planet images
 
-Our next leg is to add the urls of planet images to our planetary data and create HTML `<img>` tags for later plotting. The column `image_width` specifies the sizes of the images that will show up in the figure later.
+Our next leg is to add the urls of planet images to our planetary data and create HTML `<img>` tags for plotting. The column `image_width` specifies the sizes of the images that will show up in the figure later.
 
 ```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
 library(glue)
 
+### The urls of planet images and HTML <img> tags
 planetary_dat <- planetary_dat %>%
   mutate(image_url = c(
     "https://scx2.b-cdn.net/gfx/news/hires/2015/whatsimporta.jpg",
@@ -164,22 +164,24 @@ planetary_dat <- planetary_dat %>%
     "https://cdn.britannica.com/80/145480-050-24BF0658/image-Hubble-Space-Telescope-Saturn-moons-shadow.jpg",
     "https://upload.wikimedia.org/wikipedia/commons/c/c9/Uranus_as_seen_by_NASA%27s_Voyager_2_%28remastered%29_-_JPEG_converted.jpg",
     "https://upload.wikimedia.org/wikipedia/commons/6/63/Neptune_-_Voyager_2_%2829347980845%29_flatten_crop.jpg")) %>%  # the urls of planet images
-  mutate(image_width = c(11.5, 12, 13, 26.5, 27, 45, 18, 16.5)) %>%  # image sizes
+  mutate(image_width = c(15, 16, 17, 30, 31, 50, 22, 20)) %>%  # image sizes
   mutate(image_tag = glue("<img src='{image_url}' width = '{image_width}'/>"))  # HTML <img> tags
 
 ```
 
 ### Leg 3. Create a basic polar line-dot chart of planets
 
-The previous two legs were mostly about data preparation, and now we are ready to roll up our sleeves and do some heavy lifting. In our third leg, we will create a polar line-dot chart for the planets, with the length of the line/curve proportional to the distance of the planet to the Sun, and the size of the point proportional to the volume of the planet.
+The previous two legs were mostly about data preparation, and now we are ready to roll up our sleeves and do some heavy lifting. In our third leg, we will create a polar line-dot chart for the planets, with the length of the curve proportional to the distance of the planet to the Sun, and the size of the point proportional to the volume of the planet.
 
-Here I used the function `geom_point_blur()` in the package `ggblur` to add blurry points, and the functions `lighten()` and `desaturate()` in the package `colorspace` to modify the color of the points and lines. Also, I extended the lower limit of the x-axis to -1 to create some extra space at the center of the figure where we will be adding an image later, and extended the upper limit of the y-axis to 35 to prevent the longest line from sticking too close to the origin.  
+Here we'll use the function `geom_point_blur()` in the package `ggblur` to add blurry points, and the functions `lighten()` and `desaturate()` in the package `colorspace` to modify the color of the points and lines. We'll also extend the lower limit of the x-axis to -1 to create some extra space at the center of the figure where we will be adding an image later, and extend the upper limit of the y-axis to 35 to prevent the longest curve from sticking too close to the origin.
+
 
 ```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
 library(ggblur)  # for the function "geom_point_blur()"
 library(ggforce)  # for the function "geom_link()"
 library(colorspace)  # for the function "lighten()" and "desaturate()"
 
+### A basic polar line-dot chart of planets
 P_solar_system <- ggplot() + 
   geom_point_blur(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au,
                                             color = row_id, color = after_scale(lighten(color, 0.5, space = "HLS")),
@@ -202,13 +204,15 @@ P_solar_system
 
 ### Leg 4. Make the lines and points shine
 
-Our forth leg is to change the appearance of the basic chart we just made earlier. Specifically, I change the color of the lines and points using a customized color palette created with the function `tableau_div_gradient_pal()` in the package `ggtheme`. I also added a vertical line at the origin using the function `geom_link2()` in the package `ggforce`, which allows for continuous color gradients along the line. I think this vertical line serves as an anchor for the curves so that they don't seem to be floating. Lastly, I set the background to black. 
+Our forth leg is to change the appearance of the basic chart we just made earlier. Specifically, we'll change the color of the lines and points using a customized color palette created with the function `tableau_div_gradient_pal()` in the package `ggthemes`. We'll then add a vertical line at the origin using the function `geom_link2()` in the package `ggforce`, which allows for continuous color gradients along the line. I think this vertical line serves as an anchor for the curves so that they don't seem to be floating. Lastly, we'll set the background to black. 
 
 ```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
 library(ggthemes)  # for the function "tableau_div_gradient_pal()"
 
-col_pal <- rev(tableau_div_gradient_pal(palette = "Sunset-Sunrise Diverging")(seq(0, 1, length = 8)))  # create a customized color palette
-           
+### Create a customized color palette
+col_pal <- rev(tableau_div_gradient_pal(palette = "Sunset-Sunrise Diverging")(seq(0, 1, length = 8)))  
+
+### Glowing lines and points           
 P_solar_system <- P_solar_system + 
   geom_link2(aes(x = 1:8, y = 0, xend = 2:9, yend = 0, color = 1:8), n = 100) +
   scale_color_gradientn(colors = col_pal) + 
@@ -222,45 +226,50 @@ P_solar_system
 
 ### Leg 5. Add the planet images
 
-Leg five is an exciting one: adding the planet images! We'll achieve this by mapping the HTML <img> tags we created in leg two to the chart, using the function `geom_richtext()` in the package `ggtext`. By the way, `ggtext` is a super handy package for text manipulations in ggplots. Check out my [previous post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) for more details if interested!
+Leg five is an exciting one: adding the planet images! We'll achieve this by mapping the HTML `<img>` tags we created earlier in leg two to the figure, using the function `geom_richtext()` in the package `ggtext`. By the way, `ggtext` is a super handy package for text manipulations in ggplots. Check out my [previous post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) for more details if interested!
 
 Oh, did you notice that the lower left corner of the Saturn image covered the curve? How can we fix this? Easy-peasy: just move the image layer to the very bottom! The function `move_layers()` in the package `gginnards` will do the trick. 
 
-```{r, fig.width = 9, fig.height = 9, out.width = "80%", eval = F}
+```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
 library(ggtext)
 
+### Add planet images to the figure
 P_solar_system <- P_solar_system + 
     geom_richtext(data = planetary_dat, aes(x = row_id, y = distance_from_the_sun_au,
                                             label = image_tag),
                   color = NA, fill = NA,
                   nudge_x = c(0, 0, 0, 0, -0.3, -0.2, 0, 0),
                   nudge_y = c(2.4, 1.7, 1.3, 1, 1.4, 1.1, 0.7, 0.6)) +
-    geom_richtext(aes(x = -1, y = 0, label = "<img src='https://res.cloudinary.com/dtpgi0zck/image/upload/s--fMAvJ-9u--/c_fit,h_580,w_860/v1/EducationHub/photos/sun-blasts-a-m66-flare.jpg' width='60'/>"), 
+    geom_richtext(aes(x = -1, y = 0, label = "<img src='https://res.cloudinary.com/dtpgi0zck/image/upload/s--fMAvJ-9u--/c_fit,h_580,w_860/v1/EducationHub/photos/sun-blasts-a-m66-flare.jpg' width='70'/>"), 
                   color = NA, fill = NA)
 
+### Move the layer "GeomRichText" to the bottom
 library(gginnards)
 
 map_chr(P_solar_system$layers, function(x){class(x$geom)[1]})  # get the layer names
-P_solar_system <- move_layers(P_solar_system, "GeomRichText", position = "bottom")  # move the layer "GeomRichText" to the bottom  
+P_solar_system <- move_layers(P_solar_system, "GeomRichText", position = "bottom")    
 P_solar_system
 
 ```
 
-### Leg 6. Add a title and planet labels  
+### Leg 6. Add a title and planet labels
 
-Our sixth leg is to add a title and planet labels to the chart. Here I used `geom_text()` to map the planet labels to the desired positions, and again `geom_richtext()` to add a title using the HTML syntax.
+Our sixth leg is to add a title and planet labels to the figure. We'll use `geom_text()` to map the planet labels to the desired positions, and again `geom_richtext()` to add a title using the HTML syntax.
 
-I think you might wonder why I padded the planet labels. Actually, when I just added the labels and adjusted their positions to the left of the vertical line by setting `hjust = 1`, these labels were left-shifted but right-aligned (which didn't look so pleasant in my opinion). This is mainly due to the fact that the labels are of different lengths. I wanted the labels to be centered, and so I used this padding trick to make the labels extremely long and of similar lengths. In this way, I don't have to adjust the positions that much (`hjust = 0.7` would be enough to shift the labels to the left), and this will largely reduce the right-alignment problem.
+You might wonder why I padded the planet labels. Actually, when I just added the labels and set `hjust = 1` to adjust their positions to the left of the vertical line, these labels were left-shifted but right-aligned (which didn't look so pleasant in my opinion; I wanted the labels to be centered!). This is mainly due to the fact that the labels are of different lengths. Therefore, I used this padding trick to make the labels extremely long and of similar lengths. In this way, I don't have to adjust the positions that much (`hjust = 0.7` would be enough to shift the labels to the left), and this will largely reduce the right-alignment problem.
 
-After some trial and error, the labels seemed to be fairly centered. Sometimes it does take a while to experiment and fine-tune the values when you adjust the item positions (and this could even a bit irritating!). But isn't this the most fun and fulfilling part of making figures?!
+After some trial and error, the labels seemed to be fairly centered. Sometimes it does take a while to experiment and fine-tune the values when you adjust the item positions (which could even a bit irritating!). But isn't this the most fun and fulfilling part of ggplots?!
 
 ```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
 library(ggtext)
+
+### Pad the planet labels
 planetary_dat <- planetary_dat %>% 
   mutate(planet_pad = ifelse(nchar(planet)%%2 == 0, 
                              str_pad(planet, width = 50, side = "both"),
-                             str_pad(planet, width = 51, side = "both")))  # pad the labels
+                             str_pad(planet, width = 51, side = "both")))
 
+### Add a title to the figure
 P_solar_system <- P_solar_system + 
   geom_text(data = planetary_dat, aes(x = row_id, y = 0, color = row_id,
                                           label = glue("{planet_pad}")),
@@ -280,14 +289,16 @@ P_solar_system
 
 ### Leg 7. Sprinkle some glittering stars
 
-We're almost done! Our final leg is to embellish the figure with some glittering stars. We'll do this by first creating another ggplot with random blurry points scattered across a transparent background, and then overlaying it on the original planet figure using the functions in the package `cowplot`.
+We're almost done with our trip! The final leg is to embellish the figure with some glittering stars. We'll do this by first creating another ggplot with random blurry points scattered across a transparent background, and then overlaying it on the original planet figure using the functions in the package `cowplot`.
 
 ```{r, fig.width = 9, fig.height = 9, out.width = "80%"}
+### Stars of random positions and sizes
 set.seed(123)
 stars_df <- data.frame(x = runif(50),
                        y = runif(50),
-                       size = runif(50))  # stars of random positions and sizes
+                       size = runif(50))  
 
+### The ggplot for the stars
 P_stars <- ggplot() + 
   geom_point_blur(data = stars_df, aes(x = x, y = y, size = size,
                                        blur_size = size), 
@@ -299,16 +310,17 @@ P_stars <- ggplot() +
                                        color = "transparent"),
         plot.margin = margin(0, 0, 0, 0))
 
+### Overlay the stars on the planet figure
 library(cowplot)
 
 P_final <- ggdraw(P_solar_system) + 
-  draw_plot(P_stars)  # overlay the stars on the planet figure
+  draw_plot(P_stars)  
 
 P_final
 
 ```
 
-Well done! We make it to the very end of the journey. This is absolutely an amazing journey. Unfortunately, our rocket is running out of fuel and so it's time to go back to the Earth. Hope you enjoy this memorable trip and will see you soon next time!
+Well done! We make it to the very end. This is absolutely an amazing journey. Unfortunately, our rocket is running out of fuel and so it's time to go back to Earth. Hope you enjoy this memorable trip and will see you soon next time!
 
 ## Summary
 
