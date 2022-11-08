@@ -211,7 +211,7 @@ P_solar_system &amp;lt;- ggplot() +
   coord_polar(theta = &amp;quot;y&amp;quot;, clip = &amp;quot;off&amp;quot;)
 
 P_solar_system&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d09e31c2f_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file128028426ae3_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="leg-4.-make-the-lines-and-points-shine"&gt;Leg 4. Make the lines
 and points shine&lt;/h3&gt;
 &lt;p&gt;Our forth leg is to change the appearance of the basic chart we just
@@ -238,7 +238,7 @@ P_solar_system &amp;lt;- P_solar_system +
         plot.margin = margin(0, 0, 0, 0))
 
 P_solar_system&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d09e31c2f_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file128028426ae3_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="leg-5.-add-the-planet-images"&gt;Leg 5. Add the planet images&lt;/h3&gt;
 &lt;p&gt;Leg five is an exciting one: adding the planet images! We’ll achieve
 this by mapping the HTML &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt; tags we created
@@ -272,7 +272,7 @@ map_chr(P_solar_system$layers, function(x){class(x$geom)[1]})  # get the layer n
 [4] &amp;quot;GeomPathInterpolate&amp;quot; &amp;quot;GeomRichText&amp;quot;        &amp;quot;GeomRichText&amp;quot;       &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;P_solar_system &amp;lt;- move_layers(P_solar_system, &amp;quot;GeomRichText&amp;quot;, position = &amp;quot;bottom&amp;quot;)    
 P_solar_system&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d09e31c2f_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file128028426ae3_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="leg-6.-add-a-title-and-planet-labels"&gt;Leg 6. Add a title and
 planet labels&lt;/h3&gt;
 &lt;p&gt;Our sixth leg is to add a title and planet labels to the figure.
@@ -316,7 +316,7 @@ P_solar_system &amp;lt;- P_solar_system +
                 fontface = &amp;quot;bold.italic&amp;quot;)
 
 P_solar_system&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d09e31c2f_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file128028426ae3_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="leg-7.-sprinkle-some-glittering-stars"&gt;Leg 7. Sprinkle some
 glittering stars&lt;/h3&gt;
 &lt;p&gt;We’re almost done with our trip! The final leg is to embellish the
@@ -349,7 +349,7 @@ P_final &amp;lt;- ggdraw(P_solar_system) +
   draw_plot(P_stars)  
 
 P_final&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d09e31c2f_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file128028426ae3_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Well done! We make it to the very end. This is absolutely an amazing
 journey. Unfortunately, our rocket is running out of fuel and so it’s
 time to go back to Earth. Hope you enjoy this memorable trip and will
@@ -362,7 +362,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-11-02-post-22-the-glowing-solar-system</guid>
       <pubDate>Tue, 01 Nov 2022 00:00:00 +0000</pubDate>
-      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-11-02-post-22-the-glowing-solar-system/post-22-the-glowing-solar-system_files/figure-html5/unnamed-chunk-3-1.png" medium="image" type="image/png" width="1728" height="1728"/>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-11-02-post-22-the-glowing-solar-system/../../homepage_images/Post22.png" medium="image" type="image/png" width="1728" height="1728"/>
     </item>
     <item>
       <title>Post #21. Useful tips for mapping color and fill aesthetic in the same geom layer</title>
@@ -469,7 +469,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d031ee3632_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file12805af82e61_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Suppose that we want to fill the boxes by species too. We can do this
 by specifying &lt;code&gt;fill = species&lt;/code&gt; in &lt;code&gt;aes()&lt;/code&gt; and
 adding &lt;code&gt;scale_fill_brewer(palette = "Set1")&lt;/code&gt;:&lt;/p&gt;
@@ -479,7 +479,7 @@ adding &lt;code&gt;scale_fill_brewer(palette = "Set1")&lt;/code&gt;:&lt;/p&gt;
   scale_fill_brewer(palette = &amp;quot;Set1&amp;quot;) +
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d031ee3632_files/figure-html/unnamed-chunk-2-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file12805af82e61_files/figure-html/unnamed-chunk-2-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;But there is a shortcut for doing this: using the function
 &lt;code&gt;after_scale()&lt;/code&gt;. So this function will reuse the scale of a
 previous aesthetic (in this case “color”) for another aesthetic (in this
@@ -493,7 +493,7 @@ previous figure.&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) +
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d031ee3632_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file12805af82e61_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Now, let’s say we want to change the transparency of the box lines.
 We can do this by applying &lt;code&gt;after_scale()&lt;/code&gt; to a second color
 aesthetic to modify the scale of the first color aesthetic and change
@@ -504,7 +504,7 @@ its transparency:&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d031ee3632_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;
+&lt;p&gt;&lt;img src="file12805af82e61_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;
 Likewise, we can apply the same method to the fill aesthetic to change
 the transparency of the boxes:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
@@ -512,7 +512,7 @@ the transparency of the boxes:&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d031ee3632_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file12805af82e61_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Note that you can also change the transparency of the boxes by
 directly specifying the “alpha” argument outside &lt;code&gt;aes()&lt;/code&gt;. But
 did you notice the subtle difference from the previous figure? There you
@@ -523,7 +523,7 @@ transparent now!&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d031ee3632_files/figure-html/unnamed-chunk-6-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file12805af82e61_files/figure-html/unnamed-chunk-6-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;To recap, we learned how to use the function
 &lt;code&gt;after_scale()&lt;/code&gt; to tweak the color and fill aesthetic in the
@@ -677,7 +677,7 @@ P &amp;lt;- ggplot(data = CO2) +
   scale_fill_viridis_c(name = expression(paste(CO[2], &amp;quot; uptake rate&amp;quot;)))
 
 P&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d01e4d6622_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1280e73255d_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="arguments-for-legend-box"&gt;(1) Arguments for legend box&lt;/h3&gt;
 &lt;p&gt;These arguments control the appearance and margin of entire legend
 area as well as individual legend boxes, the arrangement of multiple
@@ -706,7 +706,7 @@ legends, and the spacing between panel area and legend area:&lt;/p&gt;
           
           # the spacing between panel area and legend area
           legend.box.spacing = unit(0, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d01e4d6622_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1280e73255d_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Did you notice that both legends were modified in the same manner?
 This is an important feature of &lt;code&gt;theme()&lt;/code&gt;: &lt;strong&gt;it changes
 everything in the plot (i.e., global effect)!&lt;/strong&gt; So if you want to
@@ -728,7 +728,7 @@ legend keys:&lt;/p&gt;
           
           # the width of legend keys
           legend.key.width = unit(0.6, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d01e4d6622_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1280e73255d_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="arguments-for-legend-title-and-labels"&gt;(3) Arguments for legend
 title and labels&lt;/h3&gt;
 &lt;p&gt;These arguments control the appearance and alignment of legend title
@@ -754,7 +754,7 @@ between legend title and keys/labels:&lt;/p&gt;
           
           # the spacing between legend title and keys/labels
           legend.spacing.y = unit(0.2, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d01e4d6622_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1280e73255d_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;In the above figure, I centered the long title “CO&lt;sub&gt;2&lt;/sub&gt; uptake
 rate” by specifying a negative left margin, which pulled the title to
 the left. Check out my &lt;a
@@ -769,7 +769,7 @@ of legend items:&lt;/p&gt;
           
           # the direction of legend items
           legend.direction = &amp;quot;horizontal&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file42d01e4d6622_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1280e73255d_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;For the argument &lt;code&gt;legend.position&lt;/code&gt;, besides the built-in
 positions (“top”, “right”, “bottom”, “left”), you can also place the
 legend(s) inside the plot by passing a vector of length two
