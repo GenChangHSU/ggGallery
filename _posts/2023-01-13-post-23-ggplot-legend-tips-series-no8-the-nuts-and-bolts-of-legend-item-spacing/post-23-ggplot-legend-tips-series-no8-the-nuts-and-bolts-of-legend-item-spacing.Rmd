@@ -1,0 +1,157 @@
+---
+title: "Post #23. ggplot Legend Tips Series No.8: The nuts and bolts of legend item spacing"
+description: |
+  Here are all the nuts and bolts you need for working on legend item spacing!
+author:
+  - name: Gen-Chang Hsu
+date: 2023-01-13
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2023"
+  - "Legend Tips Series"
+preview: ../../homepage_images/Post23.png
+draft: true
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+    color: #2780e3 !important;
+      border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+### Introduction
+
+Welcome to my first blog post in 2023! I have been slacking off a little bit lately and feel so glad to ring in the new year with another [Legend Tips Series](https://genchanghsu.github.io/ggGallery/#category:Legend_Tips_Series) post.
+
+In this post, I will show you how to adjust the spacing between legend items (legend title, keys, labels, etc.) as well as between multiple legends. This is going to be a handy one and let's get to it!
+
+### The nuts and bolts of legend spacing
+
+## 1. Single legend
+
+(1) Vertical layout
+(2) Horizontal layout
+(3) Matrix layout
+
+```{r, fig.width = 6, fig.height = 6, out.width = "80%"}
+library(tidyverse)
+
+
+
+
+````
+
+## Multiple legends
+
+
+
+### Summary
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
