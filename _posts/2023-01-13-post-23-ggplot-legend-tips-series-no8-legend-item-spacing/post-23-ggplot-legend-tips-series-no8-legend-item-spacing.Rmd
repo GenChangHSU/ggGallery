@@ -109,17 +109,21 @@ knitr::opts_chunk$set(message = F,
 
 <!-- Start of the article -->
 
-### Introduction
+## Introduction
 
 Welcome to my first blog post in 2023! I have been slacking off a little bit lately and feel so glad to ring in the new year with another [Legend Tips Series](https://genchanghsu.github.io/ggGallery/#category:Legend_Tips_Series) post.
 
 In this post, I will show you how to adjust the spacing between discrete legend items (legend title, keys, labels, etc.) as well as between multiple legends. This is going to be a handy one and let's get to it!
 
-### The nuts and bolts of legend spacing
+## The nuts and bolts of legend spacing
 
-## 1. Single discrete legend
+### 1. Single discrete legend
 
-(1) Vertical layout
+There are three main arguments in `theme()` when it comes to adjusting the spacing between legend title, legend keys, and legend labels: `legend.title`, `legend.spacing.x`, and `legend.spacing.y`. I'll demonstrate their effects in the following section for vertical legend, horizontal legend, and legend with a matrix layout.
+
+<span style="display: block; margin-top: 0px; margin-left: 0px; font-size: 22px">  (1) Vertical legend</span>
+
+To increase the spacing between legend title and the first legend key, change the bottom margin of the title by specifying `margin = margin(b = )` in the `legend.title` argument. To adjust the horizontal spacing between legend keys and labels, use `legend.spacing.x = unit()` and specify an appropriate value. Similarly, to adjust the vertical spacing between legend keys, use `legend.spacing.y = unit()` and specify an appropriate value. Also, you **must** specify `byrow = T` in the corresponding guides. Otherwise, nothing will happen!
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
 library(tidyverse)
@@ -136,23 +140,25 @@ P_vertical_default <- ggplot(data = iris) +
 P_vertical_adjusted <- P_vertical_default + 
   theme(legend.title = element_text(margin = margin(b = 10)),  # change the 
         legend.spacing.x = unit(0.2, "inch"),  # adjust the horizontal spacing between legend keys and labels
-        legend.spacing.y = unit(0.2, "inch")) + # adjust the vertical spacing between legend keys
+        legend.spacing.y = unit(0.2, "inch")) +  # adjust the vertical spacing between legend keys
   guides(color = guide_legend(byrow = T))  # "byrow = T" is necessary for "legend.spacing.y" to work for vertical legends  
 
 P_vertical_default; P_vertical_adjusted
 
 ````
 
-
 (2) Horizontal layout
+
+
+
 (3) Matrix layout
 
 
-## Multiple legends
+### Multiple legends
 
 
 
-### Summary
+## Summary
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
