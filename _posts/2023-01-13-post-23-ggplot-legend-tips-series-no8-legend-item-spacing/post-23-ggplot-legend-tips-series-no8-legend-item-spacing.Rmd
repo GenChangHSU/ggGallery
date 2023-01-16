@@ -123,7 +123,7 @@ There are three main arguments in `theme()` when it comes to adjusting the spaci
 
 <span style="display: block; margin-top: 0px; margin-left: 0px; font-size: 22px">  (1) Vertical legend</span>
 
-To increase the spacing between legend title and the first legend key, change the bottom margin of the title by specifying `margin = margin(b = )` in the `legend.title` argument. To adjust the horizontal spacing between legend keys and labels, use `legend.spacing.x = unit()` and specify an appropriate value. Similarly, to adjust the vertical spacing between legend keys, use `legend.spacing.y = unit()` and specify an appropriate value. Also, you **must** specify `byrow = T` in the corresponding guides. Otherwise, nothing will happen!
+To adjust the spacing between legend title and the first legend key, change the bottom margin of the title by specifying `margin = margin(b = )` in the `legend.title` argument. To adjust the spacing between legend keys and labels, use `legend.spacing.x = unit()` and specify an appropriate value. Similarly, to adjust the spacing between legend keys, use `legend.spacing.y = unit()` and specify an appropriate value. Also, you **must** specify `byrow = T` in the corresponding guides. Otherwise, nothing will happen!
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
 library(tidyverse)
@@ -138,7 +138,7 @@ P_vertical_default <- ggplot(data = iris) +
 
 ### Adjust the spacing between legend items
 P_vertical_adjusted <- P_vertical_default + 
-  theme(legend.title = element_text(margin = margin(b = 10)),  # change the spacing between the legend title and the first legend key 
+  theme(legend.title = element_text(margin = margin(b = 10)),  # adjust the spacing between the legend title and the first legend key 
         legend.spacing.x = unit(0.2, "inch"),  # adjust the horizontal spacing between legend keys and labels
         legend.spacing.y = unit(0.2, "inch")) +  # adjust the vertical spacing between legend keys
   guides(color = guide_legend(byrow = T))  # "byrow = T" is necessary for "legend.spacing.y" to work for vertical legends  
@@ -148,6 +148,13 @@ P_vertical_default; P_vertical_adjusted
 ````
 
 (2) Horizontal layout
+
+Similar to vertical legends, to adjust the spacing between legend title and the first legend key, change the right margin of the title by specifying `margin = margin(r = )` in the `legend.title` argument. To adjust the spacing between legend keys and labels, use `legend.spacing.x = unit()` and specify an appropriate value. 
+
+use `legend.text = element_text(margin = margin(r = 15))`
+For example, the legend label setosa and the legend key for versicolor
+
+`legend.spacing.x = unit()` is not relevant here.
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
 ### Default plot
@@ -162,16 +169,13 @@ P_horizontal_default <- ggplot(data = iris) +
 
 ### Adjust the spacing between legend items
 P_horizontal_adjusted <- P_horizontal_default + 
-  theme(legend.title = element_text(margin = margin(r = 10)), 
-        legend.text = element_text(margin = margin(r = 50)),
-        legend.spacing.x = unit(0.2, "inch"),
-        legend.spacing.y = unit(0, "inch")) +
-  guides(color = guide_legend(byrow = F))
-
+  theme(legend.title = element_text(margin = margin(r = 10)),  # adjust the spacing between legend title and the first legend key
+        legend.spacing.x = unit(0.2, "inch"),  # adjust the spacing between legend keys and labels
+        legend.text = element_text(margin = margin(r = 15)))  # adjust the spacing between adjacent legend items
+        
 P_horizontal_default; P_horizontal_adjusted
 
 ````
-
 
 (3) Matrix layout
 

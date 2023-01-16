@@ -118,7 +118,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/anchor-4.2.2/anchor.min.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/bowser-1.9.3/bowser.min.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/distill-2.2.21/template.v2.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/figure-html5/unnamed-chunk-1-1.png","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/figure-html5/unnamed-chunk-1-2.png","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/header-attrs-2.14/header-attrs.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/jquery-3.6.0/jquery-3.6.0.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/jquery-3.6.0/jquery-3.6.0.min.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/jquery-3.6.0/jquery-3.6.0.min.map","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/popper-2.6.0/popper.min.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/tippy-6.2.7/tippy-light-border.css","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/tippy-6.2.7/tippy.css","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/tippy-6.2.7/tippy.umd.min.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/anchor-4.2.2/anchor.min.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/bowser-1.9.3/bowser.min.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/distill-2.2.21/template.v2.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/figure-html5/unnamed-chunk-1-1.png","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/figure-html5/unnamed-chunk-1-2.png","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/figure-html5/unnamed-chunk-2-1.png","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/figure-html5/unnamed-chunk-2-2.png","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/header-attrs-2.14/header-attrs.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/jquery-3.6.0/jquery-3.6.0.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/jquery-3.6.0/jquery-3.6.0.min.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/jquery-3.6.0/jquery-3.6.0.min.map","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/popper-2.6.0/popper.min.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/tippy-6.2.7/tippy-light-border.css","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/tippy-6.2.7/tippy.css","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/tippy-6.2.7/tippy.umd.min.js","post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1489,7 +1489,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #23. ggplot Legend Tips Series No.8: The nuts and bolts of legend item spacing","description":"Here are all the nuts and bolts you need for working on legend item spacing!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-01-13T00:00:00.000-08:00","citationText":"Hsu, 2023"}
+{"title":"Post #23. ggplot Legend Tips Series No.8: The nuts and bolts of legend item spacing","description":"Here are all the nuts and bolts you need for working on legend item spacing!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-01-13T00:00:00.000+08:00","citationText":"Hsu, 2023"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1614,10 +1614,10 @@ legend spacing</h2>
 <h3 id="single-discrete-legend">1. Single discrete legend</h3>
 <p>There are three main arguments in <code>theme()</code> when it comes
 to adjusting the spacing between legend title, legend keys, and legend
-labels: <code>legend.title</code>, <code>legend.spacing.x</code>, and
-<code>legend.spacing.y</code>. I’ll demonstrate their effects in the
-following section for vertical legend, horizontal legend, and legend
-with a matrix layout.</p>
+labels: <code>legend.title</code>, <code>legend.text</code>,
+<code>legend.spacing.x</code>, and <code>legend.spacing.y</code>. I’ll
+demonstrate their effects in the following section for vertical legend,
+horizontal legend, and legend with a matrix layout.</p>
 <p><span
 style="display: block; margin-top: 0px; margin-left: 0px; font-size: 22px">
 (1) Vertical legend</span></p>
@@ -1645,7 +1645,7 @@ will happen!</p>
 <span></span>
 <span><span class='co'>### Adjust the spacing between legend items</span></span>
 <span><span class='va'>P_vertical_adjusted</span> <span class='op'>&lt;-</span> <span class='va'>P_vertical_default</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.title <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>margin <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>margin</a></span><span class='op'>(</span>b <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>,  <span class='co'># change the </span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.title <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>margin <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>margin</a></span><span class='op'>(</span>b <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>,  <span class='co'># adjust the spacing between the legend title and the first legend key </span></span>
 <span>        legend.spacing.x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='st'>"inch"</span><span class='op'>)</span>,  <span class='co'># adjust the horizontal spacing between legend keys and labels</span></span>
 <span>        legend.spacing.y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='st'>"inch"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># adjust the vertical spacing between legend keys</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guide_legend.html'>guide_legend</a></span><span class='op'>(</span>byrow <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span><span class='op'>)</span>  <span class='co'># "byrow = T" is necessary for "legend.spacing.y" to work for vertical legends  </span></span>
@@ -1655,8 +1655,32 @@ will happen!</p>
 <p><img src="post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/figure-html5/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /><img src="post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/figure-html5/unnamed-chunk-1-2.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <ol start="2" type="1">
-<li><p>Horizontal layout</p></li>
-<li><p>Matrix layout</p></li>
+<li>Horizontal layout</li>
+</ol>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Default plot</span></span>
+<span><span class='va'>P_horizontal_default</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>iris</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Sepal.Length</span>, y <span class='op'>=</span> <span class='va'>Sepal.Width</span>, color <span class='op'>=</span> <span class='va'>Species</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Sepal.Length</span>, y <span class='op'>=</span> <span class='va'>Sepal.Width</span>, color <span class='op'>=</span> <span class='va'>Species</span>, fill <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes_eval.html'>after_scale</a></span><span class='op'>(</span><span class='va'>color</span><span class='op'>)</span><span class='op'>)</span>, method <span class='op'>=</span> <span class='st'>"lm"</span>, se <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Sepal length"</span>, y <span class='op'>=</span> <span class='st'>"Sepal width"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"top"</span>,</span>
+<span>        legend.direction <span class='op'>=</span> <span class='st'>"horizontal"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Adjust the spacing between legend items</span></span>
+<span><span class='va'>P_horizontal_adjusted</span> <span class='op'>&lt;-</span> <span class='va'>P_horizontal_default</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.title <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>margin <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>margin</a></span><span class='op'>(</span>r <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>,  <span class='co'># adjust the spacing between legend title and the first legend key</span></span>
+<span>        legend.spacing.x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='st'>"inch"</span><span class='op'>)</span>,  <span class='co'># adjust the spacing between legend keys and labels</span></span>
+<span>        legend.text <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>margin <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>margin</a></span><span class='op'>(</span>r <span class='op'>=</span> <span class='fl'>15</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>  <span class='co'># adjust the spacing between adjacent legend items</span></span>
+<span>        </span>
+<span><span class='va'>P_horizontal_default</span>; <span class='va'>P_horizontal_adjusted</span></span></code></pre>
+</div>
+<p><img src="post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/figure-html5/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /><img src="post-23-ggplot-legend-tips-series-no8-legend-item-spacing_files/figure-html5/unnamed-chunk-2-2.png" width="70%" style="display: block; margin: auto;" /></p>
+</div>
+<ol start="3" type="1">
+<li>Matrix layout</li>
 </ol>
 <h3 id="multiple-legends">Multiple legends</h3>
 <h2 id="summary">Summary</h2>
