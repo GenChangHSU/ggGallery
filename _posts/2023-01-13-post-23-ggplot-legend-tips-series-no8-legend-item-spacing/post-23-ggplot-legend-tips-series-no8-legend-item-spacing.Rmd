@@ -230,23 +230,8 @@ P_multiple_adjusted
 
 ## Summary
 
-To recap, we learned how to adjust the spacing between legend title, legend keys, and legend labels, as well as between multiple legends. Next time when you're making ggplots, remember to apply these tips to polish your figures! 
+To recap, we learned how to adjust the spacing between legend title, legend keys, and legend labels, as well as between multiple legends. Next time when you're making ggplots, remember to apply these tips to polish your figure! 
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
