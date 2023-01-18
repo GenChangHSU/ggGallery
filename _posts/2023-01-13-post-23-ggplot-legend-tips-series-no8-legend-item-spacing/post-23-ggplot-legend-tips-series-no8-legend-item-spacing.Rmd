@@ -12,7 +12,6 @@ categories:
   - "2023"
   - "Legend Tips Series"
 preview: ../../homepage_images/Post23.png
-draft: true
 ---
 
 <!-- Webpage style -->
@@ -201,9 +200,37 @@ P_matrix_default; P_matrix_adjusted
 
 ### Multiple legends
 
+In the previous section, we focused on adjusting the spacing between the items within a legend. What if we have multiple legends and we want to change the spacing between them? Let's see an example now: 
 
+```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
+### Default plot
+P_multiple_default <- ggplot(data = iris) + 
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species, alpha = Sepal.Length*Sepal.Width)) + 
+  geom_smooth(aes(x = Sepal.Length, y = Sepal.Width, color = Species, fill = after_scale(color)), method = "lm", se = T) + 
+  scale_color_brewer(palette = "Set1") +
+  scale_alpha_continuous(name = "Sepal L*W") +
+  labs(x = "Sepal length", y = "Sepal width") + 
+  theme_classic(base_size = 13)
+
+P_multiple_default
+
+````
+
+Say we would like to increase the spacing between the two legends. We can use the same hack as before by increasing the top margin of the legend title, which will create more white space above both the title "Sepal L*W" and "Species". However, because of this extra white space, the legends will be squeezed down a bit. To solve this problem, I used `legend.box.margin = margin(b = 50)` to push the legends up.
+
+```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
+### Adjust the spacing between legends
+P_multiple_adjusted <- P_multiple_default +
+  theme(legend.title = element_text(margin = margin(t = 30)),  # create more white space above the legend titles
+        legend.box.margin = margin(b = 50))  # create more white space beneath the legend box to push the legends up
+
+P_multiple_adjusted
+
+````
 
 ## Summary
+
+To recap, we learned how to adjust the spacing between legend title, legend keys, and legend labels, as well as between multiple legends. Next time when you're making ggplots, remember to apply these tips to polish your figures! 
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
