@@ -112,17 +112,18 @@ knitr::opts_chunk$set(message = F,
 
 Welcome to my first blog post in 2023! I have been slacking off a little bit lately and feel so glad to ring in the new year with another [Legend Tips Series](https://genchanghsu.github.io/ggGallery/#category:Legend_Tips_Series) post.
 
-In this post, I will show you how to adjust the spacing between discrete legend items (legend title, keys, labels, etc.) as well as between multiple legends. This is going to be a handy one and let's get to it!
+In this post, I will show you how to adjust the spacing between discrete legend items (legend title, keys, and labels) as well as between multiple legends. This is going to be a handy one and let's get to it!
 
 ## The nuts and bolts of legend spacing
 
 ### 1. Single discrete legend
 
-There are three main arguments in `theme()` when it comes to adjusting the spacing between legend title, legend keys, and legend labels: `legend.title`, `legend.text`, `legend.spacing.x`, and `legend.spacing.y`. I'll demonstrate their effects in the following section for vertical legend, horizontal legend, and legend with a matrix layout.
+We'll start with a single legend: There are four main arguments in `theme()` when it comes to adjusting the spacing between legend title, keys, and labels: `legend.title`, `legend.text`, `legend.spacing.x`, and `legend.spacing.y`. I'll demonstrate them in the following section for a vertical legend, a horizontal legend, and a legend with a matrix layout.
 
+<br>
 <span style="display: block; margin-top: 0px; margin-left: 0px; font-size: 22px">  (1) Vertical legend</span>
 
-To adjust the spacing between legend title and the first legend key, change the bottom margin of the title by specifying `margin = margin(b = )` in the `legend.title` argument. To adjust the spacing between legend keys and labels, use `legend.spacing.x = unit()` and specify an appropriate value. Similarly, to adjust the spacing between legend keys, use `legend.spacing.y = unit()` and specify an appropriate value. Note that you **MUST** specify `byrow = T` in the corresponding guides. Otherwise, nothing will happen!
+To adjust the spacing between legend title and the first legend key, change the bottom margin of the title by specifying `margin = margin(b = )` in the `legend.title` argument. To adjust the spacing between legend keys and labels, use `legend.spacing.x = unit()` and specify an appropriate value. Similarly, to adjust the spacing between legend keys, use `legend.spacing.y = unit()` and specify an appropriate value. Note that for `legend.spacing.y = unit()` to work, you **MUST** specify `byrow = T` in the corresponding guides (in this case "color" guide). Otherwise, nothing will happen!
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
 library(tidyverse)
@@ -146,9 +147,10 @@ P_vertical_default; P_vertical_adjusted
 
 ````
 
+<br>
 <span style="display: block; margin-top: 0px; margin-left: 0px; font-size: 22px"> (2) Horizontal layout</span>
 
-Similar to vertical legends, to adjust the spacing between legend title and the first legend key, change the right margin of the title by specifying `margin = margin(r = )` in the `legend.title` argument. To adjust the spacing between legend keys and labels, use `legend.spacing.x = unit()` and specify an appropriate value. Additionally, you can use `legend.text = element_text(margin = margin(r = ))` to fine tune the spacing between the legend label (e.g., the legend label "setosa") and the adjacent legend key (e.g., the blue legend key for "versicolor"). `legend.spacing.y = unit()` is not relevant to horizontal legends.
+Similar to vertical legends, to adjust the spacing between legend title and the first legend key, change the right margin of the title by specifying `margin = margin(r = )` in the `legend.title` argument. To adjust the spacing between legend keys and labels, use `legend.spacing.x = unit()` and specify an appropriate value. Additionally, you can use `legend.text = element_text(margin = margin(r = ))` to fine tune the spacing between the label (e.g., the label "setosa") and the adjacent key (e.g., the blue key for "versicolor"). `legend.spacing.y = unit()` is not relevant to horizontal legends here.
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
 ### Default plot
@@ -165,17 +167,18 @@ P_horizontal_default <- ggplot(data = iris) +
 P_horizontal_adjusted <- P_horizontal_default + 
   theme(legend.title = element_text(margin = margin(r = 10)),  # adjust the spacing between legend title and the first legend key
         legend.spacing.x = unit(0.2, "inch"),  # adjust the spacing between legend keys and labels
-        legend.text = element_text(margin = margin(r = 15)))  # fine tune the spacing between the legend label and the adjacent legend key
+        legend.text = element_text(margin = margin(r = 15)))  # fine tune the spacing between legend labels and adjacent legend keys
         
 P_horizontal_default; P_horizontal_adjusted
 
 ````
 
+<br>
 <span style="display: block; margin-top: 0px; margin-left: 0px; font-size: 22px"> (3) Matrix layout</span>
 
-We've seen both vertical and horizontal legends, how about a combination of both (matrix layout)? That's easy-peasy: just put everything we did earlier together!
+We've seen both vertical and horizontal legends, how about a combination of both (matrix layout)? That's actually easy-peasy: just put everything we did earlier together!
 
-```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
+```{r, fig.width = 6, fig.height = 4.5, out.width = "70%", fig.show = "hold"}
 ### Default plot
 P_matrix_default <- ggplot(data = iris) + 
   geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
@@ -216,13 +219,13 @@ P_multiple_default
 
 ````
 
-Say we would like to increase the spacing between the two legends. We can use the same hack as before by increasing the top margin of the legend title, which will create more white space above both the title "Sepal L*W" and "Species". However, because of this extra white space, the legends will be squeezed down a bit. To solve this problem, I used `legend.box.margin = margin(b = 50)` to push the legends up.
+Say we would like to increase the spacing between the two legends. We can use the same hack as before by increasing the top margin of the legend title, which will create more white space above both the title "Sepal L*W" and "Species". However, because of this extra white space, the legends will be squeezed down a bit. To solve this problem, I used `legend.box.margin = margin(b = 50)` to increase the margin below the legend box to push the legends up.
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
 ### Adjust the spacing between legends
 P_multiple_adjusted <- P_multiple_default +
   theme(legend.title = element_text(margin = margin(t = 30)),  # create more white space above the legend titles
-        legend.box.margin = margin(b = 50))  # create more white space beneath the legend box to push the legends up
+        legend.box.margin = margin(b = 50))  # increase the margin below the legend box to push the legends up
 
 P_multiple_adjusted
 
@@ -230,7 +233,7 @@ P_multiple_adjusted
 
 ## Summary
 
-To recap, we learned how to adjust the spacing between legend title, legend keys, and legend labels, as well as between multiple legends. Next time when you're making ggplots, remember to apply these tips to polish your figure! 
+To recap, we learned how to adjust the spacing between the title, keys, and labels within a legend, as well as the spacing between multiple legends. Next time when you're making ggplots, remember to apply these tips to polish your figure!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 

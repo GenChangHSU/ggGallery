@@ -104,19 +104,20 @@ little bit lately and feel so glad to ring in the new year with another
 href="https://genchanghsu.github.io/ggGallery/#category:Legend_Tips_Series"&gt;Legend
 Tips Series&lt;/a&gt; post.&lt;/p&gt;
 &lt;p&gt;In this post, I will show you how to adjust the spacing between
-discrete legend items (legend title, keys, labels, etc.) as well as
+discrete legend items (legend title, keys, and labels) as well as
 between multiple legends. This is going to be a handy one and let’s get
 to it!&lt;/p&gt;
 &lt;h2 id="the-nuts-and-bolts-of-legend-spacing"&gt;The nuts and bolts of
 legend spacing&lt;/h2&gt;
 &lt;h3 id="single-discrete-legend"&gt;1. Single discrete legend&lt;/h3&gt;
-&lt;p&gt;There are three main arguments in &lt;code&gt;theme()&lt;/code&gt; when it comes
-to adjusting the spacing between legend title, legend keys, and legend
-labels: &lt;code&gt;legend.title&lt;/code&gt;, &lt;code&gt;legend.text&lt;/code&gt;,
-&lt;code&gt;legend.spacing.x&lt;/code&gt;, and &lt;code&gt;legend.spacing.y&lt;/code&gt;. I’ll
-demonstrate their effects in the following section for vertical legend,
-horizontal legend, and legend with a matrix layout.&lt;/p&gt;
-&lt;p&gt;&lt;span
+&lt;p&gt;We’ll start with a single legend: There are four main arguments in
+&lt;code&gt;theme()&lt;/code&gt; when it comes to adjusting the spacing between
+legend title, keys, and labels: &lt;code&gt;legend.title&lt;/code&gt;,
+&lt;code&gt;legend.text&lt;/code&gt;, &lt;code&gt;legend.spacing.x&lt;/code&gt;, and
+&lt;code&gt;legend.spacing.y&lt;/code&gt;. I’ll demonstrate them in the following
+section for a vertical legend, a horizontal legend, and a legend with a
+matrix layout.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt; &lt;span
 style="display: block; margin-top: 0px; margin-left: 0px; font-size: 22px"&gt;
 (1) Vertical legend&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;To adjust the spacing between legend title and the first legend key,
@@ -126,8 +127,10 @@ argument. To adjust the spacing between legend keys and labels, use
 &lt;code&gt;legend.spacing.x = unit()&lt;/code&gt; and specify an appropriate value.
 Similarly, to adjust the spacing between legend keys, use
 &lt;code&gt;legend.spacing.y = unit()&lt;/code&gt; and specify an appropriate value.
-Note that you &lt;strong&gt;MUST&lt;/strong&gt; specify &lt;code&gt;byrow = T&lt;/code&gt; in
-the corresponding guides. Otherwise, nothing will happen!&lt;/p&gt;
+Note that for &lt;code&gt;legend.spacing.y = unit()&lt;/code&gt; to work, you
+&lt;strong&gt;MUST&lt;/strong&gt; specify &lt;code&gt;byrow = T&lt;/code&gt; in the
+corresponding guides (in this case “color” guide). Otherwise, nothing
+will happen!&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
 
 ### Default plot
@@ -146,8 +149,8 @@ P_vertical_adjusted &amp;lt;- P_vertical_default +
   guides(color = guide_legend(byrow = T))  # &amp;quot;byrow = T&amp;quot; is necessary for &amp;quot;legend.spacing.y&amp;quot; to work for vertical legends  
 
 P_vertical_default; P_vertical_adjusted&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc169b77ac_files/figure-html/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;img src="file32bc169b77ac_files/figure-html/unnamed-chunk-1-2.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span
+&lt;p&gt;&lt;img src="file80c2b023fda_files/figure-html/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;img src="file80c2b023fda_files/figure-html/unnamed-chunk-1-2.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt; &lt;span
 style="display: block; margin-top: 0px; margin-left: 0px; font-size: 22px"&gt;
 (2) Horizontal layout&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Similar to vertical legends, to adjust the spacing between legend
@@ -157,10 +160,10 @@ specifying &lt;code&gt;margin = margin(r = )&lt;/code&gt; in the
 keys and labels, use &lt;code&gt;legend.spacing.x = unit()&lt;/code&gt; and specify
 an appropriate value. Additionally, you can use
 &lt;code&gt;legend.text = element_text(margin = margin(r = ))&lt;/code&gt; to fine
-tune the spacing between the legend label (e.g., the legend label
-“setosa”) and the adjacent legend key (e.g., the blue legend key for
-“versicolor”). &lt;code&gt;legend.spacing.y = unit()&lt;/code&gt; is not relevant to
-horizontal legends.&lt;/p&gt;
+tune the spacing between the label (e.g., the label “setosa”) and the
+adjacent key (e.g., the blue key for “versicolor”).
+&lt;code&gt;legend.spacing.y = unit()&lt;/code&gt; is not relevant to horizontal
+legends here.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Default plot
 P_horizontal_default &amp;lt;- ggplot(data = iris) + 
   geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
@@ -175,16 +178,16 @@ P_horizontal_default &amp;lt;- ggplot(data = iris) +
 P_horizontal_adjusted &amp;lt;- P_horizontal_default + 
   theme(legend.title = element_text(margin = margin(r = 10)),  # adjust the spacing between legend title and the first legend key
         legend.spacing.x = unit(0.2, &amp;quot;inch&amp;quot;),  # adjust the spacing between legend keys and labels
-        legend.text = element_text(margin = margin(r = 15)))  # fine tune the spacing between the legend label and the adjacent legend key
+        legend.text = element_text(margin = margin(r = 15)))  # fine tune the spacing between legend labels and adjacent legend keys
         
 P_horizontal_default; P_horizontal_adjusted&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc169b77ac_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;img src="file32bc169b77ac_files/figure-html/unnamed-chunk-2-2.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span
+&lt;p&gt;&lt;img src="file80c2b023fda_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;img src="file80c2b023fda_files/figure-html/unnamed-chunk-2-2.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt; &lt;span
 style="display: block; margin-top: 0px; margin-left: 0px; font-size: 22px"&gt;
 (3) Matrix layout&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;We’ve seen both vertical and horizontal legends, how about a
-combination of both (matrix layout)? That’s easy-peasy: just put
-everything we did earlier together!&lt;/p&gt;
+combination of both (matrix layout)? That’s actually easy-peasy: just
+put everything we did earlier together!&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Default plot
 P_matrix_default &amp;lt;- ggplot(data = iris) + 
   geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
@@ -204,7 +207,7 @@ P_matrix_adjusted &amp;lt;- P_matrix_default +
         legend.text = element_text(margin = margin(r = 15)))  # fine tune the spacing between the legend label and the adjacent legend key
         
 P_matrix_default; P_matrix_adjusted&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc169b77ac_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;img src="file32bc169b77ac_files/figure-html/unnamed-chunk-3-2.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80c2b023fda_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;img src="file80c2b023fda_files/figure-html/unnamed-chunk-3-2.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="multiple-legends"&gt;Multiple legends&lt;/h3&gt;
 &lt;p&gt;In the previous section, we focused on adjusting the spacing between
 the items within a legend. What if we have multiple legends and we want
@@ -219,26 +222,26 @@ P_multiple_default &amp;lt;- ggplot(data = iris) +
   theme_classic(base_size = 13)
 
 P_multiple_default&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc169b77ac_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80c2b023fda_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Say we would like to increase the spacing between the two legends. We
 can use the same hack as before by increasing the top margin of the
 legend title, which will create more white space above both the title
 “Sepal L*W” and “Species”. However, because of this extra white space,
 the legends will be squeezed down a bit. To solve this problem, I used
-&lt;code&gt;legend.box.margin = margin(b = 50)&lt;/code&gt; to push the legends
-up.&lt;/p&gt;
+&lt;code&gt;legend.box.margin = margin(b = 50)&lt;/code&gt; to increase the margin
+below the legend box to push the legends up.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Adjust the spacing between legends
 P_multiple_adjusted &amp;lt;- P_multiple_default +
   theme(legend.title = element_text(margin = margin(t = 30)),  # create more white space above the legend titles
-        legend.box.margin = margin(b = 50))  # create more white space beneath the legend box to push the legends up
+        legend.box.margin = margin(b = 50))  # increase the margin below the legend box to push the legends up
 
 P_multiple_adjusted&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc169b77ac_files/figure-html/unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80c2b023fda_files/figure-html/unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
-&lt;p&gt;To recap, we learned how to adjust the spacing between legend title,
-legend keys, and legend labels, as well as between multiple legends.
-Next time when you’re making ggplots, remember to apply these tips to
-polish your figure!&lt;/p&gt;
+&lt;p&gt;To recap, we learned how to adjust the spacing between the title,
+keys, and labels within a legend, as well as the spacing between
+multiple legends. Next time when you’re making ggplots, remember to
+apply these tips to polish your figure!&lt;/p&gt;
 &lt;p&gt;Hope you learn something useful from this post and don’t forget to
 leave your comments and suggestions below if you have any!&lt;/p&gt;
 &lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
@@ -452,7 +455,7 @@ P_solar_system &amp;lt;- ggplot() +
   coord_polar(theta = &amp;quot;y&amp;quot;, clip = &amp;quot;off&amp;quot;)
 
 P_solar_system&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc7136d90_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80c235b529c_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="leg-4.-make-the-lines-and-points-shine"&gt;Leg 4. Make the lines
 and points shine&lt;/h3&gt;
 &lt;p&gt;Our forth leg is to change the appearance of the basic chart we just
@@ -479,7 +482,7 @@ P_solar_system &amp;lt;- P_solar_system +
         plot.margin = margin(0, 0, 0, 0))
 
 P_solar_system&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc7136d90_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80c235b529c_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="leg-5.-add-the-planet-images"&gt;Leg 5. Add the planet images&lt;/h3&gt;
 &lt;p&gt;Leg five is an exciting one: adding the planet images! We’ll achieve
 this by mapping the HTML &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt; tags we created
@@ -513,7 +516,7 @@ map_chr(P_solar_system$layers, function(x){class(x$geom)[1]})  # get the layer n
 [4] &amp;quot;GeomPathInterpolate&amp;quot; &amp;quot;GeomRichText&amp;quot;        &amp;quot;GeomRichText&amp;quot;       &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;P_solar_system &amp;lt;- move_layers(P_solar_system, &amp;quot;GeomRichText&amp;quot;, position = &amp;quot;bottom&amp;quot;)    
 P_solar_system&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc7136d90_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80c235b529c_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="leg-6.-add-a-title-and-planet-labels"&gt;Leg 6. Add a title and
 planet labels&lt;/h3&gt;
 &lt;p&gt;Our sixth leg is to add a title and planet labels to the figure.
@@ -557,7 +560,7 @@ P_solar_system &amp;lt;- P_solar_system +
                 fontface = &amp;quot;bold.italic&amp;quot;)
 
 P_solar_system&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc7136d90_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80c235b529c_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="leg-7.-sprinkle-some-glittering-stars"&gt;Leg 7. Sprinkle some
 glittering stars&lt;/h3&gt;
 &lt;p&gt;We’re almost done with our trip! The final leg is to embellish the
@@ -590,7 +593,7 @@ P_final &amp;lt;- ggdraw(P_solar_system) +
   draw_plot(P_stars)  
 
 P_final&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc7136d90_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80c235b529c_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Well done! We make it to the very end. This is absolutely an amazing
 journey. Unfortunately, our rocket is running out of fuel and so it’s
 time to go back to Earth. Hope you enjoy this memorable trip and will
@@ -710,7 +713,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc5847a10_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80caa6ec6_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Suppose that we want to fill the boxes by species too. We can do this
 by specifying &lt;code&gt;fill = species&lt;/code&gt; in &lt;code&gt;aes()&lt;/code&gt; and
 adding &lt;code&gt;scale_fill_brewer(palette = "Set1")&lt;/code&gt;:&lt;/p&gt;
@@ -720,7 +723,7 @@ adding &lt;code&gt;scale_fill_brewer(palette = "Set1")&lt;/code&gt;:&lt;/p&gt;
   scale_fill_brewer(palette = &amp;quot;Set1&amp;quot;) +
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc5847a10_files/figure-html/unnamed-chunk-2-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80caa6ec6_files/figure-html/unnamed-chunk-2-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;But there is a shortcut for doing this: using the function
 &lt;code&gt;after_scale()&lt;/code&gt;. So this function will reuse the scale of a
 previous aesthetic (in this case “color”) for another aesthetic (in this
@@ -734,7 +737,7 @@ previous figure.&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) +
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc5847a10_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80caa6ec6_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Now, let’s say we want to change the transparency of the box lines.
 We can do this by applying &lt;code&gt;after_scale()&lt;/code&gt; to a second color
 aesthetic to modify the scale of the first color aesthetic and change
@@ -745,7 +748,7 @@ its transparency:&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc5847a10_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;
+&lt;p&gt;&lt;img src="file80caa6ec6_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;
 Likewise, we can apply the same method to the fill aesthetic to change
 the transparency of the boxes:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
@@ -753,7 +756,7 @@ the transparency of the boxes:&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc5847a10_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80caa6ec6_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Note that you can also change the transparency of the boxes by
 directly specifying the “alpha” argument outside &lt;code&gt;aes()&lt;/code&gt;. But
 did you notice the subtle difference from the previous figure? There you
@@ -764,7 +767,7 @@ transparent now!&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc5847a10_files/figure-html/unnamed-chunk-6-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80caa6ec6_files/figure-html/unnamed-chunk-6-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;To recap, we learned how to use the function
 &lt;code&gt;after_scale()&lt;/code&gt; to tweak the color and fill aesthetic in the
@@ -918,7 +921,7 @@ P &amp;lt;- ggplot(data = CO2) +
   scale_fill_viridis_c(name = expression(paste(CO[2], &amp;quot; uptake rate&amp;quot;)))
 
 P&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc9e87b69_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80c217936bd_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="arguments-for-legend-box"&gt;(1) Arguments for legend box&lt;/h3&gt;
 &lt;p&gt;These arguments control the appearance and margin of entire legend
 area as well as individual legend boxes, the arrangement of multiple
@@ -947,7 +950,7 @@ legends, and the spacing between panel area and legend area:&lt;/p&gt;
           
           # the spacing between panel area and legend area
           legend.box.spacing = unit(0, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc9e87b69_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80c217936bd_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Did you notice that both legends were modified in the same manner?
 This is an important feature of &lt;code&gt;theme()&lt;/code&gt;: &lt;strong&gt;it changes
 everything in the plot (i.e., global effect)!&lt;/strong&gt; So if you want to
@@ -969,7 +972,7 @@ legend keys:&lt;/p&gt;
           
           # the width of legend keys
           legend.key.width = unit(0.6, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc9e87b69_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80c217936bd_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="arguments-for-legend-title-and-labels"&gt;(3) Arguments for legend
 title and labels&lt;/h3&gt;
 &lt;p&gt;These arguments control the appearance and alignment of legend title
@@ -995,7 +998,7 @@ between legend title and keys/labels:&lt;/p&gt;
           
           # the spacing between legend title and keys/labels
           legend.spacing.y = unit(0.2, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc9e87b69_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80c217936bd_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;In the above figure, I centered the long title “CO&lt;sub&gt;2&lt;/sub&gt; uptake
 rate” by specifying a negative left margin, which pulled the title to
 the left. Check out my &lt;a
@@ -1010,7 +1013,7 @@ of legend items:&lt;/p&gt;
           
           # the direction of legend items
           legend.direction = &amp;quot;horizontal&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file32bc9e87b69_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file80c217936bd_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;For the argument &lt;code&gt;legend.position&lt;/code&gt;, besides the built-in
 positions (“top”, “right”, “bottom”, “left”), you can also place the
 legend(s) inside the plot by passing a vector of length two
