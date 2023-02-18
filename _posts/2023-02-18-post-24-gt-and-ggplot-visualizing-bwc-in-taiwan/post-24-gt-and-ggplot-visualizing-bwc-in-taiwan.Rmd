@@ -110,21 +110,19 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-The famous ggplots, the **g**rammar of **g**raphics, have revolutionized the graphics in R and made elegant data visualizations much easier with the extreme versatility.
+The [`ggplot2`](https://ggplot2.tidyverse.org/) package, one of the most popular packages in R, is a powerful tool for making elegant data visualizations based on the **g**rammar of **g**raphics. Recently, the [`gt`](https://gt.rstudio.com/) package, the ggplots for tables, came on the scene. Based on the **g**rammar of **t**ables, it makes creating tables in R much more convenient and versatile.
 
-Recently, the `gt` package, **g**rammar of **t**ables, came to the table
+The main idea of `gt` is to build tables from a set of components such as the header, the stub, the column labels, the body, and the footer. We can compose each of these parts individually, customize their formats and styles, and finally put them together. `gt` is itself an amazing package for awesome table displays. But what's even more exciting is that it can be used in conjunction with ggplots, which will certainly enhance the effectiveness of data visualizations and I can't wait to try it out! 
 
-It is aimed at being the ggplots for tables and with an aim of making tables in R more convenient and reproducible.
+To this end, I'll do a small data viz project in this post to visualize the top ten bird-window collision species in Taiwan. Bird-window collisions, quite literally, are birds colliding with windows of buildings. Study ^[Loss, S. R., Will, T., & Marra, P. P. (2015). Direct mortality of birds from anthropogenic causes. *Annual Review of Ecology, Evolution, and Systematics*, 46, 99-120.] has shown that this is one of the leading anthropogenic bird mortality sources, killing hundreds of millions of birds each year. 
 
-The main idea of gt is to construct a wide variety of useful tables with a cohesive set of table parts. These include the table header, the stub, the column labels and spanner column labels, the table body, and the table footer. we can compose each of them, and customize the format and style.
 
-It's itself an amazing package for awesome table display. But what's even more exciting is that it can be used with ggplots! A combination of them greatly enhances the effectiveness of data visualization!
 
-I feel excited to try out and do a cool small data viz project on this. In this post, I'll be visualizing the top ten bird-window collision species in Taiwan.
+At the end of the post, we'll find out what the top ten bird-window collision species in Taiwan are. 
 
-bird-window collisions, quite literally, are birds colliding into the window, either die or get injured. In fact, this is one of the leading cause of bird mortality. 
+Hopefully, this post is not just a data viz practice, but also helps raise the awareness of this wildlife issue (make the invisible visible!).
 
-At the end of the post, we'll see what the top ten bird window collision species are. Also a big shout-out to Chi-Hen Hsieh, who kindly provided the bird-window collision data for this post!
+Finally, a shout-out to Chi-Heng Hsieh for kindly providing the bird-window collision data for this post!
 
 
 ## Let's build the table

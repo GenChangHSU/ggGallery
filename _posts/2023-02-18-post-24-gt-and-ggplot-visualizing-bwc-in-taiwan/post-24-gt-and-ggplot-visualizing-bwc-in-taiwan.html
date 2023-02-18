@@ -1489,7 +1489,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #24. The spark between gt and ggplot: Visualizing the top ten bird-window collision species in Taiwan","description":"An awesome integration of `gt` and `ggplot` tells the story of the top ten bird-window collision species in Taiwan!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-02-18T00:00:00.000+08:00","citationText":"Hsu, 2023"}
+{"title":"Post #24. The spark between gt and ggplot: Visualizing the top ten bird-window collision species in Taiwan","description":"An awesome integration of `gt` and `ggplot` tells the story of the top ten bird-window collision species in Taiwan!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-02-18T00:00:00.000-08:00","citationText":"Hsu, 2023"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1600,22 +1600,36 @@ div.l-body img {
 </style>
 <!-- Start of the article -->
 <h2 id="introduction">Introduction</h2>
-<p>The famous ggplots, the <strong>g</strong>rammar of
-<em>g</em>raphics, has made elegant data visualization much easier with
-its extreme versatility.</p>
-<p>But just recently, there is another package for tables: the
-<code>gt</code> package, which is the <strong>g</strong>rammar of
-<strong>t</strong>able.</p>
-<p>It’s an awesome package for awesome table display. What’s even more
-exciting is that it can be used with ggplots.</p>
-<p>In this post, I’m going to do a cool small data viz project on this.
-I’ll be using bird-window collision data in Taiwan.</p>
-<p>bird-window collisions, quite literally, are birds colliding into the
-window, either die or get injured. In fact, this is one of the leading
-cause of bird mortality.</p>
-<p>At the end of the post, we’ll see what the top ten bird window
-collision species are in Taiwan. Also a shout-out to Chi-Hen Hsieh, who
-kindly provided the bird-window collision data for this post!</p>
+<p>The <a href="https://ggplot2.tidyverse.org/"><code>ggplot2</code></a>
+package, one of the most popular packages in R, is a powerful tool for
+making elegant data visualizations based on the <strong>g</strong>rammar
+of <strong>g</strong>raphics. Recently, the <a
+href="https://gt.rstudio.com/"><code>gt</code></a> package, the ggplots
+for tables, came on the scene. Based on the <strong>g</strong>rammar of
+<strong>t</strong>ables, it makes creating tables in R much more
+convenient and versatile.</p>
+<p>The main idea of <code>gt</code> is to build tables from a set of
+components such as the header, the stub, the column labels, the body,
+and the footer. We can compose each of these parts individually,
+customize their formats and styles, and finally put them together.
+<code>gt</code> is itself an amazing package for awesome table displays.
+But what’s even more exciting is that it can be used in conjunction with
+ggplots, which will certainly enhance the effectiveness of data
+visualizations and I can’t wait to try it out!</p>
+<p>To this end, I’ll do a small data viz project in this post to
+visualize the top ten bird-window collision species in Taiwan.
+Bird-window collisions, quite literally, are birds colliding with
+windows of buildings. Study <a href="#fn1" class="footnote-ref"
+id="fnref1" role="doc-noteref"><sup>1</sup></a> has shown that this is
+one of the leading anthropogenic bird mortality sources, killing
+hundreds of millions of birds each year.</p>
+<p>At the end of the post, we’ll find out what the top ten bird-window
+collision species in Taiwan are.</p>
+<p>Hopefully, this post is not just a data viz practice, but also help
+raise the awareness of this wildlife issue (make the invisible
+visible!).</p>
+<p>Also a shout-out to Chi-Heng Hsieh for kindly providing the
+bird-window collision data for this post!</p>
 <h2 id="lets-build-the-table">Let’s build the table</h2>
 <p>Break down the process into several steps and explain the details</p>
 <h3 id="data-preparation-and-summary">1. Data preparation and
@@ -1638,6 +1652,17 @@ and short descriptions of the species</h3>
 leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<section class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>Loss, S. R., Will, T., &amp; Marra,
+P. P. (2015). Direct mortality of birds from anthropogenic causes.
+<em>Annual Review of Ecology, Evolution, and Systematics</em>, 46,
+99-120.<a href="#fnref1" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
