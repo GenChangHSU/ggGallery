@@ -1,0 +1,172 @@
+---
+title: "Post #24. The spark between gt and ggplot: Visualizing the top ten bird-window collision species in Taiwan"
+description: |
+  An awesome integration of `gt` and `ggplot` tells the story of the top ten bird-window collision species in Taiwan!
+author:
+  - name: Gen-Chang Hsu
+date: 2023-02-18
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2023"
+preview: ../../homepage_images/Post24.png
+draft: true
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+    color: #2780e3 !important;
+      border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+The famous ggplots, the **g**rammar of **g**raphics, have revolutionized the graphics in R and made elegant data visualizations much easier with the extreme versatility.
+
+Recently, the `gt` package, **g**rammar of **t**ables, came to the table
+
+It is aimed at being the ggplots for tables and with an aim of making tables in R more convenient and reproducible.
+
+The main idea of gt is to construct a wide variety of useful tables with a cohesive set of table parts. These include the table header, the stub, the column labels and spanner column labels, the table body, and the table footer. we can compose each of them, and customize the format and style.
+
+It's itself an amazing package for awesome table display. But what's even more exciting is that it can be used with ggplots! A combination of them greatly enhances the effectiveness of data visualization!
+
+I feel excited to try out and do a cool small data viz project on this. In this post, I'll be visualizing the top ten bird-window collision species in Taiwan.
+
+bird-window collisions, quite literally, are birds colliding into the window, either die or get injured. In fact, this is one of the leading cause of bird mortality. 
+
+At the end of the post, we'll see what the top ten bird window collision species are. Also a big shout-out to Chi-Hen Hsieh, who kindly provided the bird-window collision data for this post!
+
+
+## Let's build the table
+
+Break down the process into several steps and explain the details
+
+### 1. Data preparation and summary
+
+```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
+library(tidyverse)
+
+
+
+```
+
+### 2. The top ten collisiion species
+
+
+### 3. The images and short descriptions of the species
+
+
+### 4. The header and footer
+
+
+### 5. Put them together
+
+
+### 6. Polish the table
+
+
+### 7. Messages from the table
+
+
+
+
+## Summary
+
+
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
+
+
+
+
