@@ -116,11 +116,11 @@ The main idea of `gt` is to build tables from a set of components such as the he
 
 To this end, I'll do a small data viz project in this post to visualize the top ten bird-window collision species in Taiwan. Bird-window collisions, quite literally, are birds colliding with windows of buildings or other human-made structures. Study ^[Loss, S. R., Will, T., & Marra, P. P. (2015). Direct mortality of birds from anthropogenic causes. *Annual Review of Ecology, Evolution, and Systematics*, 46, 99-120.] has shown that this is one of the leading anthropogenic bird mortality sources, killing hundreds of millions of birds each year.
 
-At the end of the post, you'll find out what the top ten bird-window collision species in Taiwan are. Also, this post is not just a data viz practice; hopefully, it can help raise the awareness of this concerning wildlife issue and make the invisible visible. Finally, a shout-out to [Chi-Heng Hsieh](https://twitter.com/ginny_r10b44004), who kindly provided the bird-window collision data for this post!
+At the end of the post, you'll find out what the top ten bird-window collision species in Taiwan are. Also, this post is not just a data viz practice; hopefully, it can help raise the awareness of this concerning wildlife issue and make the invisible visible. Finally, a shout-out to my friend [Chi-Heng Hsieh](https://twitter.com/ginny_r10b44004), who kindly provided the bird-window collision data for this post!
 
 ## Let's build the table
 
-Before we start off, I would like to give you an overall idea of what the table will look like: It has a first column showing the images of the bird species, a second column showing the species names along with a short description of each, a third column showing the total number of collision cases for each species between 2010 and 2022, and a fourth column showing the annual trends of the cases over this 13-year period.
+Before we start off, I would like to give you an overall idea of what the table will look like: It has a first column showing the images of the bird species, a second column showing the species names along with a short description of each, a third column showing the total number of collision cases for each species between 2010 and 2022, and a fourth column showing the annual collision trends for each species over this 13-year period.
 
 In the following section, I'll break down the process into several steps so that it's easier to follow and understand what each step is doing.
 
@@ -150,34 +150,173 @@ bwc_data %>%
 
 ```
 
-### 2. The top ten collisiion species
+### 2. The top ten collision species
 
-Next, 
+Next, we count the number of collision cases by species, select the top ten species, and add their common names.
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
-library(tidyverse)
-
-
-
+bwc_top_collision_df <- bwc_data %>% 
+  filter(year >= 2010) %>% 
+  group_by(species) %>% 
+  summarise(n = n()) %>% 
+  arrange(desc(n)) %>% 
+  slice_head(n = 10) %>% 
+  mutate(common_name = c("Taiwan barbet",
+                         "Asian emerald dove",
+                         "Spotted dove",
+                         "Eurasian tree sparrow",
+                         "Crested goshawk",
+                         "Common kingfisher",
+                         "Light-vented bulbul",
+                         "Pale thrush",
+                         "Swinhoe's white-eye",
+                         "Oriental turtle dove"))
 
 ```
 
-
-
-
 ### 3. The images and short descriptions of the species
 
+Now, we get the images of the top ten collision species from the [The Cornell Lab of Ornithology's Macaulay Library](https://www.macaulaylibrary.org/) and add a short description of each species based on the information on [eBird](https://ebird.org/home). The descriptions are wrapped inside the HTML \<tags\> to customize the text appearance.
 
-### 4. The header and footer
+```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
+### The species images
+bwc_top_collision_df <- bwc_top_collision_df %>% 
+  mutate(image = c("https://cdn.download.ams.birds.cornell.edu/api/v1/asset/85866641/480",
+                   "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/65752231/320",
+                   "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/351501301/480",
+                   "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/391684791/320",
+                   "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/352462361/320",
+                   "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/387920071/320",
+                   "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/147572491/320",
+                   "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/465299711/480",
+                   "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/299650741/480",
+                   "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/472227361/480"))
+
+### Short descriptions of the species
+library(glue)
+
+bwc_top_collision_df <- bwc_top_collision_df %>% 
+  mutate(description = c(
+  "Distinctive <span style = 'color: green'>endemic</span> with a bright green body and a head in red, blue, yellow, 
+  and black. Vocalization characterized by a frog-like croaking.",
+  "Brightly-colored dove of the forest floor with emerald green wings, coral-red bill, and ash-gray forehead. 
+  Male with an extensive silver cap.",
+  "Tame dove commonly found in open forests, fields, and parks. 
+  Brown overall with a rosy breast and a unique white-spotted black nape patch.",
+  "Frequent visitor of urban areas and human settlements. Easily identified by a rich chestnut cap and contrasting black-white cheeks.",
+  "Powerful hawk of forests with thick brown stripes in belly and breast. 
+  Flying adults showing white fluffy feather clumps on both sides of the tail.",
+  "Beautiful little blue-and-orange bird with a long pointed bill. Female with an orange-red lower mandible.
+  Found along rivers, lakes, and ponds.",
+  "Common songbird of gardens, parks, and forests. Grey-olive back with a large white patch covering the nape and black head.",
+  "Brownish songbird in green areas and forests. Male with a blue-grey head and female with a white throat. 
+  White tail corners obvious in flight.",
+  "Adorable exquisite songbird with lemon-yellow throat and olive-suffused back. 
+  Featuring a prominent white eyering.",
+  "Attractive dove with golden-brown-scaled wing coverts, clay-colored underparts, 
+  and black-and-white striped patches on the sides of its neck.")) %>% 
+  mutate(description = glue("<p align = 'left' style = 'line-height: 25px'>
+                              <span style = 'font-size: 17px'><b>{common_name}</b> (<i>{species}</i>)</span>
+                              <br>{description}</p>"))
+
+```
+
+### 4. The line charts of annual collision trends
+
+Our last column in the table is the line charts of annual collision trends for the top ten species. First, we select the top ten species from the full data and summarize the annual cases for each species. Next, we create a function to draw the line charts by species. Lastly, we apply the function to create a line chart for each species.
+
+```{r, fig.width = 14, fig.height = 9, out.width = "75%", fig.show = "hold"}
+### The annual cases for the top ten collision species 
+bwc_linechart_df <- bwc_data %>% 
+  filter(year >= 2010) %>% 
+  filter(species %in% bwc_top_collision_df$species) %>% 
+  group_by(species, year) %>% 
+  summarise(n = n())
+
+### A function to create the line charts by species
+linechart_fun <- function(sp){
+  ggplot(data = filter(bwc_linechart_df, species == sp)) + 
+    geom_line(aes(x = year, y = n), linewidth = 4, alpha = 0.5) +
+    geom_point(aes(x = year, y = n), size = 5) +
+    labs(x = "", y = "Number of cases") +
+    scale_x_continuous(limits = c(2010, 2022), breaks = c(2010, 2016, 2022)) +
+    scale_y_continuous(limits = c(0, max(filter(bwc_linechart_df, species == sp)$n + 3)), expand = c(0, 0)) +
+    theme_classic(base_size = 13) +
+    theme(plot.background = element_blank(),
+          panel.background = element_blank(),
+          axis.ticks.x = element_blank(),
+          panel.grid.major.y = element_line(color = "#66666680"),
+          axis.title.y = element_text(size = 45, hjust = 0.6),
+          axis.text.x = element_text(size = 40, vjust = -2),
+          axis.text.y = element_text(size = 40),
+          plot.margin = margin(25, 10, 0, 0))
+}
+
+### Apply the line chart function to each species 
+bwc_linecharts <- map(bwc_top_collision_df$species, linechart_fun)
+bwc_linecharts[[1]]  # take a look at the line chart for the first species
+
+```
+
+### 5. The header and footer
+
+The final two pieces of the table are the header and footer. The header consists of a main title and a subtitle with a brief table description; the footer shows the data source of the species images and descriptions. Again, the text is written in HTML to allow for more customization.
+
+```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
+title_text <- "<b><i>Top Ten Bird-Window Collision Species in Taiwan</i></b>"
+
+subtitle_text <- "This summary table shows the top ten bird-window collision 
+species between 2010 and 2022 in Taiwan, based on a data set collected from 
+<span style = 'color: #ffc107'>The Taiwan Roadkill Observation Network</span> and 
+<span style = 'color: #4267B2'>Reports on Bird-Glass Collisions Facebook Group</span>. 
+170 species with around 3,600 collision cases were recorded over this 13-year period."
+
+footer_text <- "<p margin-bottom: 0em><i>Species images and descriptions: 
+The Cornell Lab of Ornithology Macaulay Library & eBird</i> <span style = 'margin-left: 5px'> <img src = 'https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2023-02-18-post-24-gt-and-ggplot-visualizing-bwc-in-taiwan/Macaulay_lib_logo.png' width = '90' height = '30' style = 'vertical-align: middle'/></span><span style = 'margin-left: 3px'><img src = 'https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2023-02-18-post-24-gt-and-ggplot-visualizing-bwc-in-taiwan/eBird_logo.png' width = '70' height = '30' style = 'vertical-align: middle'/></p>"
+
+```
+
+### 6. Put them together
 
 
-### 5. Put them together
+```{r, fig.width = 7, fig.height = 7, out.width = "90%", fig.show = "hold"}
+library(gt)
+library(gtExtras)  # for the function gt_img_circle()
+
+### Build the first table
+bwc_table <- bwc_top_collision_df %>% 
+  mutate(blank1 = "", blank2 = "", linechart = NA) %>% 
+  select(blank1, image, blank2, description, n, linechart) %>% 
+  gt() %>%
+  
+  # images
+  gt_img_circle(column = "image", height = 100, border_weight = 0) %>% 
+  
+  # short descriptions
+  text_transform(locations = cells_body(columns = description),
+                 fn = function(x){map(bwc_top_collision_df$description, html)}) %>% 
+  
+  # line charts
+  text_transform(locations = cells_body(columns = linechart),
+                 fn = function(x){map(bwc_linecharts, ggplot_image, 
+                                      height = px(90), aspect_ratio = 2.2)}) %>%   # header
+  tab_header(title = html(title_text),
+             subtitle = html(subtitle_text)) %>%
+  
+  # footer
+  tab_source_note(source_note = html(footer_text))
+
+bwc_table
+
+```
+
+The table has its shape, but definitely needs some adjustments and fine-tuning. This is what we are going to do next.
+
+### 7. Polish the table
 
 
-### 6. Polish the table
 
-
-### 7. The messages from the table
+### 8. The messages from the table
 
 
 
