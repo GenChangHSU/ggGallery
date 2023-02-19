@@ -1631,13 +1631,48 @@ wildlife issue and make the invisible visible. Finally, a shout-out to
 <a href="https://twitter.com/ginny_r10b44004">Chi-Heng Hsieh</a>, who
 kindly provided the bird-window collision data for this post!</p>
 <h2 id="lets-build-the-table">Let’s build the table</h2>
-<p>Break down the process into several steps and explain the details</p>
+<p>Before we start off, I would like to give you an overall idea of what
+the table will look like: It has a first column showing the images of
+the bird species, a second column showing the species names along with a
+short description of each, a third column showing the total number of
+collision cases for each species between 2010 and 2022, and a fourth
+column showing the annual trends of the cases over this 13-year
+period.</p>
+<p>In the following section, I’ll break down the process into several
+steps so that it’s easier to follow and understand what each step is
+doing.</p>
 <h3 id="data-preparation-and-summary">1. Data preparation and
 summary</h3>
+<p>As always, the first step in a data project is to prepare the data.
+After reading in the data set, we count the total number of collision
+cases between 2010 and 2022, as well as the number of species recorded
+in this period. Because there are some cases where the colliding
+individuals were only identified to the genus or family level, we filter
+them out before tallying the unique species names.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Read in the data set</span></span>
+<span><span class='va'>bwc_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"BWC_data.csv"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Total cases between 2010 and 2022</span></span>
+<span><span class='va'>bwc_data</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>year</span> <span class='op'>&gt;=</span> <span class='fl'>2010</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
 </div>
+<pre><code>[1] 3608</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Number of collision species</span></span>
+<span><span class='va'>bwc_data</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>year</span> <span class='op'>&gt;=</span> <span class='fl'>2010</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_split.html'>str_split</a></span><span class='op'>(</span><span class='va'>species</span>, <span class='st'>" "</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># remove the families</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span><span class='op'>(</span><span class='va'>species</span>, <span class='st'>"sp\\."</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># remove the genera</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></span><span class='op'>(</span><span class='va'>species</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>[1] 170</code></pre>
 </div>
 <h3 id="the-top-ten-collisiion-species">2. The top ten collisiion
 species</h3>
@@ -1646,11 +1681,11 @@ and short descriptions of the species</h3>
 <h3 id="the-header-and-footer">4. The header and footer</h3>
 <h3 id="put-them-together">5. Put them together</h3>
 <h3 id="polish-the-table">6. Polish the table</h3>
-<h3 id="messages-from-the-table">7. Messages from the table</h3>
+<h3 id="the-messages-from-the-table">7. The messages from the table</h3>
 <h2 id="summary">Summary</h2>
 <p>Hope you learn something useful from this post and don’t forget to
 leave your comments and suggestions below if you have any!</p>
-<div class="sourceCode" id="cb1"><pre
+<div class="sourceCode" id="cb3"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">

@@ -120,18 +120,49 @@ At the end of the post, you'll find out what the top ten bird-window collision s
 
 ## Let's build the table
 
-Break down the process into several steps and explain the details
+Before we start off, I would like to give you an overall idea of what the table will look like: It has a first column showing the images of the bird species, a second column showing the species names along with a short description of each, a third column showing the total number of collision cases for each species between 2010 and 2022, and a fourth column showing the annual trends of the cases over this 13-year period.
+
+In the following section, I'll break down the process into several steps so that it's easier to follow and understand what each step is doing.
 
 ### 1. Data preparation and summary
+
+As always, the first step in a data project is to prepare the data. After reading in the data set, we count the total number of collision cases between 2010 and 2022, as well as the number of species recorded in this period. Because there are some cases where the colliding individuals were only identified to the genus or family level, we filter them out before tallying the unique species names.
+
+```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
+library(tidyverse)
+
+### Read in the data set
+bwc_data <- read_csv("BWC_data.csv")
+
+### Total cases between 2010 and 2022
+bwc_data %>% 
+  filter(year >= 2010) %>% 
+  nrow()
+
+### Number of collision species
+bwc_data %>% 
+  filter(year >= 2010) %>%
+  rowwise() %>% 
+  filter(length(unlist(str_split(species, " "))) == 2) %>%  # remove the families
+  filter(!str_detect(species, "sp\\.")) %>%  # remove the genera
+  distinct(species) %>% 
+  nrow()
+
+```
+
+### 2. The top ten collisiion species
+
+Next, 
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
 library(tidyverse)
 
 
 
+
 ```
 
-### 2. The top ten collisiion species
+
 
 
 ### 3. The images and short descriptions of the species
@@ -146,7 +177,7 @@ library(tidyverse)
 ### 6. Polish the table
 
 
-### 7. Messages from the table
+### 7. The messages from the table
 
 
 
