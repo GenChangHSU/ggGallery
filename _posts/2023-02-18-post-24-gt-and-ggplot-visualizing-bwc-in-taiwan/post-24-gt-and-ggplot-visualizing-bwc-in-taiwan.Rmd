@@ -428,12 +428,11 @@ gtsave_extra(bwc_table, "bwc_table.png", zoom = 2)
 
 This is the final table. Perfect!
 
-<img src="bwc_table.png">
+<img src="https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2023-02-18-post-24-gt-and-ggplot-visualizing-bwc-in-taiwan/bwc_table.png">
 
 ### 8. The messages from the table
 
 Before we call it a wrap, let's take a closer look at the table and see what information it conveys to us.
-
 
 
 ## Summary
