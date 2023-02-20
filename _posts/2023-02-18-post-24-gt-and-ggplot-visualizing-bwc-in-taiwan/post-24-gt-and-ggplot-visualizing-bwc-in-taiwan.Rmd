@@ -434,22 +434,23 @@ This is the final table. Perfect!
 
 Before we call it a wrap, let's take a closer look at the table and see what we can learn from it.
 
-The first species, Taiwan barbet, is an endemic species in Taiwan. It is quite unexpected that this species tops the list given
+In general, the collisions for these top ten species are trending upwards, despite some year-to-year fluctuations. This may be due to more reports in recent years as people are more aware of bird-window collisions. It can also be because there are more buildings/infrastructures with window surface, thus causing more collisions. The increasing trends are concerning and deserve our close attention.
 
-Another surprising species on the list is the crested goshawk. Hard to imagine that 
+Many of the bird species on the list commonly occur in urban or sub-urban areas (e.g., spotted dove, Eurasian tree sparrow, light-vented bulbul, Swinhoe's white-eye, and oriental turtle dove), which is a strong reason why they collide with windows quite frequently. But the collision issue is not limited to these urban residents. There is also common kingfisher, a species that lives around water bodies, and pale thrush, a winter migrant in Taiwan.
 
-This could potentially have some ecological impact as this species is a top predator in the ecosystem.
+<!-- The first species, Taiwan barbet, almost double the number of the second species! It is an endemic species in Taiwan. It is quite unexpected that this species tops the list as not many cases have been reported for similar species in other countries. -->
 
-Many of these bird species live in urban or sub-urban areas, which explains why there are many collisions. But the issue is not limited to these urban dwellers. There is also a migratory bird, the pale thrush, and a species that lives close to the water bodies, the common kingfisher.
+<!-- Another surprising species on the list is the raptor species crested goshawk. It's a bit mind-boggling that such an agile flyer also falls victim to bird-window collision. This could potentially have some ecological impacts as hawks are top predators in the ecosystem. -->
 
-Interestingly, there are three dove species on the list. This may be due to the fact that they are relatively poor in maneuvering. But it can also simply be that they're quite abundant around human settlements. Or perhaps a combination of them.
+<!-- Interestingly, there are three dove species on the list. This may be due to the fact that they are relatively poor in maneuvering. But it can also simply be that they're quite abundant around human settlements. Or perhaps a combination of them. -->
 
-It is noteworthy that the numbers shown in the table are just the tip of the iceberg: a lot of bird-window collisions got unnoticed, or noticed but unreported. This issue has gained awareness in recent years and there is increasing research on why birds collide with windows. Hopefully, we will come up with solutions to this.
-
+<!-- It is noteworthy that the numbers shown in the table are just the tip of the iceberg: a lot of bird-window collisions got unnoticed, or noticed but unreported. There is increasing research on why birds collide with windows, and hopefully we will come up with effective measures to prevent this. -->
 
 ## Summary
 
+To recap, in this post we built a cool `gt` table to visualize the top ten bird-window collision species in Taiwan. We first prepared the table columns, then put them in a data frame and created an initial table, and finally polished the table by tweaking the format and style. We also integrated ggplots into the table to enhance data visualization.
 
+I used to think that R is not good at making tables, but now I've completely changed my point of view after writing this post. I believe you will have an itch for making your own `gt` tables too!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
