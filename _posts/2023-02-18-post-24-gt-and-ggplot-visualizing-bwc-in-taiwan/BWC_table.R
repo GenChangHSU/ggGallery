@@ -184,13 +184,6 @@ bwc_table <- bwc_top_collider_df %>%
               data_row.padding = px(0),
               source_notes.padding = px(0)) %>%
   
-  # header
-  tab_header(title = gt::html(title_text),
-             subtitle = gt::html(caption_text)) %>%
-  
-  # footnote
-  tab_source_note(source_note = gt::html(footnote_text)) %>% 
-  
   # title style
   tab_style(locations = cells_title(groups = "title"),
             style = list(cell_text(font = google_font(name = "Kanit"),

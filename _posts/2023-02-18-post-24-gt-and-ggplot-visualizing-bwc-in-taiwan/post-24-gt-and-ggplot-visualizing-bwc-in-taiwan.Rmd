@@ -276,8 +276,21 @@ The Cornell Lab of Ornithology Macaulay Library & eBird</i> <span style = 'margi
 
 ```
 
-### 6. Put them together
+### 6. Put everything together
 
+Having all the ingredients on hand, it's time to put them together! There are several things to note here:
+
+(1) We prepare a data frame with the columns in the desired order and pass it to the master function `gt()` to create a table.
+
+(2) We create two blank columns to add some white space. The amount of spacing may not be desirable now, but this can be easily adjusted later.
+
+(3) We use the function `gt_img_circle()` to create circle images of the species.
+
+(4) Remember we used HTML in the short descriptions? This is not readily recognized by `gt()`, but we can use `text_transform()` along with `html()` to tell `gt()` that the column `description` should be understood in the HTML language.
+
+(5) For the line charts, we first set the column elements to NA, and again use `text_transform()` along with `ggplot_image()` to tell `gt()` that the line charts in the list `bwc_linecharts` should be treated as ggplots.
+
+(6) Same as the descriptions, the header and footer are passed into `html()` to convert the text into HTML.
 
 ```{r, fig.width = 7, fig.height = 7, out.width = "90%", fig.show = "hold"}
 library(gt)
@@ -299,7 +312,8 @@ bwc_table <- bwc_top_collision_df %>%
   # line charts
   text_transform(locations = cells_body(columns = linechart),
                  fn = function(x){map(bwc_linecharts, ggplot_image, 
-                                      height = px(90), aspect_ratio = 2.2)}) %>%   # header
+                                      height = px(90), aspect_ratio = 2.2)}) %>%   
+  # header
   tab_header(title = html(title_text),
              subtitle = html(subtitle_text)) %>%
   
@@ -309,15 +323,116 @@ bwc_table <- bwc_top_collision_df %>%
 bwc_table
 
 ```
+<br>
 
-The table has its shape, but definitely needs some adjustments and fine-tuning. This is what we are going to do next.
+Nice, we get our table here! Though, it is not in a good shape and definitely needs some adjustments and fine-tuning. This is what we are going to do next.
 
 ### 7. Polish the table
 
+There are quite a few things in the table we can modify:
 
+(1) Column labels
+
+(2) Column widths
+
+(3) Table width and the padding around table components
+
+(4) The style (font size, font family, color, alignment, etc.) of header, column labels, body columns, and footer
+
+(5) The background color of the table rows
+
+The main purpose here is to show that we can customize the table as we wish, and so I'll not dive into the nitty-gritty of styling functions and arguments. In fact, we are only scratching the surface, and there are a lot more things we can do. If interested, check out the amazing [references and tutorials](https://gt.rstudio.com/articles/case-study-gtcars.html) on the `gt` package website for more details!
+
+It does require a bit of trial and error to get everything at the exact place. So be patient and have fun experimenting. It's super satisfying to see the final product!
+
+```{r, fig.width = 20, fig.height = 20, out.width = "100%", fig.show = "hold"}
+bwc_table <- bwc_table %>% 
+  
+  # column labels
+  cols_label(blank1 = "",
+             image = "",
+             blank2 = "",
+             description = "",
+             n = html("2010-2022&nbsp; <br> Total Cases"),
+             linechart = html("2010-2022 <br> Annual Trend")) %>%
+  
+  # column widths
+  cols_width(blank1 ~ px(10),
+             image ~ px(107.5),
+             blank2 ~ px(10),
+             description ~ px(370),
+             n ~ px(110),
+             linechart ~ px(300)) %>%
+  
+  # table width and padding
+  tab_options(table.width = 900,
+              container.width = 950,
+              heading.padding = px(12),
+              data_row.padding = px(0),
+              source_notes.padding = px(0)) %>%
+  
+  # title style
+  tab_style(locations = cells_title(groups = "title"),
+            style = list(cell_text(font = google_font(name = "Kanit"),
+                                   size = px(35),
+                                   align = "left"))) %>% 
+  
+  # subtitle style
+  tab_style(locations = cells_title(groups = "subtitle"),
+            style = list(cell_text(font = google_font(name = "Arimo"),
+                                   size = px(20),
+                                   color = "grey30",
+                                   align = "left"))) %>% 
+  
+  # column label style 
+  tab_style(locations = cells_column_labels(c(n, linechart)),
+            style = list(cell_text(font = google_font(name = "Arimo"),
+                                   v_align = "middle",
+                                   weight = "bold",
+                                   size = "large"))) %>% 
+  
+  # body column style
+  tab_style(locations = cells_body(columns = c(description)),
+            style = list(cell_text(font = google_font(name = "Arimo"),
+                                   align = "center"))) %>%
+  
+  tab_style(locations = cells_body(columns = c(n)),
+            style = list(cell_text(font = google_font(name = "Arimo"),
+                                   align = "center",
+                                   size = px(25)))) %>%
+  
+  # footer style
+  tab_style(locations = cells_source_notes(),
+            style = list(cell_text(font = google_font(name = "Arimo"),
+                                   size = "small",
+                                   v_align = "top"))) %>% 
+  
+  # row background color
+  tab_style(locations = cells_body(rows = seq(1, 10, 2)),
+            style = list(cell_fill(color = "#d8dde0")))
+
+bwc_table
+```
+
+<br>
+
+Looks cool, but still there are a bit of formatting issues (e.g., the short descriptions are cut off on the right) when displayed as an HTML page here.
+
+We can save the HTML as an image to solve this problem:
+
+```{r, fig.width = 7, fig.height = 7, out.width = "90%", fig.show = "hold"}
+library(webshot2)
+gtsave_extra(bwc_table, "bwc_table.png", zoom = 2)
+
+```
+
+This is the final table. Perfect!
+
+<img src="bwc_table.png">
 
 ### 8. The messages from the table
 
+Before we call it a wrap, let's take a closer look at the table and see what information it conveys to us.
 
 
 
