@@ -434,9 +434,11 @@ This is the final table. Perfect!
 
 Before we call it a wrap, let's take a closer look at the table and see what we can learn from it.
 
-The first species on the list, Taiwanese barbet, is an endemic species. it is surprising that this species tops the list. 
+The first species, Taiwan barbet, is an endemic species in Taiwan. It is quite unexpected that this species tops the list given
 
-Another quite surprising fact is that there is a raptor on the list, the crested goshawk. This could potentially have some ecological impact as this species is a top predator in the ecosystem.
+Another surprising species on the list is the crested goshawk. Hard to imagine that 
+
+This could potentially have some ecological impact as this species is a top predator in the ecosystem.
 
 Many of these bird species live in urban or sub-urban areas, which explains why there are many collisions. But the issue is not limited to these urban dwellers. There is also a migratory bird, the pale thrush, and a species that lives close to the water bodies, the common kingfisher.
 
