@@ -125,7 +125,7 @@ killing hundreds of millions of birds each year.&lt;/p&gt;
 collision species in Taiwan are. Also, this post is not just a data viz
 practice; hopefully, it can help raise the awareness of this concerning
 wildlife issue and make the invisible visible. Finally, a shout-out to
-my friend &lt;a href="https://twitter.com/ginny_r10b44004"&gt;Chi-Heng
+my friend &lt;a href="https://www.facebook.com/Hsieh310101"&gt;Chi-Heng
 Hsieh&lt;/a&gt;, who kindly provided the bird-window collision data for this
 post!&lt;/p&gt;
 &lt;h2 id="lets-build-the-table"&gt;Let’s build the table&lt;/h2&gt;
@@ -269,7 +269,7 @@ linechart_fun &amp;lt;- function(sp){
 ### Apply the line chart function to each species 
 bwc_linecharts &amp;lt;- map(bwc_top_collision_df$species, linechart_fun)
 bwc_linecharts[[1]]  # take a look at the line chart for the first species&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c6f2b17cf_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f4592c1b87_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="the-header-and-footer"&gt;5. The header and footer&lt;/h3&gt;
 &lt;p&gt;The final two pieces of the table are the header and footer. The
 header consists of a main title and a subtitle with a brief table
@@ -339,12 +339,12 @@ bwc_table &amp;lt;- bwc_top_collision_df %&amp;gt;%
   tab_source_note(source_note = html(footer_text))
 
 bwc_table&lt;/code&gt;&lt;/pre&gt;
-&lt;div id="wnmrzdpfaq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+&lt;div id="sqfqhllggh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
 &lt;style&gt;html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#wnmrzdpfaq .gt_table {
+#sqfqhllggh .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -369,7 +369,7 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   border-left-color: #D3D3D3;
 }
 
-#wnmrzdpfaq .gt_heading {
+#sqfqhllggh .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -381,12 +381,12 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#wnmrzdpfaq .gt_caption {
+#sqfqhllggh .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#wnmrzdpfaq .gt_title {
+#sqfqhllggh .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -398,7 +398,7 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   border-bottom-width: 0;
 }
 
-#wnmrzdpfaq .gt_subtitle {
+#sqfqhllggh .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -410,13 +410,13 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   border-top-width: 0;
 }
 
-#wnmrzdpfaq .gt_bottom_border {
+#sqfqhllggh .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#wnmrzdpfaq .gt_col_headings {
+#sqfqhllggh .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -431,7 +431,7 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#wnmrzdpfaq .gt_col_heading {
+#sqfqhllggh .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -451,7 +451,7 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   overflow-x: hidden;
 }
 
-#wnmrzdpfaq .gt_column_spanner_outer {
+#sqfqhllggh .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -463,15 +463,15 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   padding-right: 4px;
 }
 
-#wnmrzdpfaq .gt_column_spanner_outer:first-child {
+#sqfqhllggh .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#wnmrzdpfaq .gt_column_spanner_outer:last-child {
+#sqfqhllggh .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#wnmrzdpfaq .gt_column_spanner {
+#sqfqhllggh .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -483,7 +483,7 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   width: 100%;
 }
 
-#wnmrzdpfaq .gt_group_heading {
+#sqfqhllggh .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -509,7 +509,7 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   text-align: left;
 }
 
-#wnmrzdpfaq .gt_empty_group_heading {
+#sqfqhllggh .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -524,15 +524,15 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   vertical-align: middle;
 }
 
-#wnmrzdpfaq .gt_from_md &gt; :first-child {
+#sqfqhllggh .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#wnmrzdpfaq .gt_from_md &gt; :last-child {
+#sqfqhllggh .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#wnmrzdpfaq .gt_row {
+#sqfqhllggh .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -551,7 +551,7 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   overflow-x: hidden;
 }
 
-#wnmrzdpfaq .gt_stub {
+#sqfqhllggh .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -564,7 +564,7 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   padding-right: 5px;
 }
 
-#wnmrzdpfaq .gt_stub_row_group {
+#sqfqhllggh .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -578,11 +578,11 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   vertical-align: top;
 }
 
-#wnmrzdpfaq .gt_row_group_first td {
+#sqfqhllggh .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#wnmrzdpfaq .gt_summary_row {
+#sqfqhllggh .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -592,16 +592,16 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   padding-right: 5px;
 }
 
-#wnmrzdpfaq .gt_first_summary_row {
+#sqfqhllggh .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#wnmrzdpfaq .gt_first_summary_row.thick {
+#sqfqhllggh .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#wnmrzdpfaq .gt_last_summary_row {
+#sqfqhllggh .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -611,7 +611,7 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   border-bottom-color: #D3D3D3;
 }
 
-#wnmrzdpfaq .gt_grand_summary_row {
+#sqfqhllggh .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -621,7 +621,7 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   padding-right: 5px;
 }
 
-#wnmrzdpfaq .gt_first_grand_summary_row {
+#sqfqhllggh .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -631,11 +631,11 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   border-top-color: #D3D3D3;
 }
 
-#wnmrzdpfaq .gt_striped {
+#sqfqhllggh .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#wnmrzdpfaq .gt_table_body {
+#sqfqhllggh .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -644,7 +644,7 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   border-bottom-color: #D3D3D3;
 }
 
-#wnmrzdpfaq .gt_footnotes {
+#sqfqhllggh .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -658,7 +658,7 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#wnmrzdpfaq .gt_footnote {
+#sqfqhllggh .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -667,7 +667,7 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   padding-right: 5px;
 }
 
-#wnmrzdpfaq .gt_sourcenotes {
+#sqfqhllggh .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -681,7 +681,7 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#wnmrzdpfaq .gt_sourcenote {
+#sqfqhllggh .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -689,64 +689,64 @@ bwc_table&lt;/code&gt;&lt;/pre&gt;
   padding-right: 5px;
 }
 
-#wnmrzdpfaq .gt_left {
+#sqfqhllggh .gt_left {
   text-align: left;
 }
 
-#wnmrzdpfaq .gt_center {
+#sqfqhllggh .gt_center {
   text-align: center;
 }
 
-#wnmrzdpfaq .gt_right {
+#sqfqhllggh .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#wnmrzdpfaq .gt_font_normal {
+#sqfqhllggh .gt_font_normal {
   font-weight: normal;
 }
 
-#wnmrzdpfaq .gt_font_bold {
+#sqfqhllggh .gt_font_bold {
   font-weight: bold;
 }
 
-#wnmrzdpfaq .gt_font_italic {
+#sqfqhllggh .gt_font_italic {
   font-style: italic;
 }
 
-#wnmrzdpfaq .gt_super {
+#sqfqhllggh .gt_super {
   font-size: 65%;
 }
 
-#wnmrzdpfaq .gt_footnote_marks {
+#sqfqhllggh .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#wnmrzdpfaq .gt_asterisk {
+#sqfqhllggh .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#wnmrzdpfaq .gt_indent_1 {
+#sqfqhllggh .gt_indent_1 {
   text-indent: 5px;
 }
 
-#wnmrzdpfaq .gt_indent_2 {
+#sqfqhllggh .gt_indent_2 {
   text-indent: 10px;
 }
 
-#wnmrzdpfaq .gt_indent_3 {
+#sqfqhllggh .gt_indent_3 {
   text-indent: 15px;
 }
 
-#wnmrzdpfaq .gt_indent_4 {
+#sqfqhllggh .gt_indent_4 {
   text-indent: 20px;
 }
 
-#wnmrzdpfaq .gt_indent_5 {
+#sqfqhllggh .gt_indent_5 {
   text-indent: 25px;
 }
 &lt;/style&gt;
@@ -962,7 +962,7 @@ satisfying to see the final product!&lt;/p&gt;
             style = list(cell_fill(color = &amp;quot;#d8dde0&amp;quot;)))
 
 bwc_table&lt;/code&gt;&lt;/pre&gt;
-&lt;div id="boxxcqpjsx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:950px;height:auto;"&gt;
+&lt;div id="qeantdhacu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:950px;height:auto;"&gt;
 &lt;style&gt;@import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap");
@@ -973,7 +973,7 @@ html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#boxxcqpjsx .gt_table {
+#qeantdhacu .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -998,7 +998,7 @@ html {
   border-left-color: #D3D3D3;
 }
 
-#boxxcqpjsx .gt_heading {
+#qeantdhacu .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1010,12 +1010,12 @@ html {
   border-right-color: #D3D3D3;
 }
 
-#boxxcqpjsx .gt_caption {
+#qeantdhacu .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#boxxcqpjsx .gt_title {
+#qeantdhacu .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1027,7 +1027,7 @@ html {
   border-bottom-width: 0;
 }
 
-#boxxcqpjsx .gt_subtitle {
+#qeantdhacu .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1039,13 +1039,13 @@ html {
   border-top-width: 0;
 }
 
-#boxxcqpjsx .gt_bottom_border {
+#qeantdhacu .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#boxxcqpjsx .gt_col_headings {
+#qeantdhacu .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1060,7 +1060,7 @@ html {
   border-right-color: #D3D3D3;
 }
 
-#boxxcqpjsx .gt_col_heading {
+#qeantdhacu .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1080,7 +1080,7 @@ html {
   overflow-x: hidden;
 }
 
-#boxxcqpjsx .gt_column_spanner_outer {
+#qeantdhacu .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1092,15 +1092,15 @@ html {
   padding-right: 4px;
 }
 
-#boxxcqpjsx .gt_column_spanner_outer:first-child {
+#qeantdhacu .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#boxxcqpjsx .gt_column_spanner_outer:last-child {
+#qeantdhacu .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#boxxcqpjsx .gt_column_spanner {
+#qeantdhacu .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1112,7 +1112,7 @@ html {
   width: 100%;
 }
 
-#boxxcqpjsx .gt_group_heading {
+#qeantdhacu .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1138,7 +1138,7 @@ html {
   text-align: left;
 }
 
-#boxxcqpjsx .gt_empty_group_heading {
+#qeantdhacu .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1153,15 +1153,15 @@ html {
   vertical-align: middle;
 }
 
-#boxxcqpjsx .gt_from_md &gt; :first-child {
+#qeantdhacu .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#boxxcqpjsx .gt_from_md &gt; :last-child {
+#qeantdhacu .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#boxxcqpjsx .gt_row {
+#qeantdhacu .gt_row {
   padding-top: 0px;
   padding-bottom: 0px;
   padding-left: 5px;
@@ -1180,7 +1180,7 @@ html {
   overflow-x: hidden;
 }
 
-#boxxcqpjsx .gt_stub {
+#qeantdhacu .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1193,7 +1193,7 @@ html {
   padding-right: 5px;
 }
 
-#boxxcqpjsx .gt_stub_row_group {
+#qeantdhacu .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1207,11 +1207,11 @@ html {
   vertical-align: top;
 }
 
-#boxxcqpjsx .gt_row_group_first td {
+#qeantdhacu .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#boxxcqpjsx .gt_summary_row {
+#qeantdhacu .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1221,16 +1221,16 @@ html {
   padding-right: 5px;
 }
 
-#boxxcqpjsx .gt_first_summary_row {
+#qeantdhacu .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#boxxcqpjsx .gt_first_summary_row.thick {
+#qeantdhacu .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#boxxcqpjsx .gt_last_summary_row {
+#qeantdhacu .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1240,7 +1240,7 @@ html {
   border-bottom-color: #D3D3D3;
 }
 
-#boxxcqpjsx .gt_grand_summary_row {
+#qeantdhacu .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1250,7 +1250,7 @@ html {
   padding-right: 5px;
 }
 
-#boxxcqpjsx .gt_first_grand_summary_row {
+#qeantdhacu .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1260,11 +1260,11 @@ html {
   border-top-color: #D3D3D3;
 }
 
-#boxxcqpjsx .gt_striped {
+#qeantdhacu .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#boxxcqpjsx .gt_table_body {
+#qeantdhacu .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1273,7 +1273,7 @@ html {
   border-bottom-color: #D3D3D3;
 }
 
-#boxxcqpjsx .gt_footnotes {
+#qeantdhacu .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1287,7 +1287,7 @@ html {
   border-right-color: #D3D3D3;
 }
 
-#boxxcqpjsx .gt_footnote {
+#qeantdhacu .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -1296,7 +1296,7 @@ html {
   padding-right: 5px;
 }
 
-#boxxcqpjsx .gt_sourcenotes {
+#qeantdhacu .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1310,7 +1310,7 @@ html {
   border-right-color: #D3D3D3;
 }
 
-#boxxcqpjsx .gt_sourcenote {
+#qeantdhacu .gt_sourcenote {
   font-size: 90%;
   padding-top: 0px;
   padding-bottom: 0px;
@@ -1318,64 +1318,64 @@ html {
   padding-right: 5px;
 }
 
-#boxxcqpjsx .gt_left {
+#qeantdhacu .gt_left {
   text-align: left;
 }
 
-#boxxcqpjsx .gt_center {
+#qeantdhacu .gt_center {
   text-align: center;
 }
 
-#boxxcqpjsx .gt_right {
+#qeantdhacu .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#boxxcqpjsx .gt_font_normal {
+#qeantdhacu .gt_font_normal {
   font-weight: normal;
 }
 
-#boxxcqpjsx .gt_font_bold {
+#qeantdhacu .gt_font_bold {
   font-weight: bold;
 }
 
-#boxxcqpjsx .gt_font_italic {
+#qeantdhacu .gt_font_italic {
   font-style: italic;
 }
 
-#boxxcqpjsx .gt_super {
+#qeantdhacu .gt_super {
   font-size: 65%;
 }
 
-#boxxcqpjsx .gt_footnote_marks {
+#qeantdhacu .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#boxxcqpjsx .gt_asterisk {
+#qeantdhacu .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#boxxcqpjsx .gt_indent_1 {
+#qeantdhacu .gt_indent_1 {
   text-indent: 5px;
 }
 
-#boxxcqpjsx .gt_indent_2 {
+#qeantdhacu .gt_indent_2 {
   text-indent: 10px;
 }
 
-#boxxcqpjsx .gt_indent_3 {
+#qeantdhacu .gt_indent_3 {
   text-indent: 15px;
 }
 
-#boxxcqpjsx .gt_indent_4 {
+#qeantdhacu .gt_indent_4 {
   text-indent: 20px;
 }
 
-#boxxcqpjsx .gt_indent_5 {
+#qeantdhacu .gt_indent_5 {
   text-indent: 25px;
 }
 &lt;/style&gt;
@@ -1525,12 +1525,13 @@ see what we can learn from it.&lt;/p&gt;
 sub-urban areas (e.g., spotted dove, Eurasian tree sparrow, light-vented
 bulbul, Swinhoe’s white-eye, and oriental turtle dove), which is a
 strong reason why they collide with windows quite frequently. But the
-collision issue is not limited to urban residents. There is also common
+collision issue is not limited to urban dwellers. There is also common
 kingfisher, a species that lives around water bodies, and pale thrush, a
-winter migrant in Taiwan. Interestingly, three dove species show up on
-the list. Perhaps it’s because they are relatively poor in maneuvering,
-and also they are quite abundant around human settlements. A combination
-of both makes them vulnerable to window collisions.&lt;/p&gt;
+winter migrant in Taiwan. In fact, nine of the top ten species are
+resident birds, even though Taiwan lies close to the center of the East
+Asian-Australian Flyway. This is quite different from the patterns in
+the Western countries, where the majority of collisions are migratory
+birds.&lt;/p&gt;
 &lt;p&gt;The species that tops the list, Taiwan barbet (an endemic species in
 Taiwan), has nearly twice as many collision cases as the second species!
 This is quite special as not many cases have been reported for similar
@@ -1538,7 +1539,10 @@ species in other countries. Another surprising species on the list is
 the raptor crested goshawk. It’s a bit mind-boggling that such an agile
 flyer also falls victim to bird-window collision. This could potentially
 have some ecological impacts as hawks are top predators in the
-ecosystem.&lt;/p&gt;
+ecosystem. Interestingly, three dove species show up on the list.
+Perhaps it’s because they are relatively poor in maneuvering, and also
+they are quite abundant around human settlements. A combination of both
+makes them vulnerable to window collisions.&lt;/p&gt;
 &lt;p&gt;In general, the collisions for these top ten species are trending
 upwards, despite some year-to-year fluctuations. This may be due to more
 reports in recent years as people are more aware of bird-window
@@ -1720,7 +1724,7 @@ P_vertical_adjusted &amp;lt;- P_vertical_default +
   guides(color = guide_legend(byrow = T))  # &amp;quot;byrow = T&amp;quot; is necessary for &amp;quot;legend.spacing.y&amp;quot; to work for vertical legends  
 
 P_vertical_default; P_vertical_adjusted&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c72fb14a3_files/figure-html/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;img src="file3a5c72fb14a3_files/figure-html/unnamed-chunk-1-2.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f442b136b0_files/figure-html/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;img src="file15f442b136b0_files/figure-html/unnamed-chunk-1-2.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;br&gt; &lt;span
 style="display: block; margin-top: 0px; margin-left: 0px; font-size: 22px"&gt;
 (2) Horizontal layout&lt;/span&gt;&lt;/p&gt;
@@ -1752,7 +1756,7 @@ P_horizontal_adjusted &amp;lt;- P_horizontal_default +
         legend.text = element_text(margin = margin(r = 15)))  # fine tune the spacing between legend labels and adjacent legend keys
         
 P_horizontal_default; P_horizontal_adjusted&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c72fb14a3_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;img src="file3a5c72fb14a3_files/figure-html/unnamed-chunk-2-2.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f442b136b0_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;img src="file15f442b136b0_files/figure-html/unnamed-chunk-2-2.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;br&gt; &lt;span
 style="display: block; margin-top: 0px; margin-left: 0px; font-size: 22px"&gt;
 (3) Matrix layout&lt;/span&gt;&lt;/p&gt;
@@ -1778,7 +1782,7 @@ P_matrix_adjusted &amp;lt;- P_matrix_default +
         legend.text = element_text(margin = margin(r = 15)))  # fine tune the spacing between the legend label and the adjacent legend key
         
 P_matrix_default; P_matrix_adjusted&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c72fb14a3_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;img src="file3a5c72fb14a3_files/figure-html/unnamed-chunk-3-2.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f442b136b0_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;img src="file15f442b136b0_files/figure-html/unnamed-chunk-3-2.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="multiple-legends"&gt;Multiple legends&lt;/h3&gt;
 &lt;p&gt;In the previous section, we focused on adjusting the spacing between
 the items within a legend. What if we have multiple legends and we want
@@ -1793,7 +1797,7 @@ P_multiple_default &amp;lt;- ggplot(data = iris) +
   theme_classic(base_size = 13)
 
 P_multiple_default&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c72fb14a3_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f442b136b0_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Say we would like to increase the spacing between the two legends. We
 can use the same hack as before by increasing the top margin of the
 legend title, which will create more white space above both the title
@@ -1807,7 +1811,7 @@ P_multiple_adjusted &amp;lt;- P_multiple_default +
         legend.box.margin = margin(b = 50))  # increase the margin below the legend box to push the legends up
 
 P_multiple_adjusted&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c72fb14a3_files/figure-html/unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f442b136b0_files/figure-html/unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;To recap, we learned how to adjust the spacing between the title,
 keys, and labels within a legend, as well as the spacing between
@@ -2026,7 +2030,7 @@ P_solar_system &amp;lt;- ggplot() +
   coord_polar(theta = &amp;quot;y&amp;quot;, clip = &amp;quot;off&amp;quot;)
 
 P_solar_system&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c5427664_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f46c14294a_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="leg-4.-make-the-lines-and-points-shine"&gt;Leg 4. Make the lines
 and points shine&lt;/h3&gt;
 &lt;p&gt;Our forth leg is to change the appearance of the basic chart we just
@@ -2053,7 +2057,7 @@ P_solar_system &amp;lt;- P_solar_system +
         plot.margin = margin(0, 0, 0, 0))
 
 P_solar_system&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c5427664_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f46c14294a_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="leg-5.-add-the-planet-images"&gt;Leg 5. Add the planet images&lt;/h3&gt;
 &lt;p&gt;Leg five is an exciting one: adding the planet images! We’ll achieve
 this by mapping the HTML &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt; tags we created
@@ -2087,7 +2091,7 @@ map_chr(P_solar_system$layers, function(x){class(x$geom)[1]})  # get the layer n
 [4] &amp;quot;GeomPathInterpolate&amp;quot; &amp;quot;GeomRichText&amp;quot;        &amp;quot;GeomRichText&amp;quot;       &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;P_solar_system &amp;lt;- move_layers(P_solar_system, &amp;quot;GeomRichText&amp;quot;, position = &amp;quot;bottom&amp;quot;)    
 P_solar_system&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c5427664_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f46c14294a_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="leg-6.-add-a-title-and-planet-labels"&gt;Leg 6. Add a title and
 planet labels&lt;/h3&gt;
 &lt;p&gt;Our sixth leg is to add a title and planet labels to the figure.
@@ -2131,7 +2135,7 @@ P_solar_system &amp;lt;- P_solar_system +
                 fontface = &amp;quot;bold.italic&amp;quot;)
 
 P_solar_system&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c5427664_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f46c14294a_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="leg-7.-sprinkle-some-glittering-stars"&gt;Leg 7. Sprinkle some
 glittering stars&lt;/h3&gt;
 &lt;p&gt;We’re almost done with our trip! The final leg is to embellish the
@@ -2164,7 +2168,7 @@ P_final &amp;lt;- ggdraw(P_solar_system) +
   draw_plot(P_stars)  
 
 P_final&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c5427664_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f46c14294a_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Well done! We make it to the very end. This is absolutely an amazing
 journey. Unfortunately, our rocket is running out of fuel and so it’s
 time to go back to Earth. Hope you enjoy this memorable trip and will
@@ -2284,7 +2288,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c2ebd11a3_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f42c092c7_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Suppose that we want to fill the boxes by species too. We can do this
 by specifying &lt;code&gt;fill = species&lt;/code&gt; in &lt;code&gt;aes()&lt;/code&gt; and
 adding &lt;code&gt;scale_fill_brewer(palette = "Set1")&lt;/code&gt;:&lt;/p&gt;
@@ -2294,7 +2298,7 @@ adding &lt;code&gt;scale_fill_brewer(palette = "Set1")&lt;/code&gt;:&lt;/p&gt;
   scale_fill_brewer(palette = &amp;quot;Set1&amp;quot;) +
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c2ebd11a3_files/figure-html/unnamed-chunk-2-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f42c092c7_files/figure-html/unnamed-chunk-2-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;But there is a shortcut for doing this: using the function
 &lt;code&gt;after_scale()&lt;/code&gt;. So this function will reuse the scale of a
 previous aesthetic (in this case “color”) for another aesthetic (in this
@@ -2308,7 +2312,7 @@ previous figure.&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) +
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c2ebd11a3_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f42c092c7_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Now, let’s say we want to change the transparency of the box lines.
 We can do this by applying &lt;code&gt;after_scale()&lt;/code&gt; to a second color
 aesthetic to modify the scale of the first color aesthetic and change
@@ -2319,7 +2323,7 @@ its transparency:&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c2ebd11a3_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;
+&lt;p&gt;&lt;img src="file15f42c092c7_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;
 Likewise, we can apply the same method to the fill aesthetic to change
 the transparency of the boxes:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
@@ -2327,7 +2331,7 @@ the transparency of the boxes:&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c2ebd11a3_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f42c092c7_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Note that you can also change the transparency of the boxes by
 directly specifying the “alpha” argument outside &lt;code&gt;aes()&lt;/code&gt;. But
 did you notice the subtle difference from the previous figure? There you
@@ -2338,7 +2342,7 @@ transparent now!&lt;/p&gt;
   scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) + 
   labs(x = &amp;quot;Species&amp;quot;, y = &amp;quot;Sepal length&amp;quot;) + 
   theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c2ebd11a3_files/figure-html/unnamed-chunk-6-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f42c092c7_files/figure-html/unnamed-chunk-6-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;To recap, we learned how to use the function
 &lt;code&gt;after_scale()&lt;/code&gt; to tweak the color and fill aesthetic in the
@@ -2492,7 +2496,7 @@ P &amp;lt;- ggplot(data = CO2) +
   scale_fill_viridis_c(name = expression(paste(CO[2], &amp;quot; uptake rate&amp;quot;)))
 
 P&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c72e4543_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f45f93480a_files/figure-html/unnamed-chunk-1-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="arguments-for-legend-box"&gt;(1) Arguments for legend box&lt;/h3&gt;
 &lt;p&gt;These arguments control the appearance and margin of entire legend
 area as well as individual legend boxes, the arrangement of multiple
@@ -2521,7 +2525,7 @@ legends, and the spacing between panel area and legend area:&lt;/p&gt;
           
           # the spacing between panel area and legend area
           legend.box.spacing = unit(0, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c72e4543_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f45f93480a_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Did you notice that both legends were modified in the same manner?
 This is an important feature of &lt;code&gt;theme()&lt;/code&gt;: &lt;strong&gt;it changes
 everything in the plot (i.e., global effect)!&lt;/strong&gt; So if you want to
@@ -2543,7 +2547,7 @@ legend keys:&lt;/p&gt;
           
           # the width of legend keys
           legend.key.width = unit(0.6, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c72e4543_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f45f93480a_files/figure-html/unnamed-chunk-3-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="arguments-for-legend-title-and-labels"&gt;(3) Arguments for legend
 title and labels&lt;/h3&gt;
 &lt;p&gt;These arguments control the appearance and alignment of legend title
@@ -2569,7 +2573,7 @@ between legend title and keys/labels:&lt;/p&gt;
           
           # the spacing between legend title and keys/labels
           legend.spacing.y = unit(0.2, &amp;quot;inch&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c72e4543_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f45f93480a_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;In the above figure, I centered the long title “CO&lt;sub&gt;2&lt;/sub&gt; uptake
 rate” by specifying a negative left margin, which pulled the title to
 the left. Check out my &lt;a
@@ -2584,7 +2588,7 @@ of legend items:&lt;/p&gt;
           
           # the direction of legend items
           legend.direction = &amp;quot;horizontal&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3a5c72e4543_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file15f45f93480a_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;For the argument &lt;code&gt;legend.position&lt;/code&gt;, besides the built-in
 positions (“top”, “right”, “bottom”, “left”), you can also place the
 legend(s) inside the plot by passing a vector of length two

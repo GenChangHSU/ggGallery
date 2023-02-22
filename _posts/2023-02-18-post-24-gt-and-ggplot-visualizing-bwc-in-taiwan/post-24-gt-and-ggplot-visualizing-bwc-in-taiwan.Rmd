@@ -115,7 +115,7 @@ The main idea of `gt` is to build tables from a set of components such as the he
 
 To this end, I'll do a small data viz project in this post to visualize the top ten bird-window collision species in Taiwan. Bird-window collisions, quite literally, are birds colliding with windows of buildings or other human-made structures. Study ^[Loss, S. R., Will, T., & Marra, P. P. (2015). Direct mortality of birds from anthropogenic causes. *Annual Review of Ecology, Evolution, and Systematics*, 46, 99-120.] has shown that this is one of the leading anthropogenic bird mortality sources, killing hundreds of millions of birds each year.
 
-At the end of the post, you'll find out what the top ten bird-window collision species in Taiwan are. Also, this post is not just a data viz practice; hopefully, it can help raise the awareness of this concerning wildlife issue and make the invisible visible. Finally, a shout-out to my friend [Chi-Heng Hsieh](https://twitter.com/ginny_r10b44004), who kindly provided the bird-window collision data for this post!
+At the end of the post, you'll find out what the top ten bird-window collision species in Taiwan are. Also, this post is not just a data viz practice; hopefully, it can help raise the awareness of this concerning wildlife issue and make the invisible visible. Finally, a shout-out to my friend [Chi-Heng Hsieh](https://www.facebook.com/Hsieh310101), who kindly provided the bird-window collision data for this post!
 
 ## Let's build the table
 
@@ -433,9 +433,9 @@ This is the final table. Perfect!
 
 Before we call it a wrap, let's take a closer look at the table and see what we can learn from it.
 
-Many of the bird species on the list commonly occur in urban or sub-urban areas (e.g., spotted dove, Eurasian tree sparrow, light-vented bulbul, Swinhoe's white-eye, and oriental turtle dove), which is a strong reason why they collide with windows quite frequently. But the collision issue is not limited to urban residents. There is also common kingfisher, a species that lives around water bodies, and pale thrush, a winter migrant in Taiwan. Interestingly, three dove species show up on the list. Perhaps it's because they are relatively poor in maneuvering, and also they are quite abundant around human settlements. A combination of both makes them vulnerable to window collisions.
+Many of the bird species on the list commonly occur in urban or sub-urban areas (e.g., spotted dove, Eurasian tree sparrow, light-vented bulbul, Swinhoe's white-eye, and oriental turtle dove), which is a strong reason why they collide with windows quite frequently. But the collision issue is not limited to urban dwellers. There is also common kingfisher, a species that lives around water bodies, and pale thrush, a winter migrant in Taiwan. In fact, nine of the top ten species are resident birds, even though Taiwan lies close to the center of the East Asian-Australian Flyway. This is quite different from the patterns in the Western countries, where the majority of collisions are migratory birds. 
 
-The species that tops the list, Taiwan barbet (an endemic species in Taiwan), has nearly twice as many collision cases as the second species! This is quite special as not many cases have been reported for similar species in other countries. Another surprising species on the list is the raptor crested goshawk. It's a bit mind-boggling that such an agile flyer also falls victim to bird-window collision. This could potentially have some ecological impacts as hawks are top predators in the ecosystem.
+The species that tops the list, Taiwan barbet (an endemic species in Taiwan), has nearly twice as many collision cases as the second species! This is quite special as not many cases have been reported for similar species in other countries. Another surprising species on the list is the raptor crested goshawk. It's a bit mind-boggling that such an agile flyer also falls victim to bird-window collision. This could potentially have some ecological impacts as hawks are top predators in the ecosystem. Interestingly, three dove species show up on the list. Perhaps it's because they are relatively poor in maneuvering, and also they are quite abundant around human settlements. A combination of both makes them vulnerable to window collisions.
 
 In general, the collisions for these top ten species are trending upwards, despite some year-to-year fluctuations. This may be due to more reports in recent years as people are more aware of bird-window collisions. It can also be that there are more buildings/infrastructures with window surface, thus causing more collisions. The increasing trends are concerning and deserve our close attention.
 
@@ -448,8 +448,5 @@ To recap, in this post we built a cool `gt` table to visualize the top ten bird-
 I used to think that R is not good at making tables, but now I've completely changed my point of view after writing this post. I believe you will have an itch for making your own `gt` tables too!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
-
-
-
 
 
