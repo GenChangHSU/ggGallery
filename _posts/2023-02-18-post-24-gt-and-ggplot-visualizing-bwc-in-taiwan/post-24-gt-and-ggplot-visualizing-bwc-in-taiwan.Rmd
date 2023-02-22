@@ -121,7 +121,7 @@ At the end of the post, you'll find out what the top ten bird-window collision s
 
 Before we start off, I would like to give you an overall idea of what the table will look like: It has a first column showing the images of the bird species, a second column showing the species names along with a short description of each, a third column showing the total number of collision cases for each species between 2010 and 2022, and a fourth column showing the annual collision trends for each species over this 13-year period.
 
-In the following section, I'll break down the process into several steps so that it's easier to follow and understand what each step is doing.
+In the following section, I'll break down the process into several steps so that it's easier to follow and understand what the code is doing.
 
 ### 1. Data preparation and summary
 
@@ -175,7 +175,7 @@ bwc_top_collision_df <- bwc_data %>%
 
 ### 3. The images and short descriptions of the species
 
-Now, we get the images of the top ten collision species from the [The Cornell Lab of Ornithology's Macaulay Library](https://www.macaulaylibrary.org/) and add a short description of each species based on the information on [eBird](https://ebird.org/home). The descriptions are wrapped inside the HTML \<tags\> to customize the text appearance.
+Now, we get the images of the top ten collision species from the [The Cornell Lab of Ornithology's Macaulay Library](https://www.macaulaylibrary.org/) and add a short description of each species based on the information on [eBird](https://ebird.org/home). The descriptions are wrapped inside the HTML \<tags\> to customize the text appearance. (You'll see how this works later.)
 
 ```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
 ### The species images
@@ -222,7 +222,7 @@ bwc_top_collision_df <- bwc_top_collision_df %>%
 
 ### 4. The line charts of annual collision trends
 
-Our last column in the table is the line charts of annual collision trends for the top ten species. First, we select the top ten species from the full data and summarize the annual cases for each species. Next, we create a function to draw the line charts by species. Lastly, we apply the function to create a line chart for each species.
+Our last column in the table is the line charts of annual collision trends for the top ten species. First, we select the top ten species from the full data and summarize the annual cases for each of them. Next, we create a function to draw the line charts by species. Lastly, we apply the function to create a line chart for each species.
 
 ```{r, fig.width = 14, fig.height = 9, out.width = "75%", fig.show = "hold"}
 ### The annual cases for the top ten collision species 
@@ -287,9 +287,9 @@ Having all the ingredients on hand, it's time to put them together! There are se
 
 (4) Remember we used HTML in the short descriptions? This is not readily recognized by `gt()`, but we can use `text_transform()` along with `html()` to tell `gt()` that the column "description" should be understood in the HTML language.
 
-(5) For the line charts, we first set the column elements to NA, and again use `text_transform()` along with `ggplot_image()` to tell `gt()` that the line charts in the list 'bwc_linecharts" should be treated as ggplots.
+(5) For the line charts, we first set the column elements to NA, and again use `text_transform()` along with `ggplot_image()` to tell `gt()` that the line charts in the list "bwc_linecharts" should be treated as ggplots.
 
-(6) Same as the descriptions, the header and footer are passed into `html()` to convert the text into HTML.
+(6) Same as the descriptions, the header and footer are passed into `html()` so that the text is understood in the HTML language.
 
 ```{r, fig.width = 7, fig.height = 7, out.width = "90%", fig.show = "hold"}
 library(gt)
@@ -324,7 +324,7 @@ bwc_table
 ```
 <br>
 
-Nice, we get our fist table here! Though, it is not in a good shape and definitely needs some adjustments and fine-tuning. This is what we are going to do next.
+Nice, we get our fist table out! Though, it is not in a good shape and definitely needs some adjustments and fine-tuning. This is what we are going to do next.
 
 ### 7. Polish the table
 
