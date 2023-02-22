@@ -131,7 +131,7 @@ As always, the first step in a data project is to prepare the data. After readin
 library(tidyverse)
 
 ### Read in the data set
-bwc_data <- read_csv("BWC_data.csv")
+bwc_data <- read_csv("https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2023-02-18-post-24-gt-and-ggplot-visualizing-bwc-in-taiwan/BWC_data.csv")
 
 ### Total cases between 2010 and 2022
 bwc_data %>% 
