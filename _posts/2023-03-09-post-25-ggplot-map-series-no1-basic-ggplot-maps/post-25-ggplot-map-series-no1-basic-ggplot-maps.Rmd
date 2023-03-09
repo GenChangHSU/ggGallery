@@ -1,0 +1,147 @@
+---
+title: "Post #25. ggplot Map Series No.1: Creating polygon maps in ggplots"
+description: |
+  A short description of the post.
+author:
+  - name: Gen-Chang Hsu
+date: 2023-03-10
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2023"
+  - "Map Series"
+preview: ../../homepage_images/Post25.png
+draft: true
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+    color: #2780e3 !important;
+      border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Background
+
+Welcome to a new blog post series: the ggplot Map Series! In this series, I'll write about creating all kinds of maps in ggplots: polygon maps, vector maps, and raster maps, from built-in dataset, online database, or even manual created data or external sources. 
+
+Maps are a staple for everyday life, research, and presentation. So mastering maps is critical. I hope this series will be handy for everyone, and this is the main motivation for me to blog.
+
+
+
+## Introduction
+
+There are many kinds of maps in ggplot. In this first post of the series, we'll start simple with the most basic type of maps: the polygon maps, using the built-in data from the `map_data` package.
+
+
+
+## Create a world map with `map_data`
+
+In the following section, I'll create a basic world map, and then add some elements to it to create a choropleth map. And in the end, I'll show you 
+
+### 1. Basic map
+
+
+### 2. Choropleth map
+
+
+### 3. Other available map data
+
+
+
+## Summary
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
+
+
+
+
