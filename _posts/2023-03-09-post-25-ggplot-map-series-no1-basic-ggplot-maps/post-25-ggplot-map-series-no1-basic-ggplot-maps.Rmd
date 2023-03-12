@@ -1,7 +1,7 @@
 ---
 title: "Post #25. ggplot Map Series No.1: Creating polygon maps in ggplots"
 description: |
-  A short description of the post.
+  In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots using the data from the `maps` and `mapdata` package
 author:
   - name: Gen-Chang Hsu
 date: 2023-03-10
@@ -111,29 +111,60 @@ knitr::opts_chunk$set(message = F,
 
 ## Background
 
-Welcome to a new blog post series: the ggplot Map Series! In this series, I'll write about creating all kinds of maps in ggplots: polygon maps, vector maps, and raster maps, from built-in dataset, online database, or even manual created data or external sources. 
-
-Maps are a staple for everyday life, research, and presentation. So mastering maps is critical. I hope this series will be handy for everyone, and this is the main motivation for me to blog.
-
-
+Welcome to my second blog post series: the ggplot Map Series! Maps are a staple for research, science communication, and even everyday life. In this series, I'll write about making all kinds of maps in ggplots: polygon maps, vector maps, and raster maps, using a variety of data sources from built-in package data sets and online databases, to manually-created data and other external files. Making maps is a critical skill to have under the belt and will certainly go a long way, and I hope this series will come in handy for every reader, you included of course!
 
 ## Introduction
 
-There are many kinds of maps in ggplot. In this first post of the series, we'll start simple with the most basic type of maps: the polygon maps, using the built-in data from the `map_data` package.
+There are a diverse set of maps in ggplots. In this first post of the series, I'll just start simple with the most basic type of maps—the polygon maps, using the built-in map data from the `maps` and `mapdata` package.
+
+## Create a polygon map with `maps`
+
+In the following section, we'll first create a basic world map using the world map data in `maps` package. Next, we'll turn this basic map into a choropleth map by adding a theme to it. Finally, we'll take a look at some other available map data in the `maps` package as well as the supplementary `mapdata` package.
+
+### 1. A basic world map
+
+basic world map
+projection
+background theme
+
+```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
+library(tidyverse)
+library(maps)
 
 
 
-## Create a world map with `map_data`
+```
 
-In the following section, I'll create a basic world map, and then add some elements to it to create a choropleth map. And in the end, I'll show you 
 
-### 1. Basic map
 
 
 ### 2. Choropleth map
 
+Add top ten peaks in the world
+Add number of bird species by country
+
+```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
+
+
+
+```
+
+
+
+
+
 
 ### 3. Other available map data
+
+```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
+library(mapdata)
+
+
+```
+
+
+
+
 
 
 
