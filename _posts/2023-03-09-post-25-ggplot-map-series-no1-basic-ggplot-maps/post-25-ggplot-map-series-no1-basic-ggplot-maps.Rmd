@@ -145,6 +145,7 @@ P_world_map <- ggplot(data = world_map) +
 P_world_map
   
 ```
+
 Do you notice that there is a "region" column in the world map data containing the country names? The `map_data()` function has a useful argument that allows user to subset the world data by this column. For example, we can get the data for Australia and draw it on the base map using different border and fill colors: 
 
 ```{r, fig.width = 6, fig.height = 3, out.width = "80%", fig.show = "hold"}
@@ -158,14 +159,15 @@ P_world_map <- P_world_map +
 P_world_map
   
 ```
-Projection and crs
 
+The default map projection is the Mercator projection, in which the true bearing and shape are preserved while the area is increasingly distorted towards the polar regions. We can apply other projections provided by the `mapproj` package. For example, the Mollweide projection sacrifices the bearing and shape for area, and so it is appropriate for maps that require a more accurate representation of country sizes. A full list of the available projections are shown on the help page of `mapproject()`.
 
 ```{r, fig.width = 6, fig.height = 3, out.width = "80%", fig.show = "hold"}
 library(mapproj)
 
+### Change the map projection to Mollweide projection
 P_world_map + 
-  coord_map(projection = "mollweide", xlim = c(-180, 180))
+  coord_map(projection = "mollweide", xlim = c(-180, 180))  # need to set "xlim = c(-180, 180)" to avoid the weird plotting bug 
 
 ```
 
