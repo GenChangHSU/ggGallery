@@ -119,24 +119,55 @@ There are a diverse set of maps in ggplots. In this first post of the series, I'
 
 ## Create a polygon map with `maps`
 
-In the following section, we'll first create a basic world map using the world map data in `maps` package. Next, we'll turn this basic map into a choropleth map by adding a theme to it. Finally, we'll take a look at some other available map data in the `maps` package as well as the supplementary `mapdata` package.
+In the following section, we'll first create a world base map using the world map data in `maps` package. Next, we'll turn this base map into a choropleth map by adding a theme to it. Finally, we'll take a look at some other available map data in the `maps` package as well as the supplementary `mapdata` package.
 
 ### 1. A basic world map
 
-basic world map
-projection
-background theme
+Let's make a world base map by retrieving the world data from the `maps` package. The returned object is a dataframe with a set of longitude and latitude coordinates that define the border of each country. To draw the map, we'll pass this dataframe into `geom_polygon()` and map the longitude and latitude coordinates to x and y aesthetic. Also, we need to specify the "group" aesthetic so that ggplot knows how the points are grouped in order to form the polygons.
 
-```{r, fig.width = 6, fig.height = 4, out.width = "70%", fig.show = "hold"}
+```{r, fig.width = 6, fig.height = 3, out.width = "80%", fig.show = "hold"}
 library(tidyverse)
 library(maps)
 
+### Get the world map data
+world_map <- map_data(map = "world")
+head(world_map)
 
+### Make a world base map
+P_world_map <- ggplot(data = world_map) + 
+  geom_polygon(aes(x = long, y = lat, group = group), color = "white", fill = "grey") +  # need to specify the "group" aesthetic
+  geom_hline(yintercept = Inf, color = "grey") +  # top panel border
+  geom_hline(yintercept = -Inf, color = "grey") +  # bottom panel border
+  geom_vline(xintercept = Inf, color = "grey") +  # right panel border
+  geom_vline(xintercept = -Inf, color = "grey") +  # left panel border
+  theme_void() # empty theme
+
+P_world_map
+  
+```
+Do you notice that there is a "region" column in the world map data containing the country names? The `map_data()` function has a useful argument that allows user to subset the world data by this column. For example, we can get the data for Australia and draw it on the base map using different border and fill colors: 
+
+```{r, fig.width = 6, fig.height = 3, out.width = "80%", fig.show = "hold"}
+### Get the Australia data
+world_map_Australia <- map_data(map = "world", region = "Australia")
+
+### Draw the Australia map with different colors
+P_world_map <- P_world_map + 
+  geom_polygon(data = world_map_Australia, aes(x = long, y = lat, group = group), color = "green4", fill = "green3")
+
+P_world_map
+  
+```
+Projection and crs
+
+
+```{r, fig.width = 6, fig.height = 3, out.width = "80%", fig.show = "hold"}
+library(mapproj)
+
+P_world_map + 
+  coord_map(projection = "mollweide", xlim = c(-180, 180))
 
 ```
-
-
-
 
 ### 2. Choropleth map
 
