@@ -162,13 +162,21 @@ P_world_map
 ```
 <br>
 
-Another thing we can do is to add points to the map. Let's get a list of top hundred peaks in the world from Wikipedia and draw them on the map.
-
-https://en.wikipedia.org/wiki/List_of_highest_mountains_on_Earth
+Another thing we can do is to add points to the map. Let's get a list of top peaks in the world from Wikipedia and draw them on the map.
 
 ```{r, fig.width = 6, fig.height = 3, out.width = "80%", fig.show = "hold"}
 library(rvest)
 
+### Get a list of world's top peaks from Wikipedia
+top_peaks_df <- read_html("https://en.wikipedia.org/wiki/List_of_highest_mountains_on_Earth") %>% 
+  html_element(xpath = "/html/body/div[1]/div/div[3]/main/div[2]/div[3]/div[1]/table[3]") %>% 
+  html_table()
+
+### Data wrangling  
+top_peaks_df
+
+
+### Draw the peaks on the map
 P_world_map
   
 ```
