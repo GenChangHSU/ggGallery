@@ -1681,15 +1681,32 @@ the base map using different border and fill colors:</p>
 <p><img src="post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <p><br></p>
-<p>Another thing we can do is to add points to the map. Let’s get a list
-of top hundred peaks in the world from Wikipedia and draw them on the
+<p>Another thing we can do is to add points to the map. Let’s get a
+table of top peaks in the world from Wikipedia and draw them on the
 map.</p>
-<p><a
-href="https://en.wikipedia.org/wiki/List_of_highest_mountains_on_Earth"
-class="uri">https://en.wikipedia.org/wiki/List_of_highest_mountains_on_Earth</a></p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rvest.tidyverse.org/'>rvest</a></span><span class='op'>)</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rvest.tidyverse.org/'>rvest</a></span><span class='op'>)</span>  <span class='co'># the package for web scraping</span></span>
+<span></span>
+<span><span class='co'>### Get a table of world's top peaks from Wikipedia</span></span>
+<span><span class='va'>top_peaks_df_raw</span> <span class='op'>&lt;-</span> <span class='fu'><a href='http://xml2.r-lib.org/reference/read_xml.html'>read_html</a></span><span class='op'>(</span><span class='st'>"https://en.wikipedia.org/wiki/List_of_highest_mountains_on_Earth"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rvest.tidyverse.org/reference/html_element.html'>html_element</a></span><span class='op'>(</span>xpath <span class='op'>=</span> <span class='st'>"/html/body/div[1]/div/div[3]/main/div[2]/div[3]/div[1]/table[3]"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rvest.tidyverse.org/reference/html_table.html'>html_table</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Data wrangling</span></span>
+<span><span class='va'>top_peaks_df_clean</span> <span class='op'>&lt;-</span> <span class='va'>top_peaks_df_raw</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>8</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>`colnames&lt;-`</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Mountain"</span>, <span class='st'>"Elevation"</span>, <span class='st'>"Coordinates"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span><span class='op'>(</span><span class='op'>-</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Mountain <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span><span class='op'>(</span><span class='va'>Mountain</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>1</span>, <span class='st'>"Mount Everest"</span>, <span class='va'>Mountain</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Coordinates <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_extract.html'>str_extract</a></span><span class='op'>(</span><span class='va'>Coordinates</span>, pattern <span class='op'>=</span> <span class='st'>"/ [0-9|.]*; [0-9|.]+"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Coordinates <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove</a></span><span class='op'>(</span><span class='va'>Coordinates</span>, pattern <span class='op'>=</span> <span class='st'>"/ "</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"Coordinates"</span>, into <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Lat"</span>, <span class='st'>"Long"</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"; "</span>, convert <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span></span>
+<span>  </span>
+<span><span class='co'>### Draw the peaks on the map</span></span>
+<span><span class='va'>P_world_map</span> <span class='op'>&lt;-</span> <span class='va'>P_world_map</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>top_peaks_df_clean</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Long</span>, y <span class='op'>=</span> <span class='va'>Lat</span><span class='op'>)</span>, shape <span class='op'>=</span> <span class='fl'>17</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='va'>P_world_map</span></span></code></pre>
 </div>

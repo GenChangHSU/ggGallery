@@ -162,25 +162,34 @@ P_world_map
 ```
 <br>
 
-Another thing we can do is to add points to the map. Let's get a list of top peaks in the world from Wikipedia and draw them on the map.
+Another thing we can do is to add points to the map. Let's get a table of top peaks in the world from Wikipedia and draw them on the map.
 
 ```{r, fig.width = 6, fig.height = 3, out.width = "80%", fig.show = "hold"}
-library(rvest)
+library(rvest)  # the package for web scraping
 
-### Get a list of world's top peaks from Wikipedia
-top_peaks_df <- read_html("https://en.wikipedia.org/wiki/List_of_highest_mountains_on_Earth") %>% 
+### Get a table of world's top peaks from Wikipedia
+top_peaks_df_raw <- read_html("https://en.wikipedia.org/wiki/List_of_highest_mountains_on_Earth") %>% 
   html_element(xpath = "/html/body/div[1]/div/div[3]/main/div[2]/div[3]/div[1]/table[3]") %>% 
   html_table()
 
-### Data wrangling  
-top_peaks_df
-
-
-### Draw the peaks on the map
-P_world_map
+### Data wrangling
+top_peaks_df_clean <- top_peaks_df_raw %>% 
+  select(2, 3, 8) %>% 
+  `colnames<-`(c("Mountain", "Elevation", "Coordinates")) %>% 
+  slice(-(1:2)) %>% 
+  mutate(Mountain = ifelse(row_number(Mountain) == 1, "Mount Everest", Mountain)) %>% 
+  rowwise() %>% 
+  mutate(Coordinates = str_extract(Coordinates, pattern = "/ [0-9|.]*; [0-9|.]+")) %>% 
+  mutate(Coordinates = str_remove(Coordinates, pattern = "/ ")) %>% 
+  separate(col = "Coordinates", into = c("Lat", "Long"), sep = "; ", convert = T)
   
-```
+### Draw the peaks on the map
+P_world_map <- P_world_map + 
+  geom_point(data = top_peaks_df_clean, aes(x = Long, y = Lat), shape = 17)
 
+P_world_map
+
+```
 <br>
 
 The default map projection is the Mercator projection, in which the true bearing and shape are preserved while the area is increasingly distorted towards the polar regions. We can apply other projections provided by the `mapproj` package. For example, the Mollweide projection sacrifices the bearing and shape for area, and so it is appropriate for maps that require a more accurate representation of country sizes. A full list of the available projections are shown on the help page of `mapproject()`.
