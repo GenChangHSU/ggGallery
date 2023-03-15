@@ -145,6 +145,7 @@ P_world_map <- ggplot(data = world_map) +
 P_world_map
   
 ```
+
 <br>
 
 Do you notice that there is a "region" column in the world map data containing the country names? The `map_data()` function has a useful argument that allows user to subset the world data by this column. For example, we can get the data for Australia and draw it on the base map using different border and fill colors: 
@@ -190,6 +191,7 @@ P_world_map <- P_world_map +
 P_world_map
 
 ```
+
 <br>
 
 The default map projection is the Mercator projection, in which the true bearing and shape are preserved while the area is increasingly distorted towards the polar regions. We can apply other projections provided by the `mapproj` package. For example, the Mollweide projection sacrifices the bearing and shape for area, and so it is appropriate for maps that require a more accurate representation of country sizes. A full list of the available projections are shown on the help page of `mapproject()`.
@@ -205,15 +207,41 @@ P_world_map +
 
 ### 2. Choropleth map
 
-Scrape a list of number of bird species by country
-Check country names or modify them if needed
-Merge the list into the map data 
 
 ```{r, fig.width = 6, fig.height = 3, out.width = "80%", fig.show = "hold"}
+### Get a table of bird species richness by country
+bird_by_country <- read_html("https://rainforests.mongabay.com/03birds.htm") %>% 
+  html_element("table") %>% 
+  html_table()
+
+### Standardize the country names
+library(countrycode)
+library(scales)
+
+bird_by_country <- bird_by_country %>% 
+  rename(region = `Country / region`,
+         richness = `Bird species count`) %>% 
+  mutate(region_std = countryname(region)) %>% 
+  rowwise() %>% 
+  mutate(richness = str_remove(richness, pattern = ",") %>% as.numeric())
+
+world_map <- world_map %>% 
+  mutate(region_std = countryname(region))
+
+### Merge the data
 
 
 
+### Draw the choropleth
+P_choropleth <- ggplot(data = world_map) + 
+  geom_polygon(aes(x = long, y = lat, group = group), color = "white", fill = "grey") +
+  geom_hline(yintercept = Inf, color = "grey") +
+  geom_hline(yintercept = -Inf, color = "grey") +
+  geom_vline(xintercept = Inf, color = "grey") +
+  geom_vline(xintercept = -Inf, color = "grey") +
+  theme_void()
 
+P_choropleth
 
 ```
 
