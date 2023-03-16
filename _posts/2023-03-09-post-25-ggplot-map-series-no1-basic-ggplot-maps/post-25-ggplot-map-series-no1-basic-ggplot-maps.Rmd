@@ -1,7 +1,7 @@
 ---
 title: "Post #25. ggplot Map Series No.1: Creating polygon maps in ggplots"
 description: |
-  In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots using the data from the `maps` and `mapdata` package
+  In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots.
 author:
   - name: Gen-Chang Hsu
 date: 2023-03-10
@@ -115,11 +115,11 @@ Welcome to my second blog post series: the ggplot Map Series! Maps are a staple 
 
 ## Introduction
 
-There are a diverse set of maps in ggplots. In this first post of the series, I'll just start simple with the most basic type of maps—the polygon maps, using the built-in map data from the `maps` and `mapdata` package.
+There are a diverse set of maps in ggplots. In this first post of the series, I'll just start simple with the most basic type of maps—the polygon maps, using the built-in map data from the `maps` package.
 
 ## Create a polygon map with `maps`
 
-In the following section, we'll first create a world base map using the world map data in `maps` package. Next, we'll turn this base map into a choropleth map by adding a theme to it. Finally, we'll take a look at some other available map data in the `maps` package as well as the supplementary `mapdata` package.
+In the following section, we'll first create a world base map using the world map data in `maps` package. Next, we'll turn this base map into a choropleth map by adding a theme to it. Finally, we'll take a look at some other available map data in the `maps` package.
 
 ### 1. A basic world map
 
@@ -256,20 +256,25 @@ P_choropleth
 
 ### 3. Other available map data
 
-```{r, fig.width = 6, fig.height = 6, out.width = "80%", fig.show = "hold"}
-library(mapdata)
+The first-level administrative divisions of the US, Italy, and France, as well as the second-level administrative divisions (counties) of the US.
 
+```{r, fig.width = 6, fig.height = 3, out.width = "80%", fig.show = "hold"}
+world_map <- map_data(map = "state")
+world_map <- map_data(map = "county")
+world_map <- map_data(map = "italy")
+world_map <- map_data(map = "france")
 
-
-
+ggplot(data = world_map) + 
+  geom_polygon(aes(x = long, y = lat, group = group), color = "white", fill = "grey") +
+  geom_hline(yintercept = Inf, color = "grey") + 
+  geom_hline(yintercept = -Inf, color = "grey") +  
+  geom_vline(xintercept = Inf, color = "grey") +  
+  geom_vline(xintercept = -Inf, color = "grey") +
+  labs(title = "world") +
+  theme_void() + 
+  theme(plot.title = element_text(hjust = 0.5, vjust = 3, size = 15))
 
 ```
-
-
-
-
-
-
 
 ## Summary
 
