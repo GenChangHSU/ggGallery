@@ -90,7 +90,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_meta_tags-->
   <title>Post #25. ggplot Map Series No.1: Creating polygon maps in ggplots</title>
 
-  <meta property="description" itemprop="description" content="In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots using the data from the `maps` and `mapdata` package"/>
+  <meta property="description" itemprop="description" content="In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots."/>
 
 
   <!--  https://schema.org/Article -->
@@ -101,24 +101,24 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
   <meta property="og:title" content="Post #25. ggplot Map Series No.1: Creating polygon maps in ggplots"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots using the data from the `maps` and `mapdata` package"/>
+  <meta property="og:description" content="In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots."/>
   <meta property="og:locale" content="en_US"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
   <meta property="twitter:title" content="Post #25. ggplot Map Series No.1: Creating polygon maps in ggplots"/>
-  <meta property="twitter:description" content="In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots using the data from the `maps` and `mapdata` package"/>
+  <meta property="twitter:description" content="In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots."/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","draft"]}},"value":[{"type":"character","attributes":{},"value":["Post #25. ggplot Map Series No.1: Creating polygon maps in ggplots"]},{"type":"character","attributes":{},"value":["In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots using the data from the `maps` and `mapdata` package\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2023-03-10"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2023","Map Series"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post25.png"]},{"type":"logical","attributes":{},"value":[true]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview"]}},"value":[{"type":"character","attributes":{},"value":["Post #25. ggplot Map Series No.1: Creating polygon maps in ggplots"]},{"type":"character","attributes":{},"value":["In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2023-03-10"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2023","Map Series"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post25.png"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-25-ggplot-map-series-no1-basic-ggplot-maps_files/anchor-4.2.2/anchor.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/bowser-1.9.3/bowser.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/distill-2.2.21/template.v2.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-1-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-2-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-3-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-4-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-5-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/header-attrs-2.14/header-attrs.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/jquery-3.6.0/jquery-3.6.0.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/jquery-3.6.0/jquery-3.6.0.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/jquery-3.6.0/jquery-3.6.0.min.map","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/popper-2.6.0/popper.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy-light-border.css","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy.css","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy.umd.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["post-25-ggplot-map-series-no1-basic-ggplot-maps_files/anchor-4.2.2/anchor.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/bowser-1.9.3/bowser.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/distill-2.2.21/template.v2.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-1-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-2-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-3-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-4-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-5-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-6-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/header-attrs-2.14/header-attrs.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/jquery-3.6.0/jquery-3.6.0.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/jquery-3.6.0/jquery-3.6.0.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/jquery-3.6.0/jquery-3.6.0.min.map","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/popper-2.6.0/popper.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy-light-border.css","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy.css","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy.umd.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1489,7 +1489,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #25. ggplot Map Series No.1: Creating polygon maps in ggplots","description":"In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots using the data from the `maps` and `mapdata` package","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-03-10T00:00:00.000+08:00","citationText":"Hsu, 2023"}
+{"title":"Post #25. ggplot Map Series No.1: Creating polygon maps in ggplots","description":"In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots.","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-03-10T00:00:00.000+08:00","citationText":"Hsu, 2023"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1507,8 +1507,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <!--/radix_placeholder_categories-->
 <p><p>In this post, you will learn about how to create basic polygon
-maps and choropleth maps in ggplots using the data from the
-<code>maps</code> and <code>mapdata</code> package</p></p>
+maps and choropleth maps in ggplots.</p></p>
 </div>
 
 <div class="d-byline">
@@ -1613,15 +1612,15 @@ of course!</p>
 <h2 id="introduction">Introduction</h2>
 <p>There are a diverse set of maps in ggplots. In this first post of the
 series, I’ll just start simple with the most basic type of maps—the
-polygon maps, using the built-in map data from the <code>maps</code> and
-<code>mapdata</code> package.</p>
+polygon maps, using the built-in map data from the <code>maps</code>
+package.</p>
 <h2 id="create-a-polygon-map-with-maps">Create a polygon map with
 <code>maps</code></h2>
 <p>In the following section, we’ll first create a world base map using
 the world map data in <code>maps</code> package. Next, we’ll turn this
 base map into a choropleth map by adding a theme to it. Finally, we’ll
 take a look at some other available map data in the <code>maps</code>
-package as well as the supplementary <code>mapdata</code> package.</p>
+package.</p>
 <h3 id="a-basic-world-map">1. A basic world map</h3>
 <p>Let’s make a world base map by retrieving the world data from the
 <code>maps</code> package. The returned object is a dataframe with a set
@@ -1789,12 +1788,55 @@ richness.</p>
 <p><img src="post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="other-available-map-data">3. Other available map data</h3>
+<p>Besides the world map we’ve been playing around with earlier, there
+are a few other map data in the <code>maps</code> package: the
+first-level administrative divisions of the US, Italy, and France, as
+well as the second-level administrative divisions (counties) of the US.
+Let’s take a look at them:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>mapdata</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### A function to create the map</span></span>
+<span><span class='va'>map_fun</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>map_name</span><span class='op'>)</span><span class='op'>{</span></span>
+<span>  </span>
+<span>  <span class='va'>map_dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/map_data.html'>map_data</a></span><span class='op'>(</span>map <span class='op'>=</span> <span class='va'>map_name</span><span class='op'>)</span></span>
+<span>  </span>
+<span>  <span class='va'>P</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>map_dat</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_polygon.html'>geom_polygon</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>long</span>, y <span class='op'>=</span> <span class='va'>lat</span>, group <span class='op'>=</span> <span class='va'>group</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='st'>"white"</span>, fill <span class='op'>=</span> <span class='st'>"grey"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>geom_hline</a></span><span class='op'>(</span>yintercept <span class='op'>=</span> <span class='cn'>Inf</span>, color <span class='op'>=</span> <span class='st'>"grey"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>geom_hline</a></span><span class='op'>(</span>yintercept <span class='op'>=</span> <span class='op'>-</span><span class='cn'>Inf</span>, color <span class='op'>=</span> <span class='st'>"grey"</span><span class='op'>)</span> <span class='op'>+</span>  </span>
+<span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>geom_vline</a></span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='cn'>Inf</span>, color <span class='op'>=</span> <span class='st'>"grey"</span><span class='op'>)</span> <span class='op'>+</span>  </span>
+<span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>geom_vline</a></span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='op'>-</span><span class='cn'>Inf</span>, color <span class='op'>=</span> <span class='st'>"grey"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='va'>map_name</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_void</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>plot.title <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0.5</span>, vjust <span class='op'>=</span> <span class='fl'>3</span>, size <span class='op'>=</span> <span class='fl'>15</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>  </span>
+<span>  <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>P</span><span class='op'>)</span></span>
+<span><span class='op'>}</span></span>
+<span></span>
+<span><span class='co'>### Make the maps </span></span>
+<span><span class='va'>P_state</span> <span class='op'>&lt;-</span> <span class='fu'>map_fun</span><span class='op'>(</span><span class='st'>"state"</span><span class='op'>)</span></span>
+<span><span class='va'>P_italy</span> <span class='op'>&lt;-</span> <span class='fu'>map_fun</span><span class='op'>(</span><span class='st'>"italy"</span><span class='op'>)</span></span>
+<span><span class='va'>P_france</span> <span class='op'>&lt;-</span> <span class='fu'>map_fun</span><span class='op'>(</span><span class='st'>"france"</span><span class='op'>)</span></span>
+<span><span class='va'>P_us_county</span> <span class='op'>&lt;-</span> <span class='fu'>map_fun</span><span class='op'>(</span><span class='st'>"county"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Arrange the maps</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://patchwork.data-imaginist.com'>patchwork</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='op'>(</span><span class='va'>P_italy</span> <span class='op'>+</span> <span class='fu'><a href='https://patchwork.data-imaginist.com/reference/plot_spacer.html'>plot_spacer</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='va'>P_state</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://patchwork.data-imaginist.com/reference/plot_layout.html'>plot_layout</a></span><span class='op'>(</span>ncol <span class='op'>=</span> <span class='fl'>3</span>, widths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>0.05</span>, <span class='fl'>1.5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span></span>
+<span><span class='op'>(</span><span class='va'>P_france</span> <span class='op'>+</span> <span class='fu'><a href='https://patchwork.data-imaginist.com/reference/plot_spacer.html'>plot_spacer</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='va'>P_us_county</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://patchwork.data-imaginist.com/reference/plot_layout.html'>plot_layout</a></span><span class='op'>(</span>ncol <span class='op'>=</span> <span class='fl'>3</span>, widths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>0.05</span>, <span class='fl'>1.5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
+<p><img src="post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <h2 id="summary">Summary</h2>
+<p>To recap, in this post we learned about how to create a polygon world
+map using the built-in data from the <code>maps</code> package, and how
+we can modify the base map by highlighting a certain area, adding
+points, and changing the map projection. We also went a step further to
+make a choropleth map of the bird species richness in the world. This
+type of map is more informative and it would be quite handy to know how
+to make it yourself!</p>
 <p>Hope you learn something useful from this post and don’t forget to
 leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb2"><pre

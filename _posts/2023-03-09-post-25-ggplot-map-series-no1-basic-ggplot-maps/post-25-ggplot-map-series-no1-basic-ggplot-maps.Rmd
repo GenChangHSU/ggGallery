@@ -12,7 +12,6 @@ categories:
   - "2023"
   - "Map Series"
 preview: ../../homepage_images/Post25.png
-draft: true
 ---
 
 <!-- Webpage style -->
@@ -256,27 +255,46 @@ P_choropleth
 
 ### 3. Other available map data
 
-The first-level administrative divisions of the US, Italy, and France, as well as the second-level administrative divisions (counties) of the US.
+Besides the world map we've been playing around with earlier, there are a few other map data in the `maps` package: the first-level administrative divisions of the US, Italy, and France, as well as the second-level administrative divisions (counties) of the US. Let's take a look at them:
 
-```{r, fig.width = 6, fig.height = 3, out.width = "80%", fig.show = "hold"}
-world_map <- map_data(map = "state")
-world_map <- map_data(map = "county")
-world_map <- map_data(map = "italy")
-world_map <- map_data(map = "france")
+```{r, fig.width = 6, fig.height = 4.5, out.width = "80%", fig.show = "hold"}
+### A function to create the map
+map_fun <- function(map_name){
+  
+  map_dat <- map_data(map = map_name)
+  
+  P <- ggplot(data = map_dat) + 
+    geom_polygon(aes(x = long, y = lat, group = group), color = "white", fill = "grey") +
+    geom_hline(yintercept = Inf, color = "grey") + 
+    geom_hline(yintercept = -Inf, color = "grey") +  
+    geom_vline(xintercept = Inf, color = "grey") +  
+    geom_vline(xintercept = -Inf, color = "grey") +
+    labs(title = map_name) +
+    theme_void() + 
+    theme(plot.title = element_text(hjust = 0.5, vjust = 3, size = 15))
+  
+  return(P)
+}
 
-ggplot(data = world_map) + 
-  geom_polygon(aes(x = long, y = lat, group = group), color = "white", fill = "grey") +
-  geom_hline(yintercept = Inf, color = "grey") + 
-  geom_hline(yintercept = -Inf, color = "grey") +  
-  geom_vline(xintercept = Inf, color = "grey") +  
-  geom_vline(xintercept = -Inf, color = "grey") +
-  labs(title = "world") +
-  theme_void() + 
-  theme(plot.title = element_text(hjust = 0.5, vjust = 3, size = 15))
+### Make the maps 
+P_state <- map_fun("state")
+P_italy <- map_fun("italy")
+P_france <- map_fun("france")
+P_us_county <- map_fun("county")
+
+### Arrange the maps
+library(patchwork)
+
+(P_italy + plot_spacer() + P_state + 
+  plot_layout(ncol = 3, widths = c(1, 0.05, 1.5)))/
+(P_france + plot_spacer() + P_us_county +
+  plot_layout(ncol = 3, widths = c(1, 0.05, 1.5)))
 
 ```
 
 ## Summary
+
+To recap, in this post we learned about how to create a polygon world map using the built-in data from the `maps` package, and how we can modify the base map by highlighting a certain area, adding points, and changing the map projection. We also went a step further to make a choropleth map of the bird species richness in the world. This type of map is more informative and it would be quite handy to know how to make it yourself!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
