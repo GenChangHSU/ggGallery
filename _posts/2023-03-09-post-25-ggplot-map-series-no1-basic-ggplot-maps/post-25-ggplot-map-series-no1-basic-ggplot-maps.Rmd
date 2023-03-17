@@ -4,7 +4,7 @@ description: |
   In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots.
 author:
   - name: Gen-Chang Hsu
-date: 2023-03-10
+date: 2023-03-9
 output:
   distill::distill_article:
     self_contained: false

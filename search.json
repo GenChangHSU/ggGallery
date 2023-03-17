@@ -5,22 +5,22 @@
       "title": "About this blog",
       "description": "Welcome to ggGallery! Here is something you would like to know about this blog.",
       "author": [],
-      "contents": "\r\n\r\nWho\r\nI am Gen-Chang Hsu, a young budding scientist with a broad interest\r\nin ecology and evolutionary biology as well as data science, especially\r\ndata visualization. Check out my website for more information!\r\nWhat\r\nThis blog is a place for everything related to ggplots and ggplot\r\nextensions: proper usage of geoms and scales, handy tips for customizing\r\nthemes and legends, nice features of extension packages, and so on so\r\nforth. In each post, I’ll explore a graphic topic/issue in depth and\r\nprovide some worked examples to show you how to make the most out of\r\nggplots.\r\nWhy\r\nFor fun and enjoyment, for learning and practice, for brainstorming\r\nand communication, for achievement and satisfaction, for…\r\n\r\n\r\nGo wild and be creative!\r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2022-10-04T16:59:14+08:00"
+      "contents": "\r\n\r\nWho\r\nI am Gen-Chang Hsu, a young budding scientist with a broad interest in ecology and evolutionary biology as well as data science, especially data visualization. Check out my website for more information!\r\nWhat\r\nThis blog is a place for everything related to ggplots and ggplot extensions: proper usage of geoms and scales, handy tips for customizing themes and legends, nice features of extension packages, and so on so forth. In each post, I’ll explore a graphic topic/issue in depth and provide some worked examples to show you how to make the most out of ggplots.\r\nWhy\r\nFor fun and enjoyment, for learning and practice, for brainstorming and communication, for achievement and satisfaction, for…\r\n\r\n\r\nGo wild and be creative!\r\n\r\n\r\n\r\n\r\n",
+      "last_modified": "2023-03-17T12:38:41+08:00"
     },
     {
       "path": "contact.html",
       "title": "Contact",
       "author": [],
-      "contents": "\r\n\r\nAny cool ideas or suggestions? I would love to hear from you! Contact\r\nme by email or find me on GitHub, Twitter, and Facebook. Also visit my\r\nwebsite here!\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2022-10-04T16:59:15+08:00"
+      "contents": "\r\n\r\nAny cool ideas or suggestions? I would love to hear from you! Contact me by email or find me on GitHub, Twitter, and Facebook. Also visit my website here!\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+      "last_modified": "2023-03-17T12:38:42+08:00"
     },
     {
       "path": "index.html",
       "title": "Posts",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2022-10-04T16:59:16+08:00"
+      "last_modified": "2023-03-17T12:38:43+08:00"
     }
   ],
   "collections": ["posts/posts.json"]
