@@ -118,7 +118,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-25-ggplot-map-series-no1-basic-ggplot-maps_files/anchor-4.2.2/anchor.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/bowser-1.9.3/bowser.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/distill-2.2.21/template.v2.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-1-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-2-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-3-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-4-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-5-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-6-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/header-attrs-2.14/header-attrs.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/jquery-3.6.0/jquery-3.6.0.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/jquery-3.6.0/jquery-3.6.0.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/jquery-3.6.0/jquery-3.6.0.min.map","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/popper-2.6.0/popper.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy-light-border.css","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy.css","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy.umd.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["post-25-ggplot-map-series-no1-basic-ggplot-maps_files/anchor-4.2.2/anchor.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/bowser-1.9.3/bowser.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/distill-2.2.21/template.v2.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-1-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-2-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-3-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-4-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-5-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-6-1.png","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/header-attrs-2.14/header-attrs.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/header-attrs-2.20/header-attrs.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/jquery-3.6.0/jquery-3.6.0.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/jquery-3.6.0/jquery-3.6.0.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/jquery-3.6.0/jquery-3.6.0.min.map","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/popper-2.6.0/popper.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy-light-border.css","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy.css","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy.umd.min.js","post-25-ggplot-map-series-no1-basic-ggplot-maps_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -189,6 +189,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   d-article table.gt_table td,
   d-article table.gt_table th {
     border-bottom: none;
+    font-size: 100%;
   }
 
   .html-widget {
@@ -1261,15 +1262,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        if ($(this).children()[0].nodeName == "D-FOOTNOTE") {
-          var fn = $(this).children()[0]
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
           $(this).html(fn.shadowRoot.querySelector("sup"))
           $(this).id = fn.id
           fn.remove()
         }
         var refs = $(this).attr('data-cites').split(" ");
         var refHtml = refs.map(function(ref) {
-          return "<p>" + $('#ref-' + ref).html() + "</p>";
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
         }).join("\n");
         window.tippy(this, {
           allowHTML: true,
@@ -1468,7 +1475,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
-  <script src="post-25-ggplot-map-series-no1-basic-ggplot-maps_files/header-attrs-2.14/header-attrs.js"></script>
+  <script src="post-25-ggplot-map-series-no1-basic-ggplot-maps_files/header-attrs-2.20/header-attrs.js"></script>
   <script src="post-25-ggplot-map-series-no1-basic-ggplot-maps_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <script src="post-25-ggplot-map-series-no1-basic-ggplot-maps_files/popper-2.6.0/popper.min.js"></script>
   <link href="post-25-ggplot-map-series-no1-basic-ggplot-maps_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -1506,8 +1513,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="dt-tag">Map Series</div>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>In this post, you will learn about how to create basic polygon
-maps and choropleth maps in ggplots.</p></p>
+<p><p>In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots.</p></p>
 </div>
 
 <div class="d-byline">
@@ -1600,36 +1606,13 @@ div.l-body img {
 </style>
 <!-- Start of the article -->
 <h2 id="background">Background</h2>
-<p>Welcome to my second blog post series: the ggplot Map Series! Maps
-are a staple for research, science communication, and even everyday
-life. In this series, I’ll write about making all kinds of maps in
-ggplots: polygon maps, vector maps, and raster maps, using a variety of
-data sources from built-in package data sets and online databases, to
-manually-created data and other external files. Making maps is a
-critical skill to have under the belt and will certainly go a long way,
-and I hope this series will come in handy for every reader, you included
-of course!</p>
+<p>Welcome to my second blog post series: the ggplot Map Series! Maps are a staple for research, science communication, and even everyday life. In this series, I’ll write about making all kinds of maps in ggplots: polygon maps, vector maps, and raster maps, using a variety of data sources from built-in package data sets and online databases, to manually-created data and other external files. Making maps is a critical skill to have under the belt and will certainly go a long way, and I hope this series will come in handy for every reader, you included of course!</p>
 <h2 id="introduction">Introduction</h2>
-<p>There are a diverse set of maps in ggplots. In this first post of the
-series, I’ll just start simple with the most basic type of maps—the
-polygon maps, using the built-in map data from the <code>maps</code>
-package.</p>
-<h2 id="create-a-polygon-map-with-maps">Create a polygon map with
-<code>maps</code></h2>
-<p>In the following section, we’ll first create a world base map using
-the world map data in <code>maps</code> package. Next, we’ll turn this
-base map into a choropleth map by adding a theme to it. Finally, we’ll
-take a look at some other available map data in the <code>maps</code>
-package.</p>
+<p>There are a diverse set of maps in ggplots. In this first post of the series, I’ll just start simple with the most basic type of maps—the polygon maps, using the built-in map data from the <code>maps</code> package.</p>
+<h2 id="create-a-polygon-map-with-maps">Create a polygon map with <code>maps</code></h2>
+<p>In the following section, we’ll first create a world base map using the world map data in <code>maps</code> package. Next, we’ll turn this base map into a choropleth map by adding a theme to it. Finally, we’ll take a look at some other available map data in the <code>maps</code> package.</p>
 <h3 id="a-basic-world-map">1. A basic world map</h3>
-<p>Let’s make a world base map by retrieving the world data from the
-<code>maps</code> package. The returned object is a dataframe with a set
-of longitude and latitude coordinates that define the border of each
-country. To draw the map, we’ll pass this dataframe into
-<code>geom_polygon()</code> and map the longitude and latitude
-coordinates to x and y aesthetic. Also, we need to specify the “group”
-aesthetic so that ggplot knows how the points are grouped in order to
-form the polygons.</p>
+<p>Let’s make a world base map by retrieving the world data from the <code>maps</code> package. The returned object is a dataframe with a set of longitude and latitude coordinates that define the border of each country. To draw the map, we’ll pass this dataframe into <code>geom_polygon()</code> and map the longitude and latitude coordinates to x and y aesthetic. Also, we need to specify the “group” aesthetic so that ggplot knows how the points are grouped in order to form the polygons.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
@@ -1661,11 +1644,7 @@ form the polygons.</p>
 <p><img src="post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <p><br></p>
-<p>Do you notice that there is a “region” column in the world map data
-containing the country names? The <code>map_data()</code> function has a
-useful argument that allows user to subset the world data by this
-column. For example, we can get the data for Australia and draw it on
-the base map using different border and fill colors:</p>
+<p>Do you notice that there is a “region” column in the world map data containing the country names? The <code>map_data()</code> function has a useful argument that allows user to subset the world data by this column. For example, we can get the data for Australia and draw it on the base map using different border and fill colors:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Get the Australia data</span></span>
@@ -1680,9 +1659,7 @@ the base map using different border and fill colors:</p>
 <p><img src="post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <p><br></p>
-<p>Another thing we can do is to add points to the map. Let’s get a
-table of top peaks in the world from Wikipedia and draw them on the
-map.</p>
+<p>Another thing we can do is to add points to the map. Let’s get a table of top peaks in the world from Wikipedia and draw them on the map.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rvest.tidyverse.org/'>rvest</a></span><span class='op'>)</span>  <span class='co'># the package for web scraping</span></span>
@@ -1697,7 +1674,7 @@ map.</p>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>8</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'>`colnames&lt;-`</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Mountain"</span>, <span class='st'>"Elevation"</span>, <span class='st'>"Coordinates"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span><span class='op'>(</span><span class='op'>-</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Mountain <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span><span class='op'>(</span><span class='va'>Mountain</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>1</span>, <span class='st'>"Mount Everest"</span>, <span class='va'>Mountain</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Mountain <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/row_number.html'>row_number</a></span><span class='op'>(</span><span class='va'>Mountain</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>1</span>, <span class='st'>"Mount Everest"</span>, <span class='va'>Mountain</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Coordinates <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_extract.html'>str_extract</a></span><span class='op'>(</span><span class='va'>Coordinates</span>, pattern <span class='op'>=</span> <span class='st'>"/ [0-9|.]*; [0-9|.]+"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Coordinates <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove</a></span><span class='op'>(</span><span class='va'>Coordinates</span>, pattern <span class='op'>=</span> <span class='st'>"/ "</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
@@ -1712,14 +1689,7 @@ map.</p>
 <p><img src="post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <p><br></p>
-<p>The default map projection is the Mercator projection, in which the
-true bearing and shape are preserved while the area is increasingly
-distorted towards the polar regions. We can apply other projections
-provided by the <code>mapproj</code> package. For example, the Mollweide
-projection sacrifices the bearing and shape for area, and so it is
-appropriate for maps that require a more accurate representation of
-country sizes. A full list of the available projections are shown on the
-help page of <code>mapproject()</code>.</p>
+<p>The default map projection is the Mercator projection, in which the true bearing and shape are preserved while the area is increasingly distorted towards the polar regions. We can apply other projections provided by the <code>mapproj</code> package. For example, the Mollweide projection sacrifices the bearing and shape for area, and so it is appropriate for maps that require a more accurate representation of country sizes. A full list of the available projections are shown on the help page of <code>mapproject()</code>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>mapproj</span><span class='op'>)</span></span>
@@ -1731,18 +1701,8 @@ help page of <code>mapproject()</code>.</p>
 <p><img src="post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="choropleth-map">2. Choropleth map</h3>
-<p>A <a href="https://en.wikipedia.org/wiki/Choropleth_map">choropleth
-map</a> is a thematic map that visualizes the quantity of a variable
-across a geographical area (e.g., the population size of each county in
-a country) using different colors. This kind of map provides an easy
-quick glance at the spatial patterns of the variable of interest.</p>
-<p>Making a choropleth map is pretty similar to making a base map; the
-only additional step is to get the variable data and associate them with
-the map data. In the example below, we’re going to make a choropleth map
-of the bird species richness in the world. We first get a table of bird
-richness by country from the website, standardize the country names and
-merge the bird data into the world map data, and fill the countries by
-richness.</p>
+<p>A <a href="https://en.wikipedia.org/wiki/Choropleth_map">choropleth map</a> is a thematic map that visualizes the quantity of a variable across a geographical area (e.g., the population size of each county in a country) using different colors. This kind of map provides an easy quick glance at the spatial patterns of the variable of interest.</p>
+<p>Making a choropleth map is pretty similar to making a base map; the only additional step is to get the variable data and associate them with the map data. In the example below, we’re going to make a choropleth map of the bird species richness in the world. We first get a table of bird richness by country from the website, standardize the country names and merge the bird data into the world map data, and fill the countries by richness.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Get a table of bird species richness by country</span></span>
@@ -1788,11 +1748,7 @@ richness.</p>
 <p><img src="post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="other-available-map-data">3. Other available map data</h3>
-<p>Besides the world map we’ve been playing around with earlier, there
-are a few other map data in the <code>maps</code> package: the
-first-level administrative divisions of the US, Italy, and France, as
-well as the second-level administrative divisions (counties) of the US.
-Let’s take a look at them:</p>
+<p>Besides the world map we’ve been playing around with earlier, there are a few other map data in the <code>maps</code> package: the first-level administrative divisions of the US, Italy, and France, as well as the second-level administrative divisions (counties) of the US. Let’s take a look at them:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### A function to create the map</span></span>
@@ -1830,17 +1786,9 @@ Let’s take a look at them:</p>
 <p><img src="post-25-ggplot-map-series-no1-basic-ggplot-maps_files/figure-html5/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <h2 id="summary">Summary</h2>
-<p>To recap, in this post we learned about how to create a polygon world
-map using the built-in data from the <code>maps</code> package, and how
-we can modify the base map by highlighting a certain area, adding
-points, and changing the map projection. We also went a step further to
-make a choropleth map of the bird species richness in the world. This
-type of map is more informative and it would be quite handy to know how
-to make it yourself!</p>
-<p>Hope you learn something useful from this post and don’t forget to
-leave your comments and suggestions below if you have any!</p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<p>To recap, in this post we learned about how to create a polygon world map using the built-in data from the <code>maps</code> package, and how we can modify the base map by highlighting a certain area, adding points, and changing the map projection. We also went a step further to make a choropleth map of the bird species richness in the world. This type of map is more informative and it would be quite handy to know how to make it yourself!</p>
+<p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
