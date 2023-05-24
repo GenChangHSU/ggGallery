@@ -15,7 +15,6 @@ preview: ../../homepage_images/Post26.png
 draft: true
 ---
 
-
 <!-- Webpage style -->
 
 <style>
@@ -123,14 +122,21 @@ Because of the commonness and popularity of shapefiles, I think it would be usef
 
 In this post, we'll be creating a map of the number of visitors in the national parks (units managed by the National Park Service) in California in 2022. It's called a "simple feature" map because this is the type of R spatial object we'll use for data processing and plotting. Briefly, a [simple feature object (sf)](https://r-spatial.github.io/sf/articles/sf1.html) is a special data frame that contains several columns of feature attributes (the metadata like "country name") and a list column of feature geometry (the coordinates representing the points/lines/polygons), with an associated coordinate reference system. The R package [`sf`](https://r-spatial.github.io/sf/index.html) is dedicated to sf objects and allows users to do all sorts of manipulation and computation.
 
-### Prepare the data
+### Retrieve the data
 
-Let's start by preparing the data we need for making the map: 
+Let's start by preparing the data we need for making the map. The data files we'll be using include:
+
+1. A shapefile of California state boundary from [Natural Earth](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/)  
+2. A shapefile of California national park boundaries from [National Park Service Open Data Portal](https://public-nps.opendata.arcgis.com/datasets/nps-boundary-1/explore?filters=eyJTVEFURSI6WyJDQSJdfQ%3D%3D&location=36.531656%2C-116.748610%2C5.59) 
+3. A CSV file of the number of visitors in each park in 2022 from [National Park Service Stats Report Viewer](https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Visitation%20By%20State%20and%20By%20Park%20(2017%20-%20Last%20Calendar%20Year))
+
+The shapefiles are read into R using the function `st_read()` from the package `sf`, which reads the shapefiles as an "sf" object. 
+
 
 
 ```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
 library(tidyverse)
-
+library(sf)
 
 
 

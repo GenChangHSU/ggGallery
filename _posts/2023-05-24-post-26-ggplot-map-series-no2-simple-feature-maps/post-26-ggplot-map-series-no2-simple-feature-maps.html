@@ -118,7 +118,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-26-ggplot-map-series-no2-simple-feature-maps_files/anchor-4.2.2/anchor.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/bowser-1.9.3/bowser.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/distill-2.2.21/template.v2.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/header-attrs-2.21/header-attrs.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/jquery-3.6.0/jquery-3.6.0.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/jquery-3.6.0/jquery-3.6.0.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/jquery-3.6.0/jquery-3.6.0.min.map","post-26-ggplot-map-series-no2-simple-feature-maps_files/popper-2.6.0/popper.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy-light-border.css","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy.css","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy.umd.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["post-26-ggplot-map-series-no2-simple-feature-maps_files/anchor-4.2.2/anchor.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/bowser-1.9.3/bowser.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/distill-2.2.21/template.v2.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/header-attrs-2.14/header-attrs.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/header-attrs-2.21/header-attrs.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/jquery-3.6.0/jquery-3.6.0.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/jquery-3.6.0/jquery-3.6.0.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/jquery-3.6.0/jquery-3.6.0.min.map","post-26-ggplot-map-series-no2-simple-feature-maps_files/popper-2.6.0/popper.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy-light-border.css","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy.css","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy.umd.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -189,7 +189,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   d-article table.gt_table td,
   d-article table.gt_table th {
     border-bottom: none;
-    font-size: 100%;
   }
 
   .html-widget {
@@ -1262,21 +1261,15 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        const citeChild = $(this).children()[0]
-        // Do not process if @xyz has been used without escaping and without bibliography activated
-        // https://github.com/rstudio/distill/issues/466
-        if (citeChild === undefined) return true
-
-        if (citeChild.nodeName == "D-FOOTNOTE") {
-          var fn = citeChild
+        if ($(this).children()[0].nodeName == "D-FOOTNOTE") {
+          var fn = $(this).children()[0]
           $(this).html(fn.shadowRoot.querySelector("sup"))
           $(this).id = fn.id
           fn.remove()
         }
         var refs = $(this).attr('data-cites').split(" ");
         var refHtml = refs.map(function(ref) {
-          // Could use CSS.escape too here, we insure backward compatibility in navigator
-          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+          return "<p>" + $('#ref-' + ref).html() + "</p>";
         }).join("\n");
         window.tippy(this, {
           allowHTML: true,
@@ -1475,7 +1468,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
-  <script src="post-26-ggplot-map-series-no2-simple-feature-maps_files/header-attrs-2.21/header-attrs.js"></script>
+  <script src="post-26-ggplot-map-series-no2-simple-feature-maps_files/header-attrs-2.14/header-attrs.js"></script>
   <script src="post-26-ggplot-map-series-no2-simple-feature-maps_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <script src="post-26-ggplot-map-series-no2-simple-feature-maps_files/popper-2.6.0/popper.min.js"></script>
   <link href="post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -1496,7 +1489,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #26. ggplot Map Series No.2: Creating simple feature ggplot maps from shapefiles","description":"Come and take a look at the nuts and bolts of creating simple feature maps from external shapefiles in ggplots!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-05-24T00:00:00.000+08:00","citationText":"Hsu, 2023"}
+{"title":"Post #26. ggplot Map Series No.2: Creating simple feature ggplot maps from shapefiles","description":"Come and take a look at the nuts and bolts of creating simple feature maps from external shapefiles in ggplots!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-05-24T00:00:00.000-07:00","citationText":"Hsu, 2023"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1513,7 +1506,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="dt-tag">Map Series</div>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>Come and take a look at the nuts and bolts of creating simple feature maps from external shapefiles in ggplots!</p></p>
+<p><p>Come and take a look at the nuts and bolts of creating simple
+feature maps from external shapefiles in ggplots!</p></p>
 </div>
 
 <div class="d-byline">
@@ -1606,13 +1600,52 @@ div.l-body img {
 </style>
 <!-- Start of the article -->
 <h2 id="introduction">Introduction</h2>
-<p>In the <a href="https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/">first post</a> of this Map Series, we looked at how to create polygon maps in ggplots. But this is not the only way to create ggplot maps; there are indeed many more ways out there! And in this post, I’m going to show you another method: creating maps from shapefiles.</p>
-<p>I believe you might have heard of shapefiles (or even used them before!). So what exactly are they? A shapefile (.shp) is a common geospatial vector data format for storing the locations, shapes, and attributes of geographic features. It comes with a set of related files (.shx, .prj, .dbf, etc.) that together describe vector features such as points, lines, and polygons, representing all kinds of spatial objects like mountain peaks, country boundaries, roads, rivers, and lakes.</p>
-<p>Because of the commonness and popularity of shapefiles, I think it would be useful to have some basic ideas of them. Hopefully, after reaching the very end of this post, you’ll be able to make good use of shapefiles to create your own maps!</p>
+<p>In the <a
+href="https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/">first
+post</a> of this Map Series, we looked at how to create polygon maps in
+ggplots. But this is not the only way to create ggplot maps; there are
+indeed many more ways out there! And in this post, I’m going to show you
+another method: creating maps from shapefiles.</p>
+<p>I believe you might have heard of shapefiles (or even used them
+before!). So what exactly are they? A shapefile (.shp) is a common
+geospatial vector data format for storing the locations, shapes, and
+attributes of geographic features. It comes with a set of related files
+(.shx, .prj, .dbf, etc.) that together describe vector features such as
+points, lines, and polygons, representing all kinds of spatial objects
+like mountain peaks, country boundaries, roads, rivers, and lakes.</p>
+<p>Because of the commonness and popularity of shapefiles, I think it
+would be useful to have some basic ideas of them. Hopefully, after
+reaching the very end of this post, you’ll be able to make good use of
+shapefiles to create your own maps!</p>
 <h2 id="creat-a-simple-feature-map">Creat a simple feature map</h2>
-<p>In this post, we’ll be creating a map of the number of visitors in the national parks (units managed by the National Park Service) in California in 2022. It’s called a “simple feature” map because this is the type of R spatial object we’ll use for data processing and plotting. Briefly, a <a href="https://r-spatial.github.io/sf/articles/sf1.html">simple feature object (sf)</a> is a special data frame that contains several columns of feature attributes (the metadata like “country name”) and a list column of feature geometry (the coordinates representing the points/lines/polygons), with an associated coordinate reference system. The R package <a href="https://r-spatial.github.io/sf/index.html"><code>sf</code></a> is dedicated to sf objects and allows users to do all sorts of manipulation and computation.</p>
-<h3 id="prepare-the-data">Prepare the data</h3>
-<p>Let’s start by preparing the data we need for making the plot.</p>
+<p>In this post, we’ll be creating a map of the number of visitors in
+the national parks (units managed by the National Park Service) in
+California in 2022. It’s called a “simple feature” map because this is
+the type of R spatial object we’ll use for data processing and plotting.
+Briefly, a <a
+href="https://r-spatial.github.io/sf/articles/sf1.html">simple feature
+object (sf)</a> is a special data frame that contains several columns of
+feature attributes (the metadata like “country name”) and a list column
+of feature geometry (the coordinates representing the
+points/lines/polygons), with an associated coordinate reference system.
+The R package <a
+href="https://r-spatial.github.io/sf/index.html"><code>sf</code></a> is
+dedicated to sf objects and allows users to do all sorts of manipulation
+and computation.</p>
+<h3 id="retrieve-the-data">Retrieve the data</h3>
+<p>Let’s start by retrieving the data we need for making the map:</p>
+<ol type="1">
+<li>A shapefile of California state boundary from <a
+href="https://www.naturalearthdata.com/downloads/10m-cultural-vectors/">Natural
+Earth</a><br />
+</li>
+<li>A shapefile of California national park boundaries from <a
+href="https://public-nps.opendata.arcgis.com/datasets/nps-boundary-1/explore?filters=eyJTVEFURSI6WyJDQSJdfQ%3D%3D&amp;location=36.531656%2C-116.748610%2C5.59">National
+Park Service Open Data Portal</a></li>
+<li>A CSV file of the number of visitors in each park in 2022 from <a
+href="https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Visitation%20By%20State%20and%20By%20Park%20(2017%20-%20Last%20Calendar%20Year)">National
+Park Service Stats Report Viewer</a></li>
+</ol>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
@@ -1637,8 +1670,10 @@ div.l-body img {
 </div>
 </div>
 <h2 id="summary">Summary</h2>
-<p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<p>Hope you learn something useful from this post and don’t forget to
+leave your comments and suggestions below if you have any!</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
