@@ -1,0 +1,178 @@
+---
+title: "Post #26. ggplot Map Series No.2: Creating simple feature ggplot maps from shapefiles"
+description: |
+  Come and take a look at the nuts and bolts of creating simple feature maps from external shapefiles in ggplots!
+author:
+  - name: Gen-Chang Hsu
+date: 2023-05-24
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2023"
+  - "Map Series"
+preview: ../../homepage_images/Post26.png
+draft: true
+---
+
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+    color: #2780e3 !important;
+      border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+In the [first post](https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/) of this Map Series, we looked at how to create polygon maps in ggplots. But this is not the only way to create ggplot maps; there are indeed many more ways out there! And in this post, I'm going to show you another method: creating maps from shapefiles.
+
+I believe you might have heard of shapefiles (or even used them before!). So what exactly are they? A shapefile (.shp) is a common geospatial vector data format for storing the locations, shapes, and attributes of geographic features. It comes with a set of related files (.shx, .prj, .dbf, etc.) that together describe vector features such as points, lines, and polygons, which represent various spatial objects like mountain peaks, country boundaries, roads, rivers, and lakes.
+
+For it's commonality and populatrity, I think it would be useful to write a post on the basics of creating ggplot maps using these shapefiles, and hope it will come in handy for all of you who read to the very end of this post!
+
+
+## Creat a simple feature map
+
+In this post, we'll be creating a map of the number of visitations in the national parks in CA.  
+
+It's a "simple feature" map because we will be using this type of geo object for plotting. 
+
+Introduction to simple feature and `sf` package.
+
+
+### Prepare the data
+
+```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
+library(tidyverse)
+
+
+```
+
+
+
+
+### Process the data
+
+```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
+library(tidyverse)
+
+
+```
+
+
+
+### Create a basic map
+
+```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
+library(tidyverse)
+
+
+```
+
+
+
+### Polish the map
+
+```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
+library(tidyverse)
+
+
+```
+
+
+
+
+
+
+## Summary
+
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
