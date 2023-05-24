@@ -114,24 +114,25 @@ knitr::opts_chunk$set(message = F,
 
 In the [first post](https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/) of this Map Series, we looked at how to create polygon maps in ggplots. But this is not the only way to create ggplot maps; there are indeed many more ways out there! And in this post, I'm going to show you another method: creating maps from shapefiles.
 
-I believe you might have heard of shapefiles (or even used them before!). So what exactly are they? A shapefile (.shp) is a common geospatial vector data format for storing the locations, shapes, and attributes of geographic features. It comes with a set of related files (.shx, .prj, .dbf, etc.) that together describe vector features such as points, lines, and polygons, which represent various spatial objects like mountain peaks, country boundaries, roads, rivers, and lakes.
+I believe you might have heard of shapefiles (or even used them before!). So what exactly are they? A shapefile (.shp) is a common geospatial vector data format for storing the locations, shapes, and attributes of geographic features. It comes with a set of related files (.shx, .prj, .dbf, etc.) that together describe vector features such as points, lines, and polygons, representing all kinds of spatial objects like mountain peaks, country boundaries, roads, rivers, and lakes.
 
-For it's commonality and populatrity, I think it would be useful to write a post on the basics of creating ggplot maps using these shapefiles, and hope it will come in handy for all of you who read to the very end of this post!
+Because of the commonness and popularity of shapefiles, I think it would be useful to have some basic ideas of them. Hopefully, after reaching the very end of this post, you'll be able to make good use of shapefiles to create your own maps!
 
 
 ## Creat a simple feature map
 
-In this post, we'll be creating a map of the number of visitations in the national parks in CA.  
-
-It's a "simple feature" map because we will be using this type of geo object for plotting. 
-
-Introduction to simple feature and `sf` package.
-
+In this post, we'll be creating a map of the number of visitors in the national parks (units managed by the National Park Service) in California in 2022. It's called a "simple feature" map because this is the type of R spatial object we'll use for data processing and plotting. Briefly, a [simple feature object (sf)](https://r-spatial.github.io/sf/articles/sf1.html) is a special data frame that contains several columns of feature attributes (the metadata like "country name") and a list column of feature geometry (the coordinates representing the points/lines/polygons), with an associated coordinate reference system. The R package [`sf`](https://r-spatial.github.io/sf/index.html) is dedicated to sf objects and allows users to do all sorts of manipulation and computation.
 
 ### Prepare the data
 
+Let's start by preparing the data we need for making the map: 
+
+
 ```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
 library(tidyverse)
+
+
+
 
 
 ```

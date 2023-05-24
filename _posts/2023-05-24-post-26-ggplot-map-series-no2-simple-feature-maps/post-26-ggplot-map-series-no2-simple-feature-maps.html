@@ -1606,16 +1606,13 @@ div.l-body img {
 </style>
 <!-- Start of the article -->
 <h2 id="introduction">Introduction</h2>
-<p>In the first post of this series, we looked at how we can create a polygon maps in ggplots. But this is not the only way to create a map. Indeed, there are many more methods for it. And in this post, I’m going to show you another way to create maps: maps using shapefiles.</p>
-<p>I believe you might have heard of shapefiles (or even use them before!). So what exactly is it?</p>
-<p>A shapefile is a vector data storage format for storing the location, shape, and attributes of geographic features. It is stored as a set of related files and contains one feature class.</p>
-<p>The shapefile format is a common geospatial vector data format for geographic information system (GIS) software. It is developed and regulated by Esri as a mostly open specification for data interoperability among Esri and other GIS software products. The shapefile format can spatially describe vector features: points, lines, and polygons, representing, for example, water wells, rivers, and lakes. Lots of geodata stored in this format, such as geoboundary, rivers, roads, etc.</p>
-<p>For it’s commonality and populatrity, I think it would be useful to write a post on the basics of creating ggplot maps using these shapefiles, and hope it will come in handy for all of you who read to the very end of this post!</p>
+<p>In the <a href="https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/">first post</a> of this Map Series, we looked at how to create polygon maps in ggplots. But this is not the only way to create ggplot maps; there are indeed many more ways out there! And in this post, I’m going to show you another method: creating maps from shapefiles.</p>
+<p>I believe you might have heard of shapefiles (or even used them before!). So what exactly are they? A shapefile (.shp) is a common geospatial vector data format for storing the locations, shapes, and attributes of geographic features. It comes with a set of related files (.shx, .prj, .dbf, etc.) that together describe vector features such as points, lines, and polygons, representing all kinds of spatial objects like mountain peaks, country boundaries, roads, rivers, and lakes.</p>
+<p>Because of the commonness and popularity of shapefiles, I think it would be useful to have some basic ideas of them. Hopefully, after reaching the very end of this post, you’ll be able to make good use of shapefiles to create your own maps!</p>
 <h2 id="creat-a-simple-feature-map">Creat a simple feature map</h2>
-<p>In this post, we’ll be creating a map of the number of visitations in the national parks in CA.</p>
-<p>It’s a “simple feature” map because we will be using this type of geo object for plotting.</p>
-<p>Introduction to simple feature and <code>sf</code> package.</p>
+<p>In this post, we’ll be creating a map of the number of visitors in the national parks (units managed by the National Park Service) in California in 2022. It’s called a “simple feature” map because this is the type of R spatial object we’ll use for data processing and plotting. Briefly, a <a href="https://r-spatial.github.io/sf/articles/sf1.html">simple feature object (sf)</a> is a special data frame that contains several columns of feature attributes (the metadata like “country name”) and a list column of feature geometry (the coordinates representing the points/lines/polygons), with an associated coordinate reference system. The R package <a href="https://r-spatial.github.io/sf/index.html"><code>sf</code></a> is dedicated to sf objects and allows users to do all sorts of manipulation and computation.</p>
 <h3 id="prepare-the-data">Prepare the data</h3>
+<p>Let’s start by preparing the data we need for making the plot.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
