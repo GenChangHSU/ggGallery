@@ -124,53 +124,123 @@ In this post, we'll be creating a map of the number of visitors in the national 
 
 ### Retrieve the data
 
-Let's start by preparing the data we need for making the map. The data files we'll be using include:
+Let's start by preparing the data we need for making the map. The data files we have on hand are:
 
-1. A shapefile of California state boundary from [Natural Earth](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/)  
-2. A shapefile of California national park boundaries from [National Park Service Open Data Portal](https://public-nps.opendata.arcgis.com/datasets/nps-boundary-1/explore?filters=eyJTVEFURSI6WyJDQSJdfQ%3D%3D&location=36.531656%2C-116.748610%2C5.59) 
-3. A CSV file of the number of visitors in each park in 2022 from [National Park Service Stats Report Viewer](https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Visitation%20By%20State%20and%20By%20Park%20(2017%20-%20Last%20Calendar%20Year))
+1. A shapefile of California state boundary, retrieved from [Natural Earth](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/)  
+2. A shapefile of California national park boundaries, retrieved from [National Park Service Open Data Portal](https://public-nps.opendata.arcgis.com/datasets/nps-boundary-1/explore?filters=eyJTVEFURSI6WyJDQSJdfQ%3D%3D&location=36.531656%2C-116.748610%2C5.59) 
+3. A CSV file of the number of visitors in each park in 2022, retrieved from [National Park Service Stats Report Viewer](https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Visitation%20By%20State%20and%20By%20Park%20(2017%20-%20Last%20Calendar%20Year))
 
-The shapefiles are read into R using the function `st_read()` from the package `sf`, which reads the shapefiles as an "sf" object. 
-
-
+The shapefiles are read into R as an "sf" object using the function `st_read()` from the package `sf`.
 
 ```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
 library(tidyverse)
 library(sf)
 
+### Read the shapefile of state boundaries
+CA_boundary <- st_read("NE_State_Boundaries/ne_10m_admin_1_states_provinces.shp", quiet = T) %>% 
+  filter(admin == "United States of America") %>%  # US state boundaries
+  filter(gn_name == "California")  # California boundary
 
+### Read the shapefile of park boundaries
+Park_boundary <- st_read("CA_Park_Boundaries/National_Park_Service_Land_Resources_Division_Tract_and_Boundary_Service.shp", quiet = T) %>% 
+    filter(STATE == "CA")  # California park boundaries
 
-
+### Read the CSV of park visitors in 2022
+Park_visitors <- read_csv("CA_Park_Visitation.csv") %>% 
+  select(Park = Field1, Visitors = Field2) %>%  # select the park and visitor columns
+  mutate(Park_name = str_remove(Park, pattern = " N[A-Z]{1,4}"))  # remove the park type abbreviations
+  
 ```
-
-
-
 
 ### Process the data
 
-```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
-library(tidyverse)
+Now we have the data in R, the next step is to process them for plotting. There are two things here. First, we'll join the park boundary and park visitor data so that later we can map the numbers of visitors in the parks to different colors. Second, we'll check the coordinate reference systems (crs) of the two data layers (state boundary and park boundaries) to ensure that they can be drawn in the same map.
 
+```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
+### Join the park boundary and park visitor data
+Park_boundary_visitor <- Park_boundary %>% 
+  mutate(PARKNAME = case_match(PARKNAME, "Rosie the Riveter WWII Home Front" ~ "Rosie The Riveter WWII Home Front", 
+                               .default = PARKNAME)) %>%  # adjust the park name 
+  left_join(Park_visitors, by = join_by("PARKNAME" == "Park_name"))  # join by park names
+
+### Check the crs of the two data layers
+st_crs(CA_boundary)$epsg
+st_crs(Park_boundary_visitor)$epsg
+
+### Transform the crs of park boundary data
+Park_boundary_visitor <- st_transform(Park_boundary_visitor, crs = 4326)  # 
+st_crs(Park_boundary_visitor)$epsg
 
 ```
 
+In this example, the two layers have different crs (EPSG code 4326 vs. 3857), so we used `st_transform()` to change the crs of the park boundary data to the one same as that of the state boundary data.
 
+### Create the map
 
-### Create a basic map
+It's time to make the map. Simply pass the sf objects to the "data" argument in `geom_sf()` and it will take care of everything! We also cut the number of visitors into discrete categories for color mapping.
 
-```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
-library(tidyverse)
+```{r, fig.width = 5, fig.height = 4, out.width = "80%"}
+### Cut the number of visitors into discrete categories
+Park_boundary_visitor <- Park_boundary_visitor %>% 
+  mutate(Visitors_cat = case_when(Visitors < 50000 ~ "< 50,000",
+                                  Visitors > 50000 & Visitors < 500000 ~ "50,000– \n500,000",
+                                  Visitors > 500000 & Visitors < 1000000 ~ "500,000– \n1,000,000",
+                                  Visitors > 1000000 & Visitors < 10000000 ~ "1,000,000– \n10,000,000",
+                                  Visitors > 10000000 ~ "> 10,000,000")) %>% 
+  mutate(Visitors_cat = factor(Visitors_cat, levels = c("< 50,000", "50,000– \n500,000", "500,000– \n1,000,000", "1,000,000– \n10,000,000", "> 10,000,000"))) %>% 
+  drop_na()
 
+### Create the map
+CA_park_map <- ggplot() + 
+  geom_sf(data = CA_boundary) + 
+  geom_sf(data = Park_boundary_visitor, aes(fill = Visitors_cat))
+
+CA_park_map 
 
 ```
 
-
+The map is out, but doesn't look so pleasant. So let's polish it now!
 
 ### Polish the map
 
-```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
-library(tidyverse)
+1. Change the background color
+2. Change the park colors
+3. Modify the legend
+4. Add text annotations and NPS logo
+5. Add park labels
 
+
+
+```{r, fig.width = 5, fig.height = 4, out.width = "80%"}
+library(ggtext)
+library(grid)
+
+CA_park_map <- ggplot() + 
+  geom_sf(data = CA_boundary, color = "transparent", fill = "grey80") + 
+  geom_sf(data = Park_boundary_visitor, aes(color = Visitors_cat, fill = Visitors_cat)) +
+  geom_richtext(aes(x = -118.5, y = 40, label = "<img src='NPS_logo.PNG' width='25' />"),
+                fill = NA, label.color = NA, label.padding = unit(rep(0, 4), "pt")) + 
+  geom_richtext(aes(x = -115.5, y = 41.5, label = "What Is the Most Visited <br> National Parks in California?"),
+                fill = NA, label.color = NA, label.padding = unit(rep(0, 4), "pt")) + 
+  geom_richtext(aes(x = -113.5, y = 39.5, label = "hhh"),
+                fill = NA, label.color = NA, label.padding = unit(rep(0, 4), "pt")) + 
+  scale_color_manual(values = c("#fee5d9", "#fcae91", "#fb6a4a", "#de2d26", "#a50f15")) + 
+  scale_fill_manual(values = c("#fee5d9", "#fcae91", "#fb6a4a", "#de2d26", "#a50f15")) + 
+  coord_sf(xlim = c(-125, -112), ylim = c(30.7, 42.2)) +
+  guides(color = guide_legend(title = NULL, 
+                              label.position = "bottom"),
+         fill = guide_legend(title = NULL, 
+                             label.position = "bottom")) + 
+  theme_void() + 
+  theme(plot.background = element_rect(fill = "grey40", color = "grey40"),
+        legend.position = c(0.5, 0.075),
+        legend.direction = "horizontal",
+        legend.key.width = unit(0.5, "in"),
+        legend.key.height = unit(0.05, "in"),
+        legend.text = element_text(size = 5, color = "white", margin = margin(t = -4)),
+        legend.spacing.x = unit(0, "in"))
+
+CA_park_map
 
 ```
 

@@ -118,7 +118,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-26-ggplot-map-series-no2-simple-feature-maps_files/anchor-4.2.2/anchor.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/bowser-1.9.3/bowser.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/distill-2.2.21/template.v2.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/header-attrs-2.14/header-attrs.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/header-attrs-2.21/header-attrs.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/jquery-3.6.0/jquery-3.6.0.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/jquery-3.6.0/jquery-3.6.0.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/jquery-3.6.0/jquery-3.6.0.min.map","post-26-ggplot-map-series-no2-simple-feature-maps_files/popper-2.6.0/popper.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy-light-border.css","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy.css","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy.umd.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["CA_Park_Boundaries/National_Park_Service_Land_Resources_Division_Tract_and_Boundary_Service.cpg","CA_Park_Boundaries/National_Park_Service_Land_Resources_Division_Tract_and_Boundary_Service.dbf","CA_Park_Boundaries/National_Park_Service_Land_Resources_Division_Tract_and_Boundary_Service.prj","CA_Park_Boundaries/National_Park_Service_Land_Resources_Division_Tract_and_Boundary_Service.shp","CA_Park_Boundaries/National_Park_Service_Land_Resources_Division_Tract_and_Boundary_Service.shx","CA_Park_Boundaries/National_Park_Service_Land_Resources_Division_Tract_and_Boundary_Service.xml","CA_Park_Visitation.csv","NE_State_Boundaries/ne_10m_admin_1_states_provinces.cpg","NE_State_Boundaries/ne_10m_admin_1_states_provinces.dbf","NE_State_Boundaries/ne_10m_admin_1_states_provinces.prj","NE_State_Boundaries/ne_10m_admin_1_states_provinces.README.html","NE_State_Boundaries/ne_10m_admin_1_states_provinces.shp","NE_State_Boundaries/ne_10m_admin_1_states_provinces.shx","NE_State_Boundaries/ne_10m_admin_1_states_provinces.VERSION.txt","NPS_logo.png","post-26-ggplot-map-series-no2-simple-feature-maps_files/anchor-4.2.2/anchor.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/bowser-1.9.3/bowser.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/distill-2.2.21/template.v2.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/figure-html5/unnamed-chunk-3-1.png","post-26-ggplot-map-series-no2-simple-feature-maps_files/figure-html5/unnamed-chunk-4-1.png","post-26-ggplot-map-series-no2-simple-feature-maps_files/header-attrs-2.14/header-attrs.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/header-attrs-2.21/header-attrs.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/jquery-3.6.0/jquery-3.6.0.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/jquery-3.6.0/jquery-3.6.0.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/jquery-3.6.0/jquery-3.6.0.min.map","post-26-ggplot-map-series-no2-simple-feature-maps_files/popper-2.6.0/popper.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy-light-border.css","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy.css","post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy.umd.min.js","post-26-ggplot-map-series-no2-simple-feature-maps_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -189,6 +189,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   d-article table.gt_table td,
   d-article table.gt_table th {
     border-bottom: none;
+    font-size: 100%;
   }
 
   .html-widget {
@@ -1261,15 +1262,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        if ($(this).children()[0].nodeName == "D-FOOTNOTE") {
-          var fn = $(this).children()[0]
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
           $(this).html(fn.shadowRoot.querySelector("sup"))
           $(this).id = fn.id
           fn.remove()
         }
         var refs = $(this).attr('data-cites').split(" ");
         var refHtml = refs.map(function(ref) {
-          return "<p>" + $('#ref-' + ref).html() + "</p>";
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
         }).join("\n");
         window.tippy(this, {
           allowHTML: true,
@@ -1468,7 +1475,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
-  <script src="post-26-ggplot-map-series-no2-simple-feature-maps_files/header-attrs-2.14/header-attrs.js"></script>
+  <script src="post-26-ggplot-map-series-no2-simple-feature-maps_files/header-attrs-2.21/header-attrs.js"></script>
   <script src="post-26-ggplot-map-series-no2-simple-feature-maps_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <script src="post-26-ggplot-map-series-no2-simple-feature-maps_files/popper-2.6.0/popper.min.js"></script>
   <link href="post-26-ggplot-map-series-no2-simple-feature-maps_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -1489,7 +1496,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #26. ggplot Map Series No.2: Creating simple feature ggplot maps from shapefiles","description":"Come and take a look at the nuts and bolts of creating simple feature maps from external shapefiles in ggplots!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-05-24T00:00:00.000-07:00","citationText":"Hsu, 2023"}
+{"title":"Post #26. ggplot Map Series No.2: Creating simple feature ggplot maps from shapefiles","description":"Come and take a look at the nuts and bolts of creating simple feature maps from external shapefiles in ggplots!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-05-24T00:00:00.000+08:00","citationText":"Hsu, 2023"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1506,8 +1513,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="dt-tag">Map Series</div>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>Come and take a look at the nuts and bolts of creating simple
-feature maps from external shapefiles in ggplots!</p></p>
+<p><p>Come and take a look at the nuts and bolts of creating simple feature maps from external shapefiles in ggplots!</p></p>
 </div>
 
 <div class="d-byline">
@@ -1600,80 +1606,118 @@ div.l-body img {
 </style>
 <!-- Start of the article -->
 <h2 id="introduction">Introduction</h2>
-<p>In the <a
-href="https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/">first
-post</a> of this Map Series, we looked at how to create polygon maps in
-ggplots. But this is not the only way to create ggplot maps; there are
-indeed many more ways out there! And in this post, I’m going to show you
-another method: creating maps from shapefiles.</p>
-<p>I believe you might have heard of shapefiles (or even used them
-before!). So what exactly are they? A shapefile (.shp) is a common
-geospatial vector data format for storing the locations, shapes, and
-attributes of geographic features. It comes with a set of related files
-(.shx, .prj, .dbf, etc.) that together describe vector features such as
-points, lines, and polygons, representing all kinds of spatial objects
-like mountain peaks, country boundaries, roads, rivers, and lakes.</p>
-<p>Because of the commonness and popularity of shapefiles, I think it
-would be useful to have some basic ideas of them. Hopefully, after
-reaching the very end of this post, you’ll be able to make good use of
-shapefiles to create your own maps!</p>
+<p>In the <a href="https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/">first post</a> of this Map Series, we looked at how to create polygon maps in ggplots. But this is not the only way to create ggplot maps; there are indeed many more ways out there! And in this post, I’m going to show you another method: creating maps from shapefiles.</p>
+<p>I believe you might have heard of shapefiles (or even used them before!). So what exactly are they? A shapefile (.shp) is a common geospatial vector data format for storing the locations, shapes, and attributes of geographic features. It comes with a set of related files (.shx, .prj, .dbf, etc.) that together describe vector features such as points, lines, and polygons, representing all kinds of spatial objects like mountain peaks, country boundaries, roads, rivers, and lakes.</p>
+<p>Because of the commonness and popularity of shapefiles, I think it would be useful to have some basic ideas of them. Hopefully, after reaching the very end of this post, you’ll be able to make good use of shapefiles to create your own maps!</p>
 <h2 id="creat-a-simple-feature-map">Creat a simple feature map</h2>
-<p>In this post, we’ll be creating a map of the number of visitors in
-the national parks (units managed by the National Park Service) in
-California in 2022. It’s called a “simple feature” map because this is
-the type of R spatial object we’ll use for data processing and plotting.
-Briefly, a <a
-href="https://r-spatial.github.io/sf/articles/sf1.html">simple feature
-object (sf)</a> is a special data frame that contains several columns of
-feature attributes (the metadata like “country name”) and a list column
-of feature geometry (the coordinates representing the
-points/lines/polygons), with an associated coordinate reference system.
-The R package <a
-href="https://r-spatial.github.io/sf/index.html"><code>sf</code></a> is
-dedicated to sf objects and allows users to do all sorts of manipulation
-and computation.</p>
+<p>In this post, we’ll be creating a map of the number of visitors in the national parks (units managed by the National Park Service) in California in 2022. It’s called a “simple feature” map because this is the type of R spatial object we’ll use for data processing and plotting. Briefly, a <a href="https://r-spatial.github.io/sf/articles/sf1.html">simple feature object (sf)</a> is a special data frame that contains several columns of feature attributes (the metadata like “country name”) and a list column of feature geometry (the coordinates representing the points/lines/polygons), with an associated coordinate reference system. The R package <a href="https://r-spatial.github.io/sf/index.html"><code>sf</code></a> is dedicated to sf objects and allows users to do all sorts of manipulation and computation.</p>
 <h3 id="retrieve-the-data">Retrieve the data</h3>
-<p>Let’s start by retrieving the data we need for making the map:</p>
+<p>Let’s start by preparing the data we need for making the map. The data files we have on hand are:</p>
 <ol type="1">
-<li>A shapefile of California state boundary from <a
-href="https://www.naturalearthdata.com/downloads/10m-cultural-vectors/">Natural
-Earth</a><br />
+<li>A shapefile of California state boundary, retrieved from <a href="https://www.naturalearthdata.com/downloads/10m-cultural-vectors/">Natural Earth</a><br />
 </li>
-<li>A shapefile of California national park boundaries from <a
-href="https://public-nps.opendata.arcgis.com/datasets/nps-boundary-1/explore?filters=eyJTVEFURSI6WyJDQSJdfQ%3D%3D&amp;location=36.531656%2C-116.748610%2C5.59">National
-Park Service Open Data Portal</a></li>
-<li>A CSV file of the number of visitors in each park in 2022 from <a
-href="https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Visitation%20By%20State%20and%20By%20Park%20(2017%20-%20Last%20Calendar%20Year)">National
-Park Service Stats Report Viewer</a></li>
+<li>A shapefile of California national park boundaries, retrieved from <a href="https://public-nps.opendata.arcgis.com/datasets/nps-boundary-1/explore?filters=eyJTVEFURSI6WyJDQSJdfQ%3D%3D&amp;location=36.531656%2C-116.748610%2C5.59">National Park Service Open Data Portal</a></li>
+<li>A CSV file of the number of visitors in each park in 2022, retrieved from <a href="https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Visitation%20By%20State%20and%20By%20Park%20(2017%20-%20Last%20Calendar%20Year)">National Park Service Stats Report Viewer</a></li>
 </ol>
+<p>The shapefiles are read into R as an “sf” object using the function <code>st_read()</code> from the package <code>sf</code>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Read the shapefile of state boundaries</span></span>
+<span><span class='va'>CA_boundary</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>st_read</a></span><span class='op'>(</span><span class='st'>"NE_State_Boundaries/ne_10m_admin_1_states_provinces.shp"</span>, quiet <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>admin</span> <span class='op'>==</span> <span class='st'>"United States of America"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># US state boundaries</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>gn_name</span> <span class='op'>==</span> <span class='st'>"California"</span><span class='op'>)</span>  <span class='co'># California boundary</span></span>
+<span></span>
+<span><span class='co'>### Read the shapefile of park boundaries</span></span>
+<span><span class='va'>Park_boundary</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>st_read</a></span><span class='op'>(</span><span class='st'>"CA_Park_Boundaries/National_Park_Service_Land_Resources_Division_Tract_and_Boundary_Service.shp"</span>, quiet <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>STATE</span> <span class='op'>==</span> <span class='st'>"CA"</span><span class='op'>)</span>  <span class='co'># California park boundaries</span></span>
+<span></span>
+<span><span class='co'>### Read the CSV of park visitors in 2022</span></span>
+<span><span class='va'>Park_visitors</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"CA_Park_Visitation.csv"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span>Park <span class='op'>=</span> <span class='va'>Field1</span>, Visitors <span class='op'>=</span> <span class='va'>Field2</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># select the park and visitor columns</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Park_name <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove</a></span><span class='op'>(</span><span class='va'>Park</span>, pattern <span class='op'>=</span> <span class='st'>" N[A-Z]{1,4}"</span><span class='op'>)</span><span class='op'>)</span>  <span class='co'># remove the park type abbreviations</span></span></code></pre>
 </div>
 </div>
 <h3 id="process-the-data">Process the data</h3>
+<p>Now we have the data in R, the next step is to process them for plotting. There are two things here. First, we’ll join the park boundary and park visitor data so that later we can map the numbers of visitors in the parks to different colors. Second, we’ll check the coordinate reference systems (crs) of the two data layers (state boundary and park boundaries) to ensure that they can be drawn in the same map.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Join the park boundary and park visitor data</span></span>
+<span><span class='va'>Park_boundary_visitor</span> <span class='op'>&lt;-</span> <span class='va'>Park_boundary</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>PARKNAME <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_match.html'>case_match</a></span><span class='op'>(</span><span class='va'>PARKNAME</span>, <span class='st'>"Rosie the Riveter WWII Home Front"</span> <span class='op'>~</span> <span class='st'>"Rosie The Riveter WWII Home Front"</span>, </span>
+<span>                               .default <span class='op'>=</span> <span class='va'>PARKNAME</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># adjust the park name </span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>Park_visitors</span>, by <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/join_by.html'>join_by</a></span><span class='op'>(</span><span class='st'>"PARKNAME"</span> <span class='op'>==</span> <span class='st'>"Park_name"</span><span class='op'>)</span><span class='op'>)</span>  <span class='co'># join by park names</span></span>
+<span></span>
+<span><span class='co'>### Check the crs of the two data layers</span></span>
+<span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_crs.html'>st_crs</a></span><span class='op'>(</span><span class='va'>CA_boundary</span><span class='op'>)</span><span class='op'>$</span><span class='va'>epsg</span></span></code></pre>
 </div>
+<pre><code>[1] 4326</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_crs.html'>st_crs</a></span><span class='op'>(</span><span class='va'>Park_boundary_visitor</span><span class='op'>)</span><span class='op'>$</span><span class='va'>epsg</span></span></code></pre>
 </div>
-<h3 id="create-a-basic-map">Create a basic map</h3>
+<pre><code>[1] 3857</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Transform the crs of park boundary data</span></span>
+<span><span class='va'>Park_boundary_visitor</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_transform.html'>st_transform</a></span><span class='op'>(</span><span class='va'>Park_boundary_visitor</span>, crs <span class='op'>=</span> <span class='fl'>4326</span><span class='op'>)</span>  <span class='co'># </span></span>
+<span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_crs.html'>st_crs</a></span><span class='op'>(</span><span class='va'>Park_boundary_visitor</span><span class='op'>)</span><span class='op'>$</span><span class='va'>epsg</span></span></code></pre>
+</div>
+<pre><code>[1] 4326</code></pre>
+</div>
+<p>In this example, the two layers have different crs (EPSG code 4326 vs. 3857), so we used <code>st_transform()</code> to change the crs of the park boundary data to the one same as that of the state boundary data.</p>
+<h3 id="create-the-map">Create the map</h3>
+<p>It’s time to make the map. Simply pass the sf objects to the “data” argument in <code>geom_sf()</code> and it will take care of everything! We also cut the number of visitors into discrete categories for color mapping.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Cut the number of visitors into discrete categories</span></span>
+<span><span class='va'>Park_boundary_visitor</span> <span class='op'>&lt;-</span> <span class='va'>Park_boundary_visitor</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Visitors_cat <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span><span class='va'>Visitors</span> <span class='op'>&lt;</span> <span class='fl'>50000</span> <span class='op'>~</span> <span class='st'>"&lt; 50,000"</span>,</span>
+<span>                                  <span class='va'>Visitors</span> <span class='op'>&gt;</span> <span class='fl'>50000</span> <span class='op'>&amp;</span> <span class='va'>Visitors</span> <span class='op'>&lt;</span> <span class='fl'>500000</span> <span class='op'>~</span> <span class='st'>"50,000– \n500,000"</span>,</span>
+<span>                                  <span class='va'>Visitors</span> <span class='op'>&gt;</span> <span class='fl'>500000</span> <span class='op'>&amp;</span> <span class='va'>Visitors</span> <span class='op'>&lt;</span> <span class='fl'>1000000</span> <span class='op'>~</span> <span class='st'>"500,000– \n1,000,000"</span>,</span>
+<span>                                  <span class='va'>Visitors</span> <span class='op'>&gt;</span> <span class='fl'>1000000</span> <span class='op'>&amp;</span> <span class='va'>Visitors</span> <span class='op'>&lt;</span> <span class='fl'>10000000</span> <span class='op'>~</span> <span class='st'>"1,000,000– \n10,000,000"</span>,</span>
+<span>                                  <span class='va'>Visitors</span> <span class='op'>&gt;</span> <span class='fl'>10000000</span> <span class='op'>~</span> <span class='st'>"&gt; 10,000,000"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Visitors_cat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>Visitors_cat</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"&lt; 50,000"</span>, <span class='st'>"50,000– \n500,000"</span>, <span class='st'>"500,000– \n1,000,000"</span>, <span class='st'>"1,000,000– \n10,000,000"</span>, <span class='st'>"&gt; 10,000,000"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/drop_na.html'>drop_na</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Create the map</span></span>
+<span><span class='va'>CA_park_map</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>CA_boundary</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>Park_boundary_visitor</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='va'>Visitors_cat</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>CA_park_map</span> </span></code></pre>
 </div>
+<p><img src="post-26-ggplot-map-series-no2-simple-feature-maps_files/figure-html5/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
+<p>The map is out, but doesn’t look so pleasant. So let’s polish it now!</p>
 <h3 id="polish-the-map">Polish the map</h3>
+<ol type="1">
+<li>Change the background color</li>
+<li>Change the park colors</li>
+<li>Modify the legend</li>
+<li>Add text annotations and NPS logo</li>
+<li>Add park labels</li>
+</ol>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://wilkelab.org/ggtext/'>ggtext</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>CA_park_map</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>coord_sf</a></span><span class='op'>(</span>xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>125</span>, <span class='op'>-</span><span class='fl'>112</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>31</span>, <span class='fl'>42.2</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guide_legend.html'>guide_legend</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>                             keywidth <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.7</span>, <span class='st'>"in"</span><span class='op'>)</span>,</span>
+<span>                             keyheight <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='st'>"in"</span><span class='op'>)</span>,</span>
+<span>                             label.position <span class='op'>=</span> <span class='st'>"bottom"</span>,</span>
+<span>                             label.theme <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_void</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>0.05</span><span class='op'>)</span>,</span>
+<span>        legend.direction <span class='op'>=</span> <span class='st'>"horizontal"</span><span class='op'>)</span></span></code></pre>
 </div>
+<p><img src="post-26-ggplot-map-series-no2-simple-feature-maps_files/figure-html5/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <h2 id="summary">Summary</h2>
-<p>Hope you learn something useful from this post and don’t forget to
-leave your comments and suggestions below if you have any!</p>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
