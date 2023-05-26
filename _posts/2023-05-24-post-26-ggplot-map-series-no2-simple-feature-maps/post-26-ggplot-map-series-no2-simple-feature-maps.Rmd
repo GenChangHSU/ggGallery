@@ -198,59 +198,87 @@ CA_park_map
 
 ```
 
-The map is out, but doesn't look so pleasant. So let's polish it now!
+The map is here, but doesn't really look pleasant. So let's polish it now!
 
 ### Polish the map
 
-1. Change the background color
-2. Change the park colors
-3. Modify the legend
-4. Add text annotations and NPS logo
-5. Add park labels
+We’re going to make some changes to the map:
+
+1. Change the background and park colors
+2. Adjust the legend appearance
+3. Add park name labels
+4. Add a title, text annotations, and a logo
 
 ```{r, fig.width = 3.8, fig.height = 4, out.width = "80%"}
-# devtools::install_github("yutannihilation/ggsflabel")
+# devtools::install_github("yutannihilation/ggsflabel")  # install the package if you haven't
 library(ggtext)
 library(grid)
-library(ggsflabel)
-library(showtext)
+library(ggsflabel)  # add labels from sf objects
+library(showtext)  # for the function "font_add_google()" and "showtext_auto()"  
 
+### Import the new font  
 font_add_google("Lora")
 showtext_auto()
 
+### Map
 CA_park_map <- ggplot() + 
+  
+  # California state 
   geom_sf(data = CA_boundary, color = "transparent", fill = "grey80") + 
+  
+  # national parks
   geom_sf(data = Park_boundary_visitor, aes(color = Visitors_cat, fill = Visitors_cat)) +
-  geom_sf_text_repel(data = Park_boundary_visitor, aes(label = str_wrap(Park, width = 25)), color = "white", size = 2.75, family = "sans", fontface = "bold", segment.size = 0.2, lineheight = 0.5, vjust = 0.5, hjust = 0.5, max.overlaps = Inf, force = 3) + 
-  geom_richtext(aes(x = -118.75, y = 40, label = "<img src='NPS_logo.PNG' width='27.5' />"), fill = NA, label.color = NA, label.padding = unit(rep(0, 4), "pt")) + 
-  geom_richtext(aes(x = -115.5, y = 41.5, label = "What Are the Most Visited <br> National Parks in California?"), color = "white", family = "Lora", fontface = "bold.italic", size = 6.5, lineheight = 0.75, fill = NA, label.color = NA, label.padding = unit(rep(0, 4), "pt")) +
-  geom_textbox(aes(x = -114.75, y = 40, label = "This is a map of the number of visitors in the national parks in California in 2022. The top three most visited parks are **Golden Gate National Recreation Area**, **Yosemite National Park**, and **Joshua Tree National Park**."), color = "white", family = "Lora", size = 3.75, width = unit(1.8, "in"), lineheight = 0.6, fill = NA, box.color = NA) + 
+  
+  # national park labels
+  geom_sf_text_repel(data = Park_boundary_visitor, aes(label = str_wrap(Park, width = 25)), 
+                     color = "white", size = 2.75, family = "sans", fontface = "bold", 
+                     segment.size = 0.2, lineheight = 0.5, vjust = 0.5, hjust = 0.5, 
+                     max.overlaps = Inf, force = 3) +
+  
+  # title
+  geom_richtext(aes(x = -115.5, y = 41.5, label = "What Are the Most Visited <br> National Parks in California?"), 
+                color = "white", size = 6.5, family = "Lora", fontface = "bold.italic",
+                lineheight = 0.75, fill = NA, label.color = NA, label.padding = unit(rep(0, 4), "pt")) +
+  
+  # text annotation
+  geom_textbox(aes(x = -114.75, y = 40, label = "This is a map of the number of visitors in the national parks in California in 2022. The top three most visited parks are **Golden Gate National Recreation Area**, **Yosemite National Park**, and **Joshua Tree National Park**."), 
+               color = "white", size = 3.75, family = "Lora", lineheight = 0.6,
+               width = unit(1.8, "in"), fill = NA, box.color = NA) + 
+  
+  # NPS logo
+  geom_richtext(aes(x = -118.75, y = 40, label = "<img src='NPS_logo.PNG' width='27.5'/>"), 
+                fill = NA, label.color = NA, label.padding = unit(rep(0, 4), "pt")) + 
+
+  # park colors
   scale_color_manual(values = c("#fee5d9", "#fcae91", "#fb6a4a", "#de2d26", "#a50f15")) + 
   scale_fill_manual(values = c("#fee5d9", "#fcae91", "#fb6a4a", "#de2d26", "#a50f15")) + 
+  
+  # map limits
   coord_sf(xlim = c(-125, -112), ylim = c(31.5, 42.2)) +
-  guides(color = guide_legend(title = NULL, 
-                              label.position = "bottom"),
-         fill = guide_legend(title = NULL, 
-                             label.position = "bottom")) + 
+  
+  # legend label position
+  guides(color = guide_legend(title = NULL, label.position = "bottom"),
+         fill = guide_legend(title = NULL, label.position = "bottom")) + 
+  
+  # plot background and legend appearance
   theme_void() + 
   theme(plot.background = element_rect(fill = "grey40", color = "grey40"),
         legend.position = c(0.5, 0.05),
         legend.direction = "horizontal",
         legend.key.width = unit(0.5, "in"),
         legend.key.height = unit(0.05, "in"),
-        legend.text = element_text(size = 9, family = "Lora", lineheight = 0.5, color = "white", margin = margin(t = -2)),
+        legend.text = element_text(color = "white", size = 9, family = "Lora", 
+                                   lineheight = 0.5, margin = margin(t = -2)),
         legend.spacing.x = unit(0, "in"))
 
 CA_park_map
 
 ```
 
-
-
-
-
+This is our final product. Awesome!
 
 ## Summary
 
+To recap, in this post we learned how to make a ggplot map from external shapefiles. The key process is to read the shapefiles into R as sf objects, make sure their coordinate reference systems are compatible, and pass the sf object to `geom_sf()` for plotting. Finally, a bit of polishing would be great and bring the map to the next level!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
