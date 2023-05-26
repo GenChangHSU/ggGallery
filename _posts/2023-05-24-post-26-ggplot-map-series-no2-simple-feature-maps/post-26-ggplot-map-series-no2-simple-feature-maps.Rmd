@@ -12,7 +12,6 @@ categories:
   - "2023"
   - "Map Series"
 preview: ../../homepage_images/Post26.png
-draft: true
 ---
 
 <!-- Webpage style -->
@@ -98,7 +97,6 @@ div.l-body img {
 
 </style>
 
-
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(message = F, 
                       error = F, 
@@ -168,7 +166,7 @@ st_crs(CA_boundary)$epsg
 st_crs(Park_boundary_visitor)$epsg
 
 ### Transform the crs of park boundary data
-Park_boundary_visitor <- st_transform(Park_boundary_visitor, crs = 4326)  # 
+Park_boundary_visitor <- st_transform(Park_boundary_visitor, crs = 4326) 
 st_crs(Park_boundary_visitor)$epsg
 
 ```
@@ -179,7 +177,7 @@ In this example, the two layers have different crs (EPSG code 4326 vs. 3857), so
 
 It's time to make the map. Simply pass the sf objects to the "data" argument in `geom_sf()` and it will take care of everything! We also cut the number of visitors into discrete categories for color mapping.
 
-```{r, fig.width = 5, fig.height = 4, out.width = "80%"}
+```{r, fig.width = 4, fig.height = 3, out.width = "80%"}
 ### Cut the number of visitors into discrete categories
 Park_boundary_visitor <- Park_boundary_visitor %>% 
   mutate(Visitors_cat = case_when(Visitors < 50000 ~ "< 50,000",
@@ -188,7 +186,8 @@ Park_boundary_visitor <- Park_boundary_visitor %>%
                                   Visitors > 1000000 & Visitors < 10000000 ~ "1,000,000– \n10,000,000",
                                   Visitors > 10000000 ~ "> 10,000,000")) %>% 
   mutate(Visitors_cat = factor(Visitors_cat, levels = c("< 50,000", "50,000– \n500,000", "500,000– \n1,000,000", "1,000,000– \n10,000,000", "> 10,000,000"))) %>% 
-  drop_na()
+  drop_na() %>% 
+  filter(OBJECTID != 14)
 
 ### Create the map
 CA_park_map <- ggplot() + 
@@ -209,35 +208,37 @@ The map is out, but doesn't look so pleasant. So let's polish it now!
 4. Add text annotations and NPS logo
 5. Add park labels
 
-
-
-```{r, fig.width = 5, fig.height = 4, out.width = "80%"}
+```{r, fig.width = 3.8, fig.height = 4, out.width = "80%"}
+# devtools::install_github("yutannihilation/ggsflabel")
 library(ggtext)
 library(grid)
+library(ggsflabel)
+library(showtext)
+
+font_add_google("Lora")
+showtext_auto()
 
 CA_park_map <- ggplot() + 
   geom_sf(data = CA_boundary, color = "transparent", fill = "grey80") + 
   geom_sf(data = Park_boundary_visitor, aes(color = Visitors_cat, fill = Visitors_cat)) +
-  geom_richtext(aes(x = -118.5, y = 40, label = "<img src='NPS_logo.PNG' width='25' />"),
-                fill = NA, label.color = NA, label.padding = unit(rep(0, 4), "pt")) + 
-  geom_richtext(aes(x = -115.5, y = 41.5, label = "What Is the Most Visited <br> National Parks in California?"),
-                fill = NA, label.color = NA, label.padding = unit(rep(0, 4), "pt")) + 
-  geom_richtext(aes(x = -113.5, y = 39.5, label = "hhh"),
-                fill = NA, label.color = NA, label.padding = unit(rep(0, 4), "pt")) + 
+  geom_sf_text_repel(data = Park_boundary_visitor, aes(label = str_wrap(Park, width = 25)), color = "white", size = 2.75, family = "sans", fontface = "bold", segment.size = 0.2, lineheight = 0.5, vjust = 0.5, hjust = 0.5, max.overlaps = Inf, force = 3) + 
+  geom_richtext(aes(x = -118.75, y = 40, label = "<img src='NPS_logo.PNG' width='27.5' />"), fill = NA, label.color = NA, label.padding = unit(rep(0, 4), "pt")) + 
+  geom_richtext(aes(x = -115.5, y = 41.5, label = "What Are the Most Visited <br> National Parks in California?"), color = "white", family = "Lora", fontface = "bold.italic", size = 6.5, lineheight = 0.75, fill = NA, label.color = NA, label.padding = unit(rep(0, 4), "pt")) +
+  geom_textbox(aes(x = -114.75, y = 40, label = "This is a map of the number of visitors in the national parks in California in 2022. The top three most visited parks are **Golden Gate National Recreation Area**, **Yosemite National Park**, and **Joshua Tree National Park**."), color = "white", family = "Lora", size = 3.75, width = unit(1.8, "in"), lineheight = 0.6, fill = NA, box.color = NA) + 
   scale_color_manual(values = c("#fee5d9", "#fcae91", "#fb6a4a", "#de2d26", "#a50f15")) + 
   scale_fill_manual(values = c("#fee5d9", "#fcae91", "#fb6a4a", "#de2d26", "#a50f15")) + 
-  coord_sf(xlim = c(-125, -112), ylim = c(30.7, 42.2)) +
+  coord_sf(xlim = c(-125, -112), ylim = c(31.5, 42.2)) +
   guides(color = guide_legend(title = NULL, 
                               label.position = "bottom"),
          fill = guide_legend(title = NULL, 
                              label.position = "bottom")) + 
   theme_void() + 
   theme(plot.background = element_rect(fill = "grey40", color = "grey40"),
-        legend.position = c(0.5, 0.075),
+        legend.position = c(0.5, 0.05),
         legend.direction = "horizontal",
         legend.key.width = unit(0.5, "in"),
         legend.key.height = unit(0.05, "in"),
-        legend.text = element_text(size = 5, color = "white", margin = margin(t = -4)),
+        legend.text = element_text(size = 9, family = "Lora", lineheight = 0.5, color = "white", margin = margin(t = -2)),
         legend.spacing.x = unit(0, "in"))
 
 CA_park_map

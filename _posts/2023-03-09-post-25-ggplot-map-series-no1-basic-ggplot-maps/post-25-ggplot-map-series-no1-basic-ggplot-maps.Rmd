@@ -169,7 +169,7 @@ library(rvest)  # the package for web scraping
 
 ### Get a table of world's top peaks from Wikipedia
 top_peaks_df_raw <- read_html("https://en.wikipedia.org/wiki/List_of_highest_mountains_on_Earth") %>% 
-  html_element(xpath = "/html/body/div[1]/div/div[3]/main/div[2]/div[3]/div[1]/table[3]") %>% 
+  html_element(xpath = '//*[@id="mw-content-text"]/div[1]/table[3]') %>% 
   html_table()
 
 ### Data wrangling
