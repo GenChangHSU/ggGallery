@@ -113,12 +113,12 @@ In the [first post](https://genchanghsu.github.io/ggGallery/posts/2023-03-09-pos
 
 I believe you might have heard of shapefiles (or even used them before!). So what exactly are they? A shapefile (.shp) is a common geospatial vector data format for storing the locations, shapes, and attributes of geographic features. It comes with a set of related files (.shx, .prj, .dbf, etc.) that together describe vector features such as points, lines, and polygons, representing all kinds of spatial objects like mountain peaks, country boundaries, roads, rivers, and lakes.
 
-Because of the commonness and popularity of shapefiles, I think it would be useful to have some basic ideas of them. Hopefully, after reaching the very end of this post, you'll be able to make good use of shapefiles to create your own maps!
+Because of the commonness and popularity of shapefiles, I think it would be useful to have some basic ideas of how to handle them in R. Hopefully, after reaching the very end of this post, you'll be able to make good use of shapefiles to create your own cool ggplot maps!
 
 
 ## Creat a simple feature map
 
-In this post, we'll be creating a map of the number of visitors in the national parks (units managed by the National Park Service) in California in 2022. It's called a "simple feature" map because this is the type of R spatial object we'll use for data processing and plotting. Briefly, a [simple feature object (sf)](https://r-spatial.github.io/sf/articles/sf1.html) is a special data frame that contains several columns of feature attributes (the metadata like "country name") and a list column of feature geometry (the coordinates representing the points/lines/polygons), with an associated coordinate reference system. The R package [`sf`](https://r-spatial.github.io/sf/index.html) is dedicated to sf objects and allows users to do all sorts of manipulation and computation.
+In this post, we'll be creating a map of the number of visitors in the national parks (units managed by the National Park Service) in California in 2022. It's called a "simple feature" map because this is the type of R spatial object we'll use for data processing and plotting. Briefly, a [simple feature object (sf)](https://r-spatial.github.io/sf/articles/sf1.html) is a special data frame that contains several columns of feature attributes (the metadata like country names) and a list column of feature geometry (the coordinates representing the points/lines/polygons), with an associated coordinate reference system (crs). The R package [`sf`](https://r-spatial.github.io/sf/index.html) is dedicated to sf objects and allows users to do all sorts of manipulation and computation.
 
 ### Retrieve the data
 
@@ -128,7 +128,7 @@ Let's start by preparing the data we need for making the map. The data files we 
 2. A shapefile of California national park boundaries, retrieved from [National Park Service Open Data Portal](https://public-nps.opendata.arcgis.com/datasets/nps-boundary-1/explore?filters=eyJTVEFURSI6WyJDQSJdfQ%3D%3D&location=36.531656%2C-116.748610%2C5.59) 
 3. A CSV file of the number of visitors in each park in 2022, retrieved from [National Park Service Stats Report Viewer](https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Visitation%20By%20State%20and%20By%20Park%20(2017%20-%20Last%20Calendar%20Year))
 
-The shapefiles are read into R as an "sf" object using the function `st_read()` from the package `sf`.
+The shapefiles are read into R as "sf" objects using the function `st_read()` from the package `sf`.
 
 ```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
 library(tidyverse)
@@ -152,7 +152,7 @@ Park_visitors <- read_csv("CA_Park_Visitation.csv") %>%
 
 ### Process the data
 
-Now we have the data in R, the next step is to process them for plotting. There are two things here. First, we'll join the park boundary and park visitor data so that later we can map the numbers of visitors in the parks to different colors. Second, we'll check the coordinate reference systems (crs) of the two data layers (state boundary and park boundaries) to ensure that they can be drawn in the same map.
+Now we have the data loaded in R, the next step is to process them for plotting. There are two things to do here. First, we'll join the park boundary and park visitor data so that later we can map the numbers of visitors in the parks to different colors. Second, we'll check the crs of the two data layers (state boundary and park boundaries) to ensure that they can be drawn on the same map.
 
 ```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
 ### Join the park boundary and park visitor data
@@ -171,7 +171,7 @@ st_crs(Park_boundary_visitor)$epsg
 
 ```
 
-In this example, the two layers have different crs (EPSG code 4326 vs. 3857), so we used `st_transform()` to change the crs of the park boundary data to the one same as that of the state boundary data.
+In this example, the two layers have different crs (EPSG code 4326 vs. 3857), so we used `st_transform()` to convert the crs of the park boundary data into the one used by the state boundary data.
 
 ### Create the map
 
@@ -198,23 +198,15 @@ CA_park_map
 
 ```
 
-The map is here, but doesn't really look pleasant. So let's polish it now!
-
 ### Polish the map
 
-We’re going to make some changes to the map:
-
-1. Change the background and park colors
-2. Adjust the legend appearance
-3. Add park name labels
-4. Add a title, text annotations, and a logo
+The map doesn't really look pleasant. Let's polish it now! We’re going to (1) change the background color of the map, (2) pick a new color palette for the visitor categories, (3) modify the legend appearance, (4) label the park names, and (5) add a title, text annotations, and a logo to the map.
 
 ```{r, fig.width = 3.8, fig.height = 4, out.width = "80%"}
 # devtools::install_github("yutannihilation/ggsflabel")  # install the package if you haven't
 library(ggtext)
-library(grid)
-library(ggsflabel)  # add labels from sf objects
-library(showtext)  # for the function "font_add_google()" and "showtext_auto()"  
+library(ggsflabel)  # for the function "geom_sf_text_repel()"
+library(showtext)  # for the function "font_add_google()" and "showtext_auto()"
 
 ### Import the new font  
 font_add_google("Lora")
@@ -240,8 +232,12 @@ CA_park_map <- ggplot() +
                 color = "white", size = 6.5, family = "Lora", fontface = "bold.italic",
                 lineheight = 0.75, fill = NA, label.color = NA, label.padding = unit(rep(0, 4), "pt")) +
   
-  # text annotation
-  geom_textbox(aes(x = -114.75, y = 40, label = "This is a map of the number of visitors in the national parks in California in 2022. The top three most visited parks are **Golden Gate National Recreation Area**, **Yosemite National Park**, and **Joshua Tree National Park**."), 
+  # text annotations
+  geom_textbox(aes(x = -114.75, y = 40, label = "This is a map of the number of 
+                   visitors in the national parks in California in 2022. 
+                   The top three most visited parks are **Golden Gate National
+                   Recreation Area**, **Yosemite National Park**, and **Joshua
+                   Tree National Park**."), 
                color = "white", size = 3.75, family = "Lora", lineheight = 0.6,
                width = unit(1.8, "in"), fill = NA, box.color = NA) + 
   
@@ -249,7 +245,7 @@ CA_park_map <- ggplot() +
   geom_richtext(aes(x = -118.75, y = 40, label = "<img src='NPS_logo.PNG' width='27.5'/>"), 
                 fill = NA, label.color = NA, label.padding = unit(rep(0, 4), "pt")) + 
 
-  # park colors
+  # color pallete
   scale_color_manual(values = c("#fee5d9", "#fcae91", "#fb6a4a", "#de2d26", "#a50f15")) + 
   scale_fill_manual(values = c("#fee5d9", "#fcae91", "#fb6a4a", "#de2d26", "#a50f15")) + 
   
@@ -279,6 +275,7 @@ This is our final product. Awesome!
 
 ## Summary
 
-To recap, in this post we learned how to make a ggplot map from external shapefiles. The key process is to read the shapefiles into R as sf objects, make sure their coordinate reference systems are compatible, and pass the sf object to `geom_sf()` for plotting. Finally, a bit of polishing would be great and bring the map to the next level!
+To recap what we did in this post, we made a ggplot map from external shapefiles. The key is to read the shapefiles into R as sf objects using the function `st_read()`, make sure their coordinate reference systems are compatible, and plot the sf objects using the function `geom_sf()`. Finally, a bit of polishing will bring the map to the next level!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+

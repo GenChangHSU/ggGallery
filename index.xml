@@ -112,9 +112,9 @@ attributes of geographic features. It comes with a set of related files
 points, lines, and polygons, representing all kinds of spatial objects
 like mountain peaks, country boundaries, roads, rivers, and lakes.&lt;/p&gt;
 &lt;p&gt;Because of the commonness and popularity of shapefiles, I think it
-would be useful to have some basic ideas of them. Hopefully, after
-reaching the very end of this post, you’ll be able to make good use of
-shapefiles to create your own maps!&lt;/p&gt;
+would be useful to have some basic ideas of how to handle them in R.
+Hopefully, after reaching the very end of this post, you’ll be able to
+make good use of shapefiles to create your own cool ggplot maps!&lt;/p&gt;
 &lt;h2 id="creat-a-simple-feature-map"&gt;Creat a simple feature map&lt;/h2&gt;
 &lt;p&gt;In this post, we’ll be creating a map of the number of visitors in
 the national parks (units managed by the National Park Service) in
@@ -123,10 +123,10 @@ the type of R spatial object we’ll use for data processing and plotting.
 Briefly, a &lt;a
 href="https://r-spatial.github.io/sf/articles/sf1.html"&gt;simple feature
 object (sf)&lt;/a&gt; is a special data frame that contains several columns of
-feature attributes (the metadata like “country name”) and a list column
+feature attributes (the metadata like country names) and a list column
 of feature geometry (the coordinates representing the
-points/lines/polygons), with an associated coordinate reference system.
-The R package &lt;a
+points/lines/polygons), with an associated coordinate reference system
+(crs). The R package &lt;a
 href="https://r-spatial.github.io/sf/index.html"&gt;&lt;code&gt;sf&lt;/code&gt;&lt;/a&gt; is
 dedicated to sf objects and allows users to do all sorts of manipulation
 and computation.&lt;/p&gt;
@@ -147,7 +147,7 @@ from &lt;a
 href="https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Visitation%20By%20State%20and%20By%20Park%20(2017%20-%20Last%20Calendar%20Year)"&gt;National
 Park Service Stats Report Viewer&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;The shapefiles are read into R as an “sf” object using the function
+&lt;p&gt;The shapefiles are read into R as “sf” objects using the function
 &lt;code&gt;st_read()&lt;/code&gt; from the package &lt;code&gt;sf&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
 library(sf)
@@ -166,12 +166,12 @@ Park_visitors &amp;lt;- read_csv(&amp;quot;CA_Park_Visitation.csv&amp;quot;) %&a
   select(Park = Field1, Visitors = Field2) %&amp;gt;%  # select the park and visitor columns
   mutate(Park_name = str_remove(Park, pattern = &amp;quot; N[A-Z]{1,4}&amp;quot;))  # remove the park type abbreviations&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id="process-the-data"&gt;Process the data&lt;/h3&gt;
-&lt;p&gt;Now we have the data in R, the next step is to process them for
-plotting. There are two things here. First, we’ll join the park boundary
-and park visitor data so that later we can map the numbers of visitors
-in the parks to different colors. Second, we’ll check the coordinate
-reference systems (crs) of the two data layers (state boundary and park
-boundaries) to ensure that they can be drawn in the same map.&lt;/p&gt;
+&lt;p&gt;Now we have the data loaded in R, the next step is to process them
+for plotting. There are two things to do here. First, we’ll join the
+park boundary and park visitor data so that later we can map the numbers
+of visitors in the parks to different colors. Second, we’ll check the
+crs of the two data layers (state boundary and park boundaries) to
+ensure that they can be drawn on the same map.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Join the park boundary and park visitor data
 Park_boundary_visitor &amp;lt;- Park_boundary %&amp;gt;% 
   mutate(PARKNAME = case_match(PARKNAME, &amp;quot;Rosie the Riveter WWII Home Front&amp;quot; ~ &amp;quot;Rosie The Riveter WWII Home Front&amp;quot;, 
@@ -188,9 +188,8 @@ Park_boundary_visitor &amp;lt;- st_transform(Park_boundary_visitor, crs = 4326)
 st_crs(Park_boundary_visitor)$epsg&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;[1] 4326&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;In this example, the two layers have different crs (EPSG code 4326
-vs. 3857), so we used &lt;code&gt;st_transform()&lt;/code&gt; to change the crs of
-the park boundary data to the one same as that of the state boundary
-data.&lt;/p&gt;
+vs. 3857), so we used &lt;code&gt;st_transform()&lt;/code&gt; to convert the crs of
+the park boundary data into the one used by the state boundary data.&lt;/p&gt;
 &lt;h3 id="create-the-map"&gt;Create the map&lt;/h3&gt;
 &lt;p&gt;It’s time to make the map. Simply pass the sf objects to the “data”
 argument in &lt;code&gt;geom_sf()&lt;/code&gt; and it will take care of everything!
@@ -213,52 +212,87 @@ CA_park_map &amp;lt;- ggplot() +
   geom_sf(data = Park_boundary_visitor, aes(fill = Visitors_cat))
 
 CA_park_map &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file4ed8655d7cd5_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
-&lt;p&gt;The map is out, but doesn’t look so pleasant. So let’s polish it
-now!&lt;/p&gt;
+&lt;p&gt;&lt;img src="file391cf8e17_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="polish-the-map"&gt;Polish the map&lt;/h3&gt;
-&lt;ol style="list-style-type: decimal"&gt;
-&lt;li&gt;Change the background color&lt;/li&gt;
-&lt;li&gt;Change the park colors&lt;/li&gt;
-&lt;li&gt;Modify the legend&lt;/li&gt;
-&lt;li&gt;Add text annotations and NPS logo&lt;/li&gt;
-&lt;li&gt;Add park labels&lt;/li&gt;
-&lt;/ol&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# devtools::install_github(&amp;quot;yutannihilation/ggsflabel&amp;quot;)
+&lt;p&gt;The map doesn’t really look pleasant. Let’s polish it now! We’re
+going to (1) change the background color of the map, (2) pick a new
+color palette for the visitor categories, (3) modify the legend
+appearance, (4) label the park names, and (5) add a title, text
+annotations, and a logo to the map.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# devtools::install_github(&amp;quot;yutannihilation/ggsflabel&amp;quot;)  # install the package if you haven&amp;#39;t
 library(ggtext)
-library(grid)
-library(ggsflabel)
-library(showtext)
+library(ggsflabel)  # for the function &amp;quot;geom_sf_text_repel()&amp;quot;
+library(showtext)  # for the function &amp;quot;font_add_google()&amp;quot; and &amp;quot;showtext_auto()&amp;quot;
 
+### Import the new font  
 font_add_google(&amp;quot;Lora&amp;quot;)
 showtext_auto()
 
+### Map
 CA_park_map &amp;lt;- ggplot() + 
+  
+  # California state 
   geom_sf(data = CA_boundary, color = &amp;quot;transparent&amp;quot;, fill = &amp;quot;grey80&amp;quot;) + 
+  
+  # national parks
   geom_sf(data = Park_boundary_visitor, aes(color = Visitors_cat, fill = Visitors_cat)) +
-  geom_sf_text_repel(data = Park_boundary_visitor, aes(label = str_wrap(Park, width = 25)), color = &amp;quot;white&amp;quot;, size = 2.75, family = &amp;quot;sans&amp;quot;, fontface = &amp;quot;bold&amp;quot;, segment.size = 0.2, lineheight = 0.5, vjust = 0.5, hjust = 0.5, max.overlaps = Inf, force = 3) + 
-  geom_richtext(aes(x = -118.75, y = 40, label = &amp;quot;&amp;lt;img src=&amp;#39;NPS_logo.PNG&amp;#39; width=&amp;#39;27.5&amp;#39; /&amp;gt;&amp;quot;), fill = NA, label.color = NA, label.padding = unit(rep(0, 4), &amp;quot;pt&amp;quot;)) + 
-  geom_richtext(aes(x = -115.5, y = 41.5, label = &amp;quot;What Are the Most Visited &amp;lt;br&amp;gt; National Parks in California?&amp;quot;), color = &amp;quot;white&amp;quot;, family = &amp;quot;Lora&amp;quot;, fontface = &amp;quot;bold.italic&amp;quot;, size = 6.5, lineheight = 0.75, fill = NA, label.color = NA, label.padding = unit(rep(0, 4), &amp;quot;pt&amp;quot;)) +
-  geom_textbox(aes(x = -114.75, y = 40, label = &amp;quot;This is a map of the number of visitors in the national parks in California in 2022. The top three most visited parks are **Golden Gate National Recreation Area**, **Yosemite National Park**, and **Joshua Tree National Park**.&amp;quot;), color = &amp;quot;white&amp;quot;, family = &amp;quot;Lora&amp;quot;, size = 3.75, width = unit(1.8, &amp;quot;in&amp;quot;), lineheight = 0.6, fill = NA, box.color = NA) + 
+  
+  # national park labels
+  geom_sf_text_repel(data = Park_boundary_visitor, aes(label = str_wrap(Park, width = 25)), 
+                     color = &amp;quot;white&amp;quot;, size = 2.75, family = &amp;quot;sans&amp;quot;, fontface = &amp;quot;bold&amp;quot;, 
+                     segment.size = 0.2, lineheight = 0.5, vjust = 0.5, hjust = 0.5, 
+                     max.overlaps = Inf, force = 3) +
+  
+  # title
+  geom_richtext(aes(x = -115.5, y = 41.5, label = &amp;quot;What Are the Most Visited &amp;lt;br&amp;gt; National Parks in California?&amp;quot;), 
+                color = &amp;quot;white&amp;quot;, size = 6.5, family = &amp;quot;Lora&amp;quot;, fontface = &amp;quot;bold.italic&amp;quot;,
+                lineheight = 0.75, fill = NA, label.color = NA, label.padding = unit(rep(0, 4), &amp;quot;pt&amp;quot;)) +
+  
+  # text annotations
+  geom_textbox(aes(x = -114.75, y = 40, label = &amp;quot;This is a map of the number of 
+                   visitors in the national parks in California in 2022. 
+                   The top three most visited parks are **Golden Gate National
+                   Recreation Area**, **Yosemite National Park**, and **Joshua
+                   Tree National Park**.&amp;quot;), 
+               color = &amp;quot;white&amp;quot;, size = 3.75, family = &amp;quot;Lora&amp;quot;, lineheight = 0.6,
+               width = unit(1.8, &amp;quot;in&amp;quot;), fill = NA, box.color = NA) + 
+  
+  # NPS logo
+  geom_richtext(aes(x = -118.75, y = 40, label = &amp;quot;&amp;lt;img src=&amp;#39;NPS_logo.PNG&amp;#39; width=&amp;#39;27.5&amp;#39;/&amp;gt;&amp;quot;), 
+                fill = NA, label.color = NA, label.padding = unit(rep(0, 4), &amp;quot;pt&amp;quot;)) + 
+
+  # color pallete
   scale_color_manual(values = c(&amp;quot;#fee5d9&amp;quot;, &amp;quot;#fcae91&amp;quot;, &amp;quot;#fb6a4a&amp;quot;, &amp;quot;#de2d26&amp;quot;, &amp;quot;#a50f15&amp;quot;)) + 
   scale_fill_manual(values = c(&amp;quot;#fee5d9&amp;quot;, &amp;quot;#fcae91&amp;quot;, &amp;quot;#fb6a4a&amp;quot;, &amp;quot;#de2d26&amp;quot;, &amp;quot;#a50f15&amp;quot;)) + 
+  
+  # map limits
   coord_sf(xlim = c(-125, -112), ylim = c(31.5, 42.2)) +
-  guides(color = guide_legend(title = NULL, 
-                              label.position = &amp;quot;bottom&amp;quot;),
-         fill = guide_legend(title = NULL, 
-                             label.position = &amp;quot;bottom&amp;quot;)) + 
+  
+  # legend label position
+  guides(color = guide_legend(title = NULL, label.position = &amp;quot;bottom&amp;quot;),
+         fill = guide_legend(title = NULL, label.position = &amp;quot;bottom&amp;quot;)) + 
+  
+  # plot background and legend appearance
   theme_void() + 
   theme(plot.background = element_rect(fill = &amp;quot;grey40&amp;quot;, color = &amp;quot;grey40&amp;quot;),
         legend.position = c(0.5, 0.05),
         legend.direction = &amp;quot;horizontal&amp;quot;,
         legend.key.width = unit(0.5, &amp;quot;in&amp;quot;),
         legend.key.height = unit(0.05, &amp;quot;in&amp;quot;),
-        legend.text = element_text(size = 9, family = &amp;quot;Lora&amp;quot;, lineheight = 0.5, color = &amp;quot;white&amp;quot;, margin = margin(t = -2)),
+        legend.text = element_text(color = &amp;quot;white&amp;quot;, size = 9, family = &amp;quot;Lora&amp;quot;, 
+                                   lineheight = 0.5, margin = margin(t = -2)),
         legend.spacing.x = unit(0, &amp;quot;in&amp;quot;))
 
 CA_park_map&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file4ed8655d7cd5_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file391cf8e17_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;This is our final product. Awesome!&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;p&gt;To recap what we did in this post, we made a ggplot map from external
+shapefiles. The key is to read the shapefiles into R as sf objects using
+the function &lt;code&gt;st_read()&lt;/code&gt;, make sure their coordinate
+reference systems are compatible, and plot the sf objects using the
+function &lt;code&gt;geom_sf()&lt;/code&gt;. Finally, a bit of polishing will bring
+the map to the next level!&lt;/p&gt;
 &lt;p&gt;Hope you learn something useful from this post and don’t forget to
 leave your comments and suggestions below if you have any!&lt;/p&gt;
 &lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
@@ -267,7 +301,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>Map Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps</guid>
       <pubDate>Tue, 23 May 2023 00:00:00 +0000</pubDate>
-      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/post-26-ggplot-map-series-no2-simple-feature-maps_files/figure-html5/unnamed-chunk-3-1.png" medium="image" type="image/png" width="768" height="576"/>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/../../homepage_images/Post26.png" medium="image" type="image/png" width="729" height="768"/>
     </item>
     <item>
       <title>Post #25. ggplot Map Series No.1: Creating polygon maps in ggplots</title>
@@ -412,7 +446,7 @@ P_world_map &amp;lt;- ggplot(data = world_map) +
   theme_void() # empty theme
 
 P_world_map&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file4ed8655d3ae5_files/figure-html/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file391ca5b3150_files/figure-html/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;Do you notice that there is a “region” column in the world map data
 containing the country names? The &lt;code&gt;map_data()&lt;/code&gt; function has a
@@ -427,7 +461,7 @@ P_world_map &amp;lt;- P_world_map +
   geom_polygon(data = world_map_Australia, aes(x = long, y = lat, group = group), color = &amp;quot;green4&amp;quot;, fill = &amp;quot;green3&amp;quot;)
 
 P_world_map&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file4ed8655d3ae5_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;p&gt;&lt;img src="file391ca5b3150_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;Another thing we can do is to add points to the map. Let’s get a
 table of top peaks in the world from Wikipedia and draw them on the
@@ -455,7 +489,7 @@ P_world_map &amp;lt;- P_world_map +
   geom_point(data = top_peaks_df_clean, aes(x = Long, y = Lat), shape = 17)
 
 P_world_map&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file4ed8655d3ae5_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file391ca5b3150_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;The default map projection is the Mercator projection, in which the
 true bearing and shape are preserved while the area is increasingly
@@ -470,7 +504,7 @@ help page of &lt;code&gt;mapproject()&lt;/code&gt;.&lt;/p&gt;
 ### Change the map projection to Mollweide projection
 P_world_map + 
   coord_map(projection = &amp;quot;mollweide&amp;quot;, xlim = c(-180, 180))  # need to set &amp;quot;xlim = c(-180, 180)&amp;quot; to avoid the weird plotting bug &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file4ed8655d3ae5_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file391ca5b3150_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="choropleth-map"&gt;2. Choropleth map&lt;/h3&gt;
 &lt;p&gt;A &lt;a href="https://en.wikipedia.org/wiki/Choropleth_map"&gt;choropleth
 map&lt;/a&gt; is a thematic map that visualizes the quantity of a variable
@@ -523,7 +557,7 @@ P_choropleth &amp;lt;- ggplot(data = world_map) +
         legend.text = element_text(size = 10))
 
 P_choropleth&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file4ed8655d3ae5_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file391ca5b3150_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="other-available-map-data"&gt;3. Other available map data&lt;/h3&gt;
 &lt;p&gt;Besides the world map we’ve been playing around with earlier, there
 are a few other map data in the &lt;code&gt;maps&lt;/code&gt; package: the
@@ -561,7 +595,7 @@ library(patchwork)
   plot_layout(ncol = 3, widths = c(1, 0.05, 1.5)))/
 (P_france + plot_spacer() + P_us_county +
   plot_layout(ncol = 3, widths = c(1, 0.05, 1.5)))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file4ed8655d3ae5_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file391ca5b3150_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;To recap, in this post we learned about how to create a polygon world
 map using the built-in data from the &lt;code&gt;maps&lt;/code&gt; package, and how
