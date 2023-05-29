@@ -134,6 +134,9 @@ The shapefiles are read into R as "sf" objects using the function `st_read()` fr
 library(tidyverse)
 library(sf)
 
+### 
+
+
 ### Read the shapefile of state boundaries
 CA_boundary <- st_read("NE_State_Boundaries/ne_10m_admin_1_states_provinces.shp", quiet = T) %>% 
   filter(admin == "United States of America") %>%  # US state boundaries
@@ -144,7 +147,7 @@ Park_boundary <- st_read("CA_Park_Boundaries/National_Park_Service_Land_Resource
     filter(STATE == "CA")  # California park boundaries
 
 ### Read the CSV of park visitors in 2022
-Park_visitors <- read_csv("CA_Park_Visitation.csv") %>% 
+Park_visitors <- read_csv("https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/CA_Park_Visitation.csv") %>% 
   select(Park = Field1, Visitors = Field2) %>%  # select the park and visitor columns
   mutate(Park_name = str_remove(Park, pattern = " N[A-Z]{1,4}"))  # remove the park type abbreviations
   
