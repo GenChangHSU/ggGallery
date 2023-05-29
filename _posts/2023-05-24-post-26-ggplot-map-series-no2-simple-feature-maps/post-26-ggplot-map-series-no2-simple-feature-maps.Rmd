@@ -128,14 +128,22 @@ Let's start by preparing the data we need for making the map. The data files we 
 2. A shapefile of California national park boundaries, retrieved from [National Park Service Open Data Portal](https://public-nps.opendata.arcgis.com/datasets/nps-boundary-1/explore?filters=eyJTVEFURSI6WyJDQSJdfQ%3D%3D&location=36.531656%2C-116.748610%2C5.59) 
 3. A CSV file of the number of visitors in each park in 2022, retrieved from [National Park Service Stats Report Viewer](https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Visitation%20By%20State%20and%20By%20Park%20(2017%20-%20Last%20Calendar%20Year))
 
-The shapefiles are read into R as "sf" objects using the function `st_read()` from the package `sf`.
+We'll download the zip files from the GitHub repository, unzip them, and read the shapefiles into R as "sf" objects using the function `st_read()` from the package `sf`.
 
 ```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
 library(tidyverse)
 library(sf)
 
-### 
+### Download the zip files from the GitHub repository and unzip them
+options(timeout = 500)  # need to increase the download time
 
+url_CA_boundary <- "https://github.com/GenChangHSU/ggGallery/blob/master/_posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/NE_State_Boundaries.zip?raw=TRUE"
+download.file(url_CA_boundary, "NE_State_Boundaries.zip", mode = "wb")
+unzip("NE_State_Boundaries.zip")
+
+url_Park_boundary <- "https://github.com/GenChangHSU/ggGallery/blob/master/_posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/CA_Park_Boundaries.zip?raw=TRUE"
+download.file(url_Park_boundary, "CA_Park_Boundaries.zip", mode = "wb")
+unzip("CA_Park_Boundaries.zip")
 
 ### Read the shapefile of state boundaries
 CA_boundary <- st_read("NE_State_Boundaries/ne_10m_admin_1_states_provinces.shp", quiet = T) %>% 
