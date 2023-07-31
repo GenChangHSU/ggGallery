@@ -112,6 +112,9 @@ knitr::opts_chunk$set(message = F,
 
 A brief introduction of the OSM data
 
+[OpenStreetMap (OSM)](https://www.openstreetmap.org/about) is a global open access mapping project
+
+
 
 
 
@@ -122,13 +125,24 @@ A brief introduction of the OSM data
 
 ### Prepare the data
 
+All overpass queries begin with a bounding box, defined in osmdata with the function opq()
+
+Following the initial opq() call, osmdata queries are built by adding one or more ‘features’, which are specified in terms of key-value pairs.
+
+A detailed description of features is provided at the [OSM wiki](https://wiki.openstreetmap.org/wiki/Map_features)
+
+There are two primary osmdata functions for obtaining data from a query: osmdata_sf() and osmdata_sp(), which return data in Simple Features (sf) and Spatial (sp) formats, respectively.
+
 ```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
 library(tidyverse)
 library(osmdata)
 
+aaa <- opq(bbox = "Taipei") %>%
+    add_osm_feature(key = 'waterway', value = c("stream", "river")) %>%
+  osmdata_sf()
 
-
-
+ggplot() + 
+  geom_sf(data = aaa$, linewidth = 0.1, fill = "blue")
 
 
 ```
