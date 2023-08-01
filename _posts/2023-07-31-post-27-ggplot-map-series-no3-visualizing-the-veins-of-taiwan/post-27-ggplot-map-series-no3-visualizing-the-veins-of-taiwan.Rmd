@@ -117,39 +117,41 @@ In this post, we're going to visualize the rivers and streams in Taiwan in ggplo
 
 ## Create the map
 
-Time to create the map! First, we'll prepare the river and stream data provided in OSM, and then we'll visualize them in ggplots. Finally, we'll have some fun with the map by making the map artistic.
+Time to create the map! First, we'll prepare the river and stream data provided in OSM, and then we'll visualize them in ggplots. Finally, we'll have some fun with the map by making it artistic.
 
 ### (1) Prepare the data
 
-The package [`osmdata`](https://cran.r-project.org/web/packages/osmdata/vignettes/osmdata.html#1_Introduction) allows users to download map data from OSM for any given area. 
+The package [`osmdata`](https://cran.r-project.org/web/packages/osmdata/vignettes/osmdata.html#1_Introduction) allows users to download map data from OSM for any given area. This involves three steps:
 
+1. Define a bounding box using the function `opq(bbox = )`. The argument "bbox" can be either a character string of the location name (e.g., `"Taipei"`), or four numerical values specifying the maximal and minimal longitudes and latitudes of the area (e.g., `c(120, 20, 120.5, 21)`).
 
+2. Build an osmdata query using the function `add_osm_feature(key = , value = )`. The requested data are specified using "key-value" pairs, with key representing the major category of the data and the value representing the more specific feature type under that major category. 
 
+3. Obtain OSM data with the query. The functions `osmdata_sf()` and `osmdata_sp()` will send the query to OSM, obtain the requested data, and return them in "Simple Features (sf)" and "Spatial (sp)" formats, respectively.
 
-First, all overpass queries begin with a bounding box, defined in osmdata with the function opq().
+Let's see a worked example here:
 
-Following the initial opq() call, osmdata queries are built by adding one or more "features", which are specified in terms of key-value pairs.
-
-Lastly, there are two primary osmdata functions for obtaining data from a query: osmdata_sf() and osmdata_sp(), which return data in Simple Features (sf) and Spatial (sp) formats, respectively.
-
-
-
-```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
+```{r, fig.width = 6, fig.height = 3, out.width = "80%", cache = TRUE}
 library(tidyverse)
 library(osmdata)
 
-library(rgeoboundaries)
-Taiwan_boundary_adm0 <- geoboundaries("Taiwan", "adm0")
-Taiwan_boundary_adm1 <- geoboundaries("Taiwan", "adm1")
+### Get the boundary and county names in Taiwan 
+# library(remotes)
+# install_github("wmgeolab/rgeoboundaries")  # install the package if you haven't
+library(rgeoboundaries)  # for the function "geoboundaries"
+Taiwan_county_names <- geoboundaries("Taiwan", "adm1") %>% 
+  as.tibble() %>% 
+  filter(!shapeName %in% c("Matsu Islands", "Kinmen")) %>% 
+  pull(shapeName)
+  
+### Obtain the OSM data for each county
+Taiwan_water_data <- Taiwan_county_names[1:2] %>%
+  map(., ~ opq(bbox = .x, timeout = 100) %>%
+        add_osm_feature(key = 'waterway', value = c("stream", "river")) %>%
+        osmdata_sf()) %>% 
+  `names<-`(Taiwan_county_names[1:2])
 
 
-
-aaa <- opq(bbox = "New Taipei") %>%
-    add_osm_feature(key = 'waterway', value = c("stream", "river")) %>%
-  osmdata_sf()
-
-ggplot() + 
-  geom_sf(data = aaa$osm_lines, linewidth = 0.1, fill = "blue")
 
 
 ```
@@ -161,8 +163,11 @@ Make a base world map using the maps package
 Draw the rivers using the geom_sf() function
 
 ```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
-library(maps)
 
+Taiwan_boundary_adm0 <- geoboundaries("Taiwan", "adm0")
+
+ggplot() + 
+  geom_sf(data = Taiwan_water_data$`Hsinchu `$osm_lines, linewidth = 0.1, fill = "blue")
 
 
 
