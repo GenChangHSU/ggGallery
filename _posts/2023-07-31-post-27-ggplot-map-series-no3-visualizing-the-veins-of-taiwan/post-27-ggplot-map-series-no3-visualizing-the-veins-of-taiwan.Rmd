@@ -131,7 +131,7 @@ The package [`osmdata`](https://cran.r-project.org/web/packages/osmdata/vignette
 
 Let's see a worked example below: 
 
-```{r, fig.width = 3, fig.height = 4, cache = TRUE}
+```{r, fig.width = 3, fig.height = 4}
 library(tidyverse)
 library(osmdata)
 
@@ -182,8 +182,11 @@ ggplot() +
   
 ```
 
+Here we go!
+
 ### Make it artistic
 
+Let's do a little bit of modification to make the map artistic!
 
 ```{r, fig.width = 3, fig.height = 4, out.width = "70%"}
 ggplot() + 
@@ -194,9 +197,11 @@ ggplot() +
 
 ```
 
+The veins of Taiwan clear at a glance!
+
 ## Summary
 
-
+To summarize what we did, we obtained the river data of Taiwan from OSM using the package `osmdata` and visualized them in ggplots. We showcased the river data here, but the same principle applies to other features as well, and you can take advantage of them to create great thematic maps.
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
