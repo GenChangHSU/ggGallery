@@ -125,13 +125,13 @@ The package [`osmdata`](https://cran.r-project.org/web/packages/osmdata/vignette
 
 1. Define a bounding box using the function `opq(bbox = )`. The argument "bbox" can be either a character string of the location name (e.g., `"Taipei"`), or four numerical values specifying the maximal and minimal longitudes and latitudes of the area (e.g., `c(120, 20, 120.5, 21)`).
 
-2. Build an osmdata query using the function `add_osm_feature(key = , value = )`. The requested data are specified using "key-value" pairs, with key representing the major category of the data and the value representing the more specific feature type under that major category. 
+2. Build an osmdata query using the function `add_osm_feature(key = , value = )`. The requested data are specified using "key-value" pairs, with key representing the major category of the data and the value representing the more specific feature type under that major category. Take a look at [their website](https://wiki.openstreetmap.org/wiki/Map_features) for the available features. 
 
 3. Obtain OSM data with the query. The functions `osmdata_sf()` and `osmdata_sp()` will send the query to OSM, obtain the requested data, and return them in "Simple Features (sf)" and "Spatial (sp)" formats, respectively.
 
-Let's see a worked example here:
+Let's see a worked example below: 
 
-```{r, fig.width = 6, fig.height = 3, out.width = "80%", cache = TRUE}
+```{r, fig.width = 3, fig.height = 4, cache = TRUE}
 library(tidyverse)
 library(osmdata)
 
@@ -141,56 +141,58 @@ library(osmdata)
 library(rgeoboundaries)  # for the function "geoboundaries"
 Taiwan_county_names <- geoboundaries("Taiwan", "adm1") %>% 
   as.tibble() %>% 
-  filter(!shapeName %in% c("Matsu Islands", "Kinmen")) %>% 
+  filter(!shapeName %in% c("Kinmen", "Matsu Islands")) %>%  # exclude Kinmen and Matsu islands for better visualization
   pull(shapeName)
   
-### Obtain the OSM data for each county
-Taiwan_water_data <- Taiwan_county_names[1:2] %>%
+### Obtain the OSM river data for each county
+Taiwan_river_osmdata <- Taiwan_county_names %>%
   map(., ~ opq(bbox = .x, timeout = 100) %>%
-        add_osm_feature(key = 'waterway', value = c("stream", "river")) %>%
+        add_osm_feature(key = 'waterway', value = "river") %>%
         osmdata_sf()) %>% 
-  `names<-`(Taiwan_county_names[1:2])
+  `names<-`(Taiwan_county_names)
 
+### Extract the lines for each county and merge them into a single dataframe
+Taiwan_river_osmdata_lines <- Taiwan_river_osmdata %>% 
+  map(., ~ .x$osm_lines) %>% 
+  bind_rows(.id = "county")
 
-
+### Take a look at the dataframe
+Taiwan_river_osmdata_lines %>% 
+  select(osm_id, county, geometry) %>% 
+  head()
 
 ```
-
 
 ### Create a basic map
 
-Make a base world map using the maps package
-Draw the rivers using the geom_sf() function
+Now we have the river data on hand, we can visualize them in ggplots! The river data is an "sf" object, which can be passed directly to the function `geom_sf()` for plotting (also see my [previous post](https://genchanghsu.github.io/ggGallery/posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/) on making ggplot maps with "sf"!). We'll also draw the boundary of Taiwan as the base map. 
 
-```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
-
+```{r, fig.width = 3, fig.height = 4, out.width = "70%"}
+### Taiwan boundary
 Taiwan_boundary_adm0 <- geoboundaries("Taiwan", "adm0")
 
+### The river map of Taiwan
 ggplot() + 
-  geom_sf(data = Taiwan_water_data$`Hsinchu `$osm_lines, linewidth = 0.1, fill = "blue")
-
-
-
-
-
+  geom_sf(data = Taiwan_boundary_adm0, fill = "grey90", alpha = 0.7) + 
+  geom_sf(data = Taiwan_river_osmdata_lines, linewidth = 0.1, color = "steelblue") + 
+  coord_sf(xlim = c(119, 123), ylim = c(21.7, 25.5)) + 
+  theme_minimal() + 
+  theme(panel.background = element_rect(color = "black"),
+        panel.grid.major = element_blank())
+  
 ```
-
 
 ### Make it artistic
 
-Color the river by continent
-Set the transparency by river length
 
-```{r, fig.width = 6, fig.height = 3, out.width = "80%"}
-
-
-
-
-
+```{r, fig.width = 3, fig.height = 4, out.width = "70%"}
+ggplot() + 
+  geom_sf(data = Taiwan_river_osmdata_lines, aes(color = county), linewidth = 0.1, show.legend = F) + 
+  coord_sf(xlim = c(119.5, 122.3), ylim = c(21.7, 25.5)) + 
+  theme_void() + 
+  theme(panel.background = element_rect(fill = "black"))
 
 ```
-
-
 
 ## Summary
 

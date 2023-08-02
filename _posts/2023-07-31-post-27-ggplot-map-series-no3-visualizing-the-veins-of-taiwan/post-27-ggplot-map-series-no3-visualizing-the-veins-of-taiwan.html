@@ -118,7 +118,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/anchor-4.2.2/anchor.min.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/bowser-1.9.3/bowser.min.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/distill-2.2.21/template.v2.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/figure-html5/unnamed-chunk-1-1.png","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/header-attrs-2.23/header-attrs.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/jquery-3.6.0/jquery-3.6.0.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/jquery-3.6.0/jquery-3.6.0.min.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/jquery-3.6.0/jquery-3.6.0.min.map","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/popper-2.6.0/popper.min.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/tippy-6.2.7/tippy-light-border.css","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/tippy-6.2.7/tippy.css","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/tippy-6.2.7/tippy.umd.min.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/anchor-4.2.2/anchor.min.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/bowser-1.9.3/bowser.min.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/distill-2.2.21/template.v2.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/figure-html5/unnamed-chunk-1-1.png","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/figure-html5/unnamed-chunk-2-1.png","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/figure-html5/unnamed-chunk-3-1.png","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/header-attrs-2.23/header-attrs.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/jquery-3.6.0/jquery-3.6.0.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/jquery-3.6.0/jquery-3.6.0.min.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/jquery-3.6.0/jquery-3.6.0.min.map","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/popper-2.6.0/popper.min.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/tippy-6.2.7/tippy-light-border.css","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/tippy-6.2.7/tippy.css","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/tippy-6.2.7/tippy.umd.min.js","post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1614,46 +1614,86 @@ div.l-body img {
 <p>The package <a href="https://cran.r-project.org/web/packages/osmdata/vignettes/osmdata.html#1_Introduction"><code>osmdata</code></a> allows users to download map data from OSM for any given area. This involves three steps:</p>
 <ol type="1">
 <li><p>Define a bounding box using the function <code>opq(bbox = )</code>. The argument “bbox” can be either a character string of the location name (e.g., <code>"Taipei"</code>), or four numerical values specifying the maximal and minimal longitudes and latitudes of the area (e.g., <code>c(120, 20, 120.5, 21)</code>).</p></li>
-<li><p>Build an osmdata query using the function <code>add_osm_feature(key = , value = )</code>. The requested data are specified using “key-value” pairs, with key representing the major category of the data and the value representing the more specific feature type under that major category.</p></li>
-<li><p>Lastly, there are two primary osmdata functions for obtaining data from a query: osmdata_sf() and osmdata_sp(), which return data in Simple Features (sf) and Spatial (sp) formats, respectively.</p></li>
+<li><p>Build an osmdata query using the function <code>add_osm_feature(key = , value = )</code>. The requested data are specified using “key-value” pairs, with key representing the major category of the data and the value representing the more specific feature type under that major category. Take a look at <a href="https://wiki.openstreetmap.org/wiki/Map_features">their website</a> for the available features.</p></li>
+<li><p>Obtain OSM data with the query. The functions <code>osmdata_sf()</code> and <code>osmdata_sp()</code> will send the query to OSM, obtain the requested data, and return them in “Simple Features (sf)” and “Spatial (sp)” formats, respectively.</p></li>
 </ol>
+<p>Let’s see a worked example below:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://docs.ropensci.org/osmdata/'>osmdata</a></span><span class='op'>)</span></span>
 <span></span>
+<span><span class='co'>### Get the boundary and county names in Taiwan </span></span>
 <span><span class='co'># library(remotes)</span></span>
-<span><span class='co'># install_github("wmgeolab/rgeoboundaries")</span></span>
-<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://gitlab.com/dickoa/rgeoboundaries'>rgeoboundaries</a></span><span class='op'>)</span></span>
-<span><span class='va'>Taiwan_boundary_adm0</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/rgeoboundaries/man/geoboundaries.html'>geoboundaries</a></span><span class='op'>(</span><span class='st'>"Taiwan"</span>, <span class='st'>"adm0"</span><span class='op'>)</span></span>
-<span><span class='va'>Taiwan_boundary_adm1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/rgeoboundaries/man/geoboundaries.html'>geoboundaries</a></span><span class='op'>(</span><span class='st'>"Taiwan"</span>, <span class='st'>"adm1"</span><span class='op'>)</span></span>
+<span><span class='co'># install_github("wmgeolab/rgeoboundaries")  # install the package if you haven't</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://gitlab.com/dickoa/rgeoboundaries'>rgeoboundaries</a></span><span class='op'>)</span>  <span class='co'># for the function "geoboundaries"</span></span>
+<span><span class='va'>Taiwan_county_names</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/rgeoboundaries/man/geoboundaries.html'>geoboundaries</a></span><span class='op'>(</span><span class='st'>"Taiwan"</span>, <span class='st'>"adm1"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tibble.tidyverse.org/reference/deprecated.html'>as.tibble</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='va'>shapeName</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Kinmen"</span>, <span class='st'>"Matsu Islands"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># exclude Kinmen and Matsu islands for better visualization</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span><span class='op'>(</span><span class='va'>shapeName</span><span class='op'>)</span></span>
+<span>  </span>
+<span><span class='co'>### Obtain the OSM river data for each county</span></span>
+<span><span class='va'>Taiwan_river_osmdata</span> <span class='op'>&lt;-</span> <span class='va'>Taiwan_county_names</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='op'>~</span> <span class='fu'><a href='https://docs.ropensci.org/osmdata/reference/opq.html'>opq</a></span><span class='op'>(</span>bbox <span class='op'>=</span> <span class='va'>.x</span>, timeout <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>        <span class='fu'><a href='https://docs.ropensci.org/osmdata/reference/add_osm_feature.html'>add_osm_feature</a></span><span class='op'>(</span>key <span class='op'>=</span> <span class='st'>'waterway'</span>, value <span class='op'>=</span> <span class='st'>"river"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>        <span class='fu'><a href='https://docs.ropensci.org/osmdata/reference/osmdata_sf.html'>osmdata_sf</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>`names&lt;-`</span><span class='op'>(</span><span class='va'>Taiwan_county_names</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>aaa</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://docs.ropensci.org/osmdata/reference/opq.html'>opq</a></span><span class='op'>(</span>bbox <span class='op'>=</span> <span class='st'>"New Taipei"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
-<span>    <span class='fu'><a href='https://docs.ropensci.org/osmdata/reference/add_osm_feature.html'>add_osm_feature</a></span><span class='op'>(</span>key <span class='op'>=</span> <span class='st'>'waterway'</span>, value <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"stream"</span>, <span class='st'>"river"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
-<span>  <span class='fu'><a href='https://docs.ropensci.org/osmdata/reference/osmdata_sf.html'>osmdata_sf</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span><span class='co'>### Extract the lines for each county and merge them into a single dataframe</span></span>
+<span><span class='va'>Taiwan_river_osmdata_lines</span> <span class='op'>&lt;-</span> <span class='va'>Taiwan_river_osmdata</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='op'>~</span> <span class='va'>.x</span><span class='op'>$</span><span class='va'>osm_lines</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind_rows.html'>bind_rows</a></span><span class='op'>(</span>.id <span class='op'>=</span> <span class='st'>"county"</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>aaa</span><span class='op'>$</span><span class='va'>osm_lines</span>, linewidth <span class='op'>=</span> <span class='fl'>0.1</span>, fill <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span></span></code></pre>
+<span><span class='co'>### Take a look at the dataframe</span></span>
+<span><span class='va'>Taiwan_river_osmdata_lines</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>osm_id</span>, <span class='va'>county</span>, <span class='va'>geometry</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/figure-html5/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<pre><code>Simple feature collection with 6 features and 2 fields
+Geometry type: LINESTRING
+Dimension:     XY
+Bounding box:  xmin: 120.9303 ymin: 24.65206 xmax: 121.5074 ymax: 25.17773
+Geodetic CRS:  WGS 84
+               osm_id         county                       geometry
+25887259...1 25887259 Hsinchu County LINESTRING (121.4859 25.042...
+27696480...2 27696480 Hsinchu County LINESTRING (121.23 24.89155...
+27696492...3 27696492 Hsinchu County LINESTRING (121.1948 24.888...
+91846587...4 91846587 Hsinchu County LINESTRING (121.0272 24.844...
+91846590...5 91846590 Hsinchu County LINESTRING (121.1085 24.730...
+91907207...6 91907207 Hsinchu County LINESTRING (121.2379 24.652...</code></pre>
 </div>
 <h3 id="create-a-basic-map">Create a basic map</h3>
-<p>Make a base world map using the maps package
-Draw the rivers using the geom_sf() function</p>
+<p>Now we have the river data on hand, we can visualize them in ggplots! The river data is an “sf” object, which can be passed directly to the function <code>geom_sf()</code> for plotting (also see my <a href="https://genchanghsu.github.io/ggGallery/posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/">previous post</a> on making ggplot maps with “sf”!). We’ll also draw the boundary of Taiwan as the base map.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>maps</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Taiwan boundary</span></span>
+<span><span class='va'>Taiwan_boundary_adm0</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/rgeoboundaries/man/geoboundaries.html'>geoboundaries</a></span><span class='op'>(</span><span class='st'>"Taiwan"</span>, <span class='st'>"adm0"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### The river map of Taiwan</span></span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>Taiwan_boundary_adm0</span>, fill <span class='op'>=</span> <span class='st'>"grey90"</span>, alpha <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>Taiwan_river_osmdata_lines</span>, linewidth <span class='op'>=</span> <span class='fl'>0.1</span>, color <span class='op'>=</span> <span class='st'>"steelblue"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>coord_sf</a></span><span class='op'>(</span>xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>119</span>, <span class='fl'>123</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>21.7</span>, <span class='fl'>25.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>panel.background <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_rect</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"black"</span><span class='op'>)</span>,</span>
+<span>        panel.grid.major <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
+<p><img src="post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/figure-html5/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="make-it-artistic">Make it artistic</h3>
-<p>Color the river by continent
-Set the transparency by river length</p>
 <div class="layout-chunk" data-layout="l-body">
-
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>Taiwan_river_osmdata_lines</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='va'>county</span><span class='op'>)</span>, linewidth <span class='op'>=</span> <span class='fl'>0.1</span>, show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>coord_sf</a></span><span class='op'>(</span>xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>119.5</span>, <span class='fl'>122.3</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>21.7</span>, <span class='fl'>25.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_void</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>panel.background <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_rect</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"black"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="post-27-ggplot-map-series-no3-visualizing-the-veins-of-taiwan_files/figure-html5/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <h2 id="summary">Summary</h2>
 <p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
