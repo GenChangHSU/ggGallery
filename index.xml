@@ -7,623 +7,38 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 23 May 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>2023-07-31</lastBuildDate>
+    <item>
+      <title>Post #27. ggplot Map Series No.3: Visualizing the veins of Taiwan in ggplots with `osmdata`</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2023-07-31-post-27-ggplot-map-series-no3-the-veins-of-taiwan</link>
+      <description>In this post, we will create a map of the rivers in Taiwan in ggplots using the package `osmdata`.</description>
+      <category>2023</category>
+      <category>Map Series</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2023-07-31-post-27-ggplot-map-series-no3-the-veins-of-taiwan</guid>
+      <pubDate>2023-07-31</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-07-31-post-27-ggplot-map-series-no3-the-veins-of-taiwan/../../homepage_images/Post27.png" medium="image" type="image/png" width="710" height="518"/>
+    </item>
     <item>
       <title>Post #26. ggplot Map Series No.2: Creating simple feature ggplot maps from shapefiles</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
       <link>https://genchanghsu.github.io/ggGallery/posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps</link>
-      <description>
-
-
-&lt;!-- Webpage style --&gt;
-&lt;style&gt;
-d-article a {
-    color: #2780e3 !important;
-      border-bottom: none !important;
-}
-
-d-article a:hover {
-  color: #2780e3 !important;
-    border-bottom: 2px solid !important;
-}
-
-d-byline {
-  margin-left: -10% !important;
-}
-
-d-title {
-  margin-left: -10%;
-}
-
-d-title h1{
-  font-size: 45px;
-  width: 130%;
-}
-
-d-article {
-  margin-left: -10%;
-}
-
-p {
-  width: 120%;
-}
-
-d-article h2 {
-  width: 120%;
-}
-
-d-article h3 {
-  width: 120%;
-  font-size: 28px;
-}
-
-div.article-footer{
-  width: 120%;
-}
-
-d-article div.sourceCode { 
-  width: 120% !important;
-}
-
-d-article pre { 
-  width: 120% !important;
-}
-
-div.l-body {
-  width: 120% !important;
-}
-
-d-article table thead tr {
-  height: 60px !important;
-  width: 210px !important;
-}
-
-d-article table thead th {
-  height: 60px !important;
-  font-size: 22px !important;
-  width: 210px !important;
-}
-
-d-article table tbody tr td {
-  font-size: 21px !important;
-  height: 60px !important;
-  text-align: center !important;
-  width: 210px !important;
-}
-
-div.l-body img {
-    margin-right: 20% !important;
-}
-
-&lt;/style&gt;
-&lt;!-- Start of the article --&gt;
-&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;In the &lt;a
-href="https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/"&gt;first
-post&lt;/a&gt; of this Map Series, we looked at how to create polygon maps in
-ggplots. But this is not the only way to create ggplot maps; there are
-indeed many more ways out there! And in this post, I’m going to show you
-another method: creating maps from shapefiles.&lt;/p&gt;
-&lt;p&gt;I believe you might have heard of shapefiles (or even used them
-before!). So what exactly are they? A shapefile (.shp) is a common
-geospatial vector data format for storing the locations, shapes, and
-attributes of geographic features. It comes with a set of related files
-(.shx, .prj, .dbf, etc.) that together describe vector features such as
-points, lines, and polygons, representing all kinds of spatial objects
-like mountain peaks, country boundaries, roads, rivers, and lakes.&lt;/p&gt;
-&lt;p&gt;Because of the commonness and popularity of shapefiles, I think it
-would be useful to have some basic ideas of how to handle them in R.
-Hopefully, after reaching the very end of this post, you’ll be able to
-make good use of shapefiles to create your own cool ggplot maps!&lt;/p&gt;
-&lt;h2 id="creat-a-simple-feature-map"&gt;Creat a simple feature map&lt;/h2&gt;
-&lt;p&gt;In this post, we’ll be creating a map of the number of visitors in
-the national parks (units managed by the National Park Service) in
-California in 2022. It’s called a “simple feature” map because this is
-the type of R spatial object we’ll use for data processing and plotting.
-Briefly, a &lt;a
-href="https://r-spatial.github.io/sf/articles/sf1.html"&gt;simple feature
-object (sf)&lt;/a&gt; is a special data frame that contains several columns of
-feature attributes (the metadata like country names) and a list column
-of feature geometry (the coordinates representing the
-points/lines/polygons), with an associated coordinate reference system
-(crs). The R package &lt;a
-href="https://r-spatial.github.io/sf/index.html"&gt;&lt;code&gt;sf&lt;/code&gt;&lt;/a&gt; is
-dedicated to sf objects and allows users to do all sorts of manipulation
-and computation.&lt;/p&gt;
-&lt;h3 id="retrieve-the-data"&gt;Retrieve the data&lt;/h3&gt;
-&lt;p&gt;Let’s start by preparing the data we need for making the map. The
-data files we have on hand are:&lt;/p&gt;
-&lt;ol style="list-style-type: decimal"&gt;
-&lt;li&gt;A shapefile of California state boundary, retrieved from &lt;a
-href="https://www.naturalearthdata.com/downloads/10m-cultural-vectors/"&gt;Natural
-Earth&lt;/a&gt;&lt;br /&gt;
-&lt;/li&gt;
-&lt;li&gt;A shapefile of California national park boundaries, retrieved from
-&lt;a
-href="https://public-nps.opendata.arcgis.com/datasets/nps-boundary-1/explore?filters=eyJTVEFURSI6WyJDQSJdfQ%3D%3D&amp;amp;location=36.531656%2C-116.748610%2C5.59"&gt;National
-Park Service Open Data Portal&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;A CSV file of the number of visitors in each park in 2022, retrieved
-from &lt;a
-href="https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Visitation%20By%20State%20and%20By%20Park%20(2017%20-%20Last%20Calendar%20Year)"&gt;National
-Park Service Stats Report Viewer&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;We’ll download the zip files from the GitHub repository, unzip them,
-and read the shapefiles into R as “sf” objects using the function
-&lt;code&gt;st_read()&lt;/code&gt; from the package &lt;code&gt;sf&lt;/code&gt;.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
-library(sf)
-
-### Download the zip files from the GitHub repository and unzip them
-options(timeout = 500)  # need to increase the download time
-
-url_CA_boundary &amp;lt;- &amp;quot;https://github.com/GenChangHSU/ggGallery/blob/master/_posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/NE_State_Boundaries.zip?raw=TRUE&amp;quot;
-download.file(url_CA_boundary, &amp;quot;NE_State_Boundaries.zip&amp;quot;, mode = &amp;quot;wb&amp;quot;)
-unzip(&amp;quot;NE_State_Boundaries.zip&amp;quot;)
-
-url_Park_boundary &amp;lt;- &amp;quot;https://github.com/GenChangHSU/ggGallery/blob/master/_posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/CA_Park_Boundaries.zip?raw=TRUE&amp;quot;
-download.file(url_Park_boundary, &amp;quot;CA_Park_Boundaries.zip&amp;quot;, mode = &amp;quot;wb&amp;quot;)
-unzip(&amp;quot;CA_Park_Boundaries.zip&amp;quot;)
-
-### Read the shapefile of state boundaries
-CA_boundary &amp;lt;- st_read(&amp;quot;NE_State_Boundaries/ne_10m_admin_1_states_provinces.shp&amp;quot;, quiet = T) %&amp;gt;% 
-  filter(admin == &amp;quot;United States of America&amp;quot;) %&amp;gt;%  # US state boundaries
-  filter(gn_name == &amp;quot;California&amp;quot;)  # California boundary
-
-### Read the shapefile of park boundaries
-Park_boundary &amp;lt;- st_read(&amp;quot;CA_Park_Boundaries/National_Park_Service_Land_Resources_Division_Tract_and_Boundary_Service.shp&amp;quot;, quiet = T) %&amp;gt;% 
-    filter(STATE == &amp;quot;CA&amp;quot;)  # California park boundaries
-
-### Read the CSV of park visitors in 2022
-Park_visitors &amp;lt;- read_csv(&amp;quot;https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/CA_Park_Visitation.csv&amp;quot;) %&amp;gt;% 
-  select(Park = Field1, Visitors = Field2) %&amp;gt;%  # select the park and visitor columns
-  mutate(Park_name = str_remove(Park, pattern = &amp;quot; N[A-Z]{1,4}&amp;quot;))  # remove the park type abbreviations&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id="process-the-data"&gt;Process the data&lt;/h3&gt;
-&lt;p&gt;Now we have the data loaded in R, the next step is to process them
-for plotting. There are two things to do here. First, we’ll join the
-park boundary and park visitor data so that later we can map the numbers
-of visitors in the parks to different colors. Second, we’ll check the
-crs of the two data layers (state boundary and park boundaries) to
-ensure that they can be drawn on the same map.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;### Join the park boundary and park visitor data
-Park_boundary_visitor &amp;lt;- Park_boundary %&amp;gt;% 
-  mutate(PARKNAME = case_match(PARKNAME, &amp;quot;Rosie the Riveter WWII Home Front&amp;quot; ~ &amp;quot;Rosie The Riveter WWII Home Front&amp;quot;, 
-                               .default = PARKNAME)) %&amp;gt;%  # adjust the park name 
-  left_join(Park_visitors, by = join_by(&amp;quot;PARKNAME&amp;quot; == &amp;quot;Park_name&amp;quot;))  # join by park names
-
-### Check the crs of the two data layers
-st_crs(CA_boundary)$epsg&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;[1] 4326&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;st_crs(Park_boundary_visitor)$epsg&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;[1] 3857&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;### Transform the crs of park boundary data
-Park_boundary_visitor &amp;lt;- st_transform(Park_boundary_visitor, crs = 4326) 
-st_crs(Park_boundary_visitor)$epsg&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;[1] 4326&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;In this example, the two layers have different crs (EPSG code 4326
-vs. 3857), so we used &lt;code&gt;st_transform()&lt;/code&gt; to convert the crs of
-the park boundary data into the one used by the state boundary data.&lt;/p&gt;
-&lt;h3 id="create-the-map"&gt;Create the map&lt;/h3&gt;
-&lt;p&gt;It’s time to make the map. Simply pass the sf objects to the “data”
-argument in &lt;code&gt;geom_sf()&lt;/code&gt; and it will take care of everything!
-We also cut the number of visitors into discrete categories for color
-mapping.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;### Cut the number of visitors into discrete categories
-Park_boundary_visitor &amp;lt;- Park_boundary_visitor %&amp;gt;% 
-  mutate(Visitors_cat = case_when(Visitors &amp;lt; 50000 ~ &amp;quot;&amp;lt; 50,000&amp;quot;,
-                                  Visitors &amp;gt; 50000 &amp;amp; Visitors &amp;lt; 500000 ~ &amp;quot;50,000– \n500,000&amp;quot;,
-                                  Visitors &amp;gt; 500000 &amp;amp; Visitors &amp;lt; 1000000 ~ &amp;quot;500,000– \n1,000,000&amp;quot;,
-                                  Visitors &amp;gt; 1000000 &amp;amp; Visitors &amp;lt; 10000000 ~ &amp;quot;1,000,000– \n10,000,000&amp;quot;,
-                                  Visitors &amp;gt; 10000000 ~ &amp;quot;&amp;gt; 10,000,000&amp;quot;)) %&amp;gt;% 
-  mutate(Visitors_cat = factor(Visitors_cat, levels = c(&amp;quot;&amp;lt; 50,000&amp;quot;, &amp;quot;50,000– \n500,000&amp;quot;, &amp;quot;500,000– \n1,000,000&amp;quot;, &amp;quot;1,000,000– \n10,000,000&amp;quot;, &amp;quot;&amp;gt; 10,000,000&amp;quot;))) %&amp;gt;% 
-  drop_na() %&amp;gt;% 
-  filter(OBJECTID != 14)
-
-### Create the map
-CA_park_map &amp;lt;- ggplot() + 
-  geom_sf(data = CA_boundary) + 
-  geom_sf(data = Park_boundary_visitor, aes(fill = Visitors_cat))
-
-CA_park_map &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3dbc18c52f5b_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
-&lt;h3 id="polish-the-map"&gt;Polish the map&lt;/h3&gt;
-&lt;p&gt;The map doesn’t really look pleasant. Let’s polish it now! We’re
-going to (1) change the background color of the map, (2) pick a new
-color palette for the visitor categories, (3) modify the legend
-appearance, (4) label the park names, and (5) add a title, text
-annotations, and a logo to the map.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# devtools::install_github(&amp;quot;yutannihilation/ggsflabel&amp;quot;)  # install the package if you haven&amp;#39;t
-library(ggtext)
-library(ggsflabel)  # for the function &amp;quot;geom_sf_text_repel()&amp;quot;
-library(showtext)  # for the function &amp;quot;font_add_google()&amp;quot; and &amp;quot;showtext_auto()&amp;quot;
-
-### Import the new font  
-font_add_google(&amp;quot;Lora&amp;quot;)
-showtext_auto()
-
-### Map
-CA_park_map &amp;lt;- ggplot() + 
-  
-  # California state 
-  geom_sf(data = CA_boundary, color = &amp;quot;transparent&amp;quot;, fill = &amp;quot;grey80&amp;quot;) + 
-  
-  # national parks
-  geom_sf(data = Park_boundary_visitor, aes(color = Visitors_cat, fill = Visitors_cat)) +
-  
-  # national park labels
-  geom_sf_text_repel(data = Park_boundary_visitor, aes(label = str_wrap(Park, width = 25)), 
-                     color = &amp;quot;white&amp;quot;, size = 2.75, family = &amp;quot;sans&amp;quot;, fontface = &amp;quot;bold&amp;quot;, 
-                     segment.size = 0.2, lineheight = 0.5, vjust = 0.5, hjust = 0.5, 
-                     max.overlaps = Inf, force = 3) +
-  
-  # title
-  geom_richtext(aes(x = -115.5, y = 41.5, label = &amp;quot;What Are the Most Visited &amp;lt;br&amp;gt; National Parks in California?&amp;quot;), 
-                color = &amp;quot;white&amp;quot;, size = 6.5, family = &amp;quot;Lora&amp;quot;, fontface = &amp;quot;bold.italic&amp;quot;,
-                lineheight = 0.75, fill = NA, label.color = NA, label.padding = unit(rep(0, 4), &amp;quot;pt&amp;quot;)) +
-  
-  # text annotations
-  geom_textbox(aes(x = -114.75, y = 40, label = &amp;quot;This is a map of the number of 
-                   visitors in the national parks in California in 2022. 
-                   The top three most visited parks are **Golden Gate National
-                   Recreation Area**, **Yosemite National Park**, and **Joshua
-                   Tree National Park**.&amp;quot;), 
-               color = &amp;quot;white&amp;quot;, size = 3.75, family = &amp;quot;Lora&amp;quot;, lineheight = 0.6,
-               width = unit(1.8, &amp;quot;in&amp;quot;), fill = NA, box.color = NA) + 
-  
-  # NPS logo
-  geom_richtext(aes(x = -118.75, y = 40, label = &amp;quot;&amp;lt;img src=&amp;#39;NPS_logo.PNG&amp;#39; width=&amp;#39;27.5&amp;#39;/&amp;gt;&amp;quot;), 
-                fill = NA, label.color = NA, label.padding = unit(rep(0, 4), &amp;quot;pt&amp;quot;)) + 
-
-  # color pallete
-  scale_color_manual(values = c(&amp;quot;#fee5d9&amp;quot;, &amp;quot;#fcae91&amp;quot;, &amp;quot;#fb6a4a&amp;quot;, &amp;quot;#de2d26&amp;quot;, &amp;quot;#a50f15&amp;quot;)) + 
-  scale_fill_manual(values = c(&amp;quot;#fee5d9&amp;quot;, &amp;quot;#fcae91&amp;quot;, &amp;quot;#fb6a4a&amp;quot;, &amp;quot;#de2d26&amp;quot;, &amp;quot;#a50f15&amp;quot;)) + 
-  
-  # map limits
-  coord_sf(xlim = c(-125, -112), ylim = c(31.5, 42.2)) +
-  
-  # legend label position
-  guides(color = guide_legend(title = NULL, label.position = &amp;quot;bottom&amp;quot;),
-         fill = guide_legend(title = NULL, label.position = &amp;quot;bottom&amp;quot;)) + 
-  
-  # plot background and legend appearance
-  theme_void() + 
-  theme(plot.background = element_rect(fill = &amp;quot;grey40&amp;quot;, color = &amp;quot;grey40&amp;quot;),
-        legend.position = c(0.5, 0.05),
-        legend.direction = &amp;quot;horizontal&amp;quot;,
-        legend.key.width = unit(0.5, &amp;quot;in&amp;quot;),
-        legend.key.height = unit(0.05, &amp;quot;in&amp;quot;),
-        legend.text = element_text(color = &amp;quot;white&amp;quot;, size = 9, family = &amp;quot;Lora&amp;quot;, 
-                                   lineheight = 0.5, margin = margin(t = -2)),
-        legend.spacing.x = unit(0, &amp;quot;in&amp;quot;))
-
-CA_park_map&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3dbc18c52f5b_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
-&lt;p&gt;This is our final product. Awesome!&lt;/p&gt;
-&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
-&lt;p&gt;To recap what we did in this post, we made a ggplot map from external
-shapefiles. The key is to read the shapefiles into R as sf objects using
-the function &lt;code&gt;st_read()&lt;/code&gt;, make sure their coordinate
-reference systems are compatible, and plot the sf objects using the
-function &lt;code&gt;geom_sf()&lt;/code&gt;. Finally, a bit of polishing will bring
-the map to the next level!&lt;/p&gt;
-&lt;p&gt;Hope you learn something useful from this post and don’t forget to
-leave your comments and suggestions below if you have any!&lt;/p&gt;
-&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
-      <distill:md5>649149c3ca290cf2b6ce64ce85b3168d</distill:md5>
+      <description>Come and take a look at the nuts and bolts of creating simple feature maps from external shapefiles in ggplots!</description>
       <category>2023</category>
       <category>Map Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps</guid>
-      <pubDate>Tue, 23 May 2023 00:00:00 +0000</pubDate>
+      <pubDate>2023-05-24</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/../../homepage_images/Post26.png" medium="image" type="image/png" width="729" height="768"/>
     </item>
     <item>
       <title>Post #25. ggplot Map Series No.1: Creating polygon maps in ggplots</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
       <link>https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps</link>
-      <description>
-
-
-&lt;!-- Webpage style --&gt;
-&lt;style&gt;
-d-article a {
-    color: #2780e3 !important;
-      border-bottom: none !important;
-}
-
-d-article a:hover {
-  color: #2780e3 !important;
-    border-bottom: 2px solid !important;
-}
-
-d-byline {
-  margin-left: -10% !important;
-}
-
-d-title {
-  margin-left: -10%;
-}
-
-d-title h1{
-  font-size: 45px;
-  width: 130%;
-}
-
-d-article {
-  margin-left: -10%;
-}
-
-p {
-  width: 120%;
-}
-
-d-article h2 {
-  width: 120%;
-}
-
-d-article h3 {
-  width: 120%;
-  font-size: 28px;
-}
-
-div.article-footer{
-  width: 120%;
-}
-
-d-article div.sourceCode { 
-  width: 120% !important;
-}
-
-d-article pre { 
-  width: 120% !important;
-}
-
-div.l-body {
-  width: 120% !important;
-}
-
-d-article table thead tr {
-  height: 60px !important;
-  width: 210px !important;
-}
-
-d-article table thead th {
-  height: 60px !important;
-  font-size: 22px !important;
-  width: 210px !important;
-}
-
-d-article table tbody tr td {
-  font-size: 21px !important;
-  height: 60px !important;
-  text-align: center !important;
-  width: 210px !important;
-}
-
-div.l-body img {
-    margin-right: 20% !important;
-}
-
-&lt;/style&gt;
-&lt;!-- Start of the article --&gt;
-&lt;h2 id="background"&gt;Background&lt;/h2&gt;
-&lt;p&gt;Welcome to my second blog post series: the ggplot Map Series! Maps
-are a staple for research, science communication, and even everyday
-life. In this series, I’ll write about making all kinds of maps in
-ggplots: polygon maps, vector maps, and raster maps, using a variety of
-data sources from built-in package data sets and online databases, to
-manually-created data and other external files. Making maps is a
-critical skill to have under the belt and will certainly go a long way,
-and I hope this series will come in handy for every reader, you included
-of course!&lt;/p&gt;
-&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;There are a diverse set of maps in ggplots. In this first post of the
-series, I’ll just start simple with the most basic type of maps—the
-polygon maps, using the built-in map data from the &lt;code&gt;maps&lt;/code&gt;
-package.&lt;/p&gt;
-&lt;h2 id="create-a-polygon-map-with-maps"&gt;Create a polygon map with
-&lt;code&gt;maps&lt;/code&gt;&lt;/h2&gt;
-&lt;p&gt;In the following section, we’ll first create a world base map using
-the world map data in &lt;code&gt;maps&lt;/code&gt; package. Next, we’ll turn this
-base map into a choropleth map by adding a theme to it. Finally, we’ll
-take a look at some other available map data in the &lt;code&gt;maps&lt;/code&gt;
-package.&lt;/p&gt;
-&lt;h3 id="a-basic-world-map"&gt;1. A basic world map&lt;/h3&gt;
-&lt;p&gt;Let’s make a world base map by retrieving the world data from the
-&lt;code&gt;maps&lt;/code&gt; package. The returned object is a dataframe with a set
-of longitude and latitude coordinates that define the border of each
-country. To draw the map, we’ll pass this dataframe into
-&lt;code&gt;geom_polygon()&lt;/code&gt; and map the longitude and latitude
-coordinates to x and y aesthetic. Also, we need to specify the “group”
-aesthetic so that ggplot knows how the points are grouped in order to
-form the polygons.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
-library(maps)
-
-### Get the world map data
-world_map &amp;lt;- map_data(map = &amp;quot;world&amp;quot;)
-head(world_map)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;       long      lat group order region subregion
-1 -69.89912 12.45200     1     1  Aruba      &amp;lt;NA&amp;gt;
-2 -69.89571 12.42300     1     2  Aruba      &amp;lt;NA&amp;gt;
-3 -69.94219 12.43853     1     3  Aruba      &amp;lt;NA&amp;gt;
-4 -70.00415 12.50049     1     4  Aruba      &amp;lt;NA&amp;gt;
-5 -70.06612 12.54697     1     5  Aruba      &amp;lt;NA&amp;gt;
-6 -70.05088 12.59707     1     6  Aruba      &amp;lt;NA&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;### Make a world base map
-P_world_map &amp;lt;- ggplot(data = world_map) + 
-  geom_polygon(aes(x = long, y = lat, group = group), color = &amp;quot;white&amp;quot;, fill = &amp;quot;grey&amp;quot;) +  # need to specify the &amp;quot;group&amp;quot; aesthetic
-  geom_hline(yintercept = Inf, color = &amp;quot;grey&amp;quot;) +  # top panel border
-  geom_hline(yintercept = -Inf, color = &amp;quot;grey&amp;quot;) +  # bottom panel border
-  geom_vline(xintercept = Inf, color = &amp;quot;grey&amp;quot;) +  # right panel border
-  geom_vline(xintercept = -Inf, color = &amp;quot;grey&amp;quot;) +  # left panel border
-  theme_void() # empty theme
-
-P_world_map&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3dbc6dfcab4_files/figure-html/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;
-&lt;p&gt;Do you notice that there is a “region” column in the world map data
-containing the country names? The &lt;code&gt;map_data()&lt;/code&gt; function has a
-useful argument that allows user to subset the world data by this
-column. For example, we can get the data for Australia and draw it on
-the base map using different border and fill colors:&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;### Get the Australia data
-world_map_Australia &amp;lt;- map_data(map = &amp;quot;world&amp;quot;, region = &amp;quot;Australia&amp;quot;)
-
-### Draw the Australia map with different colors
-P_world_map &amp;lt;- P_world_map + 
-  geom_polygon(data = world_map_Australia, aes(x = long, y = lat, group = group), color = &amp;quot;green4&amp;quot;, fill = &amp;quot;green3&amp;quot;)
-
-P_world_map&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3dbc6dfcab4_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;
-&lt;br&gt;&lt;/p&gt;
-&lt;p&gt;Another thing we can do is to add points to the map. Let’s get a
-table of top peaks in the world from Wikipedia and draw them on the
-map.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;library(rvest)  # the package for web scraping
-
-### Get a table of world&amp;#39;s top peaks from Wikipedia
-top_peaks_df_raw &amp;lt;- read_html(&amp;quot;https://en.wikipedia.org/wiki/List_of_highest_mountains_on_Earth&amp;quot;) %&amp;gt;% 
-  html_element(xpath = &amp;#39;//*[@id=&amp;quot;mw-content-text&amp;quot;]/div[1]/table[3]&amp;#39;) %&amp;gt;% 
-  html_table()
-
-### Data wrangling
-top_peaks_df_clean &amp;lt;- top_peaks_df_raw %&amp;gt;% 
-  select(2, 3, 8) %&amp;gt;% 
-  `colnames&amp;lt;-`(c(&amp;quot;Mountain&amp;quot;, &amp;quot;Elevation&amp;quot;, &amp;quot;Coordinates&amp;quot;)) %&amp;gt;% 
-  slice(-(1:2)) %&amp;gt;% 
-  mutate(Mountain = ifelse(row_number(Mountain) == 1, &amp;quot;Mount Everest&amp;quot;, Mountain)) %&amp;gt;% 
-  rowwise() %&amp;gt;% 
-  mutate(Coordinates = str_extract(Coordinates, pattern = &amp;quot;/ [0-9|.]*; [0-9|.]+&amp;quot;)) %&amp;gt;% 
-  mutate(Coordinates = str_remove(Coordinates, pattern = &amp;quot;/ &amp;quot;)) %&amp;gt;% 
-  separate(col = &amp;quot;Coordinates&amp;quot;, into = c(&amp;quot;Lat&amp;quot;, &amp;quot;Long&amp;quot;), sep = &amp;quot;; &amp;quot;, convert = T)
-  
-### Draw the peaks on the map
-P_world_map &amp;lt;- P_world_map + 
-  geom_point(data = top_peaks_df_clean, aes(x = Long, y = Lat), shape = 17)
-
-P_world_map&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3dbc6dfcab4_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;
-&lt;p&gt;The default map projection is the Mercator projection, in which the
-true bearing and shape are preserved while the area is increasingly
-distorted towards the polar regions. We can apply other projections
-provided by the &lt;code&gt;mapproj&lt;/code&gt; package. For example, the Mollweide
-projection sacrifices the bearing and shape for area, and so it is
-appropriate for maps that require a more accurate representation of
-country sizes. A full list of the available projections are shown on the
-help page of &lt;code&gt;mapproject()&lt;/code&gt;.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;library(mapproj)
-
-### Change the map projection to Mollweide projection
-P_world_map + 
-  coord_map(projection = &amp;quot;mollweide&amp;quot;, xlim = c(-180, 180))  # need to set &amp;quot;xlim = c(-180, 180)&amp;quot; to avoid the weird plotting bug &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3dbc6dfcab4_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
-&lt;h3 id="choropleth-map"&gt;2. Choropleth map&lt;/h3&gt;
-&lt;p&gt;A &lt;a href="https://en.wikipedia.org/wiki/Choropleth_map"&gt;choropleth
-map&lt;/a&gt; is a thematic map that visualizes the quantity of a variable
-across a geographical area (e.g., the population size of each county in
-a country) using different colors. This kind of map provides an easy
-quick glance at the spatial patterns of the variable of interest.&lt;/p&gt;
-&lt;p&gt;Making a choropleth map is pretty similar to making a base map; the
-only additional step is to get the variable data and associate them with
-the map data. In the example below, we’re going to make a choropleth map
-of the bird species richness in the world. We first get a table of bird
-richness by country from the website, standardize the country names and
-merge the bird data into the world map data, and fill the countries by
-richness.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;### Get a table of bird species richness by country
-bird_by_country &amp;lt;- read_html(&amp;quot;https://rainforests.mongabay.com/03birds.htm&amp;quot;) %&amp;gt;% 
-  html_element(&amp;quot;table&amp;quot;) %&amp;gt;% 
-  html_table()
-
-### Standardize the country names
-library(countrycode)
-
-bird_by_country &amp;lt;- bird_by_country %&amp;gt;% 
-  rename(region = `Country / region`,
-         richness = `Bird species count`) %&amp;gt;% 
-  mutate(region_std = countryname(region)) %&amp;gt;% 
-  rowwise() %&amp;gt;% 
-  mutate(richness = str_remove(richness, pattern = &amp;quot;,&amp;quot;) %&amp;gt;% as.numeric())
-
-world_map &amp;lt;- world_map %&amp;gt;% 
-  mutate(region_std = countryname(region))
-
-### Merge the bird data into the world map data
-world_map &amp;lt;- world_map %&amp;gt;% 
-  left_join(bird_by_country, by = &amp;quot;region_std&amp;quot;)
-
-### Make the choropleth
-P_choropleth &amp;lt;- ggplot(data = world_map) + 
-  geom_polygon(aes(x = long, y = lat, group = group, fill = richness), color = &amp;quot;grey&amp;quot;) +
-  geom_hline(yintercept = Inf, color = &amp;quot;grey&amp;quot;) +
-  geom_hline(yintercept = -Inf, color = &amp;quot;grey&amp;quot;) +
-  geom_vline(xintercept = Inf, color = &amp;quot;grey&amp;quot;) +
-  geom_vline(xintercept = -Inf, color = &amp;quot;grey&amp;quot;) +
-  scale_fill_viridis_c(name = &amp;quot;Number of species&amp;quot;, breaks = seq(0, 1800, by = 300)) + 
-  guides(fill = guide_colorbar(title.position = &amp;quot;top&amp;quot;)) +
-  theme_void() + 
-  theme(legend.position = &amp;quot;top&amp;quot;,
-        legend.direction = &amp;quot;horizontal&amp;quot;,
-        legend.key.width = unit(0.8, &amp;quot;in&amp;quot;),
-        legend.title = element_text(hjust = 0.5, vjust = 0.5, size = 11),
-        legend.text = element_text(size = 10))
-
-P_choropleth&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3dbc6dfcab4_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
-&lt;h3 id="other-available-map-data"&gt;3. Other available map data&lt;/h3&gt;
-&lt;p&gt;Besides the world map we’ve been playing around with earlier, there
-are a few other map data in the &lt;code&gt;maps&lt;/code&gt; package: the
-first-level administrative divisions of the US, Italy, and France, as
-well as the second-level administrative divisions (counties) of the US.
-Let’s take a look at them:&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;### A function to create the map
-map_fun &amp;lt;- function(map_name){
-  
-  map_dat &amp;lt;- map_data(map = map_name)
-  
-  P &amp;lt;- ggplot(data = map_dat) + 
-    geom_polygon(aes(x = long, y = lat, group = group), color = &amp;quot;white&amp;quot;, fill = &amp;quot;grey&amp;quot;) +
-    geom_hline(yintercept = Inf, color = &amp;quot;grey&amp;quot;) + 
-    geom_hline(yintercept = -Inf, color = &amp;quot;grey&amp;quot;) +  
-    geom_vline(xintercept = Inf, color = &amp;quot;grey&amp;quot;) +  
-    geom_vline(xintercept = -Inf, color = &amp;quot;grey&amp;quot;) +
-    labs(title = map_name) +
-    theme_void() + 
-    theme(plot.title = element_text(hjust = 0.5, vjust = 3, size = 15))
-  
-  return(P)
-}
-
-### Make the maps 
-P_state &amp;lt;- map_fun(&amp;quot;state&amp;quot;)
-P_italy &amp;lt;- map_fun(&amp;quot;italy&amp;quot;)
-P_france &amp;lt;- map_fun(&amp;quot;france&amp;quot;)
-P_us_county &amp;lt;- map_fun(&amp;quot;county&amp;quot;)
-
-### Arrange the maps
-library(patchwork)
-
-(P_italy + plot_spacer() + P_state + 
-  plot_layout(ncol = 3, widths = c(1, 0.05, 1.5)))/
-(P_france + plot_spacer() + P_us_county +
-  plot_layout(ncol = 3, widths = c(1, 0.05, 1.5)))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file3dbc6dfcab4_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
-&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
-&lt;p&gt;To recap, in this post we learned about how to create a polygon world
-map using the built-in data from the &lt;code&gt;maps&lt;/code&gt; package, and how
-we can modify the base map by highlighting a certain area, adding
-points, and changing the map projection. We also went a step further to
-make a choropleth map of the bird species richness in the world. This
-type of map is more informative and it would be quite handy to know how
-to make it yourself!&lt;/p&gt;
-&lt;p&gt;Hope you learn something useful from this post and don’t forget to
-leave your comments and suggestions below if you have any!&lt;/p&gt;
-&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
-      <distill:md5>bf021d80aebbd8cb3e717eec29b4d963</distill:md5>
+      <description>In this post, you will learn about how to create basic polygon maps and choropleth maps in ggplots.</description>
       <category>2023</category>
       <category>Map Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps</guid>
-      <pubDate>Thu, 09 Mar 2023 00:00:00 +0000</pubDate>
+      <pubDate>2023-03-09</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/../../homepage_images/Post25.png" medium="image" type="image/png" width="1536" height="960"/>
     </item>
     <item>
@@ -633,7 +48,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>An awesome integration of `gt` and `ggplot2` tells the story of the top ten bird-window collision species in Taiwan!</description>
       <category>2023</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2023-02-18-post-24-gt-and-ggplot-visualizing-bwc-in-taiwan</guid>
-      <pubDate>Sat, 18 Feb 2023 00:00:00 +0000</pubDate>
+      <pubDate>2023-02-18</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-02-18-post-24-gt-and-ggplot-visualizing-bwc-in-taiwan/../../homepage_images/Post24.png" medium="image" type="image/png" width="1934" height="3334"/>
     </item>
     <item>
@@ -644,7 +59,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2023</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2023-01-13-post-23-ggplot-legend-tips-series-no8-legend-item-spacing</guid>
-      <pubDate>Fri, 13 Jan 2023 00:00:00 +0000</pubDate>
+      <pubDate>2023-01-13</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-01-13-post-23-ggplot-legend-tips-series-no8-legend-item-spacing/../../homepage_images/Post23.png" medium="image" type="image/png" width="1152" height="768"/>
     </item>
     <item>
@@ -654,7 +69,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Ready for an epic ggplot journey through the glowing solar system? Let's go!</description>
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-11-02-post-22-the-glowing-solar-system</guid>
-      <pubDate>Wed, 02 Nov 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-11-02</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-11-02-post-22-the-glowing-solar-system/../../homepage_images/Post22.png" medium="image" type="image/png" width="1728" height="1728"/>
     </item>
     <item>
@@ -664,7 +79,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>In this quick post, I will show you how to use color and fill aesthetic together in the same geom layer to achieve the desired outcome!</description>
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-10-22-post-21-useful-tips-for-mapping-color-and-fill-aesthetics-in-the-same-geom-layer</guid>
-      <pubDate>Sat, 22 Oct 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-10-22</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-10-22-post-21-useful-tips-for-mapping-color-and-fill-aesthetics-in-the-same-geom-layer/../../homepage_images/Post21.png" medium="image" type="image/png" width="1152" height="768"/>
     </item>
     <item>
@@ -675,7 +90,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-10-01-post-20-ggplot-legend-tips-series-no7-working-on-legends-with-theme</guid>
-      <pubDate>Tue, 04 Oct 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-10-04</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-10-01-post-20-ggplot-legend-tips-series-no7-working-on-legends-with-theme/../../homepage_images/Post20.png" medium="image" type="image/png" width="1344" height="768"/>
     </item>
     <item>
@@ -685,7 +100,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Let's make flowy alluvial diagrams in ggplot using the extension package `ggalluvial`!</description>
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-09-10-post-19-go-with-the-flow-alluvial-plots-with-ggplot</guid>
-      <pubDate>Sat, 10 Sep 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-09-10</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-09-10-post-19-go-with-the-flow-alluvial-plots-with-ggplot/../../homepage_images/Post19.png" medium="image" type="image/png" width="1536" height="864"/>
     </item>
     <item>
@@ -695,7 +110,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Come and learn how to create nice bump charts with ggplot!</description>
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-08-01-post-18-bump-charts-with-ggplot</guid>
-      <pubDate>Mon, 01 Aug 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-08-01</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-08-01-post-18-bump-charts-with-ggplot/../../homepage_images/Post18.png" medium="image" type="image/png" width="1728" height="960"/>
     </item>
     <item>
@@ -706,7 +121,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions</guid>
-      <pubDate>Sun, 03 Jul 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-07-03</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions/../../homepage_images/Post17.png" medium="image" type="image/png" width="960" height="672"/>
     </item>
     <item>
@@ -717,7 +132,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions</guid>
-      <pubDate>Thu, 09 Jun 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-06-09</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions/../../homepage_images/Post16.png" medium="image" type="image/png" width="1152" height="672"/>
     </item>
     <item>
@@ -727,7 +142,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Bothered by the hassle of manipulating the axes for individual facets? This is the post for you!</description>
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-05-12-post-15-manipulating-axis-scales-for-individual-facets</guid>
-      <pubDate>Thu, 12 May 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-05-12</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-05-12-post-15-manipulating-axis-scales-for-individual-facets/../../homepage_images/Post15.png" medium="image" type="image/png" width="960" height="768"/>
     </item>
     <item>
@@ -737,7 +152,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Using different color scales for multiple geom layers in one ggplot with `ggnewscale` and `relayer`</description>
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-04-24-post-14-multiple-color-scales-in-one-ggplot</guid>
-      <pubDate>Sun, 24 Apr 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-04-24</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-04-24-post-14-multiple-color-scales-in-one-ggplot/../../homepage_images/Post14.png" medium="image" type="image/png" width="1056" height="672"/>
     </item>
     <item>
@@ -748,7 +163,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-03-02-post-13-ggplot-legend-tips-series-no4-merging-ggplot-legends</guid>
-      <pubDate>Wed, 02 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-03-02</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-03-02-post-13-ggplot-legend-tips-series-no4-merging-ggplot-legends/../../homepage_images/Post13.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
@@ -759,7 +174,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-02-05-post-12-ggplot-legend-tips-series-no3-three-ways-to-turn-off-ggplot-legends</guid>
-      <pubDate>Sat, 05 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-02-05</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-02-05-post-12-ggplot-legend-tips-series-no3-three-ways-to-turn-off-ggplot-legends/../../homepage_images/Post12.png" medium="image" type="image/png" width="768" height="576"/>
     </item>
     <item>
@@ -770,7 +185,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-02-01-post-11-ggplot-legend-tips-series-no2-working-on-continuous-legends-with-guides</guid>
-      <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-02-01</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-02-01-post-11-ggplot-legend-tips-series-no2-working-on-continuous-legends-with-guides/../../homepage_images/Post11.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
@@ -781,7 +196,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-01-28-post-10-ggplot-legend-tips-series-no1-working-on-discrete-scale-legends-with-guides</guid>
-      <pubDate>Fri, 28 Jan 2022 00:00:00 +0000</pubDate>
+      <pubDate>2022-01-28</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-01-28-post-10-ggplot-legend-tips-series-no1-working-on-discrete-scale-legends-with-guides/../../homepage_images/Post10.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
@@ -791,7 +206,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Come and learn two methods to arrange multiple ggplots on one graphic device.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots</guid>
-      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-12-20</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/../../homepage_images/Post9.png" medium="image" type="image/png" width="1152" height="1152"/>
     </item>
     <item>
@@ -801,7 +216,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Create a Pokemon phylogenetic tree in ggplot with the extension package ggdendro.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-10-01-post-8-pokemon-phylogeny-with-ggdendro</guid>
-      <pubDate>Fri, 01 Oct 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-10-01</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-10-01-post-8-pokemon-phylogeny-with-ggdendro/../../homepage_images/Post8.png" medium="image" type="image/png" width="960" height="960"/>
     </item>
     <item>
@@ -811,7 +226,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets!</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-09-11-post-7-customize-the-axis-scales-for-individual-facets</guid>
-      <pubDate>Sat, 11 Sep 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-09-11</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-09-11-post-7-customize-the-axis-scales-for-individual-facets/../../homepage_images/Post7.png" medium="image" type="image/png" width="1152" height="768"/>
     </item>
     <item>
@@ -821,7 +236,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Visualize data distributions using violin plots with ggplot.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-08-02-post-6-play-good-music-for-your-data-violin-plots-with-ggplot</guid>
-      <pubDate>Mon, 02 Aug 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-08-02</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-08-02-post-6-play-good-music-for-your-data-violin-plots-with-ggplot/../../homepage_images/Post6.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
@@ -831,7 +246,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Enhance text displays in your ggplots with the extension package ggtext!</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext</guid>
-      <pubDate>Sat, 10 Jul 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-07-10</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/../../homepage_images/Post5.png" medium="image" type="image/png" width="1152" height="1152"/>
     </item>
     <item>
@@ -841,7 +256,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>In this post, I will show you a simple trick to keep the colors of the same factor levels consistent across different ggplot figures.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-06-26-post-4-consistent-colors-of-the-same-factor-levels-across-figures</guid>
-      <pubDate>Sat, 26 Jun 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-06-26</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-06-26-post-4-consistent-colors-of-the-same-factor-levels-across-figures/../../homepage_images/Post4.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
@@ -851,7 +266,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Want to know how to create effective pie charts with ggplot? Dig in to learn more!</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-06-18-post-3-pie-charts-with-ggplot</guid>
-      <pubDate>Fri, 18 Jun 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-06-18</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-06-18-post-3-pie-charts-with-ggplot/../../homepage_images/Post3.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
@@ -861,7 +276,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Visualizing multi-dimensional and dynamic data can be challenging. In this post, I will show how you can better communicate these features with interactive plots and animations.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-05-26-guest-post-1-communicating-the-essence-of-your-data</guid>
-      <pubDate>Wed, 26 May 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-05-26</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-05-26-guest-post-1-communicating-the-essence-of-your-data/../../homepage_images/Guest_post1.gif" medium="image" type="image/gif"/>
     </item>
     <item>
@@ -871,7 +286,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>This post shows you three different ways to create log axes in ggplots and provides some suggestions on which method to use for your figures.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-05-07-post-2-three-ways-to-create-log-axes-in-ggplots-which-one-should-you-use</guid>
-      <pubDate>Fri, 07 May 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-05-07</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-05-07-post-2-three-ways-to-create-log-axes-in-ggplots-which-one-should-you-use/../../homepage_images/Post2.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
@@ -881,7 +296,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>In this post, I will show you a simple quick hack to center long legend titles in ggplots without bothering gtables and grobs.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots</guid>
-      <pubDate>Sat, 01 May 2021 00:00:00 +0000</pubDate>
+      <pubDate>2021-05-01</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots/../../homepage_images/Post1.png" medium="image" type="image/png" width="1152" height="672"/>
     </item>
   </channel>
