@@ -134,7 +134,7 @@ Let's see a worked example below: We got a vector of the county names in Taiwan 
 library(tidyverse)
 library(osmdata)
 
-### Get the boundary and county names in Taiwan 
+### Get the county names in Taiwan 
 # library(remotes)
 # install_github("wmgeolab/rgeoboundaries")  # install the package if you haven't
 library(rgeoboundaries)  # for the function "geoboundaries()"
