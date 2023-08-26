@@ -1,7 +1,7 @@
 ---
-title: "Post #28. Adding images to ggplots"
+title: "Post #28. Adding a external image to ggplots"
 description: |
-  Come and learn different ways of adding images to ggplots to enhance the figure appearance!
+  Come and learn different ways of adding an external image to ggplots to make your figures more appealing!
 author:
   - name: Gen-Chang Hsu
 date: 2023-8-22
@@ -109,16 +109,18 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
+Sometimes, we would like to put an image, an illustration, or a silhouette in the figure to make it more visually appealing. How can we do this in ggplots? Well, this is actually not difficult at all. And in this post, I'm going to introduce four ways of adding an external image to ggplots. Read below! 
 
 
+## Four ways of adding an image to ggplots
 
+### (1) The package `ggimage`
 
-## Various ways of adding images to ggplots
-
-### (1) ggimage
+The package [`ggimage`]()
 
 ```{r, fig.width = 3, fig.height = 4}
 library(tidyverse)
+library(ggimage)
 
 
 
