@@ -147,11 +147,24 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
 
 ### (2) ggtext
 
+[`ggtext`](https://wilkelab.org/ggtext/index.html) is another extension package that we can use to add images to ggplots, yet the way how `ggtext` does it is a bit different from `ggimage`: instead of directly specifying the image path in `aes()`, we need to wrap the image path into an HTML \<img\> tag and use the function `geom_richtext(label = )` to render the tag into an actual image for plotting. The size of the image can be controlled using the "width" or "height" attribute in the \<img\> tag . There's one limitation though: you can't change the color of the image as you did earlier. 
 
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+library(ggtext)
 
+### Create an HTML <img> tag
+image_tag <- "<img src = 'https://images.phylopic.org/images/0a8ab4f9-04c9-4485-b21a-df683d506055/raster/222x512.png' width = '15'/>"
 
+### A boxplot with an iris image added
+ggplot(iris, aes(x = Species, y = Sepal.Length, color = Species)) + 
+  geom_boxplot() + 
+  geom_richtext(aes(x = 1, y = 7.5, label = image_tag), color = NA) +  # specify "color = NA" to remove the outline box 
+  scale_color_brewer(palette = "Set1") +
+  theme_classic(base_size = 13)
 
+```
 
+As a side note, you can use `ggtext` to modify the labels and text in ggplots in a more sophisticated and customized manner. Check out my [previous post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) on using `ggtext` for awesome text displays in ggplots!
 
 ### (3) cowplot
 
@@ -165,6 +178,7 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
 
 ## Summary
 
+In this post, we looked at four different extension packages that we can use to add an image to ggplots. You may ask: which one should I use? Well, I would say they're pretty much similar in most cases, so simply pick the one that's down your alley! If you want to do something further (e.g., change the image color), then look for a certain package that has the functionality you need. 
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
