@@ -123,12 +123,12 @@ library(tidyverse)
 library(ggimage)
 
 ### The url of an iris image
-url <- "https://images.phylopic.org/images/0a8ab4f9-04c9-4485-b21a-df683d506055/raster/222x512.png"
+image_url <- "https://images.phylopic.org/images/0a8ab4f9-04c9-4485-b21a-df683d506055/raster/222x512.png"
 
 ### A boxplot with an iris image added
 ggplot(iris, aes(x = Species, y = Sepal.Length, color = Species)) + 
   geom_boxplot() + 
-  geom_image(aes(x = 1, y = 7.5, image = url), size = 0.07, color = "purple") +
+  geom_image(aes(x = 1, y = 7.5, image = image_url), size = 0.07, color = "purple") +
   scale_color_brewer(palette = "Set1") +
   theme_classic(base_size = 13)
 
@@ -139,17 +139,18 @@ We can also use the image as points for the scatterplot:
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) + 
-  geom_image(aes(image = url, color = Species), size = 0.03) + 
+  geom_image(aes(image = image_url, color = Species), size = 0.03) + 
   scale_color_brewer(palette = "Set1") +
   theme_classic(base_size = 13)
 
 ```
 
-### (2) ggtext
+### (2) The package `ggtext`
 
 [`ggtext`](https://wilkelab.org/ggtext/index.html) is another extension package that we can use to add images to ggplots, yet the way how `ggtext` does it is a bit different from `ggimage`: instead of directly specifying the image path in `aes()`, we need to wrap the image path into an HTML \<img\> tag and use the function `geom_richtext(label = )` to render the tag into an actual image for plotting. The size of the image can be controlled using the "width" or "height" attribute in the \<img\> tag . There's one limitation though: you can't change the color of the image as you did earlier. 
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+library(tidyverse)
 library(ggtext)
 
 ### Create an HTML <img> tag
@@ -166,11 +167,33 @@ ggplot(iris, aes(x = Species, y = Sepal.Length, color = Species)) +
 
 As a side note, you can use `ggtext` to modify the labels and text in ggplots in a more sophisticated and customized manner. Check out my [previous post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) on using `ggtext` for awesome text displays in ggplots!
 
-### (3) cowplot
+### (3) The package `cowplot`
+
+The third extension package that we can use to add an image to ggplots is [`cowplot`](https://wilkelab.org/cowplot/reference/draw_image.html). The basic idea is that we will first create a drawing canvas using the function `ggdraw()`, and then we can add plots (using the function `draw_plot()`) or images (using the function `draw_image()`) to the canvas. The canvas has x- and y-coordinates between 0 and 1, and we can specify the image position using relative coordinates. (It does require some experimentation to tweak the image position!) Setting "hjust = 0.5" and "vjust = 0.5" will make the center of the image at the point of the specified x- and y-location.
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+library(tidyverse)
+library(cowplot)
+
+### The url of an iris image
+image_url <- "https://images.phylopic.org/images/0a8ab4f9-04c9-4485-b21a-df683d506055/raster/222x512.png"
+
+### A boxplot with an iris image added
+iris_boxplot <- ggplot(iris, aes(x = Species, y = Sepal.Length, color = Species)) + 
+  geom_boxplot() + 
+  scale_color_brewer(palette = "Set1") +
+  theme_classic(base_size = 13)
+
+### Draw the plot and image on the canvas
+ggdraw() +
+  draw_plot(iris_boxplot) +  # the plot will take up the entire canvas space by default
+  draw_image(image_url, x = 0.21, y = 0.8, scale = 0.15, hjust = 0.5, vjust = 0.5)  # use the argument "scale" to adjust the size of the image
+
+```
+
+### (4) The package `patchwork`
 
 
-
-### (4) patchwork
 
 
 
