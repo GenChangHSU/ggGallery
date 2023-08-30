@@ -7,7 +7,243 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>2023-07-31</lastBuildDate>
+    <lastBuildDate>2023-08-22</lastBuildDate>
+    <item>
+      <title>Post #28. Adding an external image to ggplots</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2023-08-22-post-28-adding-images-to-ggplots</link>
+      <description>
+
+
+&lt;!-- Webpage style --&gt;
+&lt;style&gt;
+d-article a {
+    color: #2780e3 !important;
+      border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+&lt;/style&gt;
+&lt;!-- Start of the article --&gt;
+&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Sometimes, we would like to put an image, an illustration, or a
+silhouette in the figure to make it more visually appealing. How can we
+do this in ggplots? Well, this is actually not difficult at all. In this
+post, I’m going to introduce four ways of adding an external image to
+ggplots. Read below!&lt;/p&gt;
+&lt;h2 id="four-ways-of-adding-an-external-image-to-ggplots"&gt;Four ways of
+adding an external image to ggplots&lt;/h2&gt;
+&lt;h3 id="the-package-ggimage"&gt;(1) The package &lt;code&gt;ggimage&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;The extension package &lt;a
+href="https://yulab-smu.top/pkgdocs/ggimage.html"&gt;&lt;code&gt;ggimage&lt;/code&gt;&lt;/a&gt;
+has a function &lt;code&gt;geom_image()&lt;/code&gt; that draws images on ggplots.
+Simply specify the x- and y-coordinates and map the image (either a
+local file path or an url) to the “image” argument and you’re all
+set!&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+library(ggimage)
+
+### The url of an iris image
+image_url &amp;lt;- &amp;quot;https://images.phylopic.org/images/0a8ab4f9-04c9-4485-b21a-df683d506055/raster/222x512.png&amp;quot;
+
+### The boxplot with an iris image added
+ggplot(iris, aes(x = Species, y = Sepal.Length, color = Species)) + 
+  geom_boxplot() + 
+  geom_image(aes(x = 1, y = 7.1, image = image_url), size = 0.11, color = &amp;quot;purple&amp;quot;) +
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) +
+  theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file12dc20ed79b2_files/figure-html/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;We can also use the image as points for the scatterplot:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) + 
+  geom_image(aes(image = image_url, color = Species), size = 0.03) + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) +
+  theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file12dc20ed79b2_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="the-package-ggtext"&gt;(2) The package &lt;code&gt;ggtext&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;a
+href="https://wilkelab.org/ggtext/index.html"&gt;&lt;code&gt;ggtext&lt;/code&gt;&lt;/a&gt; is
+another extension package that we can use to add images to ggplots, yet
+the way how &lt;code&gt;ggtext&lt;/code&gt; does it is a bit different from
+&lt;code&gt;ggimage&lt;/code&gt;: instead of directly specifying the image path in
+&lt;code&gt;aes()&lt;/code&gt;, we need to wrap the image path into an HTML
+&amp;lt;img&amp;gt; tag and use the function
+&lt;code&gt;geom_richtext(label = )&lt;/code&gt; to render the tag into an actual
+image for plotting. The size of the image can be controlled using the
+“width” or “height” attribute in the &amp;lt;img&amp;gt; tag. There’s one
+limitation though: you can’t change the color of the image as you did
+earlier.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+library(ggtext)
+
+### Create an HTML &amp;lt;img&amp;gt; tag
+image_tag &amp;lt;- &amp;quot;&amp;lt;img src = &amp;#39;https://images.phylopic.org/images/0a8ab4f9-04c9-4485-b21a-df683d506055/raster/222x512.png&amp;#39; width = &amp;#39;19&amp;#39;/&amp;gt;&amp;quot;
+
+### The boxplot with an iris image added
+ggplot(iris, aes(x = Species, y = Sepal.Length, color = Species)) + 
+  geom_boxplot() + 
+  geom_richtext(aes(x = 1, y = 7.1, label = image_tag), color = NA) +  # specify &amp;quot;color = NA&amp;quot; to remove the outline box 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) +
+  theme_classic(base_size = 13)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file12dc20ed79b2_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;As a side note, you can use &lt;code&gt;ggtext&lt;/code&gt; to modify the labels
+and text in ggplots in a more sophisticated and customized manner. Check
+out my &lt;a
+href="https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/"&gt;previous
+post&lt;/a&gt; on using &lt;code&gt;ggtext&lt;/code&gt; for awesome text displays in
+ggplots!&lt;/p&gt;
+&lt;h3 id="the-package-cowplot"&gt;(3) The package &lt;code&gt;cowplot&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;The third extension package that we can use to add an image to
+ggplots is &lt;a
+href="https://wilkelab.org/cowplot/reference/draw_image.html"&gt;&lt;code&gt;cowplot&lt;/code&gt;&lt;/a&gt;.
+The basic idea is that we will first create a drawing canvas using the
+function &lt;code&gt;ggdraw()&lt;/code&gt;, and then we can add plots (using the
+function &lt;code&gt;draw_plot()&lt;/code&gt;) or images (using the function
+&lt;code&gt;draw_image()&lt;/code&gt;) to the canvas. The canvas has x- and
+y-coordinates between 0 and 1, and we can specify the image position
+using relative coordinates. It does require some experimentation to
+tweak the image position! Setting “hjust = 0.5” and “vjust = 0.5” will
+make the center of the image at the point of the specified x- and
+y-location.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+library(cowplot)
+
+### The url of an iris image
+image_url &amp;lt;- &amp;quot;https://images.phylopic.org/images/0a8ab4f9-04c9-4485-b21a-df683d506055/raster/222x512.png&amp;quot;
+
+### The boxplot
+iris_boxplot &amp;lt;- ggplot(iris, aes(x = Species, y = Sepal.Length, color = Species)) + 
+  geom_boxplot() + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) +
+  theme_classic(base_size = 13)
+
+### Draw the boxplot and image on the canvas
+ggdraw() +
+  draw_plot(iris_boxplot) +  # the plot will take up the entire canvas space by default
+  draw_image(image_url, x = 0.21, y = 0.77, scale = 0.2, hjust = 0.5, vjust = 0.5)  # use the argument &amp;quot;scale&amp;quot; to adjust the size of the image&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file12dc20ed79b2_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="the-package-patchwork"&gt;(4) The package
+&lt;code&gt;patchwork&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;The last extension package is &lt;a
+href="https://patchwork.data-imaginist.com/"&gt;&lt;code&gt;patchwork&lt;/code&gt;&lt;/a&gt;,
+which is an awesome package for arranging multiple ggplots. The package
+has a function &lt;code&gt;inset_element()&lt;/code&gt; that draws plots (“grob” or
+“ggplot” objects) or images (“raster” objects) as insets. To do so,
+we’ll first read in the iris image using the function
+&lt;code&gt;image_read()&lt;/code&gt; from the package &lt;code&gt;magick&lt;/code&gt; and
+convert it to a raster object using the function
+&lt;code&gt;as.raster()&lt;/code&gt;. After that, we can pass the raster image to
+&lt;code&gt;inset_element()&lt;/code&gt; to add it to the boxplot as an inset. The
+position and the size of the inset are controlled by the locations of
+the vertices (“left”, “bottom”, “right”, “top”), and we need to
+experiment a bit to get the inset at the exact position with the desired
+size.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+library(patchwork)
+
+### The url of an iris image
+image_url &amp;lt;- &amp;quot;https://images.phylopic.org/images/0a8ab4f9-04c9-4485-b21a-df683d506055/raster/222x512.png&amp;quot;
+
+### Read in the image as a raster object
+library(magick)
+image_raster &amp;lt;- image_read(image_url) %&amp;gt;% as.raster()
+
+### The boxplot
+iris_boxplot &amp;lt;- ggplot(iris, aes(x = Species, y = Sepal.Length, color = Species)) + 
+  geom_boxplot() + 
+  scale_color_brewer(palette = &amp;quot;Set1&amp;quot;) +
+  theme_classic(base_size = 13)
+
+### Add the image to the boxplot as an inset
+iris_boxplot + inset_element(image_raster, left = 0.13, bottom = 0.62, right = 0.24, top = 0.92)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file12dc20ed79b2_files/figure-html/unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;p&gt;In this post, we looked at four different extension packages that we
+can use to add an image to ggplots. You may ask: which one should I use?
+Well, I would say they’re pretty much similar in most cases, so simply
+pick the one that’s down your alley! If you want to do something further
+(e.g., change the image color), then look for a certain package (e.g.,
+&lt;code&gt;ggimage&lt;/code&gt;) that has the functionality you need.&lt;/p&gt;
+&lt;p&gt;Hope you learn something useful from this post and don’t forget to
+leave your comments and suggestions below if you have any!&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>095fbfcd2fdcd52703709997b5b9d5f3</distill:md5>
+      <category>2023</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2023-08-22-post-28-adding-images-to-ggplots</guid>
+      <pubDate>2023-08-22</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-08-22-post-28-adding-images-to-ggplots/post-28-adding-images-to-ggplots_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="960" height="576"/>
+    </item>
     <item>
       <title>Post #27. ggplot Map Series No.3: Visualizing the veins of Taiwan in ggplots with `osmdata`</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
