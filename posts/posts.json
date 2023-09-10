@@ -1,5 +1,24 @@
 [
   {
+    "path": "posts/2023-09-09-post-29-creating-raincloud-plots-in-ggplots/",
+    "title": "Post #29. Bad weather today—Creating raincloud plots in ggplots",
+    "description": "Come and learn how to create raincloud plots in ggplots to visualize data distribution.",
+    "author": [
+      {
+        "name": "Gen-Chang Hsu",
+        "url": {}
+      }
+    ],
+    "date": "2023-09-09",
+    "categories": [
+      "2023"
+    ],
+    "contents": "\r\n\r\nIntroduction\r\nCool name\r\nRainclound plots are super for visualizing data distribution. It’s not a plot, but instead a combination of three plots: histogram, dotplot, and density plot. So it captures the various aspect of the data and convey more information than the individual plots alone.\r\nThis post is inspired by two posts (post 1 and post 2) I stumbled upon the other day. The use of extension package ggforce. Both posts give a neat of tutorial of creating rainclound plot, so I will not repeat that again here. Instead, I will show you how to create a raincloud plot in ggplots using pure ggplot functions.\r\nCreate the plot\r\nWe’ll use the iris dataset\r\n\r\n\r\nlibrary(tidyverse)\r\n\r\n\r\nSummary\r\nHope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2023-09-09T20:33:44-04:00",
+    "input_file": "post-29-creating-raincloud-plots-in-ggplots.knit.md"
+  },
+  {
     "path": "posts/2023-08-22-post-28-adding-images-to-ggplots/",
     "title": "Post #28. Adding an external image to ggplots",
     "description": "Come and learn four different ways of adding an external image to ggplots to decorate your figure!",

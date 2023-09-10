@@ -1,0 +1,179 @@
+---
+title: "Post #29. Bad weather today—Creating raincloud plots in ggplots"
+description: |
+  Come and learn how to create raincloud plots in ggplots to visualize data distribution.
+author:
+  - name: Gen-Chang Hsu
+date: 2023-09-09
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2023"
+preview: ../../homepage_images/Post29.png
+draft: true
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+    color: #2780e3 !important;
+      border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+    border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 25% !important;
+}
+
+</style>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+Rainclound plot, what a cool name! You might, or might not have heard of it before, but as you'll see soon, this type of chart is awesome for visualizing data distribution.
+
+A rainclound plot is actually not a single plot, but instead it consists of three different plots: a boxplot, a dot plot, and a density plot. With these components, a rainclound plot can capture various aspects of the data and convey more information than the individual constituent plots alone.
+
+This post is actually inspired by previous two posts ([post 1](https://3mw.albert-rapp.de/p/rainclouds-ggplot?utm_source=3mw.albert-rapp.de&utm_medium=newsletter&utm_campaign=3mw-rainclouds-with-ggplot-a-great-way-to-visualize-distributions) and [post 2](https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/?utm_source=3mw.albert-rapp.de&utm_medium=newsletter&utm_campaign=3mw-rainclouds-with-ggplot-a-great-way-to-visualize-distributions)) I stumbled upon the other day. Both posts give a neat tutorial of creating rainclound plots using the extension package `ggdist`, so I will not repeat that again here. Instead, what I'm going to do is to show you how to create a raincloud plot in ggplots using basic ggplot functions. Should be fun!
+
+## Create the plot
+
+We'll use the `penguins` dataset in the package `palmerpenguins`, which contains 
+
+### The box plot
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+library(tidyverse)
+library(palmerpenguins)
+
+P_raincloud <- penguins %>% 
+  mutate(species = fct_relevel(species, c("Chinstrap", "Adelie", "Gentoo"))) %>% 
+  filter(!is.na(sex)) %>%  
+  ggplot() + 
+  geom_boxplot(aes(x = species, fill = species, y = body_mass_g), 
+               width = 0.15,
+               show.legend = F)
+
+P_raincloud
+
+```
+
+### The dot plot
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+P_raincloud <- P_raincloud +
+  geom_dotplot(aes(x = species, fill = species, y = body_mass_g),
+               binaxis = "y",
+               position = position_nudge(x = 0.15),
+               dotsize = 0.5,
+               show.legend = F)
+
+P_raincloud
+
+```
+
+### The density plot
+
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+P_raincloud <- P_raincloud + 
+  geom_ribbon(aes(x = species, y = body_mass_g, 
+                  xmin = after_stat(group),
+                  xmax = after_stat(group - ndensity*0.2),
+                  colour = species, fill = after_scale(alpha(colour, 0.3))),
+              stat = "density", outline.type = "upper",
+              position = position_nudge(x = -0.1),
+              show.legend = F) +
+  coord_cartesian(x = c(1, 3)) + 
+  theme_classic(base_size = 13)
+
+P_raincloud 
+
+```
+
+
+## Summary
+
+
+
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
