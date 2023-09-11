@@ -115,65 +115,88 @@ A rainclound plot is actually not a single plot, but instead it consists of thre
 
 This post is actually inspired by previous two posts ([post 1](https://3mw.albert-rapp.de/p/rainclouds-ggplot?utm_source=3mw.albert-rapp.de&utm_medium=newsletter&utm_campaign=3mw-rainclouds-with-ggplot-a-great-way-to-visualize-distributions) and [post 2](https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/?utm_source=3mw.albert-rapp.de&utm_medium=newsletter&utm_campaign=3mw-rainclouds-with-ggplot-a-great-way-to-visualize-distributions)) I stumbled upon the other day. Both posts give a neat tutorial of creating rainclound plots using the extension package `ggdist`, so I will not repeat that again here. Instead, what I'm going to do is to show you how to create a raincloud plot in ggplots using basic ggplot functions. Should be fun!
 
+
 ## Create the plot
 
-We'll use the `penguins` dataset in the package `palmerpenguins`, which contains 
+We'll use the `penguins` dataset in the package [`palmerpenguins`](https://allisonhorst.github.io/palmerpenguins/), which contains size measurements of three penguin species (Adélie, Chinstrap, and Gentoo) on the islands in Palmer Archipelago. In the following example, we'll create a raincloud plot to visualize the distribution of body mass of the three penguins.
 
 ### The box plot
+
+The first step is to draw a box plot. This is quite straightforward: simply use the function `geom_boxplot()`. I also reduced the width of the boxes to save space for the two upcoming plots.
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
 library(tidyverse)
 library(palmerpenguins)
 
-P_raincloud <- penguins %>% 
-  mutate(species = fct_relevel(species, c("Chinstrap", "Adelie", "Gentoo"))) %>% 
-  filter(!is.na(sex)) %>%  
+P_box <- penguins %>% 
   ggplot() + 
   geom_boxplot(aes(x = species, fill = species, y = body_mass_g), 
                width = 0.15,
                show.legend = F)
 
-P_raincloud
+P_box
 
 ```
 
 ### The dot plot
 
+The second step is to draw the dot plot, which resembles a histogram but uses stacked dots instead of bars to represent the counts. To do so, we'll use the function `geom_dotplot()` and specify "binaxis = "y"" to place the stacked dots along the y-axis (not the default x-axis). We'll also use "stackratio = -1" to flip the dots to the left of the boxes and "position_nudge(x = -0.15)" to shift the dots slightly away from the boxes so that they don't overlap with each other. 
+
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-P_raincloud <- P_raincloud +
+P_box_dot <- P_box +
   geom_dotplot(aes(x = species, fill = species, y = body_mass_g),
                binaxis = "y",
-               position = position_nudge(x = 0.15),
+               stackratio = -1,
+               position = position_nudge(x = -0.15),
                dotsize = 0.5,
                show.legend = F)
 
-P_raincloud
+P_box_dot
 
 ```
 
 ### The density plot
 
+The third step is to draw the density plot. We'll use `geom_ribbon(stat = "density")` instead of `geom_density()` itself because `geom_ribbon()` allows us to create a density curve for each group (species). The mapping specification in `aes()` is a bit complicated here, so let me explain it:
+
+The key really lies in two arguments "xmin = after_stat(group)" and "xmax = after_stat(group + ndensity*0.2)". "xmin" draws the lower boundary of the density curve (i.e., the base), and "xmax" draws the upper boundary (i.e., the density curve itself). What `after_stat()` does is that it evaluates the new variables created by the geom after the transformation of the original data (e.g., computing the kernel density estimates). In this case, "group" is a new variable created for each species and is coded as integers; "ndensity" is another new variable created for the kernel density estimates computed from the variable "body_mass_g". So now we can map "xmin" and "xmax" to these two new variables to draw the density curves. Also note that "ndensity" is multiplied by 0.2 to adjust the height of the density curves. We'll also specify "trim = T" to truncate the extra tails of the density curves that extend across the entire y-axis range.
+
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
-P_raincloud <- P_raincloud + 
-  geom_ribbon(aes(x = species, y = body_mass_g, 
-                  xmin = after_stat(group),
-                  xmax = after_stat(group - ndensity*0.2),
+P_box_dot_density <- P_box_dot + 
+  geom_ribbon(aes(xmin = after_stat(group),
+                  xmax = after_stat(group + ndensity*0.2),
+                  y = body_mass_g,
                   colour = species, fill = after_scale(alpha(colour, 0.3))),
-              stat = "density", outline.type = "upper",
-              position = position_nudge(x = -0.1),
-              show.legend = F) +
-  coord_cartesian(x = c(1, 3)) + 
-  theme_classic(base_size = 13)
+              stat = "density", 
+              outline.type = "upper",
+              position = position_nudge(x = 0.1),  # shift the density curves to the right of the boxes
+              trim = T,  # truncate the long tails
+              show.legend = F)
+
+P_box_dot_density 
+
+```
+
+### Flip the axes
+
+We're almost there! The clouds and raindrops are now in the vertical direction, so the final step is to flip the axes to make them horizontal. Simply use `coord_flip()` to achieve this.
+
+```{r, fig.width = 4.5, fig.height = 5, out.width = "70%"}
+P_raincloud <- P_box_dot_density + 
+  labs(x = "Body mass (g)", y = "Species") +
+  coord_flip(x = c(0.5, 3), y = c(2500, 6500)) + 
+  theme_classic(base_size = 12)
 
 P_raincloud 
 
 ```
 
+We made it!
+
 
 ## Summary
 
-
-
+To recap, we learned how to create a raincloud plot step by step: first drawing the boxplot, next the dot plots, third the density plot, and lastly flip the axes. Depending on the data, you may wish to adjust the width of the clouds or the size of the raindrops to prevent the items from overlapping with each other.
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 

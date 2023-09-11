@@ -118,7 +118,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-29-creating-raincloud-plots-in-ggplots_files/anchor-4.2.2/anchor.min.js","post-29-creating-raincloud-plots-in-ggplots_files/bowser-1.9.3/bowser.min.js","post-29-creating-raincloud-plots-in-ggplots_files/distill-2.2.21/template.v2.js","post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png","post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png","post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png","post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-3-2.png","post-29-creating-raincloud-plots-in-ggplots_files/header-attrs-2.23/header-attrs.js","post-29-creating-raincloud-plots-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.js","post-29-creating-raincloud-plots-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.js","post-29-creating-raincloud-plots-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.map","post-29-creating-raincloud-plots-in-ggplots_files/popper-2.6.0/popper.min.js","post-29-creating-raincloud-plots-in-ggplots_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-29-creating-raincloud-plots-in-ggplots_files/tippy-6.2.7/tippy-light-border.css","post-29-creating-raincloud-plots-in-ggplots_files/tippy-6.2.7/tippy.css","post-29-creating-raincloud-plots-in-ggplots_files/tippy-6.2.7/tippy.umd.min.js","post-29-creating-raincloud-plots-in-ggplots_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["post-29-creating-raincloud-plots-in-ggplots_files/anchor-4.2.2/anchor.min.js","post-29-creating-raincloud-plots-in-ggplots_files/bowser-1.9.3/bowser.min.js","post-29-creating-raincloud-plots-in-ggplots_files/distill-2.2.21/template.v2.js","post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png","post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png","post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png","post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-3-2.png","post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-4-1.png","post-29-creating-raincloud-plots-in-ggplots_files/header-attrs-2.23/header-attrs.js","post-29-creating-raincloud-plots-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.js","post-29-creating-raincloud-plots-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.js","post-29-creating-raincloud-plots-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.map","post-29-creating-raincloud-plots-in-ggplots_files/popper-2.6.0/popper.min.js","post-29-creating-raincloud-plots-in-ggplots_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-29-creating-raincloud-plots-in-ggplots_files/tippy-6.2.7/tippy-light-border.css","post-29-creating-raincloud-plots-in-ggplots_files/tippy-6.2.7/tippy.css","post-29-creating-raincloud-plots-in-ggplots_files/tippy-6.2.7/tippy.umd.min.js","post-29-creating-raincloud-plots-in-ggplots_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1609,58 +1609,76 @@ div.l-body img {
 <p>A rainclound plot is actually not a single plot, but instead it consists of three different plots: a boxplot, a dot plot, and a density plot. With these components, a rainclound plot can capture various aspects of the data and convey more information than the individual constituent plots alone.</p>
 <p>This post is actually inspired by previous two posts (<a href="https://3mw.albert-rapp.de/p/rainclouds-ggplot?utm_source=3mw.albert-rapp.de&amp;utm_medium=newsletter&amp;utm_campaign=3mw-rainclouds-with-ggplot-a-great-way-to-visualize-distributions">post 1</a> and <a href="https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/?utm_source=3mw.albert-rapp.de&amp;utm_medium=newsletter&amp;utm_campaign=3mw-rainclouds-with-ggplot-a-great-way-to-visualize-distributions">post 2</a>) I stumbled upon the other day. Both posts give a neat tutorial of creating rainclound plots using the extension package <code>ggdist</code>, so I will not repeat that again here. Instead, what I’m going to do is to show you how to create a raincloud plot in ggplots using basic ggplot functions. Should be fun!</p>
 <h2 id="create-the-plot">Create the plot</h2>
-<p>We’ll use the <code>penguins</code> dataset in the package <code>palmerpenguins</code>, which contains</p>
+<p>We’ll use the <code>penguins</code> dataset in the package <a href="https://allisonhorst.github.io/palmerpenguins/"><code>palmerpenguins</code></a>, which contains size measurements of three penguin species (Adélie, Chinstrap, and Gentoo) on the islands in Palmer Archipelago. In the following example, we’ll create a raincloud plot to visualize the distribution of body mass of the three penguins.</p>
 <h3 id="the-box-plot">The box plot</h3>
+<p>The first step is to draw a box plot. This is quite straightforward: simply use the function <code>geom_boxplot()</code>. I also reduced the width of the boxes to save space for the two upcoming plots.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://allisonhorst.github.io/palmerpenguins/'>palmerpenguins</a></span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>P_raincloud</span> <span class='op'>&lt;-</span> <span class='va'>penguins</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>species <span class='op'>=</span> <span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_relevel.html'>fct_relevel</a></span><span class='op'>(</span><span class='va'>species</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Chinstrap"</span>, <span class='st'>"Adelie"</span>, <span class='st'>"Gentoo"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>sex</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  </span>
+<span><span class='va'>P_box</span> <span class='op'>&lt;-</span> <span class='va'>penguins</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_boxplot.html'>geom_boxplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>species</span>, fill <span class='op'>=</span> <span class='va'>species</span>, y <span class='op'>=</span> <span class='va'>body_mass_g</span><span class='op'>)</span>, </span>
 <span>               width <span class='op'>=</span> <span class='fl'>0.15</span>,</span>
 <span>               show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>P_raincloud</span></span></code></pre>
+<span><span class='va'>P_box</span></span></code></pre>
 </div>
 <p><img src="post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="the-dot-plot">The dot plot</h3>
+<p>The second step is to draw the dot plot, which resembles a histogram but uses stacked dots instead of bars to represent the counts. To do so, we’ll use the function <code>geom_dotplot()</code> and specify “binaxis =”y”” to place the stacked dots along the y-axis (not the default x-axis). We’ll also use “stackratio = -1” to flip the dots to the left of the boxes and “position_nudge(x = -0.15)” to shift the dots slightly away from the boxes so that they don’t overlap with each other.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>P_raincloud</span> <span class='op'>&lt;-</span> <span class='va'>P_raincloud</span> <span class='op'>+</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>P_box_dot</span> <span class='op'>&lt;-</span> <span class='va'>P_box</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_dotplot.html'>geom_dotplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>species</span>, fill <span class='op'>=</span> <span class='va'>species</span>, y <span class='op'>=</span> <span class='va'>body_mass_g</span><span class='op'>)</span>,</span>
 <span>               binaxis <span class='op'>=</span> <span class='st'>"y"</span>,</span>
-<span>               position <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/position_nudge.html'>position_nudge</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>0.15</span><span class='op'>)</span>,</span>
+<span>               stackratio <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>,</span>
+<span>               position <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/position_nudge.html'>position_nudge</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='op'>-</span><span class='fl'>0.15</span><span class='op'>)</span>,</span>
 <span>               dotsize <span class='op'>=</span> <span class='fl'>0.5</span>,</span>
 <span>               show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>P_raincloud</span></span></code></pre>
+<span><span class='va'>P_box_dot</span></span></code></pre>
 </div>
 <p><img src="post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="the-density-plot">The density plot</h3>
+<p>The third step is to draw the density plot. We’ll use <code>geom_ribbon(stat = "density")</code> instead of <code>geom_density()</code> itself because <code>geom_ribbon()</code> allows us to create a density curve for each group (species). The mapping specification in <code>aes()</code> is a bit complicated here, so let me explain it:</p>
+<p>The key really lies in two arguments “xmin = after_stat(group)” and “xmax = after_stat(group + ndensity*0.2)“.”xmin” draws the lower boundary of the density curve (i.e., the base), and “xmax” draws the upper boundary (i.e., the density curve itself). What <code>after_stat()</code> does is that it evaluates the new variables created by the geom after the transformation of the original data (e.g., computing the kernel density estimates). In this case, “group” is a new variable created for each species and is coded as integers; “ndensity” is another new variable created for the kernel density estimates computed from the variable “body_mass_g”. So now we can map “xmin” and “xmax” to these two new variables to draw the density curves. Also note that “ndensity” is multiplied by 0.2 to adjust the height of the density curves. We’ll also specify “trim = T” to truncate the extra tails of the density curves that extend across the entire y-axis range.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>P_raincloud</span> <span class='op'>&lt;-</span> <span class='va'>P_raincloud</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_ribbon.html'>geom_ribbon</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>species</span>, y <span class='op'>=</span> <span class='va'>body_mass_g</span>, </span>
-<span>                  xmin <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes_eval.html'>after_stat</a></span><span class='op'>(</span><span class='va'>group</span><span class='op'>)</span>,</span>
-<span>                  xmax <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes_eval.html'>after_stat</a></span><span class='op'>(</span><span class='va'>group</span> <span class='op'>-</span> <span class='va'>ndensity</span><span class='op'>*</span><span class='fl'>0.2</span><span class='op'>)</span>,</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>P_box_dot_density</span> <span class='op'>&lt;-</span> <span class='va'>P_box_dot</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_ribbon.html'>geom_ribbon</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>xmin <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes_eval.html'>after_stat</a></span><span class='op'>(</span><span class='va'>group</span><span class='op'>)</span>,</span>
+<span>                  xmax <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes_eval.html'>after_stat</a></span><span class='op'>(</span><span class='va'>group</span> <span class='op'>+</span> <span class='va'>ndensity</span><span class='op'>*</span><span class='fl'>0.2</span><span class='op'>)</span>,</span>
+<span>                  y <span class='op'>=</span> <span class='va'>body_mass_g</span>,</span>
 <span>                  colour <span class='op'>=</span> <span class='va'>species</span>, fill <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes_eval.html'>after_scale</a></span><span class='op'>(</span><span class='fu'><a href='https://scales.r-lib.org/reference/alpha.html'>alpha</a></span><span class='op'>(</span><span class='va'>colour</span>, <span class='fl'>0.3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,</span>
-<span>              stat <span class='op'>=</span> <span class='st'>"density"</span>, outline.type <span class='op'>=</span> <span class='st'>"upper"</span>,</span>
-<span>              position <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/position_nudge.html'>position_nudge</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='op'>-</span><span class='fl'>0.1</span><span class='op'>)</span>,</span>
-<span>              show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_cartesian.html'>coord_cartesian</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span></span>
+<span>              stat <span class='op'>=</span> <span class='st'>"density"</span>, </span>
+<span>              outline.type <span class='op'>=</span> <span class='st'>"upper"</span>,</span>
+<span>              position <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/position_nudge.html'>position_nudge</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>,  <span class='co'># shift the density curves to the right of the boxes</span></span>
+<span>              trim <span class='op'>=</span> <span class='cn'>T</span>,  <span class='co'># truncate the long tails</span></span>
+<span>              show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>P_raincloud</span> </span></code></pre>
+<span><span class='va'>P_box_dot_density</span> </span></code></pre>
 </div>
 <p><img src="post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
+<h3 id="flip-the-axes">Flip the axes</h3>
+<p>We’re almost there! The clouds and raindrops are now in the vertical direction, so the final step is to flip the axes to make them horizontal. Simply use <code>coord_flip()</code> to achieve this.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>P_raincloud</span> <span class='op'>&lt;-</span> <span class='va'>P_box_dot_density</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Body mass (g)"</span>, y <span class='op'>=</span> <span class='st'>"Species"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>3</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2500</span>, <span class='fl'>6500</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>P_raincloud</span> </span></code></pre>
+</div>
+<p><img src="post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /></p>
+</div>
+<p>We made it!</p>
 <h2 id="summary">Summary</h2>
+<p>To recap, we learned how to create a raincloud plot step by step: first drawing the boxplot, next the dot plots, third the density plot, and lastly flip the axes. Depending on the data, you may wish to adjust the width of the clouds or the size of the raindrops to prevent the items from overlapping with each other.</p>
 <p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
