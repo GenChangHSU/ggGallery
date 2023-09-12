@@ -90,7 +90,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_meta_tags-->
   <title>Post #29. Bad weather today—Creating raincloud plots in ggplots</title>
 
-  <meta property="description" itemprop="description" content="Come and learn how to create raincloud plots in ggplots to visualize data distribution."/>
+  <meta property="description" itemprop="description" content="Come and learn how to create raincloud plots in ggplots to make your data &quot;shine&quot;!"/>
 
 
   <!--  https://schema.org/Article -->
@@ -101,19 +101,19 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
   <meta property="og:title" content="Post #29. Bad weather today—Creating raincloud plots in ggplots"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Come and learn how to create raincloud plots in ggplots to visualize data distribution."/>
+  <meta property="og:description" content="Come and learn how to create raincloud plots in ggplots to make your data &quot;shine&quot;!"/>
   <meta property="og:locale" content="en_US"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
   <meta property="twitter:title" content="Post #29. Bad weather today—Creating raincloud plots in ggplots"/>
-  <meta property="twitter:description" content="Come and learn how to create raincloud plots in ggplots to visualize data distribution."/>
+  <meta property="twitter:description" content="Come and learn how to create raincloud plots in ggplots to make your data &quot;shine&quot;!"/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","draft"]}},"value":[{"type":"character","attributes":{},"value":["Post #29. Bad weather today—Creating raincloud plots in ggplots"]},{"type":"character","attributes":{},"value":["Come and learn how to create raincloud plots in ggplots to visualize data distribution.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2023-09-09"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2023"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post29.png"]},{"type":"logical","attributes":{},"value":[true]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview"]}},"value":[{"type":"character","attributes":{},"value":["Post #29. Bad weather today—Creating raincloud plots in ggplots"]},{"type":"character","attributes":{},"value":["Come and learn how to create raincloud plots in ggplots to make your data \"shine\"!\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2023-09-09"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2023"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post29.png"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1496,7 +1496,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #29. Bad weather today—Creating raincloud plots in ggplots","description":"Come and learn how to create raincloud plots in ggplots to visualize data distribution.","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-09-09T00:00:00.000-04:00","citationText":"Hsu, 2023"}
+{"title":"Post #29. Bad weather today—Creating raincloud plots in ggplots","description":"Come and learn how to create raincloud plots in ggplots to make your data \"shine\"!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-09-09T00:00:00.000-04:00","citationText":"Hsu, 2023"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1512,7 +1512,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="dt-tag">2023</div>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>Come and learn how to create raincloud plots in ggplots to visualize data distribution.</p></p>
+<p><p>Come and learn how to create raincloud plots in ggplots to make your data “shine”!</p></p>
 </div>
 
 <div class="d-byline">
@@ -1607,11 +1607,11 @@ div.l-body img {
 <h2 id="introduction">Introduction</h2>
 <p>Rainclound plot, what a cool name! You might, or might not have heard of it before, but as you’ll see soon, this type of chart is awesome for visualizing data distribution.</p>
 <p>A rainclound plot is actually not a single plot, but instead it consists of three different plots: a boxplot, a dot plot, and a density plot. With these components, a rainclound plot can capture various aspects of the data and convey more information than the individual constituent plots alone.</p>
-<p>This post is actually inspired by previous two posts (<a href="https://3mw.albert-rapp.de/p/rainclouds-ggplot?utm_source=3mw.albert-rapp.de&amp;utm_medium=newsletter&amp;utm_campaign=3mw-rainclouds-with-ggplot-a-great-way-to-visualize-distributions">post 1</a> and <a href="https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/?utm_source=3mw.albert-rapp.de&amp;utm_medium=newsletter&amp;utm_campaign=3mw-rainclouds-with-ggplot-a-great-way-to-visualize-distributions">post 2</a>) I stumbled upon the other day. Both posts give a neat tutorial of creating rainclound plots using the extension package <code>ggdist</code>, so I will not repeat that again here. Instead, what I’m going to do is to show you how to create a raincloud plot in ggplots using basic ggplot functions. Should be fun!</p>
+<p>This post is actually inspired by two previous posts (<a href="https://3mw.albert-rapp.de/p/rainclouds-ggplot?utm_source=3mw.albert-rapp.de&amp;utm_medium=newsletter&amp;utm_campaign=3mw-rainclouds-with-ggplot-a-great-way-to-visualize-distributions">post 1</a> and <a href="https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/?utm_source=3mw.albert-rapp.de&amp;utm_medium=newsletter&amp;utm_campaign=3mw-rainclouds-with-ggplot-a-great-way-to-visualize-distributions">post 2</a>) I stumbled upon the other day. Both posts give a neat tutorial of creating rainclound plots using the extension package <a href="https://mjskay.github.io/ggdist/"><code>ggdist</code></a>, so I will not repeat that again here. Instead, what I’m going to do is to show you how we can create a raincloud plot in ggplots using basic ggplot functions. Should be fun!</p>
 <h2 id="create-the-plot">Create the plot</h2>
 <p>We’ll use the <code>penguins</code> dataset in the package <a href="https://allisonhorst.github.io/palmerpenguins/"><code>palmerpenguins</code></a>, which contains size measurements of three penguin species (Adélie, Chinstrap, and Gentoo) on the islands in Palmer Archipelago. In the following example, we’ll create a raincloud plot to visualize the distribution of body mass of the three penguins.</p>
-<h3 id="the-box-plot">The box plot</h3>
-<p>The first step is to draw a box plot. This is quite straightforward: simply use the function <code>geom_boxplot()</code>. I also reduced the width of the boxes to save space for the two upcoming plots.</p>
+<h3 id="step-1.-the-box-plot">Step 1. The box plot</h3>
+<p>The first step is to draw a box plot. This is quite straightforward: simply use the function <code>geom_boxplot()</code>. We’ll also reduce the width of the boxes to save space for the two upcoming plots.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
@@ -1627,7 +1627,7 @@ div.l-body img {
 </div>
 <p><img src="post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
-<h3 id="the-dot-plot">The dot plot</h3>
+<h3 id="step-2.-the-dot-plot">Step 2. The dot plot</h3>
 <p>The second step is to draw the dot plot, which resembles a histogram but uses stacked dots instead of bars to represent the counts. To do so, we’ll use the function <code>geom_dotplot()</code> and specify “binaxis =”y”” to place the stacked dots along the y-axis (not the default x-axis). We’ll also use “stackratio = -1” to flip the dots to the left of the boxes and “position_nudge(x = -0.15)” to shift the dots slightly away from the boxes so that they don’t overlap with each other.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -1643,9 +1643,9 @@ div.l-body img {
 </div>
 <p><img src="post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
-<h3 id="the-density-plot">The density plot</h3>
-<p>The third step is to draw the density plot. We’ll use <code>geom_ribbon(stat = "density")</code> instead of <code>geom_density()</code> itself because <code>geom_ribbon()</code> allows us to create a density curve for each group (species). The mapping specification in <code>aes()</code> is a bit complicated here, so let me explain it:</p>
-<p>The key really lies in two arguments “xmin = after_stat(group)” and “xmax = after_stat(group + ndensity*0.2)“.”xmin” draws the lower boundary of the density curve (i.e., the base), and “xmax” draws the upper boundary (i.e., the density curve itself). What <code>after_stat()</code> does is that it evaluates the new variables created by the geom after the transformation of the original data (e.g., computing the kernel density estimates). In this case, “group” is a new variable created for each species and is coded as integers; “ndensity” is another new variable created for the kernel density estimates computed from the variable “body_mass_g”. So now we can map “xmin” and “xmax” to these two new variables to draw the density curves. Also note that “ndensity” is multiplied by 0.2 to adjust the height of the density curves. We’ll also specify “trim = T” to truncate the extra tails of the density curves that extend across the entire y-axis range.</p>
+<h3 id="step-3.-the-density-plot">Step 3. The density plot</h3>
+<p>The third step is to draw the density plot. Here, we’ll use <code>geom_ribbon(stat = "density")</code> instead of <code>geom_density()</code> because <code>geom_ribbon()</code> allows us to create a density curve for each group (species). The mapping specification in <code>aes()</code> is a bit complicated, so let me explain it:</p>
+<p>The key lies in the two arguments “xmin = after_stat(group)” and “xmax = after_stat(group + ndensity*0.2)“.”xmin” represents the lower boundary of the area (i.e., the base), and “xmax” represents the upper boundary (i.e., the density curve). As for <code>after_stat()</code>, it evaluates the new variables created by the geom after the transformation of the original data (e.g., computing the kernel density estimates). In this example, “group” is a new variable created for each species (because we map species to color and fill) and coded as integers; “ndensity” is another new variable created for the kernel density estimates computed from the variable “body_mass_g”. Now, with these two new variables, we can map “xmin” and “xmax” to them to draw the density curves. Also note that “ndensity” is multiplied by 0.2 to adjust the height of the density curves. We’ll also specify “trim = T” to truncate the tails of the density curves that extend across the entire y-axis range.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>P_box_dot_density</span> <span class='op'>&lt;-</span> <span class='va'>P_box_dot</span> <span class='op'>+</span> </span>
@@ -1663,8 +1663,8 @@ div.l-body img {
 </div>
 <p><img src="post-29-creating-raincloud-plots-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
-<h3 id="flip-the-axes">Flip the axes</h3>
-<p>We’re almost there! The clouds and raindrops are now in the vertical direction, so the final step is to flip the axes to make them horizontal. Simply use <code>coord_flip()</code> to achieve this.</p>
+<h3 id="step-4.-flip-the-axes">Step 4. Flip the axes</h3>
+<p>We’re almost there! The clouds and raindrops are in the vertical direction, so the final step is to flip the axes to make them horizontal. Simply use <code>coord_flip()</code> to achieve this.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>P_raincloud</span> <span class='op'>&lt;-</span> <span class='va'>P_box_dot_density</span> <span class='op'>+</span> </span>
@@ -1678,7 +1678,7 @@ div.l-body img {
 </div>
 <p>We made it!</p>
 <h2 id="summary">Summary</h2>
-<p>To recap, we learned how to create a raincloud plot step by step: first drawing the boxplot, next the dot plots, third the density plot, and lastly flip the axes. Depending on the data, you may wish to adjust the width of the clouds or the size of the raindrops to prevent the items from overlapping with each other.</p>
+<p>To recap, we learned how to create a raincloud plot in ggplots step by step: first drawing the boxplot, next the dot plots, third the density plot, and finally flipping the axes. Depending on the data, you may wish to adjust the thickness of the clouds or the size of the raindrops to prevent the items from overlapping with each other.</p>
 <p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
