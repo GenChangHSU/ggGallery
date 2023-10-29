@@ -224,8 +224,8 @@ Let's take a look how it works:
 library(sf)
 
 ### The shapefiles of Ithaca City boundary and city street trees
-city_boundary <- st_read("https://github.com/GenChangHSU/ggGallery/blob/f238dadca393899f748a743cc9d4dd16e90ea3ce/_posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap/Municipal_Boundary/Municipal_Boundary.shp")
-city_trees <- st_read("https://github.com/GenChangHSU/ggGallery/tree/f238dadca393899f748a743cc9d4dd16e90ea3ce/_posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap/City_Managed_Trees")
+city_boundary <- st_read("https://github.com/GenChangHSU/ggGallery/raw/master/_posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap/Municipal_Boundary/Municipal_Boundary.shp")
+city_trees <- st_read("https://github.com/GenChangHSU/ggGallery/raw/master/_posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap/City_Managed_Trees/City_Managed_Trees.shp")
 
 ### Add the city boundary and trees to the satellite map
 get_googlemap(my_location, zoom = 13, maptype = "satellite") %>% 
