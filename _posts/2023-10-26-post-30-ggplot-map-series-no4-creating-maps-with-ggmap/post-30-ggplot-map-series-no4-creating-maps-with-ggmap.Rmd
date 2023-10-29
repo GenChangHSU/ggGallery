@@ -1,0 +1,245 @@
+---
+title: "Post #30. ggplot Map Series No.4: Google Maps in R with `ggmap`"
+description: |
+  A quick three-minute post on creating maps using Google Maps layers with the package `ggmap`.
+author:
+  - name: Gen-Chang Hsu
+date: 2023-10-26
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2023"
+  - "Map Series"
+preview: ../../homepage_images/Post30.png
+draft: true
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a{
+  color: #2780e3 !important;
+  border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+  border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+  margin-right: 30% !important;
+}
+
+</style>
+
+<head>
+  <base target="_blank">
+</head>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+[Google Maps](https://www.google.com/maps) is arguably the most commonly used online map application in our everyday life: for navigation, for finding specific places, for measuring the distance, just to name a few. We also use Google Maps frequently in presentations, for example, showing a satellite image and the location of the study sites. Traditionally, what we'll do is going to the Google Maps webpage, taking a screen shot of the map, cropping and editing it in PowerPoint.
+
+Now, thanks to the extension package [`ggmap`](https://github.com/dkahle/ggmap), we can get rid of the tedious work and directly retrieve Google Maps tiles from R and plot them in ggplots. We can then add points, lines, or polygons to the maps. And in this post, I'm going to show you how to do these things. This will be a short but certainly handy post!
+
+
+## Create maps using Google Maps layers
+
+Before we start, there is one thing you need to do: registering with Google and setting up an API key for the map platform. This is required to retrieve data from Google Map. Visit [this page](https://developers.google.com/maps/documentation/embed/get-api-key) for how to do this.
+
+After you get your API key, paste it into the function `register_google()` and you're all set:
+
+```{r, fig.width = 5, fig.height = 4, echo = F}
+library(ggmap)
+register_google(key = "AIzaSyBbCIY2e_BKY8lVmC3N7sgDMqxi6eBfvZ4")
+
+```
+
+```{r, fig.width = 5, fig.height = 4, eval = F}
+library(ggmap)
+register_google(key = "your key")
+
+```
+
+### Get the map data
+
+The first step is to get the map data of the desired area using the function `get_googlemap()`. There are two ways to do so: 
+
+1. By location: the name of the place (e.g., New York City)
+2. By longitude and latitude: the lon-lat coordinates of the place
+
+The place will occur at the center of the map, and you can specify an additional argument "zoom" to control the area, which ranges from 3 to 21. As a rule of thumb, 3 gives continent-level maps, 12 gives city-level maps, and 21 gives building-level maps. Experiment the value a bit to get the desired outcome.
+
+```{r, fig.width = 5, fig.height = 4}
+library(tidyverse)
+
+### Get the map data
+my_location <- "Ithaca"  # location
+my_lon_lat <- c(-76.50, 42.44)  # lon-lat pair
+
+my_location_map <- get_googlemap(my_location, zoom = 12)
+my_lon_lat <- get_googlemap(my_lon_lat, zoom = 12)
+
+```
+
+There is a useful helper function `geocode()` that can find the longitude and latitude coordinates of a given location:
+
+```{r, fig.width = 5, fig.height = 4}
+### Find the lon-lat coordinates of the given location
+geocode("Ithaca")
+
+```
+
+### Draw the map
+
+After we get the map data of the area, we can simply pass them to `ggmap()`:
+
+```{r, fig.width = 8, fig.height = 4, out.width = "80%", fig.show = "hold"}
+P1 <- ggmap(my_location_map) + 
+  labs(title = "By location") + 
+  theme(plot.title = element_text(hjust = 0.5))
+
+P2 <- ggmap(my_lon_lat) + 
+  labs(title = "By lon-lat pair") +
+    theme(plot.title = element_text(hjust = 0.5))
+
+library(patchwork)
+P1 + P2
+
+```
+
+Let's try out different zoom values:
+
+```{r, fig.width = 12, fig.height = 8, out.width = "80%", fig.show = "hold"}
+### Different zoom values
+my_maps_zooms <- lapply(c(3, 6, 10, 13, 17, 21), function(x){
+  get_googlemap(my_location, zoom = x) %>% 
+    ggmap() + 
+    labs(title = paste0("zoom = ", x)) +
+    theme(plot.title = element_text(hjust = 0.5))
+})
+
+patchwork::wrap_plots(my_maps_zooms, ncol = 3, nrow = 2, byrow = T)
+
+```
+
+Besides the default terrain map, we can also get the satellite image, street map, or a hybrid of them: 
+
+```{r, fig.width = 8, fig.height = 8, out.width = "80%", fig.show = "hold"}
+### Different map types
+my_maps <- lapply(c("terrain", "roadmap", "satellite", "hybrid"), function(x){
+  get_googlemap(my_location, zoom = 12, maptype = x) %>% 
+    ggmap() + 
+    labs(title = x) +
+    theme(plot.title = element_text(hjust = 0.5))
+})
+
+patchwork::wrap_plots(my_maps, ncol = 2, nrow = 2, byrow = T)
+
+```
+
+### Add points/lines/polygons
+
+We can spice up the "plain" map by adding points/lines/polygons to it. Here, I'm going to draw the boundary of Ithaca City and show the locations of the city street trees. The shapefiles were downloaded from [the city website](). We'll read in these files using the function `st_read()` from the package `sf` (see my [previous post]() on making maps with `sf`!) and add them to the map using `geom_sf()`. Note that we need to set "inherit.aes = F" so that `geom_sf()` will not use the aesthetics from the global plot (which is used for the satellite map).
+
+Let's take a look how it works:
+
+```{r, fig.width = 6, fig.height = 6, out.width = "80%", fig.show = "hold"}
+library(sf)
+
+### The shapefiles of Ithaca City boundary and city street trees
+city_boundary <- st_read("./Municipal_Boundary/Municipal_Boundary.shp")
+city_trees <- st_read("./City_Managed_Trees/City_Managed_Trees.shp")
+
+### Add the city boundary and trees to the satellite map
+get_googlemap(my_location, zoom = 13, maptype = "satellite") %>% 
+  ggmap() + 
+  geom_sf(data = city_boundary, fill = NA, color = "red", inherit.aes = F) +  # need to set "inherit.aes = F"
+  geom_sf(data = city_trees, color = "forestgreen", inherit.aes = F, size = 0.01)
+
+```
+
+
+## Summary
+
+In this post, we learned how to create maps using Google Maps data. First, we got the map of the area of interest using `get_googlemap()`, then we passed the data to `ggmap`. We also tried out different zoom values and map types. We also by adding a polygon and points to the satellite image. Next time, you can use this to create a map for your study site and plots (or for any purpose indeed)!
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
+
