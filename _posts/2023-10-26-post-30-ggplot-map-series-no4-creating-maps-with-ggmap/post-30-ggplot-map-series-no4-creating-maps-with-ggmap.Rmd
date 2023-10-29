@@ -216,7 +216,7 @@ patchwork::wrap_plots(my_maps, ncol = 2, nrow = 2, byrow = T)
 
 ### Add points/lines/polygons
 
-We can spice up the "plain" map by adding points/lines/polygons to it. Here, I'm going to draw the boundary of Ithaca City and show the locations of the city street trees. The shapefiles were downloaded from [the city website](). We'll read in these files using the function `st_read()` from the package `sf` (see my [previous post]() on making maps with `sf`!) and add them to the map using `geom_sf()`. Note that we need to set "inherit.aes = F" so that `geom_sf()` will not use the aesthetics from the global plot (which is used for the satellite map).
+We can spice up the "plain" map by adding points/lines/polygons to it. Here, I'm going to draw the boundary of Ithaca City and show the locations of the city street trees. The shapefiles were downloaded from [City of Ithaca Community Data Portal](https://data-ithacany.opendata.arcgis.com/). We'll read in these files using the function `st_read()` from the package `sf` (see my [previous post](https://genchanghsu.github.io/ggGallery/posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/) on making maps with `sf`!) and add them to the map using `geom_sf()`. Note that we need to set "inherit.aes = F" so that `geom_sf()` will not use the aesthetics from the global plot (which is used for the satellite map).
 
 Let's take a look how it works:
 
@@ -224,14 +224,14 @@ Let's take a look how it works:
 library(sf)
 
 ### The shapefiles of Ithaca City boundary and city street trees
-city_boundary <- st_read("./Municipal_Boundary/Municipal_Boundary.shp")
-city_trees <- st_read("./City_Managed_Trees/City_Managed_Trees.shp")
+city_boundary <- st_read("https://github.com/GenChangHSU/ggGallery/blob/f238dadca393899f748a743cc9d4dd16e90ea3ce/_posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap/Municipal_Boundary/Municipal_Boundary.shp")
+city_trees <- st_read("https://github.com/GenChangHSU/ggGallery/tree/f238dadca393899f748a743cc9d4dd16e90ea3ce/_posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap/City_Managed_Trees")
 
 ### Add the city boundary and trees to the satellite map
 get_googlemap(my_location, zoom = 13, maptype = "satellite") %>% 
   ggmap() + 
-  geom_sf(data = city_boundary, fill = NA, color = "red", inherit.aes = F) +  # need to set "inherit.aes = F"
-  geom_sf(data = city_trees, color = "forestgreen", inherit.aes = F, size = 0.01)
+  geom_sf(data = city_boundary, fill = NA, color = "red", size = 1.5, inherit.aes = F) +  # need to set "inherit.aes = F"
+  geom_sf(data = city_trees, color = "forestgreen", size = 0.01, inherit.aes = F)
 
 ```
 
