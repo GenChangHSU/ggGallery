@@ -7,7 +7,18 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>2023-09-09</lastBuildDate>
+    <lastBuildDate>2023-10-26</lastBuildDate>
+    <item>
+      <title>Post #30. ggplot Map Series No.4: Google Maps in R with `ggmap`</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap</link>
+      <description>A quick three-minute post on creating maps using Google Maps tiles with the package `ggmap`.</description>
+      <category>2023</category>
+      <category>Map Series</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap</guid>
+      <pubDate>2023-10-26</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap/../../homepage_images/Post30.png" medium="image" type="image/png" width="1152" height="1152"/>
+    </item>
     <item>
       <title>Post #29. Bad weather today—Creating raincloud plots in ggplots</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
