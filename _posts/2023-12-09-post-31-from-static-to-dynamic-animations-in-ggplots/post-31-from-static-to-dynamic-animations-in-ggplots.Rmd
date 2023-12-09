@@ -1,0 +1,154 @@
+---
+title: "Post #31. From static to dynamic—Create animations in ggplot by hand"
+description: |
+  Read below to see how to bring your plots alive!
+author:
+  - name: Gen-Chang Hsu
+date: 2023-12-09
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2023"
+preview: ../../homepage_images/Post31.png
+draft: true
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+  color: #2780e3 !important;
+  border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+  border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 30% !important;
+}
+
+</style>
+
+<head>
+  <base target="_blank">
+</head>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F,
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+gganimate
+
+
+But we can make animations in ggplot (or any kind of R plots) by hand. 
+
+Inspired by this post. 
+
+Do some fun coding exercise and write a post on it
+
+
+
+## Create an animation in ggplot by hand
+
+
+### The static plot
+
+```{r, fig.width = 5, fig.height = 4}
+library(tidyverse)
+
+
+
+```
+
+### Make it alive
+
+
+
+
+
+## Summary
+
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
+
+
+
+
+
