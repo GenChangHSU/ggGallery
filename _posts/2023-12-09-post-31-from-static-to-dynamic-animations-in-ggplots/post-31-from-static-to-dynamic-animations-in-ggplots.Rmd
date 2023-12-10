@@ -113,21 +113,19 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-gganimate
+Animations are a power tool for data visualization and communication: They turn static images/figures into dynamic stories. If we say _a figure is worth a thousand words_, then I would argue that _an animation is worth a thousand figures_.
 
+Creating animations in ggplot is not a daunting task: The extension package [`gganimate`](https://gganimate.com/) provides a plethora of functions to make ggplot animations and customize them. (See this [guest post](https://genchanghsu.github.io/ggGallery/posts/2021-05-26-guest-post-1-communicating-the-essence-of-your-data/) by William Ou on conveying the essence of data using `gganimate`!) But if you understand the underlying principle of animations, they are essentially an array of individual images/plots displayed in a chronological order, and we can easily make animations (for any kind of R plots) ourselves.
 
-But we can make animations in ggplot (or any kind of R plots) by hand. 
-
-Inspired by this post. 
-
-Do some fun coding exercise and write a post on it
-
+In this post, I'm going to show you how to make animations in ggplot by hand based on this simple principle, without the use of `gganimate` functions. I think this will make a fun coding exercise, and at the same time sharpen our programming skills. Also, a big shout-out to June Choe for his [neat post](https://yjunechoe.github.io/posts/2020-12-13-collapse-repetitive-piping-with-reduce/), which is the ultimate inspiration for this one. Enjoy!
 
 
 ## Create an animation in ggplot by hand
 
+### (1) The static plot
 
-### The static plot
+Let's say we have an exmaple plot below:
+
 
 ```{r, fig.width = 5, fig.height = 4}
 library(tidyverse)
@@ -147,11 +145,13 @@ ggplot(df) +
 
 ```
 
-### 
+### (2) Cut the repetitive code
 
 
+### (3) Sequence of plots
 
-### Make it alive
+
+### (4) Make it alive
 
 
 
@@ -159,6 +159,8 @@ ggplot(df) +
 
 ## Summary
 
+
+The bottom line is: produce a sequence of plots and stack them together in the desired order.
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
