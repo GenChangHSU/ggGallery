@@ -132,9 +132,24 @@ Do some fun coding exercise and write a post on it
 ```{r, fig.width = 5, fig.height = 4}
 library(tidyverse)
 
+df <- data.frame(xmin = 0, xmax = 0, 
+                  ymin = -10, ymax = 10)
+
+ggplot(df) +
+  geom_rect(aes(xmin = xmin - 10, xmax = xmax + 10, ymin = ymin, ymax = ymax), fill = "yellow") + 
+    geom_rect(aes(xmin = xmin - 9, xmax = xmax + 9, ymin = ymin, ymax = ymax), fill = "red") + 
+    geom_rect(aes(xmin = xmin - 8, xmax = xmax + 8, ymin = ymin, ymax = ymax), fill = "green") + 
+    geom_rect(aes(xmin = xmin - 7, xmax = xmax + 7, ymin = ymin, ymax = ymax), fill = "blue") + 
+    scale_x_continuous(limits = c(-12, 12)) + 
+  theme_void()
+
 
 
 ```
+
+### 
+
+
 
 ### Make it alive
 
