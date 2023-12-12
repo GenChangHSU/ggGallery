@@ -160,22 +160,41 @@ The function `reduce()`, as its name suggests, is meant to "reduce" the repetiti
 ### Reduce the repetitive code
 reduce(10:1,  # a vector of values
        .f = ~ .x + geom_rect(aes(xmin = xmin - .y^(.y/10), xmax = xmax + .y^(.y/10), ymin = ymin, ymax = ymax), fill = color_vec[.y]),  # the function to be iteratively applied
-       .init = ggplot(df)  # the initial component to start the first iteration
-       ) + 
-  theme_void()
+       .init = ggplot(df) + theme_void()  # the remaining constant part of the code 
+       )
+  
 
 ```
 
-In the above code, we supplied a vector of values for the arguments in the function as well as an initial component to start the first iteration. The first iteration would be `ggplot(df) + geom_rect(aes(xmin = xmin - 10^(10/10), xmax = xmax + 10^(10/10), ymin = ymin, ymax = ymax), fill = color_vec[10])`; the second iteration would be `ggplot(df) + geom_rect(aes(xmin = xmin - 10^(10/10), xmax = xmax + 10^(10/10), ymin = ymin, ymax = ymax), fill = color_vec[10]) + geom_rect(aes(xmin = xmin - 9^(9/10), xmax = xmax + 9^(9/10), ymin = ymin, ymax = ymax), fill = color_vec[9])`, and so on and so forth. The final output was returned after the last value of the vector was completed.
+In the above code, we supplied a vector of values for the arguments in the function as well as an initial component to start the first iteration. The first iteration would be `ggplot(df) + theme_void() + geom_rect(aes(xmin = xmin - 10^(10/10), xmax = xmax + 10^(10/10), ymin = ymin, ymax = ymax), fill = color_vec[10])`; the second iteration would be `ggplot(df) + theme_void() + geom_rect(aes(xmin = xmin - 10^(10/10), xmax = xmax + 10^(10/10), ymin = ymin, ymax = ymax), fill = color_vec[10]) + geom_rect(aes(xmin = xmin - 9^(9/10), xmax = xmax + 9^(9/10), ymin = ymin, ymax = ymax), fill = color_vec[9])`, and so on and so forth. The final plot was returned after the last value of the vector was passed into the function.
 
-### (3) A sequence of intermediate plots
+### (3) The intermediate plots
 
+Remember that to create an animation, we need a sequence of images/plots. So where are our plots? Don't worry; we're going to get them now! Here, we'll use the function `accumulate()`: This function works essentially in the same way as `reduce()`, except that it retains all the intermediate outputs from the iterations. Simply swap out `reduce()` for `accumulate()` to get all the intermediate plots stored in a list:
 
+```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
+### Use "accumulate()" to get the intermediate plots
+p_intermediate <- accumulate(10:1,
+       .f = ~ .x + geom_rect(aes(xmin = xmin - .y^(.y/10), xmax = xmax + .y^(.y/10), ymin = ymin, ymax = ymax), fill = color_vec[.y]),
+       .init = ggplot(df) + theme_void()
+       ) 
 
+library(patchwork)
+wrap_plots(p_intermediate[-1], ncol = 4, nrow = 3, byrow = T)  # omit the first empty plot
+
+```
 
 
 ### (4) Make it alive
 
+
+```{r, fig.width = 4, fig.height = 3, out.width = "70%"}
+p_intermediate
+
+
+
+
+```
 
 
 ## Summary
