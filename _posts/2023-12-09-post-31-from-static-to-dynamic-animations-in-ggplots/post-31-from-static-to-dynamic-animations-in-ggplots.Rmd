@@ -92,7 +92,7 @@ d-article table tbody tr td {
 }
 
 div.l-body img {
-    margin-right: 30% !important;
+    margin-right: 20% !important;
 }
 
 </style>
@@ -123,37 +123,58 @@ In this post, I'm going to show you how to make animations in ggplot by hand bas
 ## Create an animation in ggplot by hand
 
 ### (1) The static plot
+To begin with, let's create a toy plot below: The plot consists of ten `geom_rect()` layers with successively narrower widths, and each rectangle is filled with a different color.  
 
-Let's say we have an exmaple plot below:
-
-
-```{r, fig.width = 5, fig.height = 4}
+```{r, fig.width = 4, fig.height = 3, out.width = "70%"}
 library(tidyverse)
 
-df <- data.frame(xmin = 0, xmax = 0, 
-                  ymin = -10, ymax = 10)
+### The toy dataframe
+df <- data.frame(xmin = 0, xmax = 0, ymin = -10, ymax = 10) 
 
+### The color vector
+color_vec <- terrain.colors(n = 10)  
+
+### The toy plot
 ggplot(df) +
-  geom_rect(aes(xmin = xmin - 10, xmax = xmax + 10, ymin = ymin, ymax = ymax), fill = "yellow") + 
-    geom_rect(aes(xmin = xmin - 9, xmax = xmax + 9, ymin = ymin, ymax = ymax), fill = "red") + 
-    geom_rect(aes(xmin = xmin - 8, xmax = xmax + 8, ymin = ymin, ymax = ymax), fill = "green") + 
-    geom_rect(aes(xmin = xmin - 7, xmax = xmax + 7, ymin = ymin, ymax = ymax), fill = "blue") + 
-    scale_x_continuous(limits = c(-12, 12)) + 
+  geom_rect(aes(xmin = xmin - 10^1.0, xmax = xmax + 10^1.0, ymin = ymin, ymax = ymax), fill = color_vec[10]) + 
+    geom_rect(aes(xmin = xmin - 9^0.9, xmax = xmax + 9^0.9, ymin = ymin, ymax = ymax), fill = color_vec[9]) + 
+    geom_rect(aes(xmin = xmin - 8^0.8, xmax = xmax + 8^0.8, ymin = ymin, ymax = ymax), fill = color_vec[8]) + 
+    geom_rect(aes(xmin = xmin - 7^0.7, xmax = xmax + 7^0.7, ymin = ymin, ymax = ymax), fill = color_vec[7]) + 
+    geom_rect(aes(xmin = xmin - 6^0.6, xmax = xmax + 6^0.6, ymin = ymin, ymax = ymax), fill = color_vec[6]) + 
+    geom_rect(aes(xmin = xmin - 5^0.5, xmax = xmax + 5^0.5, ymin = ymin, ymax = ymax), fill = color_vec[5]) + 
+    geom_rect(aes(xmin = xmin - 4^0.4, xmax = xmax + 4^0.4, ymin = ymin, ymax = ymax), fill = color_vec[4]) + 
+    geom_rect(aes(xmin = xmin - 3^0.3, xmax = xmax + 3^0.3, ymin = ymin, ymax = ymax), fill = color_vec[3]) + 
+    geom_rect(aes(xmin = xmin - 2^0.2, xmax = xmax + 2^0.2, ymin = ymin, ymax = ymax), fill = color_vec[2]) + 
+    geom_rect(aes(xmin = xmin - 1^0.1, xmax = xmax + 1^0.1, ymin = ymin, ymax = ymax), fill = color_vec[1]) + 
+    scale_x_continuous(limits = c(-10, 10)) + 
   theme_void()
-
-
 
 ```
 
-### (2) Cut the repetitive code
+The code looks quite like an eyesore, doesn't it? The arguments in all `geom_rect()` layers are basically the same; the only thing that changes is the supplied values. We'll fix it now.
+
+### (2) Reduce the repetitive code
+The function `reduce()`, as its name suggests, is meant to "reduce" the repetitive code by iteratively applying a function over a list/vector of values and taking the function output in the current iteration as the input for the next iteration. Sounds abstract? Let's take a look at how it actually works:
+
+```{r, fig.width = 4, fig.height = 3, out.width = "70%"}
+### Reduce the repetitive code
+reduce(10:1,  # a vector of values
+       .f = ~ .x + geom_rect(aes(xmin = xmin - .y^(.y/10), xmax = xmax + .y^(.y/10), ymin = ymin, ymax = ymax), fill = color_vec[.y]),  # the function to be iteratively applied
+       .init = ggplot(df)  # the initial component to start the first iteration
+       ) + 
+  theme_void()
+
+```
+
+In the above code, we supplied a vector of values for the arguments in the function as well as an initial component to start the first iteration. The first iteration would be `ggplot(df) + geom_rect(aes(xmin = xmin - 10^(10/10), xmax = xmax + 10^(10/10), ymin = ymin, ymax = ymax), fill = color_vec[10])`; the second iteration would be `ggplot(df) + geom_rect(aes(xmin = xmin - 10^(10/10), xmax = xmax + 10^(10/10), ymin = ymin, ymax = ymax), fill = color_vec[10]) + geom_rect(aes(xmin = xmin - 9^(9/10), xmax = xmax + 9^(9/10), ymin = ymin, ymax = ymax), fill = color_vec[9])`, and so on and so forth. The final output was returned after the last value of the vector was completed.
+
+### (3) A sequence of intermediate plots
 
 
-### (3) Sequence of plots
+
 
 
 ### (4) Make it alive
-
-
 
 
 
