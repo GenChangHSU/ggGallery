@@ -7,7 +7,257 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>2023-10-26</lastBuildDate>
+    <lastBuildDate>2023-12-09</lastBuildDate>
+    <item>
+      <title>Post #31. From static to dynamic—Create animations in ggplot by hand</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2023-12-09-post-31-from-static-to-dynamic-animations-in-ggplots</link>
+      <description>
+
+
+&lt;!-- Webpage style --&gt;
+&lt;style&gt;
+d-article a {
+  color: #2780e3 !important;
+  border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+  border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 20% !important;
+}
+
+&lt;/style&gt;
+&lt;head&gt;
+&lt;base target="_blank"&gt;
+&lt;/head&gt;
+&lt;!-- Start of the article --&gt;
+&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Animations are a power tool for data visualization and communication:
+They turn static images/figures into dynamic stories. If we say &lt;em&gt;a
+figure is worth a thousand words&lt;/em&gt;, then I would argue that &lt;em&gt;an
+animation is worth a thousand figures&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Creating animations in ggplot is not a daunting task: The extension
+package &lt;a href="https://gganimate.com/"&gt;&lt;code&gt;gganimate&lt;/code&gt;&lt;/a&gt;
+provides a plethora of functions to make ggplot animations and customize
+them. (See this &lt;a
+href="https://genchanghsu.github.io/ggGallery/posts/2021-05-26-guest-post-1-communicating-the-essence-of-your-data/"&gt;guest
+post&lt;/a&gt; by William Ou on conveying the essence of data using
+&lt;code&gt;gganimate&lt;/code&gt;!) But if you understand the underlying principle
+of animations, they are essentially an array of individual images/plots
+displayed in a chronological order, and we can easily make animations
+(for any kind of R plots) ourselves.&lt;/p&gt;
+&lt;p&gt;In this post, I’m going to show you how to make animations in ggplot
+by hand based on this simple principle, without the use of
+&lt;code&gt;gganimate&lt;/code&gt; functions. I think this will make a fun coding
+exercise, and at the same time sharpen our programming skills. Also, a
+big shout-out to June Choe for his &lt;a
+href="https://yjunechoe.github.io/posts/2020-12-13-collapse-repetitive-piping-with-reduce/"&gt;neat
+post&lt;/a&gt;, which is the ultimate inspiration for this one. Enjoy!&lt;/p&gt;
+&lt;h2 id="create-an-animation-in-ggplot-by-hand"&gt;Create an animation in
+ggplot by hand&lt;/h2&gt;
+&lt;h3 id="the-static-plot"&gt;(1) The static plot&lt;/h3&gt;
+&lt;p&gt;To begin with, let’s create a toy plot below: The plot consists of
+ten &lt;code&gt;geom_rect()&lt;/code&gt; layers with successively narrower widths,
+and each rectangle is filled with a different color.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+
+### The toy dataframe
+df &amp;lt;- data.frame(xmin = 0, xmax = 0, ymin = -10, ymax = 10) 
+
+### The color vector
+color_vec &amp;lt;- terrain.colors(n = 10)  
+
+### The toy plot
+ggplot(df) +
+  geom_rect(aes(xmin = xmin - 10^1.0, xmax = xmax + 10^1.0, ymin = ymin, ymax = ymax), fill = color_vec[10]) + 
+    geom_rect(aes(xmin = xmin - 9^0.9, xmax = xmax + 9^0.9, ymin = ymin, ymax = ymax), fill = color_vec[9]) + 
+    geom_rect(aes(xmin = xmin - 8^0.8, xmax = xmax + 8^0.8, ymin = ymin, ymax = ymax), fill = color_vec[8]) + 
+    geom_rect(aes(xmin = xmin - 7^0.7, xmax = xmax + 7^0.7, ymin = ymin, ymax = ymax), fill = color_vec[7]) + 
+    geom_rect(aes(xmin = xmin - 6^0.6, xmax = xmax + 6^0.6, ymin = ymin, ymax = ymax), fill = color_vec[6]) + 
+    geom_rect(aes(xmin = xmin - 5^0.5, xmax = xmax + 5^0.5, ymin = ymin, ymax = ymax), fill = color_vec[5]) + 
+    geom_rect(aes(xmin = xmin - 4^0.4, xmax = xmax + 4^0.4, ymin = ymin, ymax = ymax), fill = color_vec[4]) + 
+    geom_rect(aes(xmin = xmin - 3^0.3, xmax = xmax + 3^0.3, ymin = ymin, ymax = ymax), fill = color_vec[3]) + 
+    geom_rect(aes(xmin = xmin - 2^0.2, xmax = xmax + 2^0.2, ymin = ymin, ymax = ymax), fill = color_vec[2]) + 
+    geom_rect(aes(xmin = xmin - 1^0.1, xmax = xmax + 1^0.1, ymin = ymin, ymax = ymax), fill = color_vec[1]) + 
+    scale_x_continuous(limits = c(-10, 10)) + 
+  theme_void()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file401c1a226af1_files/figure-html/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;The code looks quite like an eyesore, doesn’t it? The arguments in
+all &lt;code&gt;geom_rect()&lt;/code&gt; layers are basically the same; the only
+thing that changes is the supplied values. We’ll fix it now.&lt;/p&gt;
+&lt;h3 id="reduce-the-repetitive-code"&gt;(2) Reduce the repetitive code&lt;/h3&gt;
+&lt;p&gt;The function &lt;code&gt;reduce()&lt;/code&gt;, as its name suggests, is meant to
+“reduce” the repetitive code by iteratively applying a function over a
+list/vector of values and taking the function output in the current
+iteration as the input for the next iteration. Sounds abstract? Let’s
+take a look at how it actually works:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Reduce the repetitive code
+reduce(10:1,  # a vector of values
+       .f = ~ .x + geom_rect(aes(xmin = xmin - .y^(.y/10), xmax = xmax + .y^(.y/10), ymin = ymin, ymax = ymax), fill = color_vec[.y]),  # the function to be iteratively applied
+       .init = ggplot(df) + theme_void()  # the remaining constant part of the code 
+       )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file401c1a226af1_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;In the above code, we supplied a vector of values for the argument in
+the function as well as the constant part of the code to start the first
+iteration.&lt;/p&gt;
+&lt;p&gt;The first iteration would be:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(df) + 
+  theme_void() + 
+  geom_rect(aes(xmin = xmin - 10^(10/10), xmax = xmax + 10^(10/10), ymin = ymin, ymax = ymax), fill = color_vec[10])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file401c1a226af1_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;The second iteration would be:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(df) + 
+  theme_void() + 
+  geom_rect(aes(xmin = xmin - 10^(10/10), xmax = xmax + 10^(10/10), ymin = ymin, ymax = ymax), fill = color_vec[10]) + 
+  geom_rect(aes(xmin = xmin - 9^(9/10), xmax = xmax + 9^(9/10), ymin = ymin, ymax = ymax), fill = color_vec[9])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file401c1a226af1_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;So on and so forth. The final plot was returned after the last
+iteration was completed.&lt;/p&gt;
+&lt;h3 id="the-intermediate-plots"&gt;(3) The intermediate plots&lt;/h3&gt;
+&lt;p&gt;Remember that to create an animation, we need a sequence of
+images/plots. So where are our plots? Don’t worry; we’re going to get
+them now! Here, we’ll use the function &lt;code&gt;accumulate()&lt;/code&gt;: This
+function works essentially in the same way as &lt;code&gt;reduce()&lt;/code&gt;,
+except that it retains all the intermediate outputs from the iterations.
+Simply swap out &lt;code&gt;reduce()&lt;/code&gt; for &lt;code&gt;accumulate()&lt;/code&gt; to
+get all the intermediate plots stored in a list:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Use &amp;quot;accumulate()&amp;quot; to get the intermediate plots
+p_intermediate &amp;lt;- accumulate(10:1,
+       .f = ~ .x + geom_rect(aes(xmin = xmin - .y^(.y/10), xmax = xmax + .y^(.y/10), ymin = ymin, ymax = ymax), fill = color_vec[.y]),
+       .init = ggplot(df) + theme_void()
+       ) 
+
+library(patchwork)
+wrap_plots(p_intermediate[-1], ncol = 4, nrow = 3, byrow = T)  # omit the first empty plot&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file401c1a226af1_files/figure-html/unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="make-them-alive"&gt;(4) Make them alive&lt;/h3&gt;
+&lt;p&gt;Having a sequence of plots at hand, it’s time to make them alive!&lt;/p&gt;
+&lt;p&gt;Here, we’ll use the package &lt;a
+href="https://cran.r-project.org/web/packages/magick/vignettes/intro.html"&gt;&lt;code&gt;magick&lt;/code&gt;&lt;/a&gt;
+to create the animation. The package has lots of handy functions for
+image processing. First, we need to convert the ggplots into
+“magick-image” objects that the package works with. We’ll then use
+&lt;code&gt;image_join()&lt;/code&gt; to combine the individual magick-images into a
+single magick-image with multiple frames. Finally, we’ll pass it to
+&lt;code&gt;image_animate()&lt;/code&gt; to make the animation.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;magick&amp;quot;)  # install the package if you haven&amp;#39;t
+library(magick)
+
+### Convert the ggplots into &amp;quot;magick-image&amp;quot; objects
+images &amp;lt;- map(1:length(p_intermediate), function(x) {
+  image &amp;lt;- image_graph(width = 400, height = 300, res = 600)
+  plot(p_intermediate[[x]])
+  dev.off()
+  image
+})
+
+### Combine the individual images
+image_frames &amp;lt;- image_join(images)
+
+### Animate the frames
+image_animation &amp;lt;- image_animate(image_frames, fps = 5)  # modify &amp;quot;fps&amp;quot; to adjust the animation speed 
+print(image_animation)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# A tibble: 11 × 7
+   format width height colorspace matte filesize density
+   &amp;lt;chr&amp;gt;  &amp;lt;int&amp;gt;  &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;      &amp;lt;lgl&amp;gt;    &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;  
+ 1 gif      400    300 sRGB       TRUE         0 600x600
+ 2 gif      400    300 sRGB       TRUE         0 600x600
+ 3 gif      400    300 sRGB       TRUE         0 600x600
+ 4 gif      400    300 sRGB       TRUE         0 600x600
+ 5 gif      400    300 sRGB       TRUE         0 600x600
+ 6 gif      400    300 sRGB       TRUE         0 600x600
+ 7 gif      400    300 sRGB       TRUE         0 600x600
+ 8 gif      400    300 sRGB       TRUE         0 600x600
+ 9 gif      400    300 sRGB       TRUE         0 600x600
+10 gif      400    300 sRGB       TRUE         0 600x600
+11 gif      400    300 sRGB       TRUE         0 600x600&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="../file401c1a226af1_files/figure-html/unnamed-chunk-6-1.gif" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Here you go!&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;p&gt;To recap what we did, we first used the function
+&lt;code&gt;accumulate()&lt;/code&gt; to generate a sequence of ggplots, and then we
+used the functions from the package &lt;code&gt;magick&lt;/code&gt; to turn the
+individual plots into an animation. In fact, you can make animations for
+any images/plots you have. The key is to get an array of images/plots
+and combine them in a desired order!&lt;/p&gt;
+&lt;p&gt;Hope you learn something useful from this post and don’t forget to
+leave your comments and suggestions below if you have any!&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>6fce23fb23c34377478fe09215d0bc49</distill:md5>
+      <category>2023</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2023-12-09-post-31-from-static-to-dynamic-animations-in-ggplots</guid>
+      <pubDate>2023-12-09</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-12-09-post-31-from-static-to-dynamic-animations-in-ggplots/../../homepage_images/Post31.gif" medium="image" type="image/gif"/>
+    </item>
     <item>
       <title>Post #30. ggplot Map Series No.4: Google Maps in R with `ggmap`</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>

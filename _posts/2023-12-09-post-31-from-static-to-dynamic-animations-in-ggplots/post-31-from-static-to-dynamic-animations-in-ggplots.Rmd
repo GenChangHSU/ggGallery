@@ -10,8 +10,7 @@ output:
     self_contained: false
 categories:
   - "2023"
-preview: ../../homepage_images/Post31.png
-draft: true
+preview: ../../homepage_images/Post31.gif
 ---
 
 <!-- Webpage style -->
@@ -166,7 +165,28 @@ reduce(10:1,  # a vector of values
 
 ```
 
-In the above code, we supplied a vector of values for the arguments in the function as well as an initial component to start the first iteration. The first iteration would be `ggplot(df) + theme_void() + geom_rect(aes(xmin = xmin - 10^(10/10), xmax = xmax + 10^(10/10), ymin = ymin, ymax = ymax), fill = color_vec[10])`; the second iteration would be `ggplot(df) + theme_void() + geom_rect(aes(xmin = xmin - 10^(10/10), xmax = xmax + 10^(10/10), ymin = ymin, ymax = ymax), fill = color_vec[10]) + geom_rect(aes(xmin = xmin - 9^(9/10), xmax = xmax + 9^(9/10), ymin = ymin, ymax = ymax), fill = color_vec[9])`, and so on and so forth. The final plot was returned after the last value of the vector was passed into the function.
+In the above code, we supplied a vector of values for the argument in the function as well as the constant part of the code to start the first iteration. 
+
+The first iteration would be: 
+
+```{r}
+ggplot(df) + 
+  theme_void() + 
+  geom_rect(aes(xmin = xmin - 10^(10/10), xmax = xmax + 10^(10/10), ymin = ymin, ymax = ymax), fill = color_vec[10])
+
+```
+
+The second iteration would be:
+
+```{r}
+ggplot(df) + 
+  theme_void() + 
+  geom_rect(aes(xmin = xmin - 10^(10/10), xmax = xmax + 10^(10/10), ymin = ymin, ymax = ymax), fill = color_vec[10]) + 
+  geom_rect(aes(xmin = xmin - 9^(9/10), xmax = xmax + 9^(9/10), ymin = ymin, ymax = ymax), fill = color_vec[9])
+
+```
+
+So on and so forth. The final plot was returned after the last iteration was completed.
 
 ### (3) The intermediate plots
 
@@ -185,22 +205,38 @@ wrap_plots(p_intermediate[-1], ncol = 4, nrow = 3, byrow = T)  # omit the first 
 ```
 
 
-### (4) Make it alive
+### (4) Make them alive
 
+Having a sequence of plots at hand, it's time to make them alive!
+
+Here, we'll use the package [`magick`](https://cran.r-project.org/web/packages/magick/vignettes/intro.html) to create the animation. The package has lots of handy functions for image processing. First, we need to convert the ggplots into "magick-image" objects that the package works with. We'll then use `image_join()` to combine the individual magick-images into a single magick-image with multiple frames. Finally, we'll pass it to `image_animate()` to make the animation.
 
 ```{r, fig.width = 4, fig.height = 3, out.width = "70%"}
-p_intermediate
+# install.packages("magick")  # install the package if you haven't
+library(magick)
 
+### Convert the ggplots into "magick-image" objects
+images <- map(1:length(p_intermediate), function(x) {
+  image <- image_graph(width = 400, height = 300, res = 600)
+  plot(p_intermediate[[x]])
+  dev.off()
+  image
+})
 
+### Combine the individual images
+image_frames <- image_join(images)
 
+### Animate the frames
+image_animation <- image_animate(image_frames, fps = 5)  # modify "fps" to adjust the animation speed 
+print(image_animation)
 
 ```
 
+Here you go!
 
 ## Summary
 
-
-The bottom line is: produce a sequence of plots and stack them together in the desired order.
+To recap what we did, we first used the function `accumulate()` to generate a sequence of ggplots, and then we used the functions from the package `magick` to turn the individual plots into an animation. In fact, you can make animations for any images/plots you have. The key is to get an array of images/plots and combine them in a desired order!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
