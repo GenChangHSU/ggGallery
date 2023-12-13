@@ -1,7 +1,7 @@
 ---
-title: "Post #31. From static to dynamic—Create animations in ggplot by hand"
+title: "Post #31. From static to dynamic—Create ggplot animations by hand"
 description: |
-  Read below to see how to bring your plots alive!
+  Read more here to bring your plots alive!
 author:
   - name: Gen-Chang Hsu
 date: 2023-12-09
@@ -112,17 +112,17 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-Animations are a power tool for data visualization and communication: They turn static images/figures into dynamic stories. If we say _a figure is worth a thousand words_, then I would argue that _an animation is worth a thousand figures_.
+Animations are a powerful tool for data visualization and communication: They turn static images/plots into dynamic stories. If we say _A figure is worth a thousand words_, then I would argue that _An animation is worth a thousand figures_.
 
-Creating animations in ggplot is not a daunting task: The extension package [`gganimate`](https://gganimate.com/) provides a plethora of functions to make ggplot animations and customize them. (See this [guest post](https://genchanghsu.github.io/ggGallery/posts/2021-05-26-guest-post-1-communicating-the-essence-of-your-data/) by William Ou on conveying the essence of data using `gganimate`!) But if you understand the underlying principle of animations, they are essentially an array of individual images/plots displayed in a chronological order, and we can easily make animations (for any kind of R plots) ourselves.
+Creating ggplot animations is not a daunting task: The extension package [`gganimate`](https://gganimate.com/) provides a plethora of functions to make animations with ggplots and customize them. (See this [guest post](https://genchanghsu.github.io/ggGallery/posts/2021-05-26-guest-post-1-communicating-the-essence-of-your-data/) by William Ou on conveying the essence of data using `gganimate`!) But if you understand the underlying principle of animations, they are essentially an array of individual images/plots displayed in a chronological order, and we can easily make animations (for any kind of R plots) ourselves.
 
-In this post, I'm going to show you how to make animations in ggplot by hand based on this simple principle, without the use of `gganimate` functions. I think this will make a fun coding exercise, and at the same time sharpen our programming skills. Also, a big shout-out to June Choe for his [neat post](https://yjunechoe.github.io/posts/2020-12-13-collapse-repetitive-piping-with-reduce/), which is the ultimate inspiration for this one. Enjoy!
+In this post, I'm going to show you how to make ggplot animations by hand based on this simple principle, without turning to `gganimate` functions. I think this will make a fun coding exercise and at the same time sharpen our programming skills. Also, a big shout-out to June Choe for his [neat post](https://yjunechoe.github.io/posts/2020-12-13-collapse-repetitive-piping-with-reduce/), which is the ultimate inspiration for this one. Enjoy!
 
 
-## Create an animation in ggplot by hand
+## Create a ggplot animation by hand
 
 ### (1) The static plot
-To begin with, let's create a toy plot below: The plot consists of ten `geom_rect()` layers with successively narrower widths, and each rectangle is filled with a different color.  
+We'll begin by creating a toy plot: A plot consists of ten `geom_rect()` layers with successively narrower widths, and each rectangle is filled with a different color:
 
 ```{r, fig.width = 4, fig.height = 3, out.width = "70%"}
 library(tidyverse)
@@ -150,22 +150,21 @@ ggplot(df) +
 
 ```
 
-The code looks quite like an eyesore, doesn't it? The arguments in all `geom_rect()` layers are basically the same; the only thing that changes is the supplied values. We'll fix it now.
+The code looks quite like an eyesore, doesn't it? The arguments in all `geom_rect()` layers are basically the same; the only difference is the supplied values. Let's fix it.
 
 ### (2) Reduce the repetitive code
-The function `reduce()`, as its name suggests, is meant to "reduce" the repetitive code by iteratively applying a function over a list/vector of values and taking the function output in the current iteration as the input for the next iteration. Sounds abstract? Let's take a look at how it actually works:
+The function `reduce()`, as its name suggests, is meant to "reduce" the repetitive code by iteratively applying a function over a list/vector of values and taking the output in the current iteration as the input for the next iteration. Sounds abstract? Let's take a look at how it actually works:
 
 ```{r, fig.width = 4, fig.height = 3, out.width = "70%"}
-### Reduce the repetitive code
-reduce(10:1,  # a vector of values
-       .f = ~ .x + geom_rect(aes(xmin = xmin - .y^(.y/10), xmax = xmax + .y^(.y/10), ymin = ymin, ymax = ymax), fill = color_vec[.y]),  # the function to be iteratively applied
-       .init = ggplot(df) + theme_void()  # the remaining constant part of the code 
+### Reduce the repetitive code using "reduce()"
+reduce(10:1,  # a vector of values to iterate over
+       .f = ~ .x + geom_rect(aes(xmin = xmin - .y^(.y/10), xmax = xmax + .y^(.y/10), ymin = ymin, ymax = ymax), fill = color_vec[.y]),  # the function
+       .init = ggplot(df) + theme_void()  # the constant part of the code 
        )
   
-
 ```
 
-In the above code, we supplied a vector of values for the argument in the function as well as the constant part of the code to start the first iteration. 
+In the above code, we supplied a vector of values for the arguments in the function, the function itself, and the constant part of the code to start the iteration. 
 
 The first iteration would be: 
 
@@ -186,27 +185,24 @@ ggplot(df) +
 
 ```
 
-So on and so forth. The final plot was returned after the last iteration was completed.
+So on and so forth. After the last iteration was completed, the final product would be returned (which is the same as what you saw in the first code chunk).
 
 ### (3) The intermediate plots
-
-Remember that to create an animation, we need a sequence of images/plots. So where are our plots? Don't worry; we're going to get them now! Here, we'll use the function `accumulate()`: This function works essentially in the same way as `reduce()`, except that it retains all the intermediate outputs from the iterations. Simply swap out `reduce()` for `accumulate()` to get all the intermediate plots stored in a list:
+Remember that to create an animation, we need a sequence of images/plots. We only have one plot now. So where are our plots? Don't worry; we're going to get them here using the cool function `accumulate()`: This function works essentially in the same way as `reduce()`, except that it keeps all the intermediate outputs from the iterations. Simply swap out `reduce()` for `accumulate()` to get all the intermediate plots stored in a list:
 
 ```{r, fig.width = 5, fig.height = 3, out.width = "70%"}
 ### Use "accumulate()" to get the intermediate plots
 p_intermediate <- accumulate(10:1,
-       .f = ~ .x + geom_rect(aes(xmin = xmin - .y^(.y/10), xmax = xmax + .y^(.y/10), ymin = ymin, ymax = ymax), fill = color_vec[.y]),
-       .init = ggplot(df) + theme_void()
-       ) 
+                             .f = ~ .x + geom_rect(aes(xmin = xmin - .y^(.y/10), xmax = xmax + .y^(.y/10), ymin = ymin, ymax = ymax), fill = color_vec[.y]),
+                             .init = ggplot(df) + theme_void()
+                             ) 
 
 library(patchwork)
 wrap_plots(p_intermediate[-1], ncol = 4, nrow = 3, byrow = T)  # omit the first empty plot
 
 ```
 
-
 ### (4) Make them alive
-
 Having a sequence of plots at hand, it's time to make them alive!
 
 Here, we'll use the package [`magick`](https://cran.r-project.org/web/packages/magick/vignettes/intro.html) to create the animation. The package has lots of handy functions for image processing. First, we need to convert the ggplots into "magick-image" objects that the package works with. We'll then use `image_join()` to combine the individual magick-images into a single magick-image with multiple frames. Finally, we'll pass it to `image_animate()` to make the animation.
