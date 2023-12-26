@@ -117,9 +117,12 @@ knitr::opts_chunk$set(message = F,
 
 
 
+In this post, I'm going to show you how to add them to your map, using the package [`ggspatial`](https://paleolimbot.github.io/ggspatial/index.html). 
 
 
-## An elevation map of Japan
+
+
+## An elevation map of Taiwan
 
 
 
@@ -127,23 +130,54 @@ knitr::opts_chunk$set(message = F,
 
 ```{r, fig.width = 5, fig.height = 4}
 library(tidyverse)
+library(sf)
 
+### Administrative boundary data of Taiwan from the "geoBoundaries" database 
+url_Taiwan_boundary_admin0 <- "https://github.com/GenChangHSU/ggGallery/blob/master/_posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/geoBoundaries-TWN-ADM0-all.zip?raw=TRUE"
+download.file(url_Taiwan_boundary_admin0, "geoBoundaries-TWN-ADM0-all.zip", mode = "wb")
+unzip("geoBoundaries-TWN-ADM0-all.zip")
+
+Taiwan_boundary_admin0 <- st_read("./geoBoundaries-TWN-ADM0/geoBoundaries-TWN-ADM0.shp")
 
 
 ```
 
 ### Add elevation tiles
 
+```{r, fig.width = 5, fig.height = 4}
+library(elevatr)
 
+### Elevation data of Taiwan from the "Amazon Web Services" database  
+Taiwan_elevation <- get_elev_raster(locations = Taiwan_boundary_admin0, z = 9, clip = "locations") %>% 
+  as.data.frame(xy = T, na.rm = T) %>%
+  `colnames<-`(c("lon", "lat", "elev"))
+
+
+```
 
 ### Add a scale bar
 
+```{r, fig.width = 5, fig.height = 4}
+library(ggspatial)
 
+
+  # scalebar(x.min = 117.9, x.max = 118.9, y.min = 21.7, y.max = 22.2,
+  #          dist = 50, dist_unit = "km", transform = T, model = "WGS84", 
+  #          height = 0.2, st.dist = 0.3, st.size = 2.5) +
+  # north(x.min = 118.6, x.max = 118.7, y.min = 22.4, y.max = 22.57, symbol = 10, scale = 5) + 
+  # annotate(geom = "text", x = 118.45, y = 22.5, label = "N", size = 5)
+
+```
 
 ### Add a north arrow
 
 
+```{r, fig.width = 5, fig.height = 4}
 
+
+
+
+```
 
 
 
