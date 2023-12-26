@@ -118,7 +118,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/anchor-4.2.2/anchor.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/bowser-1.9.3/bowser.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/distill-2.2.21/template.v2.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/header-attrs-2.25/header-attrs.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/jquery-3.6.0/jquery-3.6.0.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/jquery-3.6.0/jquery-3.6.0.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/jquery-3.6.0/jquery-3.6.0.min.map","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/popper-2.6.0/popper.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/tippy-6.2.7/tippy-light-border.css","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/tippy-6.2.7/tippy.css","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/tippy-6.2.7/tippy.umd.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["geoBoundaries-TWN-ADM0-all/CITATION-AND-USE-geoBoundaries.txt","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0-metaData.json","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0-metaData.txt","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0-PREVIEW.png","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.dbf","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.geojson","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.prj","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.shp","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.shx","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.topojson","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0_simplified.dbf","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0_simplified.geojson","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0_simplified.prj","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0_simplified.shp","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0_simplified.shx","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0_simplified.topojson","geoBoundaries-TWN-ADM0-all.zip","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/anchor-4.2.2/anchor.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/bowser-1.9.3/bowser.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/distill-2.2.21/template.v2.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/figure-html5/unnamed-chunk-1-1.png","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/header-attrs-2.25/header-attrs.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/jquery-3.6.0/jquery-3.6.0.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/jquery-3.6.0/jquery-3.6.0.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/jquery-3.6.0/jquery-3.6.0.min.map","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/popper-2.6.0/popper.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/tippy-6.2.7/tippy-light-border.css","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/tippy-6.2.7/tippy.css","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/tippy-6.2.7/tippy.umd.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1609,16 +1609,63 @@ div.l-body img {
 </head>
 <!-- Start of the article -->
 <h2 id="introduction">Introduction</h2>
-<h2 id="an-elevation-map-of-japan">An elevation map of Japan</h2>
-<h3 id="the-boundary-map">The boundary map</h3>
+<p>Have you ever created a map in ggplot and wondered how to add a scale bar and a north arrow to it? Well, you can easily do it in R using the package <a href="https://paleolimbot.github.io/ggspatial/index.html"><code>ggspatial</code></a>, and this is the topic for this short post.</p>
+<h2 id="an-elevation-map-of-taiwan">An elevation map of Taiwan</h2>
+<h3 id="the-boundary">(1) The boundary</h3>
+<p>We’ll create an elevation map of Taiwan as our example here. First, we make an outline map of Taiwan using the administrative boundary data downloaded from the <a href="https://www.geoboundaries.org/countryDownloads.html">geoBoundaries</a> website (I’ve already pre-downloaded the data to the folder of this post on GitHub):</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Get the boundary data of Taiwan from GitHub</span></span>
+<span><span class='va'>url_Taiwan_boundary_admin0</span> <span class='op'>&lt;-</span> <span class='st'>"https://github.com/GenChangHSU/ggGallery/blob/master/_posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggspatial/geoBoundaries-TWN-ADM0-all.zip?raw=TRUE"</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span><span class='va'>url_Taiwan_boundary_admin0</span>, <span class='st'>"geoBoundaries-TWN-ADM0-all.zip"</span>, mode <span class='op'>=</span> <span class='st'>"wb"</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/unzip.html'>unzip</a></span><span class='op'>(</span><span class='st'>"geoBoundaries-TWN-ADM0-all.zip"</span>, exdir <span class='op'>=</span> <span class='st'>"geoBoundaries-TWN-ADM0-all"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Read in the shapefile</span></span>
+<span><span class='va'>Taiwan_boundary_admin0</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>st_read</a></span><span class='op'>(</span><span class='st'>"./geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.shp"</span>, quiet <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Make an outline map of Taiwan</span></span>
+<span><span class='va'>Taiwan_outline_map</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>Taiwan_boundary_admin0</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='cn'>NA</span>, color <span class='op'>=</span> <span class='st'>"grey80"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_x_continuous</a></span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>119</span><span class='op'>:</span><span class='fl'>123</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>coord_sf</a></span><span class='op'>(</span>xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>119</span>, <span class='fl'>123</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>21.5</span>, <span class='fl'>25.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>panel.grid <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>Taiwan_outline_map</span></span></code></pre>
 </div>
+<p><img src="post-32-ggplot-map-series-no5-map-annotation-with-ggspatial_files/figure-html5/unnamed-chunk-1-1.png" width="60%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="add-elevation-tiles">Add elevation tiles</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/jhollist/elevatr/'>elevatr</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># ### Elevation data of Taiwan from the "Amazon Web Services" database  </span></span>
+<span><span class='co'># Taiwan_elevation &lt;- get_elev_raster(locations = Taiwan_boundary_admin0, z = 9, clip = "locations") %&gt;% </span></span>
+<span><span class='co'>#   as.data.frame(xy = T, na.rm = T) %&gt;%</span></span>
+<span><span class='co'>#   `colnames&lt;-`(c("lon", "lat", "elev"))</span></span></code></pre>
+</div>
+</div>
 <h3 id="add-a-scale-bar">Add a scale bar</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://paleolimbot.github.io/ggspatial/'>ggspatial</a></span><span class='op'>)</span></span>
+<span></span>
+<span></span>
+<span>  <span class='co'># scalebar(x.min = 117.9, x.max = 118.9, y.min = 21.7, y.max = 22.2,</span></span>
+<span>  <span class='co'>#          dist = 50, dist_unit = "km", transform = T, model = "WGS84", </span></span>
+<span>  <span class='co'>#          height = 0.2, st.dist = 0.3, st.size = 2.5) +</span></span>
+<span>  <span class='co'># north(x.min = 118.6, x.max = 118.7, y.min = 22.4, y.max = 22.57, symbol = 10, scale = 5) + </span></span>
+<span>  <span class='co'># annotate(geom = "text", x = 118.45, y = 22.5, label = "N", size = 5)</span></span></code></pre>
+</div>
+</div>
 <h3 id="add-a-north-arrow">Add a north arrow</h3>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
 <h2 id="summary">Summary</h2>
 <p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
