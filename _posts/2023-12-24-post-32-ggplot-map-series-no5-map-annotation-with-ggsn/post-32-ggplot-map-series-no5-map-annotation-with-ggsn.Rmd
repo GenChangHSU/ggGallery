@@ -129,7 +129,7 @@ library(tidyverse)
 ### The zipped shapefile is available in the folder of this post on GitHub
 library(sf)
 
-Taiwan_boundary_admin0_url <- "https://github.com/GenChangHSU/ggGallery/blob/master/_posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggspatial/geoBoundaries-TWN-ADM0-all.zip?raw=TRUE"
+Taiwan_boundary_admin0_url <- "https://github.com/GenChangHSU/ggGallery/blob/master/_posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn/geoBoundaries-TWN-ADM0-all.zip?raw=TRUE"
 download.file(Taiwan_boundary_admin0_url, "geoBoundaries-TWN-ADM0-all.zip", mode = "wb")
 unzip("geoBoundaries-TWN-ADM0-all.zip", exdir = "geoBoundaries-TWN-ADM0-all")
 
@@ -168,9 +168,17 @@ It's time to add a scale bar! `ggsn` has the function `scalebar()` to add and cu
 library(ggsn)
 
 Taiwan_elevation_map_annotated <- Taiwan_elevation_map + 
-  scalebar(x.min = 121.5, x.max = 122.5, y.min = 21.7, y.max = 22.2,
-           dist = 50, dist_unit = "km", transform = T, model = "WGS84",
-           height = 0.2, st.dist = 0.3, st.size = 2.5)
+  scalebar(x.min = 122, 
+           x.max = 123, 
+           y.min = 21.7, 
+           y.max = 22.2,
+           dist = 50, 
+           dist_unit = "km", 
+           transform = T, 
+           model = "WGS84",
+           height = 0.3, 
+           st.dist = 0.1, 
+           st.size = 2.5)
 
 Taiwan_elevation_map_annotated
 
