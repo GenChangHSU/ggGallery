@@ -1,0 +1,209 @@
+---
+title: "Post #32. ggplot Map Series No.5: Map annotation with `ggsn`"
+description: |
+  Enhance your map with a scale bar and a north arrow using the package `ggsn`!
+author:
+  - name: Gen-Chang Hsu
+date: 2023-12-24
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2023"
+  - "Map Series"
+preview: ../../homepage_images/Post32.png
+draft: true
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+  color: #2780e3 !important;
+  border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+  border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 30% !important;
+}
+
+</style>
+
+<head>
+  <base target="_blank">
+</head>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+Have you ever created a map in ggplot and wondered how to add a scale bar and a north arrow to it? Well, you can easily do it in R using the package [`ggsn`](https://paleolimbot.github.io/ggspatial/index.html), and this is the topic for this short post.
+
+
+## An annotated elevation map of Taiwan
+
+### (1) Create an elevation map
+We'll create an elevation map of Taiwan as our example. Here, we'll use the function `get_elev_raster()` from the package `elevatr` to retrieve the elevation tiles of Taiwan from the online map databases. Basically, what we need to do is to read in a shapefile of the area of interest and pass it to the function. It will return a "RasterLayer" object, which is then converted to a dataframe for plotting in ggplot.
+
+```{r, fig.width = 3.5, fig.height = 3.5, out.width = "60%"}
+library(tidyverse)
+
+### Download and read in the shapefile of Taiwan's administrative boundary
+### The zipped shapefile is available in the folder of this post on GitHub
+library(sf)
+
+Taiwan_boundary_admin0_url <- "https://github.com/GenChangHSU/ggGallery/blob/master/_posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggspatial/geoBoundaries-TWN-ADM0-all.zip?raw=TRUE"
+download.file(Taiwan_boundary_admin0_url, "geoBoundaries-TWN-ADM0-all.zip", mode = "wb")
+unzip("geoBoundaries-TWN-ADM0-all.zip", exdir = "geoBoundaries-TWN-ADM0-all")
+
+Taiwan_boundary_admin0 <- st_read("geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.shp", quiet = T)
+
+### Get the elevation data of Taiwan
+library(elevatr)
+library(terra)  # for the function as.data.frame()
+
+Taiwan_elevation <- get_elev_raster(locations = Taiwan_boundary_admin0, z = 9, clip = "locations") %>%  # z controls the resolution of the elevation tiles
+  as.data.frame(xy = T, na.rm = T) %>%  # convert the RasterLayer to a dataframe
+  `colnames<-`(c("lon", "lat", "elevation")) %>% 
+  mutate(elevation = if_else(elevation < 0 | is.na(elevation), 0, elevation))  # set the negative elevation values and NAs to 0
+
+### Make the map
+library(tidyterra)  # for the function hypso.colors()
+topo_pal <- hypso.colors(n = 10, palette = "dem_poster")  # a topographic color palette
+
+Taiwan_elevation_map <- ggplot() + 
+  geom_raster(data = Taiwan_elevation, aes(x = lon, y = lat, fill = elevation), show.legend = F) +
+  scale_fill_gradientn(colors = topo_pal,
+                       values = c(seq(0, 0.35, length.out = 5), seq(0.5, 1, length.out = 5))) +
+  coord_sf(xlim = c(119, 123), ylim = c(21.5, 25.5)) +
+  theme_bw() + 
+  theme(panel.grid = element_blank())
+
+Taiwan_elevation_map
+
+```
+
+### (2) Add a scale bar
+
+It's time to add a scale bar! `ggsn` has the function `scalebar()` to add and customize a scale bar:
+
+```{r, fig.width = 3.5, fig.height = 3.5, out.width = "60%"}
+library(ggsn)
+
+Taiwan_elevation_map_annotated <- Taiwan_elevation_map + 
+  scalebar(x.min = 121.5, x.max = 122.5, y.min = 21.7, y.max = 22.2,
+           dist = 50, dist_unit = "km", transform = T, model = "WGS84",
+           height = 0.2, st.dist = 0.3, st.size = 2.5)
+
+Taiwan_elevation_map_annotated
+
+```
+
+
+### (3) Add a north arrow
+
+
+```{r, fig.width = 3.5, fig.height = 3.5, out.width = "60%"}
+
+
+  # north(x.min = 118.6, x.max = 118.7, y.min = 22.4, y.max = 22.57, symbol = 10, scale = 5) + 
+  # annotate(geom = "text", x = 118.45, y = 22.5, label = "N", size = 5)
+
+```
+
+
+### (4) Polish the map
+
+
+```{r, fig.width = 3.5, fig.height = 3.5, out.width = "60%"}
+
+
+
+
+```
+
+
+
+## Summary
+
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
+
