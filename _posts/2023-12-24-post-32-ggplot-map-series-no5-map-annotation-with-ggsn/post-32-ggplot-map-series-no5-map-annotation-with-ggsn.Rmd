@@ -162,37 +162,37 @@ Taiwan_elevation_map
 
 ### (2) Add a scale bar
 
-It's time to add a scale bar! `ggsn` has the function `scalebar()` to add and customize a scale bar:
+It's time to add a scale bar! `ggsn` has the function `scalebar()` to add and customize a scale bar. There are quite a few things you can adjust: the scale bar position, the segment distance and unit, the appearance of the bar and bar labels, etc.
 
 ```{r, fig.width = 3.5, fig.height = 3.5, out.width = "60%"}
 library(ggsn)
 
 Taiwan_elevation_map_annotated <- Taiwan_elevation_map + 
-  scalebar(x.min = 122, 
-           x.max = 123, 
-           y.min = 21.7, 
-           y.max = 22.2,
-           dist = 50, 
-           dist_unit = "km", 
-           transform = T, 
-           model = "WGS84",
-           height = 0.3, 
-           st.dist = 0.1, 
-           st.size = 2.5)
+  scalebar(x.min = 121.9, 
+           x.max = 122.9,
+           y.min = 21.6,
+           y.max = 22.1,
+           dist = 50,  # the distance of each segment of the scale bar
+           dist_unit = "km",  # the unit of the scale bar 
+           transform = TRUE,  # "TRUE" if the coordinates are in the long-lat format
+           model = "WGS84",  # ellipsoid model for the transformation if "transform = TRUE"
+           height = 0.2,  # the height of the scale bar
+           st.dist = 0.2,  # the distance between the scale bar and the bar labels
+           st.size = 2.5,  # the size of the bar labels
+           border.size = 0.25  # the width of the bar border
+           )  
 
 Taiwan_elevation_map_annotated
 
 ```
 
-
 ### (3) Add a north arrow
 
 
 ```{r, fig.width = 3.5, fig.height = 3.5, out.width = "60%"}
-
-
-  # north(x.min = 118.6, x.max = 118.7, y.min = 22.4, y.max = 22.57, symbol = 10, scale = 5) + 
-  # annotate(geom = "text", x = 118.45, y = 22.5, label = "N", size = 5)
+Taiwan_elevation_map_annotated + 
+  north(x.min = 118.6, x.max = 118.7, y.min = 22.4, y.max = 22.57, symbol = 10, scale = 5) + 
+  annotate(geom = "text", x = 118.45, y = 22.5, label = "N", size = 5)
 
 ```
 
