@@ -117,54 +117,57 @@ knitr::opts_chunk$set(message = F,
 Have you ever created a map in ggplot and wondered how to add a scale bar and a north arrow to it? Well, you can easily do it in R using the package [`ggspatial`](https://paleolimbot.github.io/ggspatial/index.html), and this is the topic for this short post.
 
 
-## An elevation map of Taiwan
+## An annotated elevation map of Taiwan
 
-### (1) The boundary
-We'll create an elevation map of Taiwan as our example here. First, we make an outline map of Taiwan using the administrative boundary data downloaded from the [geoBoundaries](https://www.geoboundaries.org/countryDownloads.html) website (I've already pre-downloaded the data to the folder of this post on GitHub):
+### (1) Create an elevation map
+We'll create an elevation map of Taiwan as our example. The package `elevatr` allows one to retreive the elevation data for  
+
 
 ```{r, fig.width = 3.5, fig.height = 3.5, out.width = "60%"}
 library(tidyverse)
+
+### Boundary of Taiwan
 library(sf)
 
-### Get the boundary data of Taiwan from GitHub
-url_Taiwan_boundary_admin0 <- "https://github.com/GenChangHSU/ggGallery/blob/master/_posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggspatial/geoBoundaries-TWN-ADM0-all.zip?raw=TRUE"
-download.file(url_Taiwan_boundary_admin0, "geoBoundaries-TWN-ADM0-all.zip", mode = "wb")
+Taiwan_boundary_admin0_url <- "https://github.com/GenChangHSU/ggGallery/blob/master/_posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggspatial/geoBoundaries-TWN-ADM0-all.zip?raw=TRUE"
+download.file(Taiwan_boundary_admin0_url, "geoBoundaries-TWN-ADM0-all.zip", mode = "wb")
 unzip("geoBoundaries-TWN-ADM0-all.zip", exdir = "geoBoundaries-TWN-ADM0-all")
 
-### Read in the shapefile
-Taiwan_boundary_admin0 <- st_read("./geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.shp", quiet = T)
+Taiwan_boundary_admin0 <- st_read("geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.shp", quiet = T)
 
-### Make an outline map of Taiwan
-Taiwan_outline_map <- ggplot(Taiwan_boundary_admin0) + 
-  geom_sf(fill = NA, color = "grey80") + 
-  scale_x_continuous(breaks = c(119:123)) + 
+### Elevation data of Taiwan from the "Amazon Web Services" database
+library(elevatr)
+library(terra)
+
+Taiwan_elevation <- get_elev_raster(locations = Taiwan_boundary_admin0, z = 9, clip = "locations") %>%
+  as.data.frame(xy = T, na.rm = T) %>%
+  `colnames<-`(c("lon", "lat", "elevation")) %>% 
+  mutate(elevation = if_else(is.na(elevation), 0, elevation))
+
+### Plot
+library(tidyterra)
+topo_pal <- hypso.colors(n = 10, palette = "dem_poster")
+
+Taiwan_elevation_map <- ggplot() + 
+  geom_raster(data = Taiwan_elevation, aes(x = lon, y = lat, fill = elevation), show.legend = F) +
+  scale_fill_gradientn(colors = topo_pal,
+                       limit = c(-50, 4000),
+                       values = c(seq(0, 0.35, length.out = 5), seq(0.5, 1, length.out = 5)),
+                       na.value = "transparent") +
   coord_sf(xlim = c(119, 123), ylim = c(21.5, 25.5)) +
   theme_bw() + 
   theme(panel.grid = element_blank())
 
-Taiwan_outline_map
+Taiwan_elevation_map
 
 ```
 
-### Add the elevation tiles
 
+
+
+### (2) Add a scale bar
 
 ```{r, fig.width = 3.5, fig.height = 3.5, out.width = "60%"}
-library(elevatr)
-
-# ### Elevation data of Taiwan from the "Amazon Web Services" database  
-# Taiwan_elevation <- get_elev_raster(locations = Taiwan_boundary_admin0, z = 9, clip = "locations") %>% 
-#   as.data.frame(xy = T, na.rm = T) %>%
-#   `colnames<-`(c("lon", "lat", "elev"))
-
-
-Taiwan_outline_map 
-
-```
-
-### Add a scale bar
-
-```{r, fig.width = 5, fig.height = 4}
 library(ggspatial)
 
 
@@ -176,10 +179,12 @@ library(ggspatial)
 
 ```
 
-### Add a north arrow
 
 
-```{r, fig.width = 5, fig.height = 4}
+### (3) Add a north arrow
+
+
+```{r, fig.width = 3.5, fig.height = 3.5, out.width = "60%"}
 
 
 
