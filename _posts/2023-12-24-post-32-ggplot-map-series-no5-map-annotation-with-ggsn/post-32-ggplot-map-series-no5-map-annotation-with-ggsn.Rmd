@@ -12,7 +12,6 @@ categories:
   - "2023"
   - "Map Series"
 preview: ../../homepage_images/Post32.png
-draft: true
 ---
 
 <!-- Webpage style -->
@@ -137,10 +136,9 @@ Taiwan_boundary_admin0 <- st_read("geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-
 
 ### Get the elevation data of Taiwan
 library(elevatr)
-library(terra)  # for the function as.data.frame()
 
 Taiwan_elevation <- get_elev_raster(locations = Taiwan_boundary_admin0, z = 9, clip = "locations") %>%  # z controls the resolution of the elevation tiles
-  as.data.frame(xy = T, na.rm = T) %>%  # convert the RasterLayer to a dataframe
+  terra::as.data.frame(xy = T, na.rm = T) %>%  # convert the RasterLayer to a dataframe
   `colnames<-`(c("lon", "lat", "elevation")) %>% 
   mutate(elevation = if_else(elevation < 0 | is.na(elevation), 0, elevation))  # set the negative elevation values and NAs to 0
 
@@ -210,45 +208,72 @@ Done!
 
 ### (4) Fun with map
 
-Let's have some fun and play around with the map:
+Let's have some fun with the map:
 
 ```{r, fig.width = 3.5, fig.height = 3.5, out.width = "60%"}
+library(ggtext)
+library(ragg)  # for using the fonts installed in the system
 
+### A vector of the letters and white spaces in the title
+title_vec <- str_split("A Topographic Map of Taiwan", pattern = "")[[1]]
 
+### Italicize the letters
+title_vec_italic <- if_else(title_vec == " ", title_vec, str_glue("_{title_vec}_"))
+
+### A dataframe for mapping the title to the plot
+x_position <- seq(119.2, 121.8, by = 0.1) + c(-0.04, 0, 0.02, 0.02, -0.04, 
+                                              0, -0.03, 0, 0, -0.03,
+                                              0.02, 0.01, 0.01, 0, 0.01,
+                                              0.07, 0.04, 0, 0.04, -0.01,
+                                              0.05, 0.05, 0.05, 0.05, 0.07,
+                                              0.09, 0.11)
+
+title_df <- data.frame(x = x_position, 
+                       y = 25.6, 
+                       label = title_vec_italic)
+
+### The font
+library(showtext)
+font_add_google("IM FELL English")
+showtext_auto()
+
+### The map
 ggplot() + 
   geom_raster(data = Taiwan_elevation, aes(x = lon, y = lat, fill = elevation), show.legend = F) +
+  geom_richtext(data = title_df, aes(x = x, y = y, label = label, color = x),
+                fill = NA, 
+                label.color = NA, 
+                family = "IM FELL English",
+                size = 7,
+                show.legend = F) + 
   scale_fill_gradientn(colors = topo_pal,
                        values = c(seq(0, 0.35, length.out = 5), seq(0.5, 1, length.out = 5))) +
-  coord_sf(xlim = c(119, 123), ylim = c(21.5, 25.5)) +
-  labs(x = NULL, y = NULL) + 
-  theme_bw() + 
-  theme(panel.grid = element_blank()) + 
-  scalebar(x.min = 121.9, 
+  scale_color_gradientn(colors = topo_pal, limits = c(NA, 122.5)) + 
+  coord_sf(xlim = c(119, 123), ylim = c(21.5, 25.73)) +
+  theme_void() + 
+  theme(panel.background = element_rect(fill = "#FEFEDF", color = NA)) + 
+  scalebar(x.min = 122.1, 
            x.max = 122.9,
            y.min = 21.6,
-           y.max = 22.1,
-           dist = 50,  # the distance of the bar segment
-           dist_unit = "km",  # the unit of the bar segment
-           transform = TRUE,  # "TRUE" if the coordinates are in the long-lat format
-           model = "WGS84",  # ellipsoid model for the transformation if "transform = TRUE"
-           height = 0.2,  # the height of the scale bar
-           st.dist = 0.2,  # the distance between the scale bar and the bar labels
-           st.size = 2.5,  # the size of the bar labels
-           border.size = 0.25  # the width of the bar border
-           ) + 
-  north(x.min = 122.58, 
-        x.max = 122.68, 
-        y.min = 22.4, 
-        y.max = 22.6, 
-        symbol = 10,  # the type of the north arrow
-        scale = 5  # the size of the north arrow
-        ) + 
-  annotate(geom = "text", x = 122.45, y = 22.5, label = "N", size = 5)
-
+           y.max = 22.2,
+           dist = 50,
+           dist_unit = "km",
+           transform = TRUE,
+           model = "WGS84",
+           height = 0.1,
+           st.dist = 0.15,
+           st.size = 4.5,
+           border.size = 0.2,
+           family = "IM FELL English") + 
+  north(x.min = 122.51, 
+        x.max = 122.61, 
+        y.min = 22.2, 
+        y.max = 22.4, 
+        symbol = 10,
+        scale = 4) + 
+  annotate(geom = "text", x = 122.41, y = 22.35, label = "N", size = 7, family = "IM FELL English", fontface = "italic")
 
 ```
-
-
 
 ## Summary
 

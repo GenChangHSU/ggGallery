@@ -7,7 +7,276 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>2023-12-09</lastBuildDate>
+    <lastBuildDate>Sun, 24 Dec 2023 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #32. ggplot Map Series No.5: Map annotation with `ggsn`</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn</link>
+      <description>
+
+
+&lt;!-- Webpage style --&gt;
+&lt;style&gt;
+d-article a {
+  color: #2780e3 !important;
+  border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+  border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 30% !important;
+}
+
+&lt;/style&gt;
+&lt;head&gt;
+&lt;base target="_blank"&gt;
+&lt;/head&gt;
+&lt;!-- Start of the article --&gt;
+&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Have you ever created a map in ggplot and wondered how to add a scale
+bar and a north arrow to it? Well, you can easily do it in R using the
+package &lt;a
+href="https://oswaldosantos.github.io/ggsn/"&gt;&lt;code&gt;ggsn&lt;/code&gt;&lt;/a&gt;, and
+this is the topic for this short post.&lt;/p&gt;
+&lt;h2 id="an-annotated-topographic-map-of-taiwan"&gt;An annotated topographic
+map of Taiwan&lt;/h2&gt;
+&lt;h3 id="create-a-topographic-map"&gt;(1) Create a topographic map&lt;/h3&gt;
+&lt;p&gt;We’ll create an topographic map of Taiwan as our example. Here, we’ll
+use the function &lt;code&gt;get_elev_raster()&lt;/code&gt; from the package
+&lt;code&gt;elevatr&lt;/code&gt; to retrieve the elevation tiles of Taiwan from the
+online map databases. Basically, what we need to do is to read in a
+shapefile of the area of interest and pass it to the function. It will
+return a “RasterLayer” object, which is then converted to a dataframe
+for plotting in ggplot.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+
+### Download and read in the shapefile of Taiwan&amp;#39;s administrative boundary
+### The zipped shapefile is available in the folder of this post on GitHub
+library(sf)
+
+Taiwan_boundary_admin0_url &amp;lt;- &amp;quot;https://github.com/GenChangHSU/ggGallery/blob/master/_posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn/geoBoundaries-TWN-ADM0-all.zip?raw=TRUE&amp;quot;
+download.file(Taiwan_boundary_admin0_url, &amp;quot;geoBoundaries-TWN-ADM0-all.zip&amp;quot;, mode = &amp;quot;wb&amp;quot;)
+unzip(&amp;quot;geoBoundaries-TWN-ADM0-all.zip&amp;quot;)
+
+Taiwan_boundary_admin0 &amp;lt;- st_read(&amp;quot;geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.shp&amp;quot;, quiet = T)
+
+### Get the elevation data of Taiwan
+library(elevatr)
+
+Taiwan_elevation &amp;lt;- get_elev_raster(locations = Taiwan_boundary_admin0, z = 9, clip = &amp;quot;locations&amp;quot;) %&amp;gt;%  # z controls the resolution of the elevation tiles
+  terra::as.data.frame(xy = T, na.rm = T) %&amp;gt;%  # convert the RasterLayer to a dataframe
+  `colnames&amp;lt;-`(c(&amp;quot;lon&amp;quot;, &amp;quot;lat&amp;quot;, &amp;quot;elevation&amp;quot;)) %&amp;gt;% 
+  mutate(elevation = if_else(elevation &amp;lt; 0 | is.na(elevation), 0, elevation))  # set the negative elevation values and NAs to 0
+
+### Make the map
+library(tidyterra)  # for the function hypso.colors()
+topo_pal &amp;lt;- hypso.colors(n = 10, palette = &amp;quot;dem_poster&amp;quot;)  # a topographic color palette
+
+Taiwan_topographic_map &amp;lt;- ggplot() + 
+  geom_raster(data = Taiwan_elevation, aes(x = lon, y = lat, fill = elevation), show.legend = F) +
+  scale_fill_gradientn(colors = topo_pal,
+                       values = c(seq(0, 0.35, length.out = 5), seq(0.5, 1, length.out = 5))) +
+  coord_sf(xlim = c(119, 123), ylim = c(21.5, 25.5)) +
+  labs(x = NULL, y = NULL) + 
+  theme_bw() + 
+  theme(panel.grid = element_blank())
+
+Taiwan_topographic_map&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file11445a1b610_files/figure-html/unnamed-chunk-1-1.png" width="60%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="add-a-scale-bar"&gt;(2) Add a scale bar&lt;/h3&gt;
+&lt;p&gt;It’s time to add a scale bar! &lt;code&gt;ggsn&lt;/code&gt; has the function
+&lt;code&gt;scalebar()&lt;/code&gt; to add and customize a scale bar. There are
+quite a few things we can adjust: the position of the scale bar, the
+distance and unit of the bar segment, the appearance of the bar and bar
+labels, etc. Let’s see how it works below:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(ggsn)
+
+Taiwan_topographic_map_annotated &amp;lt;- Taiwan_topographic_map + 
+  scalebar(x.min = 121.9, 
+           x.max = 122.9,
+           y.min = 21.6,
+           y.max = 22.1,
+           dist = 50,  # the distance of the bar segment
+           dist_unit = &amp;quot;km&amp;quot;,  # the unit of the bar segment
+           transform = TRUE,  # &amp;quot;TRUE&amp;quot; if the coordinates are in the long-lat format
+           model = &amp;quot;WGS84&amp;quot;,  # ellipsoid model for the transformation if &amp;quot;transform = TRUE&amp;quot;
+           height = 0.2,  # the height of the scale bar
+           st.dist = 0.2,  # the distance between the scale bar and the bar labels
+           st.size = 2.5,  # the size of the bar labels
+           border.size = 0.25  # the width of the bar border
+           )  
+
+Taiwan_topographic_map_annotated&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file11445a1b610_files/figure-html/unnamed-chunk-2-1.png" width="60%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="add-a-north-arrow"&gt;(3) Add a north arrow&lt;/h3&gt;
+&lt;p&gt;Next, the north arrow. This is easy-peasy: Just use the function
+&lt;code&gt;north()&lt;/code&gt; and specify the position as well as the type of the
+arrow you like (there are various types of north arrows available; use
+&lt;code&gt;northSymbols()&lt;/code&gt; to see them), and you’re all set! We’ll also
+add an “N” above the north arrow. It does take some experimentation to
+get the desired arrow position and size, so be patient!&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;Taiwan_topographic_map_annotated &amp;lt;- Taiwan_topographic_map_annotated + 
+  north(x.min = 122.58, 
+        x.max = 122.68, 
+        y.min = 22.4, 
+        y.max = 22.6, 
+        symbol = 10,  # the type of the north arrow
+        scale = 5  # the size of the north arrow
+        ) + 
+  annotate(geom = &amp;quot;text&amp;quot;, x = 122.45, y = 22.5, label = &amp;quot;N&amp;quot;, size = 5)
+
+Taiwan_topographic_map_annotated&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file11445a1b610_files/figure-html/unnamed-chunk-3-1.png" width="60%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Done!&lt;/p&gt;
+&lt;h3 id="fun-with-map"&gt;(4) Fun with map&lt;/h3&gt;
+&lt;p&gt;Let’s have some fun with the map:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(ggtext)
+library(ragg)  # for using the fonts installed in the system
+
+### A vector of the letters and white spaces in the title
+title_vec &amp;lt;- str_split(&amp;quot;A Topographic Map of Taiwan&amp;quot;, pattern = &amp;quot;&amp;quot;)[[1]]
+
+### Italicize the letters
+title_vec_italic &amp;lt;- if_else(title_vec == &amp;quot; &amp;quot;, title_vec, str_glue(&amp;quot;_{title_vec}_&amp;quot;))
+
+### A dataframe for mapping the title to the plot
+x_position &amp;lt;- seq(119.2, 121.8, by = 0.1) + c(-0.04, 0, 0.02, 0.02, -0.04, 
+                                              0, -0.03, 0, 0, -0.03,
+                                              0.02, 0.01, 0.01, 0, 0.01,
+                                              0.07, 0.04, 0, 0.04, -0.01,
+                                              0.05, 0.05, 0.05, 0.05, 0.07,
+                                              0.09, 0.11)
+
+title_df &amp;lt;- data.frame(x = x_position, 
+                       y = 25.6, 
+                       label = title_vec_italic)
+
+### The font
+library(showtext)
+font_add_google(&amp;quot;IM FELL English&amp;quot;)
+showtext_auto()
+
+### The map
+ggplot() + 
+  geom_raster(data = Taiwan_elevation, aes(x = lon, y = lat, fill = elevation), show.legend = F) +
+  geom_richtext(data = title_df, aes(x = x, y = y, label = label, color = x),
+                fill = NA, 
+                label.color = NA, 
+                family = &amp;quot;IM FELL English&amp;quot;,
+                size = 7,
+                show.legend = F) + 
+  scale_fill_gradientn(colors = topo_pal,
+                       values = c(seq(0, 0.35, length.out = 5), seq(0.5, 1, length.out = 5))) +
+  scale_color_gradientn(colors = topo_pal, limits = c(NA, 122.5)) + 
+  coord_sf(xlim = c(119, 123), ylim = c(21.5, 25.73)) +
+  theme_void() + 
+  theme(panel.background = element_rect(fill = &amp;quot;#FEFEDF&amp;quot;, color = NA)) + 
+  scalebar(x.min = 122.1, 
+           x.max = 122.9,
+           y.min = 21.6,
+           y.max = 22.2,
+           dist = 50,
+           dist_unit = &amp;quot;km&amp;quot;,
+           transform = TRUE,
+           model = &amp;quot;WGS84&amp;quot;,
+           height = 0.1,
+           st.dist = 0.15,
+           st.size = 4.5,
+           border.size = 0.2,
+           family = &amp;quot;IM FELL English&amp;quot;) + 
+  north(x.min = 122.51, 
+        x.max = 122.61, 
+        y.min = 22.2, 
+        y.max = 22.4, 
+        symbol = 10,
+        scale = 4) + 
+  annotate(geom = &amp;quot;text&amp;quot;, x = 122.41, y = 22.35, label = &amp;quot;N&amp;quot;, size = 7, family = &amp;quot;IM FELL English&amp;quot;, fontface = &amp;quot;italic&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file11445a1b610_files/figure-html/unnamed-chunk-4-1.png" width="60%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;p&gt;To summarize what we did, we used the package &lt;code&gt;elevatr&lt;/code&gt; to
+get the elevation tiles and made a topographic map of Taiwan, and then
+we added a scale bar and a north arrow to the map using the
+&lt;code&gt;scalebar()&lt;/code&gt; and &lt;code&gt;north()&lt;/code&gt; function from the
+package &lt;code&gt;ggsn&lt;/code&gt;. Now, it’s your turn to make use of what we
+learned here!&lt;/p&gt;
+&lt;p&gt;Hope you learn something useful from this post and don’t forget to
+leave your comments and suggestions below if you have any!&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>1b2ae1811f319fa5eece87cfd564a63e</distill:md5>
+      <category>2023</category>
+      <category>Map Series</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn</guid>
+      <pubDate>Sun, 24 Dec 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn/post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="672" height="672"/>
+    </item>
     <item>
       <title>Post #31. From static to dynamic—Create ggplot animations by hand</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
@@ -150,7 +419,7 @@ ggplot(df) +
     geom_rect(aes(xmin = xmin - 1^0.1, xmax = xmax + 1^0.1, ymin = ymin, ymax = ymax), fill = color_vec[1]) + 
     scale_x_continuous(limits = c(-10, 10)) + 
   theme_void()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2eb4461cd46_files/figure-html/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file114457951b4d_files/figure-html/unnamed-chunk-1-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;The code looks quite like an eyesore, doesn’t it? The arguments in
 all &lt;code&gt;geom_rect()&lt;/code&gt; layers are basically the same; the only
 difference is the supplied values. Let’s fix it.&lt;/p&gt;
@@ -165,7 +434,7 @@ reduce(10:1,  # a vector of values to iterate over
        .f = ~ .x + geom_rect(aes(xmin = xmin - .y^(.y/10), xmax = xmax + .y^(.y/10), ymin = ymin, ymax = ymax), fill = color_vec[.y]),  # the function
        .init = ggplot(df) + theme_void()  # the constant part of the code 
        )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2eb4461cd46_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file114457951b4d_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;In the above code, we supplied a vector of values for the arguments
 in the function, the function itself, and the constant part of the code
 to start the iteration.&lt;/p&gt;
@@ -173,13 +442,13 @@ to start the iteration.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(df) + 
   theme_void() + 
   geom_rect(aes(xmin = xmin - 10^(10/10), xmax = xmax + 10^(10/10), ymin = ymin, ymax = ymax), fill = color_vec[10])&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2eb4461cd46_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file114457951b4d_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;The second iteration would be:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(df) + 
   theme_void() + 
   geom_rect(aes(xmin = xmin - 10^(10/10), xmax = xmax + 10^(10/10), ymin = ymin, ymax = ymax), fill = color_vec[10]) + 
   geom_rect(aes(xmin = xmin - 9^(9/10), xmax = xmax + 9^(9/10), ymin = ymin, ymax = ymax), fill = color_vec[9])&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2eb4461cd46_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file114457951b4d_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;So on and so forth. After the last iteration was completed, the final
 product would be returned (which is the same as what you saw in the
 first code chunk).&lt;/p&gt;
@@ -200,7 +469,7 @@ p_intermediate &amp;lt;- accumulate(10:1,
 
 library(patchwork)
 wrap_plots(p_intermediate[-1], ncol = 4, nrow = 3, byrow = T)  # omit the first empty plot&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2eb4461cd46_files/figure-html/unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file114457951b4d_files/figure-html/unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="make-them-alive"&gt;(4) Make them alive&lt;/h3&gt;
 &lt;p&gt;Having a sequence of plots at hand, it’s time to make them alive!&lt;/p&gt;
 &lt;p&gt;Here, we’ll use the package &lt;a
@@ -242,7 +511,7 @@ print(image_animation)&lt;/code&gt;&lt;/pre&gt;
  9 gif      400    300 sRGB       TRUE         0 600x600
 10 gif      400    300 sRGB       TRUE         0 600x600
 11 gif      400    300 sRGB       TRUE         0 600x600&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="../file2eb4461cd46_files/figure-html/unnamed-chunk-6-1.gif" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="../file114457951b4d_files/figure-html/unnamed-chunk-6-1.gif" width="70%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Here you go!&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;To recap what we did, we first used the function
@@ -257,7 +526,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <distill:md5>6fce23fb23c34377478fe09215d0bc49</distill:md5>
       <category>2023</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2023-12-09-post-31-from-static-to-dynamic-animations-in-ggplots</guid>
-      <pubDate>2023-12-09</pubDate>
+      <pubDate>Sat, 09 Dec 2023 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-12-09-post-31-from-static-to-dynamic-animations-in-ggplots/../../homepage_images/Post31.gif" medium="image" type="image/gif"/>
     </item>
     <item>
@@ -268,7 +537,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2023</category>
       <category>Map Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap</guid>
-      <pubDate>2023-10-26</pubDate>
+      <pubDate>Thu, 26 Oct 2023 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap/../../homepage_images/Post30.png" medium="image" type="image/png" width="1152" height="1152"/>
     </item>
     <item>
@@ -278,7 +547,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Come and learn how to create raincloud plots in ggplots to make your data "shine"!</description>
       <category>2023</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2023-09-09-post-29-creating-raincloud-plots-in-ggplots</guid>
-      <pubDate>2023-09-09</pubDate>
+      <pubDate>Sat, 09 Sep 2023 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-09-09-post-29-creating-raincloud-plots-in-ggplots/../../homepage_images/Post29.png" medium="image" type="image/png" width="864" height="960"/>
     </item>
     <item>
@@ -288,7 +557,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Come and learn four different ways of adding an external image to ggplots to decorate your figure!</description>
       <category>2023</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2023-08-22-post-28-adding-images-to-ggplots</guid>
-      <pubDate>2023-08-22</pubDate>
+      <pubDate>Tue, 22 Aug 2023 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-08-22-post-28-adding-images-to-ggplots/../../homepage_images/Post28.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
@@ -299,7 +568,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2023</category>
       <category>Map Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2023-07-31-post-27-ggplot-map-series-no3-the-veins-of-taiwan</guid>
-      <pubDate>2023-07-31</pubDate>
+      <pubDate>Mon, 31 Jul 2023 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-07-31-post-27-ggplot-map-series-no3-the-veins-of-taiwan/../../homepage_images/Post27.png" medium="image" type="image/png" width="710" height="518"/>
     </item>
     <item>
@@ -310,7 +579,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2023</category>
       <category>Map Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps</guid>
-      <pubDate>2023-05-24</pubDate>
+      <pubDate>Wed, 24 May 2023 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/../../homepage_images/Post26.png" medium="image" type="image/png" width="729" height="768"/>
     </item>
     <item>
@@ -321,7 +590,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2023</category>
       <category>Map Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps</guid>
-      <pubDate>2023-03-09</pubDate>
+      <pubDate>Thu, 09 Mar 2023 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/../../homepage_images/Post25.png" medium="image" type="image/png" width="1536" height="960"/>
     </item>
     <item>
@@ -331,7 +600,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>An awesome integration of `gt` and `ggplot2` tells the story of the top ten bird-window collision species in Taiwan!</description>
       <category>2023</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2023-02-18-post-24-gt-and-ggplot-visualizing-bwc-in-taiwan</guid>
-      <pubDate>2023-02-18</pubDate>
+      <pubDate>Sat, 18 Feb 2023 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-02-18-post-24-gt-and-ggplot-visualizing-bwc-in-taiwan/../../homepage_images/Post24.png" medium="image" type="image/png" width="1934" height="3334"/>
     </item>
     <item>
@@ -342,7 +611,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2023</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2023-01-13-post-23-ggplot-legend-tips-series-no8-legend-item-spacing</guid>
-      <pubDate>2023-01-13</pubDate>
+      <pubDate>Fri, 13 Jan 2023 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2023-01-13-post-23-ggplot-legend-tips-series-no8-legend-item-spacing/../../homepage_images/Post23.png" medium="image" type="image/png" width="1152" height="768"/>
     </item>
     <item>
@@ -352,7 +621,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Ready for an epic ggplot journey through the glowing solar system? Let's go!</description>
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-11-02-post-22-the-glowing-solar-system</guid>
-      <pubDate>2022-11-02</pubDate>
+      <pubDate>Wed, 02 Nov 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-11-02-post-22-the-glowing-solar-system/../../homepage_images/Post22.png" medium="image" type="image/png" width="1728" height="1728"/>
     </item>
     <item>
@@ -362,7 +631,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>In this quick post, I will show you how to use color and fill aesthetic together in the same geom layer to achieve the desired outcome!</description>
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-10-22-post-21-useful-tips-for-mapping-color-and-fill-aesthetics-in-the-same-geom-layer</guid>
-      <pubDate>2022-10-22</pubDate>
+      <pubDate>Sat, 22 Oct 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-10-22-post-21-useful-tips-for-mapping-color-and-fill-aesthetics-in-the-same-geom-layer/../../homepage_images/Post21.png" medium="image" type="image/png" width="1152" height="768"/>
     </item>
     <item>
@@ -373,7 +642,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-10-01-post-20-ggplot-legend-tips-series-no7-working-on-legends-with-theme</guid>
-      <pubDate>2022-10-04</pubDate>
+      <pubDate>Tue, 04 Oct 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-10-01-post-20-ggplot-legend-tips-series-no7-working-on-legends-with-theme/../../homepage_images/Post20.png" medium="image" type="image/png" width="1344" height="768"/>
     </item>
     <item>
@@ -383,7 +652,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Let's make flowy alluvial diagrams in ggplot using the extension package `ggalluvial`!</description>
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-09-10-post-19-go-with-the-flow-alluvial-plots-with-ggplot</guid>
-      <pubDate>2022-09-10</pubDate>
+      <pubDate>Sat, 10 Sep 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-09-10-post-19-go-with-the-flow-alluvial-plots-with-ggplot/../../homepage_images/Post19.png" medium="image" type="image/png" width="1536" height="864"/>
     </item>
     <item>
@@ -393,7 +662,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Come and learn how to create nice bump charts with ggplot!</description>
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-08-01-post-18-bump-charts-with-ggplot</guid>
-      <pubDate>2022-08-01</pubDate>
+      <pubDate>Mon, 01 Aug 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-08-01-post-18-bump-charts-with-ggplot/../../homepage_images/Post18.png" medium="image" type="image/png" width="1728" height="960"/>
     </item>
     <item>
@@ -404,7 +673,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions</guid>
-      <pubDate>2022-07-03</pubDate>
+      <pubDate>Sun, 03 Jul 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions/../../homepage_images/Post17.png" medium="image" type="image/png" width="960" height="672"/>
     </item>
     <item>
@@ -415,7 +684,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions</guid>
-      <pubDate>2022-06-09</pubDate>
+      <pubDate>Thu, 09 Jun 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions/../../homepage_images/Post16.png" medium="image" type="image/png" width="1152" height="672"/>
     </item>
     <item>
@@ -425,7 +694,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Bothered by the hassle of manipulating the axes for individual facets? This is the post for you!</description>
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-05-12-post-15-manipulating-axis-scales-for-individual-facets</guid>
-      <pubDate>2022-05-12</pubDate>
+      <pubDate>Thu, 12 May 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-05-12-post-15-manipulating-axis-scales-for-individual-facets/../../homepage_images/Post15.png" medium="image" type="image/png" width="960" height="768"/>
     </item>
     <item>
@@ -435,7 +704,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Using different color scales for multiple geom layers in one ggplot with `ggnewscale` and `relayer`</description>
       <category>2022</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-04-24-post-14-multiple-color-scales-in-one-ggplot</guid>
-      <pubDate>2022-04-24</pubDate>
+      <pubDate>Sun, 24 Apr 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-04-24-post-14-multiple-color-scales-in-one-ggplot/../../homepage_images/Post14.png" medium="image" type="image/png" width="1056" height="672"/>
     </item>
     <item>
@@ -446,7 +715,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-03-02-post-13-ggplot-legend-tips-series-no4-merging-ggplot-legends</guid>
-      <pubDate>2022-03-02</pubDate>
+      <pubDate>Wed, 02 Mar 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-03-02-post-13-ggplot-legend-tips-series-no4-merging-ggplot-legends/../../homepage_images/Post13.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
@@ -457,7 +726,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-02-05-post-12-ggplot-legend-tips-series-no3-three-ways-to-turn-off-ggplot-legends</guid>
-      <pubDate>2022-02-05</pubDate>
+      <pubDate>Sat, 05 Feb 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-02-05-post-12-ggplot-legend-tips-series-no3-three-ways-to-turn-off-ggplot-legends/../../homepage_images/Post12.png" medium="image" type="image/png" width="768" height="576"/>
     </item>
     <item>
@@ -468,7 +737,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-02-01-post-11-ggplot-legend-tips-series-no2-working-on-continuous-legends-with-guides</guid>
-      <pubDate>2022-02-01</pubDate>
+      <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-02-01-post-11-ggplot-legend-tips-series-no2-working-on-continuous-legends-with-guides/../../homepage_images/Post11.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
@@ -479,7 +748,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>2022</category>
       <category>Legend Tips Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2022-01-28-post-10-ggplot-legend-tips-series-no1-working-on-discrete-scale-legends-with-guides</guid>
-      <pubDate>2022-01-28</pubDate>
+      <pubDate>Fri, 28 Jan 2022 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2022-01-28-post-10-ggplot-legend-tips-series-no1-working-on-discrete-scale-legends-with-guides/../../homepage_images/Post10.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
@@ -489,7 +758,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Come and learn two methods to arrange multiple ggplots on one graphic device.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots</guid>
-      <pubDate>2021-12-20</pubDate>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/../../homepage_images/Post9.png" medium="image" type="image/png" width="1152" height="1152"/>
     </item>
     <item>
@@ -499,7 +768,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Create a Pokemon phylogenetic tree in ggplot with the extension package ggdendro.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-10-01-post-8-pokemon-phylogeny-with-ggdendro</guid>
-      <pubDate>2021-10-01</pubDate>
+      <pubDate>Fri, 01 Oct 2021 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-10-01-post-8-pokemon-phylogeny-with-ggdendro/../../homepage_images/Post8.png" medium="image" type="image/png" width="960" height="960"/>
     </item>
     <item>
@@ -509,7 +778,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Come and learn how to customize the axis scales (axis limits, tick breaks, and tick labels) for individual ggplot facets!</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-09-11-post-7-customize-the-axis-scales-for-individual-facets</guid>
-      <pubDate>2021-09-11</pubDate>
+      <pubDate>Sat, 11 Sep 2021 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-09-11-post-7-customize-the-axis-scales-for-individual-facets/../../homepage_images/Post7.png" medium="image" type="image/png" width="1152" height="768"/>
     </item>
     <item>
@@ -519,7 +788,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Visualize data distributions using violin plots with ggplot.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-08-02-post-6-play-good-music-for-your-data-violin-plots-with-ggplot</guid>
-      <pubDate>2021-08-02</pubDate>
+      <pubDate>Mon, 02 Aug 2021 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-08-02-post-6-play-good-music-for-your-data-violin-plots-with-ggplot/../../homepage_images/Post6.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
@@ -529,7 +798,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Enhance text displays in your ggplots with the extension package ggtext!</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext</guid>
-      <pubDate>2021-07-10</pubDate>
+      <pubDate>Sat, 10 Jul 2021 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/../../homepage_images/Post5.png" medium="image" type="image/png" width="1152" height="1152"/>
     </item>
     <item>
@@ -539,7 +808,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>In this post, I will show you a simple trick to keep the colors of the same factor levels consistent across different ggplot figures.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-06-26-post-4-consistent-colors-of-the-same-factor-levels-across-figures</guid>
-      <pubDate>2021-06-26</pubDate>
+      <pubDate>Sat, 26 Jun 2021 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-06-26-post-4-consistent-colors-of-the-same-factor-levels-across-figures/../../homepage_images/Post4.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
@@ -549,7 +818,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Want to know how to create effective pie charts with ggplot? Dig in to learn more!</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-06-18-post-3-pie-charts-with-ggplot</guid>
-      <pubDate>2021-06-18</pubDate>
+      <pubDate>Fri, 18 Jun 2021 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-06-18-post-3-pie-charts-with-ggplot/../../homepage_images/Post3.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
@@ -559,7 +828,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>Visualizing multi-dimensional and dynamic data can be challenging. In this post, I will show how you can better communicate these features with interactive plots and animations.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-05-26-guest-post-1-communicating-the-essence-of-your-data</guid>
-      <pubDate>2021-05-26</pubDate>
+      <pubDate>Wed, 26 May 2021 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-05-26-guest-post-1-communicating-the-essence-of-your-data/../../homepage_images/Guest_post1.gif" medium="image" type="image/gif"/>
     </item>
     <item>
@@ -569,7 +838,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>This post shows you three different ways to create log axes in ggplots and provides some suggestions on which method to use for your figures.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-05-07-post-2-three-ways-to-create-log-axes-in-ggplots-which-one-should-you-use</guid>
-      <pubDate>2021-05-07</pubDate>
+      <pubDate>Fri, 07 May 2021 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-05-07-post-2-three-ways-to-create-log-axes-in-ggplots-which-one-should-you-use/../../homepage_images/Post2.png" medium="image" type="image/png" width="960" height="576"/>
     </item>
     <item>
@@ -579,7 +848,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <description>In this post, I will show you a simple quick hack to center long legend titles in ggplots without bothering gtables and grobs.</description>
       <category>2021</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots</guid>
-      <pubDate>2021-05-01</pubDate>
+      <pubDate>Sat, 01 May 2021 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots/../../homepage_images/Post1.png" medium="image" type="image/png" width="1152" height="672"/>
     </item>
   </channel>
