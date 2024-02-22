@@ -118,7 +118,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/anchor-4.2.2/anchor.min.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/bowser-1.9.3/bowser.min.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/distill-2.2.21/template.v2.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/header-attrs-2.25/header-attrs.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.map","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/popper-2.6.0/popper.min.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/tippy-6.2.7/tippy-light-border.css","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/tippy-6.2.7/tippy.css","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/tippy-6.2.7/tippy.umd.min.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["Black_Kite_Records.xlsx","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/anchor-4.2.2/anchor.min.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/bowser-1.9.3/bowser.min.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/distill-2.2.21/template.v2.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/header-attrs-2.25/header-attrs.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.map","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/popper-2.6.0/popper.min.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/tippy-6.2.7/tippy-light-border.css","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/tippy-6.2.7/tippy.css","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/tippy-6.2.7/tippy.umd.min.js","post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1637,14 +1637,71 @@ div.l-body img {
 <p>Welcome to the first post of 2024! It’s been a while since my last post last year (to be precise two months; maybe it’s not really long?), and I feel excited to be back in the saddle and write something about ggplots. Hope we’ll have another year of posts full of useful and fun topics!</p>
 <p>To kick things off, I’ll be showing you how to create time series plots in ggplots. Time series plots are essentially a type of line charts with “time” on the x-axis. Of course, you can simply treat time as a numeric variable and plot it as a usual line chart, but ggplot does offer a set of functions that work directly with time. So in this post, we’re going to explore these functions and see how we can leverage them to create a nice time series plot!</p>
 <h2 id="the-data">The data</h2>
-<p>In most of the past posts, I used data from R or package. But this time is a bit special: the dataset is from me!</p>
-<p>I’ve been recording the number of black kite at the bridge from Nov. 2022 to Aug. 2023, pretty much every day except some times when I went out of town.</p>
-<p>This is not the main focus of the post, but let’s create a map of the site (which is often for ecological research):</p>
+<p>In most previous posts, I used built-in R datasets as examples. But this time it’s a bit different: I’ll be using the data I collected myself!</p>
+<p>I’ve been recording the number of <a href="https://ebird.org/species/blakit1">black kites (<em>Milvus migrans</em>)</a> along the Xindian river in Taipei, Taiwan from November 2022 to August 2023 (pretty much every day except for a few times when I was out of town), and this dataset consists of the daily black kite counts, the locations of the observations, and the weather conditions.</p>
+<p>Let’s take a quick look at the dataset:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readxl.tidyverse.org'>readxl</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Read the data</span></span>
+<span><span class='va'>black_kite_raw</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readxl.tidyverse.org/reference/read_excel.html'>read_xlsx</a></span><span class='op'>(</span><span class='st'>"Black_Kite_Records.xlsx"</span>, sheet <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Organize the data</span></span>
+<span><span class='va'>black_kite_clean</span> <span class='op'>&lt;-</span> <span class='va'>black_kite_raw</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Date <span class='op'>=</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/ymd.html'>ymd</a></span><span class='op'>(</span><span class='va'>Date</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>Date</span>, <span class='va'>Site</span>, <span class='va'>Number</span>, <span class='va'>Weather</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>black_kite_clean</span><span class='op'>)</span></span></code></pre>
 </div>
+<pre><code># A tibble: 6 × 4
+  Date       Site            Number Weather         
+  &lt;date&gt;     &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;           
+1 2022-11-17 Huajiang_bridge      0 Sunny_with_cloud
+2 2022-11-18 Huajiang_bridge      0 Sunny_with_cloud
+3 2022-11-19 Huajiang_bridge      7 Sunny           
+4 2022-11-20 Huajiang_bridge      1 Cloudy          
+5 2022-11-21 Huajiang_bridge      2 Cloudy          
+6 2022-11-22 Huajiang_bridge      0 Sunny_with_cloud</code></pre>
 </div>
+<p>The majority of the observations came from one site “Huajiang Bridge”, so we’ll just focus on this particular site from now on. Below is a site map created via <a href="https://cran.r-project.org/web/packages/ggmap/readme/README.html">ggmap</a>:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/dkahle/ggmap'>ggmap</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Need to register an API key for Stadia Maps and for Google Maps</span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/ggmap/man/register_stadiamaps.html'>register_stadiamaps</a></span><span class='op'>(</span>key <span class='op'>=</span> <span class='st'>"your key"</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/ggmap/man/register_google.html'>register_google</a></span><span class='op'>(</span>key <span class='op'>=</span> <span class='st'>"your key"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/ggmap/man/register_stadiamaps.html'>register_stadiamaps</a></span><span class='op'>(</span>key <span class='op'>=</span> <span class='st'>"69ccb61d-8886-4e2a-9ed1-fd5c67dab17b"</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/ggmap/man/register_google.html'>register_google</a></span><span class='op'>(</span>key <span class='op'>=</span> <span class='st'>"AIzaSyBPa8CKmRUxaQEPRvy2C3comSZGp6AOyh8"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Get the long-lat coordinates of the bridge</span></span>
+<span><span class='va'>huajiang_bridge_lon_lat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ggmap/man/geocode.html'>geocode</a></span><span class='op'>(</span><span class='st'>"Huajiang Bridge, Wanhua District"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Create a map</span></span>
+<span><span class='va'>map_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ggmap/man/get_stadiamap.html'>get_stadiamap</a></span><span class='op'>(</span>bbox <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>left <span class='op'>=</span> <span class='va'>huajiang_bridge_lon_lat</span><span class='op'>$</span><span class='va'>lon</span> <span class='op'>-</span> <span class='fl'>0.05</span>, </span>
+<span>                                   bottom <span class='op'>=</span> <span class='va'>huajiang_bridge_lon_lat</span><span class='op'>$</span><span class='va'>lat</span> <span class='op'>-</span> <span class='fl'>0.04</span>, </span>
+<span>                                   right <span class='op'>=</span> <span class='va'>huajiang_bridge_lon_lat</span><span class='op'>$</span><span class='va'>lon</span> <span class='op'>+</span> <span class='fl'>0.05</span>, </span>
+<span>                                   top <span class='op'>=</span> <span class='va'>huajiang_bridge_lon_lat</span><span class='op'>$</span><span class='va'>lat</span> <span class='op'>+</span> <span class='fl'>0.04</span><span class='op'>)</span>, </span>
+<span>                          zoom <span class='op'>=</span> <span class='fl'>14</span>, </span>
+<span>                          maptype <span class='op'>=</span> <span class='st'>"stamen_terrain"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/ggmap/man/ggmap.html'>ggmap</a></span><span class='op'>(</span><span class='va'>map_data</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/annotate.html'>annotate</a></span><span class='op'>(</span>geom <span class='op'>=</span> <span class='st'>"rect"</span>, </span>
+<span>           xmin <span class='op'>=</span> <span class='va'>huajiang_bridge_lon_lat</span><span class='op'>$</span><span class='va'>lon</span> <span class='op'>-</span> <span class='fl'>0.01</span>,</span>
+<span>           ymin <span class='op'>=</span> <span class='va'>huajiang_bridge_lon_lat</span><span class='op'>$</span><span class='va'>lat</span> <span class='op'>-</span> <span class='fl'>0.01</span>,</span>
+<span>           xmax <span class='op'>=</span> <span class='va'>huajiang_bridge_lon_lat</span><span class='op'>$</span><span class='va'>lon</span> <span class='op'>+</span> <span class='fl'>0.01</span>,</span>
+<span>           ymax <span class='op'>=</span> <span class='va'>huajiang_bridge_lon_lat</span><span class='op'>$</span><span class='va'>lat</span> <span class='op'>+</span> <span class='fl'>0.01</span>,</span>
+<span>           fill <span class='op'>=</span> <span class='cn'>NA</span>,</span>
+<span>           color <span class='op'>=</span> <span class='st'>"red"</span>,</span>
+<span>           linewidth <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_void</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png" width="60%" style="display: block; margin: auto 0 auto auto;" /></p>
+</div>
+<p><br></p>
 <h2 id="the-time-series-plot">The time series plot</h2>
 <p>Break it down into various steps</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1654,7 +1711,7 @@ div.l-body img {
 </div>
 <h2 id="summary">Summary</h2>
 <p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

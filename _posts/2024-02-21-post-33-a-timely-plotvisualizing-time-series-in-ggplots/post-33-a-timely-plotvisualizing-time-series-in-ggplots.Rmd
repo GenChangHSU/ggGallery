@@ -120,19 +120,63 @@ To kick things off, I'll be showing you how to create time series plots in ggplo
 
 ## The data
 
-In most of the past posts, I used data from R or package. But this time is a bit special: the dataset is from me!
+In most previous posts, I used built-in R datasets as examples. But this time it's a bit different: I'll be using the data I collected myself! 
 
-I've been recording the number of black kite at the bridge from Nov. 2022 to Aug. 2023, pretty much every day except some times when I went out of town.
+I've been recording the number of [black kites (_Milvus migrans_)](https://ebird.org/species/blakit1) along the Xindian river in Taipei, Taiwan from November 2022 to August 2023 (pretty much every day except for a few times when I was out of town), and this dataset consists of the daily black kite counts, the locations of the observations, and the weather conditions.
 
-This is not the main focus of the post, but let's create a map of the site (which is often for ecological research):
+Let's take a quick look at the dataset:
 
 ```{r, fig.width = 5, fig.height = 4}
 library(tidyverse)
+library(readxl)
 
+### Read the data
+black_kite_raw <- read_xlsx("Black_Kite_Records.xlsx", sheet = 1)
 
+### Organize the data
+black_kite_clean <- black_kite_raw %>% 
+  mutate(Date = ymd(Date)) %>% 
+  select(Date, Site, Number, Weather)
+
+head(black_kite_clean)
 
 ```
+The majority of the observations came from one site "Huajiang Bridge", so we'll just focus on this particular site from now on. Below is a site map created via [ggmap](https://cran.r-project.org/web/packages/ggmap/readme/README.html):
 
+```{r, fig.width = 5, fig.height = 4, out.width = "60%", fig.align = 'right'}
+library(ggmap)
+
+### Need to register an API key for Stadia Maps and for Google Maps
+register_stadiamaps(key = "your key")
+register_google(key = "your key")
+
+register_stadiamaps(key = "69ccb61d-8886-4e2a-9ed1-fd5c67dab17b")
+register_google(key = "AIzaSyBPa8CKmRUxaQEPRvy2C3comSZGp6AOyh8")
+
+### Get the long-lat coordinates of the bridge
+huajiang_bridge_lon_lat <- geocode("Huajiang Bridge, Wanhua District")
+
+### Create a map
+map_data <- get_stadiamap(bbox = c(left = huajiang_bridge_lon_lat$lon - 0.05, 
+                                   bottom = huajiang_bridge_lon_lat$lat - 0.04, 
+                                   right = huajiang_bridge_lon_lat$lon + 0.05, 
+                                   top = huajiang_bridge_lon_lat$lat + 0.04), 
+                          zoom = 14, 
+                          maptype = "stamen_terrain")
+
+ggmap(map_data) + 
+  annotate(geom = "rect", 
+           xmin = huajiang_bridge_lon_lat$lon - 0.01,
+           ymin = huajiang_bridge_lon_lat$lat - 0.01,
+           xmax = huajiang_bridge_lon_lat$lon + 0.01,
+           ymax = huajiang_bridge_lon_lat$lat + 0.01,
+           fill = NA,
+           color = "red",
+           linewidth = 1.5) + 
+  theme_void()
+
+```
+<br>
 
 ## The time series plot
 
