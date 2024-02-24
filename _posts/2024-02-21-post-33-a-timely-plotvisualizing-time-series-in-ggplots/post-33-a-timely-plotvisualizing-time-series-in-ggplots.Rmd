@@ -180,15 +180,93 @@ ggmap(map_data) +
 
 ## The time series plot
 
-Break it down into various steps
+Now comes the main topic of the post: creating the time series line chart! I'll break down the process into four steps and walk through them one by one.
+
+### (1) Summarize the data by week
+
+Instead of plotting the daily kite counts, I decided to plot the weekly counts to better show the overall trend. To summarize the data by week, I first rounded the dates to the nearest weeks and summed the kite counts in each week. I also assigned a score to each of the four daily weather conditions and calculated the mean score for each week to represent the average weather condition.
+
+At the end of the code, I added a week ID column by computing the day differences from the first week and dividing the differences by 7. This week ID column will be used for fitting a LOESS curve in step (2). Finally, I converted the rounded dates to datetimes for plotting purposes in step (3) and (4).
+
+```{r, fig.width = 5, fig.height = 4}
+### Summarize the data by week
+black_kite_clean_week <- black_kite_clean %>% 
+  filter(Site == "Huajiang_bridge") %>%
+  mutate(Date_week = round_date(Date, "week")) %>%  # round the dates to the nearest weeks
+  mutate(Weather_score = case_when(Weather == "Sunny" ~ 3,  # assign a score to each weather condition
+                                   Weather == "Sunny_with_cloud" ~ 2,
+                                   Weather == "Cloudy" ~ 1,
+                                   Weather == "Rainy" ~ 0)) %>% 
+  group_by(Date_week) %>% 
+  summarise(Number_week = sum(Number),  # weekly kite counts
+            Weather_week = mean(Weather_score)) %>%  # weekly average weather condition
+  mutate(Week_id = as.double(Date_week - min(Date_week))/7) %>%   # week ID
+  mutate(Date_week = as_datetime(Date_week))  # convert dates to datetimes
+
+head(black_kite_clean_week)
+
+```
+
+### (2) Fit a LOESS curve to the weekly black kite counts
+
+To show the trend, I fit a LOESS curve to the weekly black kite counts with a smaller span of 0.3 to capture more details. I then created a sequence of datetimes with an interval of six hours for model predictions, computed the week differences of these datetimes from the first datetime, and made the LOESS predictions based on these week differences.
+
+```{r, fig.width = 5, fig.height = 4}
+### Fit a LOESS curve to the weekly clack kite counts
+loess_model <- loess(Number_week ~ Week_id, data = black_kite_clean_week, span = 0.3)
+
+### Make predictions for the counts
+library(modelr)  # for the function "add_predictions()"
+
+loess_predictions <- tibble(Date_seq = seq(min(black_kite_clean_week$Date_week),
+                                           max(black_kite_clean_week$Date_week), 
+                                           by = "6 hour"),  # a sequence of datetimes for model predictions,
+                            Week_id = as.numeric((Date_seq - min(black_kite_clean_week$Date_week))/86400)/7) %>%  # week differences from the first datetime
+  add_predictions(loess_model)  # make the LOESS predictions
+
+head(loess_predictions)
+
+```
+
+### (3) Create a basic time series line chart
+
 
 
 ```{r, fig.width = 5, fig.height = 4}
-library(tidyverse)
+library(ggblur)
+library(ggpattern)
 
-
+ggplot(black_kite_clean_week) + 
+  geom_rect_pattern(aes(xmin = floor_date(min(black_kite_clean_week$Date_week), "month"), 
+                        xmax = ceiling_date(max(black_kite_clean_week$Date_week), "month"), 
+                        ymin = -Inf, 
+                        ymax = Inf),
+                    pattern_fill2 = "#ccebff",
+                    pattern_fill = "#99d6ff", 
+                    pattern = "gradient") + 
+  geom_line(aes(x = Date_week, 
+                y = Number_week), 
+            color = "black",
+            alpha = 0.05) + 
+  geom_line(data = loess_predictions, 
+            aes(x = Date_seq, y = pred),
+            color = "grey60",
+            linewidth = 2,
+            lineend = "round") + 
+  geom_point_blur(aes(x = Date_week, 
+                      y = Number_week, 
+                      color = Weather_week), 
+                  size = 3,
+                  blur_size = 10)
 
 ```
+
+
+
+
+
+### (4) Polish the chart
+
 
 
 

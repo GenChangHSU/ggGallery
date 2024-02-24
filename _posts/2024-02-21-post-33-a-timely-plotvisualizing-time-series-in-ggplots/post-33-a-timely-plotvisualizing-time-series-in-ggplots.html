@@ -1703,15 +1703,74 @@ div.l-body img {
 </div>
 <p><br></p>
 <h2 id="the-time-series-plot">The time series plot</h2>
-<p>Break it down into various steps</p>
+<p>Now comes the main topic of the post: creating the time series line chart! I’ll break down the process into four steps and walk through them one by one.</p>
+<h3 id="summarize-the-data-by-week">(1) Summarize the data by week</h3>
+<p>Instead of plotting the daily kite counts, I decided to plot the weekly counts to better show the overall trend. To summarize the data by week, I first rounded the dates to the nearest weeks and summed the kite counts in each week. I also assigned a score to each of the four daily weather conditions and calculated the mean score for each week to represent the average weather condition.</p>
+<p>At the end of the code, I added a week ID column by computing the day differences from the first week and dividing the differences by 7. This week ID column will be used for fitting a LOESS curve in step (2). Finally, I converted the rounded dates to datetimes for plotting purposes in step (3) and (4).</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Summarize the data by week</span></span>
+<span><span class='va'>black_kite_clean_week</span> <span class='op'>&lt;-</span> <span class='va'>black_kite_clean</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Site</span> <span class='op'>==</span> <span class='st'>"Huajiang_bridge"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Date_week <span class='op'>=</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/round_date.html'>round_date</a></span><span class='op'>(</span><span class='va'>Date</span>, <span class='st'>"week"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># round the dates to the nearest weeks</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Weather_score <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span><span class='va'>Weather</span> <span class='op'>==</span> <span class='st'>"Sunny"</span> <span class='op'>~</span> <span class='fl'>3</span>,  <span class='co'># assign a score to each weather condition</span></span>
+<span>                                   <span class='va'>Weather</span> <span class='op'>==</span> <span class='st'>"Sunny_with_cloud"</span> <span class='op'>~</span> <span class='fl'>2</span>,</span>
+<span>                                   <span class='va'>Weather</span> <span class='op'>==</span> <span class='st'>"Cloudy"</span> <span class='op'>~</span> <span class='fl'>1</span>,</span>
+<span>                                   <span class='va'>Weather</span> <span class='op'>==</span> <span class='st'>"Rainy"</span> <span class='op'>~</span> <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>Date_week</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>Number_week <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>Number</span><span class='op'>)</span>,  <span class='co'># weekly kite counts</span></span>
+<span>            Weather_week <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>Weather_score</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># weekly average weather condition</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Week_id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>as.double</a></span><span class='op'>(</span><span class='va'>Date_week</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>Date_week</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>7</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>   <span class='co'># week ID</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Date_week <span class='op'>=</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/as_date.html'>as_datetime</a></span><span class='op'>(</span><span class='va'>Date_week</span><span class='op'>)</span><span class='op'>)</span>  <span class='co'># convert dates to datetimes</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>black_kite_clean_week</span><span class='op'>)</span></span></code></pre>
 </div>
+<pre><code># A tibble: 6 × 4
+  Date_week           Number_week Weather_week Week_id
+  &lt;dttm&gt;                    &lt;dbl&gt;        &lt;dbl&gt;   &lt;dbl&gt;
+1 2022-11-20 00:00:00          10        1.57        0
+2 2022-11-27 00:00:00          11        1.43        1
+3 2022-12-04 00:00:00          19        1           2
+4 2022-12-11 00:00:00          11        0.167       3
+5 2022-12-18 00:00:00          18        1.2         4
+6 2022-12-25 00:00:00           8        3           5</code></pre>
 </div>
+<h3 id="fit-a-loess-curve-to-the-weekly-black-kite-counts">(2) Fit a LOESS curve to the weekly black kite counts</h3>
+<p>To show the trend, I fit a LOESS curve to the weekly black kite counts with a smaller span of 0.3 to capture more details. I then created a sequence of datetimes with an interval of six hours for model predictions, computed the week differences of these datetimes from the first datetime, and made the LOESS predictions based on these week differences.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Fit a LOESS curve to the weekly clack kite counts</span></span>
+<span><span class='va'>loess_model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/loess.html'>loess</a></span><span class='op'>(</span><span class='va'>Number_week</span> <span class='op'>~</span> <span class='va'>Week_id</span>, data <span class='op'>=</span> <span class='va'>black_kite_clean_week</span>, span <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Make predictions for the counts</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://modelr.tidyverse.org'>modelr</a></span><span class='op'>)</span>  <span class='co'># for the function "add_predictions()"</span></span>
+<span></span>
+<span><span class='va'>loess_predictions</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>Date_seq <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>black_kite_clean_week</span><span class='op'>$</span><span class='va'>Date_week</span><span class='op'>)</span>,</span>
+<span>                                           <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>black_kite_clean_week</span><span class='op'>$</span><span class='va'>Date_week</span><span class='op'>)</span>, </span>
+<span>                                           by <span class='op'>=</span> <span class='st'>"6 hour"</span><span class='op'>)</span>,  <span class='co'># a sequence of datetimes for model predictions,</span></span>
+<span>                            Week_id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='op'>(</span><span class='va'>Date_seq</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>black_kite_clean_week</span><span class='op'>$</span><span class='va'>Date_week</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>86400</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>7</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># week differences from the first datetime</span></span>
+<span>  <span class='fu'><a href='https://modelr.tidyverse.org/reference/add_predictions.html'>add_predictions</a></span><span class='op'>(</span><span class='va'>loess_model</span><span class='op'>)</span>  <span class='co'># make the LOESS predictions</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>loess_predictions</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 6 × 3
+  Date_seq            Week_id  pred
+  &lt;dttm&gt;                &lt;dbl&gt; &lt;dbl&gt;
+1 2022-11-20 00:00:00  0       10.1
+2 2022-11-20 06:00:00  0.0357  10.2
+3 2022-11-20 12:00:00  0.0714  10.3
+4 2022-11-20 18:00:00  0.107   10.4
+5 2022-11-21 00:00:00  0.143   10.5
+6 2022-11-21 06:00:00  0.179   10.6</code></pre>
+</div>
+<h3 id="create-a-basic-time-series-line-chart">(3) Create a basic time series line chart</h3>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<h3 id="polish-the-chart">(4) Polish the chart</h3>
 <h2 id="summary">Summary</h2>
 <p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
