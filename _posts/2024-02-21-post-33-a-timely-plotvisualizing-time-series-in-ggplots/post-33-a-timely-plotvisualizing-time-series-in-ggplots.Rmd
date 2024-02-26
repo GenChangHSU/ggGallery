@@ -234,7 +234,7 @@ It's time to create the time series chart! This chart contains the points for th
 
 Remember I mentioned in the introduction that we would be using one of the functions that ggplot offers to work directly with time. That function is `scale_x_datetime()`, which allows for customizing the appearance of x-axis using date/time specifications. In the code below, I specified the x-axis limits using two datetimes, placed the x-axis breaks at an interval of one month ("date_breaks = "1 month" "), and labeled the x-axis using the R date/time format ("date_labels = "%b '%y" "; %b indicates the abbreviated month name and %y indicates the two-digit year; see [this documentation](https://rdrr.io/r/base/strptime.html) for more details).
 
-```{r, fig.width = 10, fig.height = 4, out.width = "85%"}
+```{r, fig.width = 9, fig.height = 3.5, out.width = "85%"}
 library(ggpattern)  # for the function "geom_rect_pattern()"
 library(ggblur)  # for the function "geom_point_blur()"
 
@@ -263,19 +263,77 @@ p_black_kite
 
 ### (4) Polish the chart
 
+Let's finish up by polishing the chart to make it more visually appealing:
+
+- I added a title and an image of a black kite via the HTML syntax using the function `geom_richtext()` from the package [`ggtext`](https://wilkelab.org/ggtext/).
+
+- I downloaded the font "Quintessential" from Google Fonts and used it for the numbers and text in the chart using the functions `font_add_google()` and `showtext_auto()` from the package [`showtext`](https://cran.rstudio.com/web/packages/showtext/vignettes/introduction.html).
+
+- I removed the axis titles and flipped the y-axis ticks and text to the inner side of the panel.
+
+- I changed the legend position and direction, and added the labels manually.
+
+```{r, fig.width = 9, fig.height = 3.5, out.width = "85%"}
+library(ggtext)
+library(showtext)
+
+### Download and use the google font "Quintessential"
+font_add_google(name = "Quintessential", family = "Quintessential")
+showtext_auto()
+
+### The HTML tag for the title and the black kite image
+title_text <- "Weekly Black Kite <span> </span> <span> </span> Counts at Huajiang Bridge"
+title_image <- "<img src='Black_Kite.png' width='50'/>"
+
+### The final polished chart
+p_black_kite_final <- p_black_kite + 
+  geom_richtext(data = NULL, aes(x = as_datetime("2023-05-15"), y = 20, label = title_text),
+                fill = NA, label.color = NA, size = 10, family = "Quintessential") + 
+  geom_richtext(data = NULL, aes(x = as_datetime("2023-05-04"), y = 20.4, label = title_image),
+                fill = NA, label.color = NA) +
+  labs(x = NULL, y = NULL) +
+  guides(color = guide_colorbar(ticks.colour = "transparent")) + 
+  theme(# panel margin
+        plot.margin = margin(t = 10, b = 20, l = 35, r = 25),
+        
+        # axis appearance and text
+        axis.line = element_blank(),
+        axis.text.x = element_text(size = 18, family = "Quintessential"),
+        axis.text.y = element_text(size = 20, margin = margin(r = -20), family = "Quintessential"),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_line(color = "grey60"),
+        axis.ticks.length.y = unit(-0.2, "cm"),
+        
+        # legend
+        legend.position = c(0.8, 0.7),
+        legend.direction = "horizontal",
+        legend.background = element_blank(),
+        legend.title = element_blank(),
+        legend.text = element_blank()
+        ) + 
+  annotate(geom = "text", x = as_datetime("2023-06-05"), y = 16.2, 
+           label = "Rainy", family = "Quintessential", size = 5.5) + 
+  annotate(geom = "text", x = as_datetime("2023-08-01"), y = 16.2, 
+           label = "Sunny", family = "Quintessential", size = 5.5)
+
+p_black_kite_final
+
+```
+
+We made it. Hooray!
 
 
 
+Interpretation:
 
+1. Season is important: more in fall/winter time and fewer in spring/summer time, despite there is a peak around June/July
 
-
-
-Interpretation
-
+2. Weather doesn't matter that much
 
 
 ## Summary
 
+To recap what we did, we first cleaned the data and summarize the counts and weather conditions by week, next we fit a LOESS curve to the weekly counts, and we created a time series chart, and finally we polished the chart by changing the font, text, legend and added a title and an image. 
 
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
