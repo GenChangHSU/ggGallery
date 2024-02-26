@@ -1,7 +1,7 @@
 ---
 title: 'Post #33. A "timely" plot—Visualizing time series data in ggplots'
 description: |
-  Create awesome time series line charts in ggplots.
+  Create an awesome time series chart in ggplots.
 author:
   - name: Gen-Chang Hsu
 date: 2024-02-21
@@ -115,7 +115,7 @@ knitr::opts_chunk$set(message = F,
 
 Welcome to the first post of 2024! It's been a while since my last post last year (to be precise two months; maybe it's not really long?), and I feel excited to be back in the saddle and write something about ggplots. Hope we'll have another year of posts full of useful and fun topics! 
 
-To kick things off, I'll be showing you how to create time series plots in ggplots. Time series plots are essentially a type of line charts with "time" on the x-axis. Of course, you can simply treat time as a numeric variable and plot it as a usual line chart, but ggplot does offer a set of functions that work directly with time. So in this post, we're going to explore these functions and see how we can leverage them to create a nice time series plot! 
+To kick things off, I'll be showing you how to create a time series chart in ggplots. A time series chart is essentially a type of line charts with "time" on the x-axis. Of course, you can simply treat time as a numeric variable and plot it as a usual line chart, but ggplot does offer a family of functions that work directly with time. So in this post, we're going to explore one of those functions and create a nice time series chart! 
 
 
 ## The data
@@ -186,7 +186,7 @@ Now comes the main topic of the post: creating the time series line chart! I'll 
 
 Instead of plotting the daily kite counts, I decided to plot the weekly counts to better show the overall trend. To summarize the data by week, I first rounded the dates to the nearest weeks and summed the kite counts in each week. I also assigned a score to each of the four daily weather conditions and calculated the mean score for each week to represent the average weather condition.
 
-At the end of the code, I added a week ID column by computing the day differences from the first week and dividing the differences by 7. This week ID column will be used for fitting a LOESS curve in step (2). Finally, I converted the rounded dates to datetimes for plotting purposes in step (3) and (4).
+At the end of the code, I added a week ID column by computing the day differences from the first week and dividing the differences by 7. This week ID column will be used for fitting a LOESS curve at step (2). Finally, I converted the rounded dates to datetimes for plotting purposes at step (3) and (4).
 
 ```{r, fig.width = 5, fig.height = 4}
 ### Summarize the data by week
@@ -228,42 +228,38 @@ head(loess_predictions)
 
 ```
 
-### (3) Create a basic time series line chart
+### (3) Create the time series chart
 
+It's time to create the time series chart! This chart contains the points for the weekly kite counts, line segments joining the points, and the LOESS curve we got from step (2). I went a bit fancy by making the points blurry using the function `geom_point_blur()` from the package [`ggblur`](https://coolbutuseless.github.io/2020/02/11/introducing-the-ggblur-package/). I also drew a gradient fill background using the function `geom_rect_pattern` from the package [`ggpattern`](https://coolbutuseless.github.io/package/ggpattern/). (Note that I added the geom layers in a reversed order to have the points on the top, the lines in the middle, and the background at the very bottom.)
 
+Remember I mentioned in the introduction that we would be using one of the functions that ggplot offers to work directly with time. That function is `scale_x_datetime()`, which allows for customizing the appearance of x-axis using date/time specifications. In the code below, I specified the x-axis limits using two datetimes, placed the x-axis breaks at an interval of one month ("date_breaks = "1 month" "), and labeled the x-axis using the R date/time format ("date_labels = "%b '%y" "; %b indicates the abbreviated month name and %y indicates the two-digit year; see [this documentation](https://rdrr.io/r/base/strptime.html) for more details).
 
-```{r, fig.width = 5, fig.height = 4}
-library(ggblur)
-library(ggpattern)
+```{r, fig.width = 10, fig.height = 4, out.width = "85%"}
+library(ggpattern)  # for the function "geom_rect_pattern()"
+library(ggblur)  # for the function "geom_point_blur()"
 
-ggplot(black_kite_clean_week) + 
+p_black_kite <- ggplot(black_kite_clean_week) + 
   geom_rect_pattern(aes(xmin = floor_date(min(black_kite_clean_week$Date_week), "month"), 
                         xmax = ceiling_date(max(black_kite_clean_week$Date_week), "month"), 
                         ymin = -Inf, 
                         ymax = Inf),
-                    pattern_fill2 = "#ccebff",
-                    pattern_fill = "#99d6ff", 
-                    pattern = "gradient") + 
-  geom_line(aes(x = Date_week, 
-                y = Number_week), 
-            color = "black",
-            alpha = 0.05) + 
-  geom_line(data = loess_predictions, 
-            aes(x = Date_seq, y = pred),
-            color = "grey60",
-            linewidth = 2,
-            lineend = "round") + 
-  geom_point_blur(aes(x = Date_week, 
-                      y = Number_week, 
-                      color = Weather_week), 
-                  size = 3,
-                  blur_size = 10)
+                    pattern_fill = "#99d6ff", pattern_fill2 = "#ccebff", pattern = "gradient") + 
+  geom_line(aes(x = Date_week, y = Number_week), color = "black", alpha = 0.05) + 
+  geom_line(data = loess_predictions, aes(x = Date_seq, y = pred),
+            color = "grey60", linewidth = 2, lineend = "round") + 
+  geom_point_blur(aes(x = Date_week, y = Number_week, color = Weather_week), 
+                  size = 3, blur_size = 10) + 
+  scale_x_datetime(limits = c(floor_date(min(black_kite_clean_week$Date_week), "month"),
+                              ceiling_date(max(black_kite_clean_week$Date_week), "month")), 
+                   expand = c(0, 3), date_breaks = "1 month", date_labels = "%b '%y") +
+  scale_y_continuous(limits = c(-1, 23), breaks = seq(0, 20, 10), 
+                     labels = c("0 ", "10", "20"), expand = c(0, 0)) + 
+  scale_color_gradient(low = "#cce6ff", high = "#FFBA00") +
+  theme_classic()
+
+p_black_kite
 
 ```
-
-
-
-
 
 ### (4) Polish the chart
 
@@ -271,6 +267,10 @@ ggplot(black_kite_clean_week) +
 
 
 
+
+
+
+Interpretation
 
 
 
