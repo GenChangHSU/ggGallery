@@ -129,7 +129,7 @@ Let's take a quick look at the dataset:
 library(tidyverse)
 
 ### Read the data
-black_kite_raw <- read_csv("Black_Kite_Records.csv")
+black_kite_raw <- read_csv("https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2024-02-21-post-33-a-timely-plotvisualizing-time-series-in-ggplots/Black_Kite_Records.csv")
 
 ### Organize the data
 black_kite_clean <- black_kite_raw %>% 
@@ -241,7 +241,7 @@ p_black_kite <- ggplot(black_kite_clean_week) +
                         xmax = ceiling_date(max(black_kite_clean_week$Date_week), "month"), 
                         ymin = -Inf, 
                         ymax = 23),
-                    pattern_fill = "#99d6ff", pattern_fill2 = "#ccebff", pattern = "gradient", pattern_colour = "red") + 
+                    pattern_fill = "#99d6ff", pattern_fill2 = "#ccebff", pattern = "gradient") + 
   geom_line(aes(x = Date_week, y = Number_week), color = "black", alpha = 0.05) + 
   geom_line(data = loess_predictions, aes(x = Date_seq, y = pred),
             color = "grey60", linewidth = 2, lineend = "round") + 
@@ -289,6 +289,7 @@ p_black_kite_final <- p_black_kite +
                 fill = NA, label.color = NA, size = 10, family = "Quintessential") + 
   geom_richtext(data = NULL, aes(x = as_datetime("2023-05-04"), y = 20.4, label = title_image),
                 fill = NA, label.color = NA) +
+  geom_hline(aes(yintercept = 23), color = "white", linewidth = 1) + 
   labs(x = NULL, y = NULL) +
   guides(color = guide_colorbar(ticks.colour = "transparent")) + 
   theme(# panel margin

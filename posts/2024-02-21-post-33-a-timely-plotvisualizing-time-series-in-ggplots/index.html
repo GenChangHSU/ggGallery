@@ -104,9 +104,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="og:type" content="article"/>
 <meta property="og:description" content="Create an awesome time series chart in ggplots."/>
 <meta property="og:url" content="https://genchanghsu.github.io/ggGallery/posts/2024-02-21-post-33-a-timely-plotvisualizing-time-series-in-ggplots/"/>
-<meta property="og:image" content="https://genchanghsu.github.io/ggGallery/posts/2024-02-21-post-33-a-timely-plotvisualizing-time-series-in-ggplots/post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png"/>
-<meta property="og:image:width" content="960"/>
-<meta property="og:image:height" content="768"/>
+<meta property="og:image" content="https://genchanghsu.github.io/ggGallery/posts/2024-02-21-post-33-a-timely-plotvisualizing-time-series-in-ggplots/../../homepage_images/Post33.png"/>
+<meta property="og:image:width" content="1728"/>
+<meta property="og:image:height" content="672"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="ggGallery"/>
 
@@ -115,9 +115,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="twitter:title" content="ggGallery: Post #33. A &quot;timely&quot; plot—Visualizing time series data in ggplots"/>
 <meta property="twitter:description" content="Create an awesome time series chart in ggplots."/>
 <meta property="twitter:url" content="https://genchanghsu.github.io/ggGallery/posts/2024-02-21-post-33-a-timely-plotvisualizing-time-series-in-ggplots/"/>
-<meta property="twitter:image" content="https://genchanghsu.github.io/ggGallery/posts/2024-02-21-post-33-a-timely-plotvisualizing-time-series-in-ggplots/post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png"/>
-<meta property="twitter:image:width" content="960"/>
-<meta property="twitter:image:height" content="768"/>
+<meta property="twitter:image" content="https://genchanghsu.github.io/ggGallery/posts/2024-02-21-post-33-a-timely-plotvisualizing-time-series-in-ggplots/../../homepage_images/Post33.png"/>
+<meta property="twitter:image:width" content="1728"/>
+<meta property="twitter:image:height" content="672"/>
 
 <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
@@ -2771,7 +2771,7 @@ div.l-body img {
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
 <span></span>
 <span><span class='co'>### Read the data</span></span>
-<span><span class='va'>black_kite_raw</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"Black_Kite_Records.csv"</span><span class='op'>)</span></span>
+<span><span class='va'>black_kite_raw</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2024-02-21-post-33-a-timely-plotvisualizing-time-series-in-ggplots/Black_Kite_Records.csv"</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='co'>### Organize the data</span></span>
 <span><span class='va'>black_kite_clean</span> <span class='op'>&lt;-</span> <span class='va'>black_kite_raw</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
@@ -2901,7 +2901,7 @@ div.l-body img {
 <span>                        xmax <span class='op'>=</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/round_date.html'>ceiling_date</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>black_kite_clean_week</span><span class='op'>$</span><span class='va'>Date_week</span><span class='op'>)</span>, <span class='st'>"month"</span><span class='op'>)</span>, </span>
 <span>                        ymin <span class='op'>=</span> <span class='op'>-</span><span class='cn'>Inf</span>, </span>
 <span>                        ymax <span class='op'>=</span> <span class='fl'>23</span><span class='op'>)</span>,</span>
-<span>                    pattern_fill <span class='op'>=</span> <span class='st'>"#99d6ff"</span>, pattern_fill2 <span class='op'>=</span> <span class='st'>"#ccebff"</span>, pattern <span class='op'>=</span> <span class='st'>"gradient"</span>, pattern_colour <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>                    pattern_fill <span class='op'>=</span> <span class='st'>"#99d6ff"</span>, pattern_fill2 <span class='op'>=</span> <span class='st'>"#ccebff"</span>, pattern <span class='op'>=</span> <span class='st'>"gradient"</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Date_week</span>, y <span class='op'>=</span> <span class='va'>Number_week</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='st'>"black"</span>, alpha <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>loess_predictions</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Date_seq</span>, y <span class='op'>=</span> <span class='va'>pred</span><span class='op'>)</span>,</span>
 <span>            color <span class='op'>=</span> <span class='st'>"grey60"</span>, linewidth <span class='op'>=</span> <span class='fl'>2</span>, lineend <span class='op'>=</span> <span class='st'>"round"</span><span class='op'>)</span> <span class='op'>+</span> </span>
@@ -2946,6 +2946,7 @@ div.l-body img {
 <span>                fill <span class='op'>=</span> <span class='cn'>NA</span>, label.color <span class='op'>=</span> <span class='cn'>NA</span>, size <span class='op'>=</span> <span class='fl'>10</span>, family <span class='op'>=</span> <span class='st'>"Quintessential"</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://wilkelab.org/ggtext/reference/geom_richtext.html'>geom_richtext</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/as_date.html'>as_datetime</a></span><span class='op'>(</span><span class='st'>"2023-05-04"</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fl'>20.4</span>, label <span class='op'>=</span> <span class='va'>title_image</span><span class='op'>)</span>,</span>
 <span>                fill <span class='op'>=</span> <span class='cn'>NA</span>, label.color <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>geom_hline</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>yintercept <span class='op'>=</span> <span class='fl'>23</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='st'>"white"</span>, linewidth <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='cn'>NULL</span>, y <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guide_colourbar.html'>guide_colorbar</a></span><span class='op'>(</span>ticks.colour <span class='op'>=</span> <span class='st'>"transparent"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span><span class='co'># panel margin</span></span>
