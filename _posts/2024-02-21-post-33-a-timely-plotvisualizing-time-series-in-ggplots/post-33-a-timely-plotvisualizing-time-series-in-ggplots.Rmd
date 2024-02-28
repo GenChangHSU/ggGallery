@@ -11,7 +11,6 @@ output:
 categories:
   - "2024"
 preview: ../../homepage_images/Post33.png
-draft: true
 ---
 
 <!-- Webpage style -->
@@ -243,7 +242,7 @@ p_black_kite <- ggplot(black_kite_clean_week) +
                         xmax = ceiling_date(max(black_kite_clean_week$Date_week), "month"), 
                         ymin = -Inf, 
                         ymax = Inf),
-                    pattern_fill = "#99d6ff", pattern_fill2 = "#ccebff", pattern = "gradient") + 
+                    pattern_fill = "#99d6ff", pattern_fill2 = "#ccebff", pattern = "gradient", color = NULL) + 
   geom_line(aes(x = Date_week, y = Number_week), color = "black", alpha = 0.05) + 
   geom_line(data = loess_predictions, aes(x = Date_seq, y = pred),
             color = "grey60", linewidth = 2, lineend = "round") + 
@@ -322,19 +321,14 @@ p_black_kite_final
 
 We made it. Hooray!
 
+As we can see from the chart, the black kites seemed to be more active in the winter (November to February) and less so in the spring (March to May). There was a small peak in June, and the counts increased again in August. Unfortunately, I didn't have data from September to November and therefore we can't really see the full-year dynamics.
 
-
-Interpretation:
-
-1. Season is important: more in fall/winter time and fewer in spring/summer time, despite there is a peak around June/July
-
-2. Weather doesn't matter that much
+Another thing to note is that the weather conditions didn't seem to be strongly associated with the weekly kite counts; the kites were out on both sunny and rainy days. However, this is just a rough guess and we certainly need more data to verify it.
 
 
 ## Summary
 
-To recap what we did, we first cleaned the data and summarize the counts and weather conditions by week, next we fit a LOESS curve to the weekly counts, and we created a time series chart, and finally we polished the chart by changing the font, text, legend and added a title and an image. 
-
+To recap what we did in this post, we first organized the daily black kite data and summarized the counts and weather conditions by week. We then fit a LOESS curve to the weekly counts and made predictions over the observation period. After that, we created a time series chart of the weekly counts along with the LOESS curve. Finally, we polished the chart by adding a title and a kite image as well as changing the appearance of the font, text, and legend.
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 

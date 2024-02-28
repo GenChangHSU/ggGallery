@@ -1795,7 +1795,7 @@ div.l-body img {
 <p><img src="post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/figure-html5/unnamed-chunk-5-1.png" width="85%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="polish-the-chart">(4) Polish the chart</h3>
-<p>Let’s finish up by polishing the chart:</p>
+<p>Let’s finish up by polishing the chart to make it more visually appealing:</p>
 <ul>
 <li><p>I added a title and an image of a black kite via the HTML syntax using the function <code>geom_richtext()</code> from the package <a href="https://wilkelab.org/ggtext/"><code>ggtext</code></a>.</p></li>
 <li><p>I downloaded the font “Quintessential” from Google Fonts and used it for the numbers and text in the chart using the functions <code>font_add_google()</code> and <code>showtext_auto()</code> from the package <a href="https://cran.rstudio.com/web/packages/showtext/vignettes/introduction.html"><code>showtext</code></a>.</p></li>
@@ -1851,12 +1851,10 @@ div.l-body img {
 <p><img src="post-33-a-timely-plotvisualizing-time-series-in-ggplots_files/figure-html5/unnamed-chunk-6-1.png" width="85%" style="display: block; margin: auto;" /></p>
 </div>
 <p>We made it. Hooray!</p>
-<p>Interpretation:</p>
-<ol type="1">
-<li><p>Season is important: more in fall/winter time and fewer in spring/summer time, despite there is a peak around June/July</p></li>
-<li><p>Weather doesn’t matter that much</p></li>
-</ol>
+<p>As we can see from the chart, the black kites seemed to be more active in the winter (November to February) and less so in the spring (March to May). There was a small peak in June, and the counts increased again in August. Unfortunately, I didn’t have data from September to November and therefore we can’t really see the full-year dynamics.</p>
+<p>Another thing to note is that the weather conditions didn’t seem to be strongly associated with the weekly kite counts; the kites were out on both sunny and rainy days. However, this is just a rough guess and we certainly need more data to verify it.</p>
 <h2 id="summary">Summary</h2>
+<p>To recap what we did in this post, we first organized the daily black kite data and summarized the counts and weather conditions by week. We then fit a LOESS curve to the weekly counts and made predictions over the observation period. After that, we created a time series chart of the weekly counts along with the LOESS curve. Finally, we polished the chart by adding a title and a kite image as well as changing the appearance of the font, text, and legend.</p>
 <p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
