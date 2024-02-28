@@ -127,10 +127,9 @@ Let's take a quick look at the dataset:
 
 ```{r, fig.width = 5, fig.height = 4}
 library(tidyverse)
-library(readxl)
 
 ### Read the data
-black_kite_raw <- read_xlsx("Black_Kite_Records.xlsx", sheet = 1)
+black_kite_raw <- read_csv("Black_Kite_Records.csv")
 
 ### Organize the data
 black_kite_clean <- black_kite_raw %>% 
@@ -241,8 +240,8 @@ p_black_kite <- ggplot(black_kite_clean_week) +
   geom_rect_pattern(aes(xmin = floor_date(min(black_kite_clean_week$Date_week), "month"), 
                         xmax = ceiling_date(max(black_kite_clean_week$Date_week), "month"), 
                         ymin = -Inf, 
-                        ymax = Inf),
-                    pattern_fill = "#99d6ff", pattern_fill2 = "#ccebff", pattern = "gradient", color = NULL) + 
+                        ymax = 23),
+                    pattern_fill = "#99d6ff", pattern_fill2 = "#ccebff", pattern = "gradient", pattern_colour = "red") + 
   geom_line(aes(x = Date_week, y = Number_week), color = "black", alpha = 0.05) + 
   geom_line(data = loess_predictions, aes(x = Date_seq, y = pred),
             color = "grey60", linewidth = 2, lineend = "round") + 
@@ -282,7 +281,7 @@ showtext_auto()
 
 ### The HTML tag for the title and the black kite image
 title_text <- "Weekly Black Kite <span> </span> <span> </span> Counts at Huajiang Bridge"
-title_image <- "<img src='Black_Kite.png' width='50'/>"
+title_image <- "<img src='https://raw.githubusercontent.com/GenChangHSU/ggGallery/master/_posts/2024-02-21-post-33-a-timely-plotvisualizing-time-series-in-ggplots/Black_Kite.png' width='50'/>"
 
 ### The final polished chart
 p_black_kite_final <- p_black_kite + 
