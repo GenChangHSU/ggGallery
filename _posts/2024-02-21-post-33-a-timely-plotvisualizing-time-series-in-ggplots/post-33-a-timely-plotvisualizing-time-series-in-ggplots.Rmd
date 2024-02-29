@@ -1,7 +1,7 @@
 ---
-title: 'Post #33. A "timely" plot—Visualizing time series data in ggplots'
+title: 'Post #33. A "timely" plot—Visualizing time series data in ggplot'
 description: |
-  Create an awesome time series chart in ggplots.
+  Let's create an awesome time series chart in ggplot!
 author:
   - name: Gen-Chang Hsu
 date: 2024-02-21
@@ -112,16 +112,16 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-Welcome to the first post of 2024! It's been a while since my last post last year (to be precise two months; maybe it's not really long?), and I feel excited to be back in the saddle and write something about ggplots. Hope we'll have another year of posts full of useful and fun topics! 
+Welcome to the first post of 2024! It's been two months since my post last year, and I feel excited to be back in the saddle and write something about ggplots. Hope we'll have another year of posts full of useful and fun topics! 
 
-To kick things off, I'll be showing you how to create a time series chart in ggplots. A time series chart is essentially a type of line charts with "time" on the x-axis. Of course, you can simply treat time as a numeric variable and plot it as a usual line chart, but ggplot does offer a family of functions that work directly with time. So in this post, we're going to explore one of those functions and create a nice time series chart! 
+I'll kick things off this year with a time series chart, which is essentially a type of line charts with "time" on the x-axis. ggplot offers a family of functions that work with time, and we're going to explore one of those functions and create a nice time series chart. 
 
 
 ## The data
 
-In most previous posts, I used built-in R datasets as examples. But this time it's a bit different: I'll be using the data I collected myself! 
+Most of the time, I use built-in R datasets for my posts. But this time it's a bit different: I'll be using the data I collected myself!
 
-I've been recording the number of [black kites (_Milvus migrans_)](https://ebird.org/species/blakit1) along the Xindian river in Taipei, Taiwan from November 2022 to August 2023 (pretty much every day except for a few times when I was out of town), and this dataset consists of the daily black kite counts, the locations of the observations, and the weather conditions.
+I had been recording the number of [black kites (_Milvus migrans_)](https://ebird.org/species/blakit1) along the Xindian river in Taipei, Taiwan pretty much every day (except for a few times when I was out of town) from November 2022 to August 2023. This dataset consists of the daily black kite counts, the locations of the observations, and the weather conditions.
 
 Let's take a quick look at the dataset:
 
@@ -139,7 +139,7 @@ black_kite_clean <- black_kite_raw %>%
 head(black_kite_clean)
 
 ```
-The majority of the observations came from one site "Huajiang Bridge", so we'll just focus on this particular site from now on. Below is a site map created via [ggmap](https://cran.r-project.org/web/packages/ggmap/readme/README.html):
+Most observations came from one single site "Huajiang Bridge", so I'll focus on this particular site from now on. Below is a map of Huajiang Bridge created via [ggmap](https://cran.r-project.org/web/packages/ggmap/readme/README.html):
 
 ```{r, fig.width = 5, fig.height = 4, out.width = "60%", fig.align = 'right'}
 library(ggmap)
@@ -178,7 +178,7 @@ ggmap(map_data) +
 
 ## The time series plot
 
-Now comes the main topic of the post: creating the time series line chart! I'll break down the process into four steps and walk through them one by one.
+Now comes the main topic of the post: creating a time series chart. I'll break down the process into four steps and walk through them one by one.
 
 ### (1) Summarize the data by week
 

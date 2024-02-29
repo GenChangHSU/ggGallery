@@ -179,7 +179,7 @@ ggmap(map_data) +
            color = &amp;quot;red&amp;quot;,
            linewidth = 1.5) + 
   theme_void()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file29a81ac255bf_files/figure-html/unnamed-chunk-2-1.png" width="60%" style="display: block; margin: auto 0 auto auto;" /&gt;
+&lt;p&gt;&lt;img src="file432460213b7d_files/figure-html/unnamed-chunk-2-1.png" width="60%" style="display: block; margin: auto 0 auto auto;" /&gt;
 &lt;br&gt;&lt;/p&gt;
 &lt;h2 id="the-time-series-plot"&gt;The time series plot&lt;/h2&gt;
 &lt;p&gt;Now comes the main topic of the post: creating the time series line
@@ -299,7 +299,7 @@ p_black_kite &amp;lt;- ggplot(black_kite_clean_week) +
   theme_classic()
 
 p_black_kite&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file29a81ac255bf_files/figure-html/unnamed-chunk-5-1.png" width="85%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file432460213b7d_files/figure-html/unnamed-chunk-5-1.png" width="85%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="polish-the-chart"&gt;(4) Polish the chart&lt;/h3&gt;
 &lt;p&gt;Let’s finish up by polishing the chart to make it more visually
 appealing:&lt;/p&gt;
@@ -361,7 +361,7 @@ p_black_kite_final &amp;lt;- p_black_kite +
            label = &amp;quot;Sunny&amp;quot;, family = &amp;quot;Quintessential&amp;quot;, size = 5.5)
 
 p_black_kite_final&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file29a81ac255bf_files/figure-html/unnamed-chunk-6-1.png" width="85%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file432460213b7d_files/figure-html/unnamed-chunk-6-1.png" width="85%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;We made it. Hooray!&lt;/p&gt;
 &lt;p&gt;As we can see from the chart, the black kites seemed to be more
 active in the winter (November to February) and less so in the spring
