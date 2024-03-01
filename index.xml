@@ -9,7 +9,7 @@
     <generator>Distill</generator>
     <lastBuildDate>Wed, 21 Feb 2024 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>Post #33. A "timely" plot—Visualizing time series data in ggplots</title>
+      <title>Post #33. A "timely" plot—Visualizing time series data in ggplot</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
       <link>https://genchanghsu.github.io/ggGallery/posts/2024-02-21-post-33-a-timely-plotvisualizing-time-series-in-ggplots</link>
       <description>
@@ -101,29 +101,24 @@ div.l-body img {
 &lt;/head&gt;
 &lt;!-- Start of the article --&gt;
 &lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;Welcome to the first post of 2024! It’s been a while since my last
-post last year (to be precise two months; maybe it’s not really long?),
-and I feel excited to be back in the saddle and write something about
-ggplots. Hope we’ll have another year of posts full of useful and fun
-topics!&lt;/p&gt;
-&lt;p&gt;To kick things off, I’ll be showing you how to create a time series
-chart in ggplots. A time series chart is essentially a type of line
-charts with “time” on the x-axis. Of course, you can simply treat time
-as a numeric variable and plot it as a usual line chart, but ggplot does
-offer a family of functions that work directly with time. So in this
-post, we’re going to explore one of those functions and create a nice
-time series chart!&lt;/p&gt;
+&lt;p&gt;Welcome to the first post of 2024! It’s been two months since my post
+last year, and I feel excited to be back in the saddle and write
+something about ggplots. Hope we’ll have another year of posts full of
+useful and fun topics!&lt;/p&gt;
+&lt;p&gt;I’ll kick things off here with a time series chart, which is
+essentially a type of line chart with “time” on the x-axis. ggplot
+offers a family of functions that work with time, and we’re going to
+explore one of those functions in this post and create a nice time
+series chart.&lt;/p&gt;
 &lt;h2 id="the-data"&gt;The data&lt;/h2&gt;
-&lt;p&gt;In most previous posts, I used built-in R datasets as examples. But
-this time it’s a bit different: I’ll be using the data I collected
-myself!&lt;/p&gt;
-&lt;p&gt;I’ve been recording the number of &lt;a
+&lt;p&gt;Most of the time, I use built-in R datasets for my posts. But this
+time it’s a bit different: I’m using the data I collected myself!&lt;/p&gt;
+&lt;p&gt;I had been recording the number of &lt;a
 href="https://ebird.org/species/blakit1"&gt;black kites (&lt;em&gt;Milvus
-migrans&lt;/em&gt;)&lt;/a&gt; along the Xindian river in Taipei, Taiwan from
-November 2022 to August 2023 (pretty much every day except for a few
-times when I was out of town), and this dataset consists of the daily
-black kite counts, the locations of the observations, and the weather
-conditions.&lt;/p&gt;
+migrans&lt;/em&gt;)&lt;/a&gt; along the Xindian river in Taipei, Taiwan pretty much
+every day (except for a few times when I was out of town) from November
+2022 to August 2023. This dataset consists of the daily black kite
+counts, the sites of the observations, and the weather conditions.&lt;/p&gt;
 &lt;p&gt;Let’s take a quick look at the dataset:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
 
@@ -145,9 +140,9 @@ head(black_kite_clean)&lt;/code&gt;&lt;/pre&gt;
 4 2022-11-20 Huajiang_bridge      1 Cloudy          
 5 2022-11-21 Huajiang_bridge      2 Cloudy          
 6 2022-11-22 Huajiang_bridge      0 Sunny_with_cloud&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The majority of the observations came from one site “Huajiang
-Bridge”, so we’ll just focus on this particular site from now on. Below
-is a site map created via &lt;a
+&lt;p&gt;Most observations came from the site “Huajiang Bridge”, so I’ll focus
+on this particular site from now on. Below is a map of Huajiang Bridge
+created via &lt;a
 href="https://cran.r-project.org/web/packages/ggmap/readme/README.html"&gt;ggmap&lt;/a&gt;:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(ggmap)
 
@@ -155,10 +150,7 @@ href="https://cran.r-project.org/web/packages/ggmap/readme/README.html"&gt;ggmap
 register_stadiamaps(key = &amp;quot;your key&amp;quot;)
 register_google(key = &amp;quot;your key&amp;quot;)
 
-register_stadiamaps(key = &amp;quot;69ccb61d-8886-4e2a-9ed1-fd5c67dab17b&amp;quot;)
-register_google(key = &amp;quot;AIzaSyBPa8CKmRUxaQEPRvy2C3comSZGp6AOyh8&amp;quot;)
-
-### Get the long-lat coordinates of the bridge
+### Get the long-lat coordinates of the site
 huajiang_bridge_lon_lat &amp;lt;- geocode(&amp;quot;Huajiang Bridge, Wanhua District&amp;quot;)
 
 ### Create a map
@@ -179,24 +171,24 @@ ggmap(map_data) +
            color = &amp;quot;red&amp;quot;,
            linewidth = 1.5) + 
   theme_void()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file432460213b7d_files/figure-html/unnamed-chunk-2-1.png" width="60%" style="display: block; margin: auto 0 auto auto;" /&gt;
+&lt;p&gt;&lt;img src="file25dc6ed21f3_files/figure-html/unnamed-chunk-3-1.png" width="60%" style="display: block; margin: auto 0 auto auto;" /&gt;
 &lt;br&gt;&lt;/p&gt;
-&lt;h2 id="the-time-series-plot"&gt;The time series plot&lt;/h2&gt;
-&lt;p&gt;Now comes the main topic of the post: creating the time series line
-chart! I’ll break down the process into four steps and walk through them
-one by one.&lt;/p&gt;
+&lt;h2 id="the-time-series-chart"&gt;The time series chart&lt;/h2&gt;
+&lt;p&gt;Now comes the main topic of the post: creating a time series chart.
+I’ll break down the process into four steps and walk through them one by
+one.&lt;/p&gt;
 &lt;h3 id="summarize-the-data-by-week"&gt;(1) Summarize the data by week&lt;/h3&gt;
 &lt;p&gt;Instead of plotting the daily kite counts, I decided to plot the
 weekly counts to better show the overall trend. To summarize the data by
 week, I first rounded the dates to the nearest weeks and summed the kite
 counts in each week. I also assigned a score to each of the four daily
 weather conditions and calculated the mean score for each week to
-represent the average weather condition.&lt;/p&gt;
+represent the average weekly weather condition.&lt;/p&gt;
 &lt;p&gt;At the end of the code, I added a week ID column by computing the day
 differences from the first week and dividing the differences by 7. This
-week ID column will be used for fitting a LOESS curve at step (2).
-Finally, I converted the rounded dates to datetimes for plotting
-purposes at step (3) and (4).&lt;/p&gt;
+week ID column is used for fitting a LOESS curve at step (2). Finally, I
+converted the rounded dates (object “Date”) to datetimes (object
+“POSIXct”) for plotting purposes at step (3) and (4).&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Summarize the data by week
 black_kite_clean_week &amp;lt;- black_kite_clean %&amp;gt;% 
   filter(Site == &amp;quot;Huajiang_bridge&amp;quot;) %&amp;gt;%
@@ -207,7 +199,7 @@ black_kite_clean_week &amp;lt;- black_kite_clean %&amp;gt;%
                                    Weather == &amp;quot;Rainy&amp;quot; ~ 0)) %&amp;gt;% 
   group_by(Date_week) %&amp;gt;% 
   summarise(Number_week = sum(Number),  # weekly kite counts
-            Weather_week = mean(Weather_score)) %&amp;gt;%  # weekly average weather condition
+            Weather_week = mean(Weather_score)) %&amp;gt;%  # average weekly weather condition
   mutate(Week_id = as.double(Date_week - min(Date_week))/7) %&amp;gt;%   # week ID
   mutate(Date_week = as_datetime(Date_week))  # convert dates to datetimes
 
@@ -223,13 +215,13 @@ head(black_kite_clean_week)&lt;/code&gt;&lt;/pre&gt;
 6 2022-12-25 00:00:00           8        3           5&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id="fit-a-loess-curve-to-the-weekly-black-kite-counts"&gt;(2) Fit a
 LOESS curve to the weekly black kite counts&lt;/h3&gt;
-&lt;p&gt;To show the trend, I fit a LOESS curve to the weekly black kite
-counts with a smaller span of 0.3 to capture more details. I then
-created a sequence of datetimes with an interval of six hours for model
-predictions, computed the week differences of these datetimes from the
-first datetime, and made the LOESS predictions based on these week
-differences.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;### Fit a LOESS curve to the weekly clack kite counts
+&lt;p&gt;To show the general trend over the observation period, I fit a LOESS
+curve to the weekly black kite counts, with a smaller span of 0.3 to
+capture more details. I then created a sequence of datetimes with an
+interval of six hours (for the sake of model predictions), computed the
+“week” differences of these datetimes from the first datetime, and made
+the LOESS predictions based on these week differences.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Fit a LOESS curve to the weekly black kite counts
 loess_model &amp;lt;- loess(Number_week ~ Week_id, data = black_kite_clean_week, span = 0.3)
 
 ### Make predictions for the counts
@@ -237,7 +229,7 @@ library(modelr)  # for the function &amp;quot;add_predictions()&amp;quot;
 
 loess_predictions &amp;lt;- tibble(Date_seq = seq(min(black_kite_clean_week$Date_week),
                                            max(black_kite_clean_week$Date_week), 
-                                           by = &amp;quot;6 hour&amp;quot;),  # a sequence of datetimes for model predictions,
+                                           by = &amp;quot;6 hour&amp;quot;),  # a sequence of datetimes with an interval of six hours,
                             Week_id = as.numeric((Date_seq - min(black_kite_clean_week$Date_week))/86400)/7) %&amp;gt;%  # week differences from the first datetime
   add_predictions(loess_model)  # make the LOESS predictions
 
@@ -253,11 +245,11 @@ head(loess_predictions)&lt;/code&gt;&lt;/pre&gt;
 6 2022-11-21 06:00:00  0.179   10.6&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id="create-the-time-series-chart"&gt;(3) Create the time series
 chart&lt;/h3&gt;
-&lt;p&gt;It’s time to create the time series chart! This chart contains the
-points for the weekly kite counts, line segments joining the points, and
-the LOESS curve we got from step (2). I went a bit fancy by making the
-points blurry using the function &lt;code&gt;geom_point_blur()&lt;/code&gt; from the
-package &lt;a
+&lt;p&gt;With the required data at hand, it’s time to create the time series
+chart! This chart contains points for the weekly kite counts, line
+segments joining the points, and the fitted LOESS curve from step (2). I
+went a bit fancy here by making the points blurry using the function
+&lt;code&gt;geom_point_blur()&lt;/code&gt; from the package &lt;a
 href="https://coolbutuseless.github.io/2020/02/11/introducing-the-ggblur-package/"&gt;&lt;code&gt;ggblur&lt;/code&gt;&lt;/a&gt;.
 I also drew a gradient fill background using the function
 &lt;code&gt;geom_rect_pattern&lt;/code&gt; from the package &lt;a
@@ -266,16 +258,15 @@ href="https://coolbutuseless.github.io/package/ggpattern/"&gt;&lt;code&gt;ggpatt
 points on the top, the lines in the middle, and the background at the
 very bottom.)&lt;/p&gt;
 &lt;p&gt;Remember I mentioned in the introduction that we would be using one
-of the functions that ggplot offers to work directly with time. That
-function is &lt;code&gt;scale_x_datetime()&lt;/code&gt;, which allows for
-customizing the appearance of x-axis using date/time specifications. In
-the code below, I specified the x-axis limits using two datetimes,
-placed the x-axis breaks at an interval of one month (“date_breaks =”1
-month” “), and labeled the x-axis using the R date/time format
-(”date_labels = “%b ’%y” “; %b indicates the abbreviated month name and
-%y indicates the two-digit year; see &lt;a
-href="https://rdrr.io/r/base/strptime.html"&gt;this documentation&lt;/a&gt; for
-more details).&lt;/p&gt;
+of the functions that ggplot offers to work with time. That function is
+&lt;code&gt;scale_x_datetime()&lt;/code&gt;, which allows for customizing the
+appearance of x-axis using date/time specifications. In the code below,
+I specified the x-axis limits using two datetimes, placed the x-axis
+breaks at an one-month interval (“date_breaks =”1 month” “), and labeled
+the x-axis using the R date/time format (”date_labels = “%b ’%y” “; %b
+represents the abbreviated month name and %y represents the two-digit
+year; see &lt;a href="https://rdrr.io/r/base/strptime.html"&gt;this
+documentation&lt;/a&gt; for more details).&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(ggpattern)  # for the function &amp;quot;geom_rect_pattern()&amp;quot;
 library(ggblur)  # for the function &amp;quot;geom_point_blur()&amp;quot;
 
@@ -299,7 +290,7 @@ p_black_kite &amp;lt;- ggplot(black_kite_clean_week) +
   theme_classic()
 
 p_black_kite&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file432460213b7d_files/figure-html/unnamed-chunk-5-1.png" width="85%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file25dc6ed21f3_files/figure-html/unnamed-chunk-6-1.png" width="85%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="polish-the-chart"&gt;(4) Polish the chart&lt;/h3&gt;
 &lt;p&gt;Let’s finish up by polishing the chart to make it more visually
 appealing:&lt;/p&gt;
@@ -307,10 +298,10 @@ appealing:&lt;/p&gt;
 &lt;li&gt;&lt;p&gt;I added a title and an image of a black kite via the HTML syntax
 using the function &lt;code&gt;geom_richtext()&lt;/code&gt; from the package &lt;a
 href="https://wilkelab.org/ggtext/"&gt;&lt;code&gt;ggtext&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;I downloaded the font “Quintessential” from Google Fonts and used
-it for the numbers and text in the chart using the functions
-&lt;code&gt;font_add_google()&lt;/code&gt; and &lt;code&gt;showtext_auto()&lt;/code&gt; from the
-package &lt;a
+&lt;li&gt;&lt;p&gt;I downloaded the font “Quintessential” from Google Fonts using
+the function &lt;code&gt;font_add_google()&lt;/code&gt;, and applied it to the
+numbers and text in the chart using the function
+&lt;code&gt;showtext_auto()&lt;/code&gt;. Both functions come from the package &lt;a
 href="https://cran.rstudio.com/web/packages/showtext/vignettes/introduction.html"&gt;&lt;code&gt;showtext&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;I removed the axis titles and flipped the y-axis ticks and text
 to the inner side of the panel.&lt;/p&gt;&lt;/li&gt;
@@ -320,7 +311,7 @@ manually.&lt;/p&gt;&lt;/li&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(ggtext)
 library(showtext)
 
-### Download and use the google font &amp;quot;Quintessential&amp;quot;
+### Download and use the Google Fonts &amp;quot;Quintessential&amp;quot;
 font_add_google(name = &amp;quot;Quintessential&amp;quot;, family = &amp;quot;Quintessential&amp;quot;)
 showtext_auto()
 
@@ -361,7 +352,7 @@ p_black_kite_final &amp;lt;- p_black_kite +
            label = &amp;quot;Sunny&amp;quot;, family = &amp;quot;Quintessential&amp;quot;, size = 5.5)
 
 p_black_kite_final&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file432460213b7d_files/figure-html/unnamed-chunk-6-1.png" width="85%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file25dc6ed21f3_files/figure-html/unnamed-chunk-7-1.png" width="85%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;We made it. Hooray!&lt;/p&gt;
 &lt;p&gt;As we can see from the chart, the black kites seemed to be more
 active in the winter (November to February) and less so in the spring
@@ -369,17 +360,17 @@ active in the winter (November to February) and less so in the spring
 again in August. Unfortunately, I didn’t have data from September to
 November and therefore we can’t really see the full-year dynamics.&lt;/p&gt;
 &lt;p&gt;Another thing to note is that the weather conditions didn’t seem to
-be strongly associated with the weekly kite counts; the kites were out
-on both sunny and rainy days. However, this is just a rough guess and we
-certainly need more data to verify it.&lt;/p&gt;
+be strongly associated with the weekly kite counts: the kites were out
+on both sunny and rainy days. However, this is just a visual guess and
+we certainly need a formal analysis to verify it.&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
-&lt;p&gt;To recap what we did in this post, we first organized the daily black
-kite data and summarized the counts and weather conditions by week. We
-then fit a LOESS curve to the weekly counts and made predictions over
-the observation period. After that, we created a time series chart of
-the weekly counts along with the LOESS curve. Finally, we polished the
-chart by adding a title and a kite image as well as changing the
-appearance of the font, text, and legend.&lt;/p&gt;
+&lt;p&gt;To recap what we did in this post, we first summarized the daily
+black kite counts and weather conditions by week. We then fit a LOESS
+curve to the weekly counts and made predictions over the observation
+period. After that, we created a time series chart of the weekly counts
+with the fitted LOESS curve to show the general trend. Finally, we
+polished the chart by adding a title and a black kite image as well as
+modifying the font, text, and legend.&lt;/p&gt;
 &lt;p&gt;Hope you learn something useful from this post and don’t forget to
 leave your comments and suggestions below if you have any!&lt;/p&gt;
 &lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
