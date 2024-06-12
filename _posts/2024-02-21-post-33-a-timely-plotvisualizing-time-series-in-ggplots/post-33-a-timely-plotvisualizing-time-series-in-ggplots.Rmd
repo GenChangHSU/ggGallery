@@ -1,5 +1,5 @@
 ---
-title: 'Post #33. A "timely" plot—Visualizing time series data in ggplot'
+title: 'Post #33. A "timely" plot—Visualizing time series data in ggplots'
 description: |
   Let's create an awesome time series chart in ggplot!
 author:

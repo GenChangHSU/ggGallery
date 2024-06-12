@@ -1,0 +1,188 @@
+---
+title: "Post #34. Connecting paired points in ggplots"
+description: |
+  Check out the handy tips for connecting paired points in ggplots!
+author:
+  - name: Gen-Chang Hsu
+date: 2024-06-11
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2024"
+preview: ../../homepage_images/Post34.png
+draft: true
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+  color: #2780e3 !important;
+  border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+  border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 30% !important;
+}
+
+</style>
+
+<head>
+  <base target="_blank">
+</head>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+Feel so glad (and relieved) to write another blog post after three months of rest! This post was actually inspired by a recent project I am working on: I wanted to make a ggplot comparing the feeding response of control vs. treatment for each larval parent family on two plant types, and I would like to draw a line connecting the control-treatment pair for each family. I thought it was a walk in the park, but when I started making the plot, it turned out to be more complicated than I imagined. Thankfully, after a bit of researching and experimenting, I figured it out and I felt it would be helpful to write something about it. So in this post, I'll show you the tips for connecting paired points in ggplots. Let's do it!
+
+## Case 1. A single group
+
+CO2 dataset
+focus on the Q type
+X axis is the treatment of one plant species
+Y axis is the CO2 uptake rate
+Paired by concentration
+
+
+```{r, fig.width = 5, fig.height = 4}
+library(tidyverse)
+
+
+
+```
+
+
+
+
+## Case 2. Two or more groups
+
+
+CO2 dataset
+focus on the Q type
+X axis is the plant species (three species)
+Y axis is the CO2 uptake rate
+dodged by treatment
+Paired by concentration
+
+
+```{r, fig.width = 5, fig.height = 4}
+library(tidyverse)
+
+
+
+```
+
+### Method #1. Use facets
+
+
+
+
+
+
+
+### Method #2. Manually recode the paired points
+
+
+```{r, fig.width = 5, fig.height = 4}
+df <- c("A", "B", "A", "C", "C", "B", "A")
+lib <- c("A" = 1, "B" = 2, "C" = 3)
+lib[df]
+
+
+
+```
+
+
+
+
+
+
+## Summary
+
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
+
+
+
+
