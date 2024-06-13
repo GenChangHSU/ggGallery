@@ -115,27 +115,35 @@ knitr::opts_chunk$set(message = F,
 
 Feel so glad (and relieved) to write another blog post after three months of rest! This post was actually inspired by a recent project I am working on: I wanted to make a ggplot comparing the feeding response of control vs. treatment for each larval parent family on two plant types, and I would like to draw a line connecting the control-treatment pair for each family. I thought it was a walk in the park, but when I started making the plot, it turned out to be more complicated than I imagined. Thankfully, after a bit of researching and experimenting, I figured it out and I felt it would be helpful to write something about it. So in this post, I'll show you the tips for connecting paired points in ggplots. Let's do it!
 
+
 ## Case 1. A single group
 
-CO2 dataset
-focus on the Q type
-X axis is the treatment of one plant species
-Y axis is the CO2 uptake rate
-Paired by concentration
+We will use the built-in [CO2](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/CO2) dataset, which contains data from an experiment looking at how chilling affected the CO~2~ uptake rates of the grass species *Echinochloa crus-galli*. 
 
+Let's start with the simplest case where we compare the CO~2~ uptake rates of the chilled vs. nonchilled plant individual #1 at different ambient CO~2~ concentrations. We'll draw a line between each chilled-nonchilled pair to show the treatment effect.
 
 ```{r, fig.width = 5, fig.height = 4}
 library(tidyverse)
 
-
+### Select plant individual #1
+CO2_plant1 <- filter(CO2, Plant %in% c("Qn1", "Qc2")) 
+  
+### Plot  
+ggplot(CO2_plant1) + 
+  geom_point(aes(x = Treatment, y = uptake, color = factor(conc))) + 
+  geom_line(aes(x = Treatment, y = uptake, color = factor(conc), group = factor(conc))) + 
+  scale_color_brewer(palette = "Set1", name = "Ambient [CO2]") + 
+  theme_classic(base_size = 13)
 
 ```
 
-
-
+Looks like the effect of chilling depends on the ambient CO~2~ concentrations: chilling reduces CO~2~ uptake at low ambient CO~2~ concentrations but tends to slightly increase CO~2~ uptake at high ambient CO~2~ concentrations.
 
 ## Case 2. Two or more groups
 
+Now, what if we're interested in the other two plant individuals from Quebec? Would the patterns be similar across all three plants? 
+
+Let's see. 
 
 CO2 dataset
 focus on the Q type
@@ -152,7 +160,10 @@ library(tidyverse)
 
 ```
 
-### Method #1. Use facets
+Well it doesn't work. We need to tweak out code a bit. Read below!
+
+
+### Methods #1. Use facets
 
 
 
