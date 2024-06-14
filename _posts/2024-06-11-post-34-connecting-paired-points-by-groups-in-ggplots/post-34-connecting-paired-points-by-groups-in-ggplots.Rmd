@@ -126,53 +126,65 @@ Let's start with the simplest case where we compare the CO~2~ uptake rates of th
 library(tidyverse)
 
 ### Select plant individual #1
-CO2_plant1 <- filter(CO2, Plant %in% c("Qn1", "Qc2")) 
+CO2_plant_1 <- filter(CO2, Plant %in% c("Qn1", "Qc1")) 
   
 ### Plot  
-ggplot(CO2_plant1) + 
-  geom_point(aes(x = Treatment, y = uptake, color = factor(conc))) + 
+ggplot(CO2_plant_1) + 
+  geom_point(aes(x = Treatment, y = uptake, shape = Treatment, color = factor(conc))) + 
   geom_line(aes(x = Treatment, y = uptake, color = factor(conc), group = factor(conc))) + 
   scale_color_brewer(palette = "Set1", name = "Ambient [CO2]") + 
   theme_classic(base_size = 13)
 
 ```
 
-Looks like the effect of chilling depends on the ambient CO~2~ concentrations: chilling reduces CO~2~ uptake at low ambient CO~2~ concentrations but tends to slightly increase CO~2~ uptake at high ambient CO~2~ concentrations.
+Looks like chilling reduces CO~2~ uptake rates of plant individual #1 under all ambient CO~2~ concentrations.
+
 
 ## Case 2. Two or more groups
 
-Now, what if we're interested in the other two plant individuals from Quebec? Would the patterns be similar across all three plants? 
+Now, what if we're interested in the other plant individuals? Would the patterns be similar? Let's make a plot and see.
 
-Let's see. 
-
-CO2 dataset
-focus on the Q type
-X axis is the plant species (three species)
-Y axis is the CO2 uptake rate
-dodged by treatment
-Paired by concentration
-
-
-```{r, fig.width = 5, fig.height = 4}
-library(tidyverse)
-
-
+```{r, fig.width = 7, fig.height = 4}
+### Select plant individual #1 to #3
+CO2_plant_1_to_3 <- filter(CO2, Plant %in% c("Qn1", "Qc1", "Qn2", "Qc2", "Qn3", "Qc3")) %>% 
+  mutate(Plant_id = str_remove(Plant, "(n|c)")) %>% 
+  mutate(Plant_conc_id = str_c(Plant_id, conc, sep = "_"))  # create a unique id for the paired points
+  
+### Plot  
+ggplot(CO2_plant_1_to_3) + 
+  geom_point(aes(x = Plant_id, y = uptake, group = Treatment, shape = Treatment, color = factor(conc)),
+             position = position_dodge(width = 0.8)) + 
+  geom_line(aes(x = Plant_id, y = uptake, group = Plant_conc_id, color = factor(conc)),
+            position = position_dodge(width = 0.8)) + 
+  scale_color_brewer(palette = "Set1", name = "Ambient [CO2]") + 
+  theme_classic(base_size = 13)
 
 ```
 
-Well it doesn't work. We need to tweak out code a bit. Read below!
+Oops it doesn't work. How can we solve this problem? Read below!
 
+### Method 1. Use facets
 
-### Methods #1. Use facets
+The first solution is to create separate panels for the plant individuals using facets. This is a easy quick fix.
 
+```{r, fig.width = 7, fig.height = 4}
+### Plot  
+ggplot(CO2_plant_1_to_3) + 
+  geom_point(aes(x = Treatment, y = uptake, color = factor(conc))) + 
+  geom_line(aes(x = Treatment, y = uptake, group = factor(conc), color = factor(conc))) + 
+  facet_wrap( ~ Plant_id) +  # creating facets by plant id
+  scale_color_brewer(palette = "Set1", name = "Ambient [CO2]") + 
+  theme_classic(base_size = 13)
 
+```
 
+As we can see, all three plant individuals showed similar responses to chilling.
 
+### Method 2. Manually recode the paired points
 
+A second method is to manually recode the x-coordinates of the paired points and join them with lines. This is a bit more tedious, but works if you don't want to use facets. 
 
-
-### Method #2. Manually recode the paired points
-
+Basically, the two treatment groups will be dodged to the two sides for each plant individual, and a unique id is used to connect the paired points. 
 
 ```{r, fig.width = 5, fig.height = 4}
 df <- c("A", "B", "A", "C", "C", "B", "A")
