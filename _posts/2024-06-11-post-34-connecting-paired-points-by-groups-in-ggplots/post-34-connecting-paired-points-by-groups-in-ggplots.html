@@ -118,7 +118,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["post-34-connecting-paired-points-by-groups-in-ggplots_files/anchor-4.2.2/anchor.min.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/bowser-1.9.3/bowser.min.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/distill-2.2.21/template.v2.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png","post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png","post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png","post-34-connecting-paired-points-by-groups-in-ggplots_files/header-attrs-2.25/header-attrs.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.map","post-34-connecting-paired-points-by-groups-in-ggplots_files/popper-2.6.0/popper.min.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/tippy-6.2.7/tippy-light-border.css","post-34-connecting-paired-points-by-groups-in-ggplots_files/tippy-6.2.7/tippy.css","post-34-connecting-paired-points-by-groups-in-ggplots_files/tippy-6.2.7/tippy.umd.min.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["post-34-connecting-paired-points-by-groups-in-ggplots_files/anchor-4.2.2/anchor.min.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/bowser-1.9.3/bowser.min.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/distill-2.2.21/template.v2.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png","post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png","post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png","post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-4-1.png","post-34-connecting-paired-points-by-groups-in-ggplots_files/header-attrs-2.25/header-attrs.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.map","post-34-connecting-paired-points-by-groups-in-ggplots_files/popper-2.6.0/popper.min.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/tippy-6.2.7/tippy-light-border.css","post-34-connecting-paired-points-by-groups-in-ggplots_files/tippy-6.2.7/tippy.css","post-34-connecting-paired-points-by-groups-in-ggplots_files/tippy-6.2.7/tippy.umd.min.js","post-34-connecting-paired-points-by-groups-in-ggplots_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1625,7 +1625,7 @@ d-article table tbody tr td {
 }
 
 div.l-body img {
-    margin-right: 30% !important;
+    margin-right: 20% !important;
 }
 
 </style>
@@ -1691,21 +1691,32 @@ div.l-body img {
 <p><img src="post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <p>As we can see, all three plant individuals showed similar responses to chilling.</p>
-<h3 id="method-2.-manually-recode-the-paired-points">Method 2. Manually recode the paired points</h3>
-<p>A second method is to manually recode the x-coordinates of the paired points and join them with lines. This is a bit more tedious, but works if you don’t want to use facets.</p>
-<p>Basically, the two treatment groups will be dodged to the two sides for each plant individual, and a unique id is used to connect the paired points.</p>
+<h3 id="method-2.-manually-dodge-the-endpoints-of-the-connecting-lines">Method 2. Manually dodge the endpoints of the connecting lines</h3>
+<p>The second method is to manually dodge the endpoints of the connecting lines. This requires slightly more work, but is a non-facet alternative. So basically, we need to dodge the nonchilled and chilled points to the two sides of the plant individuals (their x-positions are indeed 1, 2, and 3), map the new dodged positions to the x aesthetic in <code>geomline()</code>, and specify each plant individual–CO<sub>2</sub> concentration pair as the grouping variable. Sounds a bit abstract?! Let’s take a look at the code below to get a better idea of how it works.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"C"</span>, <span class='st'>"C"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span><span class='op'>)</span></span>
-<span><span class='va'>lib</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span> <span class='op'>=</span> <span class='fl'>1</span>, <span class='st'>"B"</span> <span class='op'>=</span> <span class='fl'>2</span>, <span class='st'>"C"</span> <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></span>
-<span><span class='va'>lib</span><span class='op'>[</span><span class='va'>df</span><span class='op'>]</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Dodge the nonchilled and chilled points</span></span>
+<span><span class='va'>CO2_plant_1_to_3_recoded</span> <span class='op'>&lt;-</span> <span class='va'>CO2_plant_1_to_3</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Plant_id_x <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span><span class='va'>Plant_id</span> <span class='op'>==</span> <span class='st'>"Q1"</span> <span class='op'>~</span> <span class='fl'>1</span>,  <span class='co'># these are the x-positions of the three plant individuals</span></span>
+<span>                                <span class='va'>Plant_id</span> <span class='op'>==</span> <span class='st'>"Q2"</span> <span class='op'>~</span> <span class='fl'>2</span>,</span>
+<span>                                <span class='va'>Plant_id</span> <span class='op'>==</span> <span class='st'>"Q3"</span> <span class='op'>~</span> <span class='fl'>3</span><span class='op'>)</span>,</span>
+<span>         Plant_id_x_dodged <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span><span class='va'>Treatment</span> <span class='op'>==</span> <span class='st'>"nonchilled"</span> <span class='op'>~</span> <span class='va'>Plant_id_x</span> <span class='op'>-</span> <span class='fl'>0.25</span>,  <span class='co'># dodge the "nonchilled" points to the left of the plant individuals</span></span>
+<span>                                       <span class='va'>Treatment</span> <span class='op'>==</span> <span class='st'>"chilled"</span> <span class='op'>~</span> <span class='va'>Plant_id_x</span> <span class='op'>+</span> <span class='fl'>0.25</span><span class='op'>)</span><span class='op'>)</span>   <span class='co'># dodge the "chilled" points to the right of the plant individuals</span></span>
+<span></span>
+<span><span class='co'>### Plot</span></span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>CO2_plant_1_to_3_recoded</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Plant_id</span>, y <span class='op'>=</span> <span class='va'>uptake</span>, shape <span class='op'>=</span> <span class='va'>Treatment</span>, group <span class='op'>=</span> <span class='va'>Treatment</span>, color <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>conc</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span>             position <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Plant_id_x_dodged</span>, y <span class='op'>=</span> <span class='va'>uptake</span>, group <span class='op'>=</span> <span class='va'>Plant_conc_id</span>, color <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>conc</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, name <span class='op'>=</span> <span class='st'>"Ambient [CO2]"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span></span></code></pre>
 </div>
-<pre><code>A B A C C B A 
-1 2 1 3 3 2 1 </code></pre>
+<p><img src="post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
+<p>We made it!</p>
 <h2 id="summary">Summary</h2>
 <p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

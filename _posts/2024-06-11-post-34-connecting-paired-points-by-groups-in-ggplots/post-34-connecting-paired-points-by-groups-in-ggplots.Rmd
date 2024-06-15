@@ -92,7 +92,7 @@ d-article table tbody tr td {
 }
 
 div.l-body img {
-    margin-right: 30% !important;
+    margin-right: 20% !important;
 }
 
 </style>
@@ -180,27 +180,33 @@ ggplot(CO2_plant_1_to_3) +
 
 As we can see, all three plant individuals showed similar responses to chilling.
 
-### Method 2. Manually recode the paired points
+### Method 2. Manually dodge the endpoints of the connecting lines
 
-A second method is to manually recode the x-coordinates of the paired points and join them with lines. This is a bit more tedious, but works if you don't want to use facets. 
+The second method is to manually dodge the endpoints of the connecting lines. This requires slightly more work, but is a non-facet alternative. So basically, we need to dodge the nonchilled and chilled points to the two sides of the plant individuals (their x-positions are indeed 1, 2, and 3), map the new dodged positions to the x aesthetic in `geomline()`, and specify each plant individual–CO~2~ concentration pair as the grouping variable. Sounds a bit abstract?! Let's take a look at the code below to get a better idea of how it works.
 
-Basically, the two treatment groups will be dodged to the two sides for each plant individual, and a unique id is used to connect the paired points. 
+```{r, fig.width = 7, fig.height = 4}
+### Dodge the nonchilled and chilled points
+CO2_plant_1_to_3_recoded <- CO2_plant_1_to_3 %>% 
+  mutate(Plant_id_x = case_when(Plant_id == "Q1" ~ 1,  # these are the x-positions of the three plant individuals
+                                Plant_id == "Q2" ~ 2,
+                                Plant_id == "Q3" ~ 3),
+         Plant_id_x_dodged = case_when(Treatment == "nonchilled" ~ Plant_id_x - 0.25,  # dodge the "nonchilled" points to the left of the plant individuals
+                                       Treatment == "chilled" ~ Plant_id_x + 0.25))   # dodge the "chilled" points to the right of the plant individuals
 
-```{r, fig.width = 5, fig.height = 4}
-df <- c("A", "B", "A", "C", "C", "B", "A")
-lib <- c("A" = 1, "B" = 2, "C" = 3)
-lib[df]
-
-
+### Plot
+ggplot(CO2_plant_1_to_3_recoded) + 
+  geom_point(aes(x = Plant_id, y = uptake, shape = Treatment, group = Treatment, color = factor(conc)),
+             position = position_dodge(width = 1)) + 
+  geom_line(aes(x = Plant_id_x_dodged, y = uptake, group = Plant_conc_id, color = factor(conc))) + 
+  scale_color_brewer(palette = "Set1", name = "Ambient [CO2]") + 
+  theme_classic(base_size = 13)
 
 ```
-
-
-
-
-
+We made it!
 
 ## Summary
+
+
 
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
