@@ -113,7 +113,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","draft"]}},"value":[{"type":"character","attributes":{},"value":["Post #34. Connecting paired points in ggplots"]},{"type":"character","attributes":{},"value":["Check out the handy tips for connecting paired points in ggplots!\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2024-06-11"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2024"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post34.png"]},{"type":"logical","attributes":{},"value":[true]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview"]}},"value":[{"type":"character","attributes":{},"value":["Post #34. Connecting paired points in ggplots"]},{"type":"character","attributes":{},"value":["Check out the handy tips for connecting paired points in ggplots!\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2024-06-11"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2024"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post34.png"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1625,7 +1625,7 @@ d-article table tbody tr td {
 }
 
 div.l-body img {
-    margin-right: 20% !important;
+    margin-right: 30% !important;
 }
 
 </style>
@@ -1634,10 +1634,10 @@ div.l-body img {
 </head>
 <!-- Start of the article -->
 <h2 id="introduction">Introduction</h2>
-<p>Feel so glad (and relieved) to write another blog post after three months of rest! This post was actually inspired by a recent project I am working on: I wanted to make a ggplot comparing the feeding response of control vs. treatment for each larval parent family on two plant types, and I would like to draw a line connecting the control-treatment pair for each family. I thought it was a walk in the park, but when I started making the plot, it turned out to be more complicated than I imagined. Thankfully, after a bit of researching and experimenting, I figured it out and I felt it would be helpful to write something about it. So in this post, I’ll show you the tips for connecting paired points in ggplots. Let’s do it!</p>
+<p>Feel so glad (and relieved) to blog again after three months of rest! This post was actually inspired by a recent project I am working on: I wanted to make a ggplot comparing the feeding response of control vs. treatment for each larval parent family on two plant types, and I would like to draw a line connecting the control-treatment pair for each family for each plant type. I thought it was a walk in the park, but when I started making the plot, it turned out to be more complicated than I imagined. Thankfully, after a bit of researching and experimenting, I figured it out and I felt it would be helpful to write something about it. So in this post, I’ll show you the tips for connecting paired points in ggplots. Let’s do it!</p>
 <h2 id="case-1.-a-single-group">Case 1. A single group</h2>
 <p>We will use the built-in <a href="https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/CO2">CO2</a> dataset, which contains data from an experiment looking at how chilling affected the CO<sub>2</sub> uptake rates of the grass species <em>Echinochloa crus-galli</em>.</p>
-<p>Let’s start with the simplest case where we compare the CO<sub>2</sub> uptake rates of the chilled vs. nonchilled plant individual #1 at different ambient CO<sub>2</sub> concentrations. We’ll draw a line between each chilled-nonchilled pair to show the treatment effect.</p>
+<p>Let’s start with the simplest case where we compare the CO<sub>2</sub> uptake rates of the nonchilled vs. chilled plant individual #1 at different ambient CO<sub>2</sub> concentrations. We’ll draw a line between each nonchilled-chilled pair to show the treatment effect.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
@@ -1652,11 +1652,11 @@ div.l-body img {
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, name <span class='op'>=</span> <span class='st'>"Ambient [CO2]"</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png" width="60%" height="70%" style="display: block; margin: auto;" /></p>
 </div>
 <p>Looks like chilling reduces CO<sub>2</sub> uptake rates of plant individual #1 under all ambient CO<sub>2</sub> concentrations.</p>
 <h2 id="case-2.-two-or-more-groups">Case 2. Two or more groups</h2>
-<p>Now, what if we’re interested in the other plant individuals? Would the patterns be similar? Let’s make a plot and see.</p>
+<p>Now, what if we’re interested in other plant individuals? Would the patterns be similar? Let’s make another plot and see.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Select plant individual #1 to #3</span></span>
@@ -1673,26 +1673,26 @@ div.l-body img {
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, name <span class='op'>=</span> <span class='st'>"Ambient [CO2]"</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <p>Oops it doesn’t work. How can we solve this problem? Read below!</p>
 <h3 id="method-1.-use-facets">Method 1. Use facets</h3>
-<p>The first solution is to create separate panels for the plant individuals using facets. This is a easy quick fix.</p>
+<p>The first method is to create separate panels for each plant individual using facets. This is a easy quick fix.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Plot  </span></span>
 <span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>CO2_plant_1_to_3</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Treatment</span>, y <span class='op'>=</span> <span class='va'>uptake</span>, color <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>conc</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Treatment</span>, y <span class='op'>=</span> <span class='va'>uptake</span>, group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>conc</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>conc</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span> <span class='op'>~</span> <span class='va'>Plant_id</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># creating facets by plant id</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span> <span class='op'>~</span> <span class='va'>Plant_id</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># faceting by plant id</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, name <span class='op'>=</span> <span class='st'>"Ambient [CO2]"</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <p>As we can see, all three plant individuals showed similar responses to chilling.</p>
 <h3 id="method-2.-manually-dodge-the-endpoints-of-the-connecting-lines">Method 2. Manually dodge the endpoints of the connecting lines</h3>
-<p>The second method is to manually dodge the endpoints of the connecting lines. This requires slightly more work, but is a non-facet alternative. So basically, we need to dodge the nonchilled and chilled points to the two sides of the plant individuals (their x-positions are indeed 1, 2, and 3), map the new dodged positions to the x aesthetic in <code>geomline()</code>, and specify each plant individual–CO<sub>2</sub> concentration pair as the grouping variable. Sounds a bit abstract?! Let’s take a look at the code below to get a better idea of how it works.</p>
+<p>The second method is to manually dodge the endpoints of the connecting lines. This requires slightly more work, but is a non-facet alternative. So basically, we need to dodge the nonchilled and chilled points to the two sides of each plant individual (the x-positions of the three plants are indeed 1, 2, and 3), map the new dodged positions to the x aesthetic in <code>geomline()</code>, and specify each plant individual–CO<sub>2</sub> concentration combination as the grouping variable. Sounds a bit abstract?! Let’s take a look at the code below to get a better idea of how it works.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Dodge the nonchilled and chilled points</span></span>
@@ -1700,8 +1700,8 @@ div.l-body img {
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Plant_id_x <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span><span class='va'>Plant_id</span> <span class='op'>==</span> <span class='st'>"Q1"</span> <span class='op'>~</span> <span class='fl'>1</span>,  <span class='co'># these are the x-positions of the three plant individuals</span></span>
 <span>                                <span class='va'>Plant_id</span> <span class='op'>==</span> <span class='st'>"Q2"</span> <span class='op'>~</span> <span class='fl'>2</span>,</span>
 <span>                                <span class='va'>Plant_id</span> <span class='op'>==</span> <span class='st'>"Q3"</span> <span class='op'>~</span> <span class='fl'>3</span><span class='op'>)</span>,</span>
-<span>         Plant_id_x_dodged <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span><span class='va'>Treatment</span> <span class='op'>==</span> <span class='st'>"nonchilled"</span> <span class='op'>~</span> <span class='va'>Plant_id_x</span> <span class='op'>-</span> <span class='fl'>0.25</span>,  <span class='co'># dodge the "nonchilled" points to the left of the plant individuals</span></span>
-<span>                                       <span class='va'>Treatment</span> <span class='op'>==</span> <span class='st'>"chilled"</span> <span class='op'>~</span> <span class='va'>Plant_id_x</span> <span class='op'>+</span> <span class='fl'>0.25</span><span class='op'>)</span><span class='op'>)</span>   <span class='co'># dodge the "chilled" points to the right of the plant individuals</span></span>
+<span>         Plant_id_x_dodged <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span><span class='va'>Treatment</span> <span class='op'>==</span> <span class='st'>"nonchilled"</span> <span class='op'>~</span> <span class='va'>Plant_id_x</span> <span class='op'>-</span> <span class='fl'>0.25</span>,  <span class='co'># dodge the "nonchilled" points to the left of each plant individual</span></span>
+<span>                                       <span class='va'>Treatment</span> <span class='op'>==</span> <span class='st'>"chilled"</span> <span class='op'>~</span> <span class='va'>Plant_id_x</span> <span class='op'>+</span> <span class='fl'>0.25</span><span class='op'>)</span><span class='op'>)</span>   <span class='co'># dodge the "chilled" points to the right of each plant individual</span></span>
 <span></span>
 <span><span class='co'>### Plot</span></span>
 <span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>CO2_plant_1_to_3_recoded</span><span class='op'>)</span> <span class='op'>+</span> </span>
@@ -1711,10 +1711,11 @@ div.l-body img {
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span>, name <span class='op'>=</span> <span class='st'>"Ambient [CO2]"</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="post-34-connecting-paired-points-by-groups-in-ggplots_files/figure-html5/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <p>We made it!</p>
 <h2 id="summary">Summary</h2>
+<p>To recap, we looked at how to connect paired points with lines for a single group as well as for multiple groups. When there are multiple groups, we can use facets or manually dodge the endpoints of the lines. This type of paired-points plot is especially useful for visualizing the treatment effects, and I’m pretty sure you’ll be creating it in the future.</p>
 <p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->

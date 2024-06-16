@@ -7,7 +7,17 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Wed, 21 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 11 Jun 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #34. Connecting paired points in ggplots</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2024-06-11-post-34-connecting-paired-points-by-groups-in-ggplots</link>
+      <description>Check out the handy tips for connecting paired points in ggplots!</description>
+      <category>2024</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2024-06-11-post-34-connecting-paired-points-by-groups-in-ggplots</guid>
+      <pubDate>Tue, 11 Jun 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2024-06-11-post-34-connecting-paired-points-by-groups-in-ggplots/../../homepage_images/Post34.png" medium="image" type="image/png" width="1344" height="768"/>
+    </item>
     <item>
       <title>Post #33. A "timely" plot—Visualizing time series data in ggplot</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>

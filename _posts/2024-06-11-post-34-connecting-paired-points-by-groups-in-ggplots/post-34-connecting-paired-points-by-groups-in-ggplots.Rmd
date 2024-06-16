@@ -11,7 +11,6 @@ output:
 categories:
   - "2024"
 preview: ../../homepage_images/Post34.png
-draft: true
 ---
 
 <!-- Webpage style -->
@@ -92,7 +91,7 @@ d-article table tbody tr td {
 }
 
 div.l-body img {
-    margin-right: 20% !important;
+    margin-right: 30% !important;
 }
 
 </style>
@@ -113,16 +112,16 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-Feel so glad (and relieved) to write another blog post after three months of rest! This post was actually inspired by a recent project I am working on: I wanted to make a ggplot comparing the feeding response of control vs. treatment for each larval parent family on two plant types, and I would like to draw a line connecting the control-treatment pair for each family. I thought it was a walk in the park, but when I started making the plot, it turned out to be more complicated than I imagined. Thankfully, after a bit of researching and experimenting, I figured it out and I felt it would be helpful to write something about it. So in this post, I'll show you the tips for connecting paired points in ggplots. Let's do it!
+Feel so glad (and relieved) to blog again after three months of rest! This post was actually inspired by a recent project I am working on: I wanted to make a ggplot comparing the feeding response of control vs. treatment for each larval parent family on two plant types, and I would like to draw a line connecting the control-treatment pair for each family for each plant type. I thought it was a walk in the park, but when I started making the plot, it turned out to be more complicated than I imagined. Thankfully, after a bit of researching and experimenting, I figured it out and I felt it would be helpful to write something about it. So in this post, I'll show you the tips for connecting paired points in ggplots. Let's do it!
 
 
 ## Case 1. A single group
 
 We will use the built-in [CO2](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/CO2) dataset, which contains data from an experiment looking at how chilling affected the CO~2~ uptake rates of the grass species *Echinochloa crus-galli*. 
 
-Let's start with the simplest case where we compare the CO~2~ uptake rates of the chilled vs. nonchilled plant individual #1 at different ambient CO~2~ concentrations. We'll draw a line between each chilled-nonchilled pair to show the treatment effect.
+Let's start with the simplest case where we compare the CO~2~ uptake rates of the nonchilled vs. chilled plant individual #1 at different ambient CO~2~ concentrations. We'll draw a line between each nonchilled-chilled pair to show the treatment effect.
 
-```{r, fig.width = 5, fig.height = 4}
+```{r, fig.width = 5, fig.height = 4, out.height = "70%", out.width = "60%"}
 library(tidyverse)
 
 ### Select plant individual #1
@@ -139,12 +138,11 @@ ggplot(CO2_plant_1) +
 
 Looks like chilling reduces CO~2~ uptake rates of plant individual #1 under all ambient CO~2~ concentrations.
 
-
 ## Case 2. Two or more groups
 
-Now, what if we're interested in the other plant individuals? Would the patterns be similar? Let's make a plot and see.
+Now, what if we're interested in other plant individuals? Would the patterns be similar? Let's make another plot and see.
 
-```{r, fig.width = 7, fig.height = 4}
+```{r, fig.width = 7, fig.height = 4, out.width = "80%"}
 ### Select plant individual #1 to #3
 CO2_plant_1_to_3 <- filter(CO2, Plant %in% c("Qn1", "Qc1", "Qn2", "Qc2", "Qn3", "Qc3")) %>% 
   mutate(Plant_id = str_remove(Plant, "(n|c)")) %>% 
@@ -165,14 +163,14 @@ Oops it doesn't work. How can we solve this problem? Read below!
 
 ### Method 1. Use facets
 
-The first solution is to create separate panels for the plant individuals using facets. This is a easy quick fix.
+The first method is to create separate panels for each plant individual using facets. This is a easy quick fix.
 
-```{r, fig.width = 7, fig.height = 4}
+```{r, fig.width = 7, fig.height = 4, out.width = "80%"}
 ### Plot  
 ggplot(CO2_plant_1_to_3) + 
   geom_point(aes(x = Treatment, y = uptake, color = factor(conc))) + 
   geom_line(aes(x = Treatment, y = uptake, group = factor(conc), color = factor(conc))) + 
-  facet_wrap( ~ Plant_id) +  # creating facets by plant id
+  facet_wrap( ~ Plant_id) +  # faceting by plant id
   scale_color_brewer(palette = "Set1", name = "Ambient [CO2]") + 
   theme_classic(base_size = 13)
 
@@ -182,16 +180,16 @@ As we can see, all three plant individuals showed similar responses to chilling.
 
 ### Method 2. Manually dodge the endpoints of the connecting lines
 
-The second method is to manually dodge the endpoints of the connecting lines. This requires slightly more work, but is a non-facet alternative. So basically, we need to dodge the nonchilled and chilled points to the two sides of the plant individuals (their x-positions are indeed 1, 2, and 3), map the new dodged positions to the x aesthetic in `geomline()`, and specify each plant individual–CO~2~ concentration pair as the grouping variable. Sounds a bit abstract?! Let's take a look at the code below to get a better idea of how it works.
+The second method is to manually dodge the endpoints of the connecting lines. This requires slightly more work, but is a non-facet alternative. So basically, we need to dodge the nonchilled and chilled points to the two sides of each plant individual (the x-positions of the three plants are indeed 1, 2, and 3), map the new dodged positions to the x aesthetic in `geomline()`, and specify each plant individual–CO~2~ concentration combination as the grouping variable. Sounds a bit abstract?! Let's take a look at the code below to get a better idea of how it works.
 
-```{r, fig.width = 7, fig.height = 4}
+```{r, fig.width = 7, fig.height = 4, out.width = "80%"}
 ### Dodge the nonchilled and chilled points
 CO2_plant_1_to_3_recoded <- CO2_plant_1_to_3 %>% 
   mutate(Plant_id_x = case_when(Plant_id == "Q1" ~ 1,  # these are the x-positions of the three plant individuals
                                 Plant_id == "Q2" ~ 2,
                                 Plant_id == "Q3" ~ 3),
-         Plant_id_x_dodged = case_when(Treatment == "nonchilled" ~ Plant_id_x - 0.25,  # dodge the "nonchilled" points to the left of the plant individuals
-                                       Treatment == "chilled" ~ Plant_id_x + 0.25))   # dodge the "chilled" points to the right of the plant individuals
+         Plant_id_x_dodged = case_when(Treatment == "nonchilled" ~ Plant_id_x - 0.25,  # dodge the "nonchilled" points to the left of each plant individual
+                                       Treatment == "chilled" ~ Plant_id_x + 0.25))   # dodge the "chilled" points to the right of each plant individual
 
 ### Plot
 ggplot(CO2_plant_1_to_3_recoded) + 
@@ -206,8 +204,7 @@ We made it!
 
 ## Summary
 
-
-
+To recap, we looked at how to connect paired points with lines for a single group as well as for multiple groups. When there are multiple groups, we can use facets or manually dodge the endpoints of the lines. This type of paired-points plot is especially useful for visualizing the treatment effects, and I'm pretty sure you'll be creating it in the future.
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
