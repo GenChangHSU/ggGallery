@@ -1,7 +1,7 @@
 ---
-title: "Post #35. Creating 3D plots with plotly"
+title: "Post #35. Creating 3D plots with plotly and rayshader"
 description: |
-  Bring your plots to the next dimension with `plotly`!
+  Bring your plots to the next dimension with `plotly` and `rayshader`!
 author:
   - name: Gen-Chang Hsu
 date: 2024-07-03
@@ -118,7 +118,7 @@ knitr::opts_chunk$set(message = F,
 
 
 
-## Various 3D plots
+## 3D plots with plotly
 
 
 ### (1) 3D scatter/line plot
@@ -139,6 +139,15 @@ library(plotly)
 
 
 ### Layout the plots
+
+
+
+
+## 3D plots with rayshader
+
+
+
+
 
 
 
