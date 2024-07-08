@@ -92,7 +92,7 @@ d-article table tbody tr td {
 }
 
 div.l-body img {
-    margin-right: 30% !important;
+    margin-right: 20% !important;
 }
 
 </style>
@@ -113,21 +113,54 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
+2D plots with an x- and a y-axis displaying the relationships between two variables are probably the most common type of plots in our everyday life. If we want to incorporate more information into the plots, we can use different appearances (colors, sizes, shapes, etc.) of points and lines (or other graphic elements). But sometimes, plotting the data in a 3D space can be more visually appealing and may even help us gain deeper insights into the data. Although ggplot does not have geoms for 3D plots by the time of this post, there are other R packages that do the job. And in this post, I'm going to introduce two of these packages to you: `plotly` and `rayshader`. They both have cool functions to generate awesome 3D plots. So buckle up and let's get ready to bring our plots to the next dimension!
 
 
+## 3D plots with `plotly`
 
 
-
-## 3D plots with plotly
 
 
 ### (1) 3D scatter/line plot
 
 
-```{r, fig.width = 5, fig.height = 4}
+```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
 library(tidyverse)
 library(plotly)
 
+### Model predictions
+iris_lm_prediction <- iris %>% 
+  group_by(Species) %>% 
+  summarise(Model = list(lm(Petal.Length ~ Sepal.Length + Sepal.Width))) %>% 
+  rowwise() %>% 
+  mutate(Newdata = list(data.frame(Sepal.Length = range(Model$model$Sepal.Length),
+                                   Sepal.Width = range(Model$model$Sepal.Width)))) %>% 
+  mutate(Prediction = list(cbind(Newdata, Prediction = predict(Model, newdata = Newdata)))) %>% 
+  select(Species, Prediction) %>% 
+  unnest(col = Prediction)
+
+### Create a 3D scatterplot with the fitted lines
+scatterplot3d <- plot_ly() %>% 
+  # add the points
+  add_markers(data = iris, 
+              x = ~ Sepal.Length, 
+              y = ~ Sepal.Width, 
+              z = ~ Petal.Length, 
+              color = ~ Species, 
+              colors = c("#BF382A", "#0C4B8E", "#018571"),
+              size = 2) %>% 
+  # add the lines
+  add_paths(data = iris_lm_prediction,
+            x = ~ Sepal.Length, 
+            y = ~ Sepal.Width, 
+            z = ~ Prediction,
+            color = ~ Species,
+            colors = c("#BF382A", "#0C4B8E", "#018571"),
+            showlegend = F) %>% 
+  layout(legend = list(x = 0.9, y = 0.5),
+         scene = list(xaxis = list(title = "Sepal length", range = list(4, 8)),
+                      yaxis = list(title = "Sepal width", range = list(1, 5)),
+                      zaxis = list(title = "Petal length", range = list(1, 7))))
 
 
 ```
@@ -138,12 +171,17 @@ library(plotly)
 
 
 
-### Layout the plots
+
+
+### (3) Layout the plots
 
 
 
 
-## 3D plots with rayshader
+
+
+
+## 3D plots with `rayshader`
 
 
 
