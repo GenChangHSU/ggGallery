@@ -118,10 +118,12 @@ knitr::opts_chunk$set(message = F,
 
 ## 3D plots with `plotly`
 
+The first package we'll be using is [`plotly`](https://plotly.com/r/). The package features interactive plots and contains lots of functions for generating. The function `ggplotly()` can convert the ggplots to interactive plots. 
+
+Here, we're going to take a look at the functions for 3D plots. We'll create a 3D scatterplot with fitted lines and a 3D surface plots with contours and a path.
 
 
-
-### (1) 3D scatter/line plot
+### (1) 3D scatterplot
 
 
 ```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
@@ -162,13 +164,39 @@ scatterplot3d <- plot_ly() %>%
                       yaxis = list(title = "Sepal width", range = list(1, 5)),
                       zaxis = list(title = "Petal length", range = list(1, 7))))
 
+scatterplot3d
 
 ```
 
 
-### (2) 3D surface/contour plot
+### (2) 3D surface plot
+
+```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
+
+kd <- with(MASS::geyser, MASS::kde2d(duration, waiting, n = 50))
+
+surfaceplot3d <- plot_ly() %>%
+  add_surface(x = ~ x, y = ~ y, z = ~ z, data = kd,
+              contours = list(z = list(show = T,
+                                       start = 0.001, 
+                                       end = 0.014, 
+                                       size = 0.003,
+                                       usecolormap = F)
+                              )
+              ) %>% 
+  layout(legend = list(x = 0.9, y = 0.5),
+         scene = list(xaxis = list(title = "X"),
+                      yaxis = list(title = "Y"),
+                      zaxis = list(title = "Z")
+                      )
+         )
 
 
+surfaceplot3d
+
+
+
+```
 
 
 
