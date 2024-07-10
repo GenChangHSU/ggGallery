@@ -118,12 +118,19 @@ knitr::opts_chunk$set(message = F,
 
 ## 3D plots with `plotly`
 
-The first package we'll be using is [`plotly`](https://plotly.com/r/). The package features interactive plots and contains lots of functions for generating. The function `ggplotly()` can convert the ggplots to interactive plots. 
+The first package we'll be using is [`plotly`](https://plotly.com/r/). This package features interactive plots and contains functions for generating a wide array of figures. Moreover, besides its own plotting functions, `plotly` also provides the function `ggplotly()`, which directly converts ggplots to the corresponding interactive plots. 
 
-Here, we're going to take a look at the functions for 3D plots. We'll create a 3D scatterplot with fitted lines and a 3D surface plots with contours and a path.
-
+Here, we're going to explore the `plotly` functions for creating 3D plots. Specifically, we'll create a 3D scatterplot with fitted lines and a 3D surface plot with contours and a path.
 
 ### (1) 3D scatterplot
+
+The syntax for plotly is pretty similar to ggplot: we call the global function `plotly()` to create a plotting canvas and add other graphical elements using the functions `add_XXX()`. 
+
+To add the points, we use the function `add_markers()` (similar to `geom_point()`). For a basic 3D scatterplot, simply pass the x-, y-, and z-coordinates to the function and specify the variable you would like to color the points by.
+
+To add the lines, we use the function `add_path()` (similar to `geom_path()`). Again, simply pass the x-, y-, and z-coordinates to the function and specify the variable you would like to color the points by.
+
+Finally, we can modify the the appearance of the axes and legend using the function `layout()` (see [here](https://plotly.com/r/reference/layout/) for a complete list of things you can adjust!).
 
 
 ```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
@@ -172,15 +179,22 @@ scatterplot3d
 ### (2) 3D surface plot
 
 ```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
+surfaceplot3d_data <- expand_grid(x = seq(0, 1, 0.01),
+                                  y = seq(0, 1, 0.01)) %>% 
+  mutate(z = abs((x+0.4)*(y+0.8))) %>% 
+  pivot_wider(names_from = "y", values_from = "z") %>% 
+  select(-x) %>% 
+  as.matrix()
+surfaceplot3d_data %>% class()
 
 kd <- with(MASS::geyser, MASS::kde2d(duration, waiting, n = 50))
 
 surfaceplot3d <- plot_ly() %>%
-  add_surface(x = ~ x, y = ~ y, z = ~ z, data = kd,
+  add_surface(z = ~ surfaceplot3d_data,
               contours = list(z = list(show = T,
-                                       start = 0.001, 
-                                       end = 0.014, 
-                                       size = 0.003,
+                                       start = -3.4, 
+                                       end = 4.4, 
+                                       size = 0.1,
                                        usecolormap = F)
                               )
               ) %>% 
@@ -203,7 +217,7 @@ surfaceplot3d
 
 ### (3) Layout the plots
 
-
+saving the plots in high quality
 
 
 
