@@ -124,13 +124,13 @@ Here, we're going to explore the `plotly` functions for creating 3D plots. Speci
 
 ### (1) 3D scatterplot
 
-The syntax for plotly is pretty similar to ggplot: we call the global function `plotly()` to create a plotting canvas and add other graphical elements using the functions `add_XXX()`. 
+The syntax for plotly is pretty similar to ggplot: we call the global function `plotly()` to create a plotting canvas (akin to `ggplot()`) and add other graphical elements using the functions `add_XXX()` (akin to `geom_XXX()`).
 
-To add the points, we use the function `add_markers()` (similar to `geom_point()`). For a basic 3D scatterplot, simply pass the x-, y-, and z-coordinates to the function and specify the variable you would like to color the points by.
+To create a basic 3D scatterplot, we use the function `add_markers()` (similar to `geom_point()`). Simply pass the x-, y-, and z-coordinates to the function and specify the variable you would like to color the points by.
 
-To add the lines, we use the function `add_path()` (similar to `geom_path()`). Again, simply pass the x-, y-, and z-coordinates to the function and specify the variable you would like to color the points by.
+To add the lines, we use the function `add_path()` (similar to `geom_path()`). Again, simply pass the x-, y-, and z-coordinates to the function and specify the variable you would like to color the line by.
 
-Finally, we can modify the the appearance of the axes and legend using the function `layout()` (see [here](https://plotly.com/r/reference/layout/) for a complete list of things you can adjust!).
+We can modify the the appearance of the axes and legend using the function `layout()` (see [here](https://plotly.com/r/reference/layout/) for a complete list of things you can adjust!).
 
 
 ```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
@@ -145,7 +145,7 @@ iris_lm_prediction <- iris %>%
   mutate(Newdata = list(data.frame(Sepal.Length = range(Model$model$Sepal.Length),
                                    Sepal.Width = range(Model$model$Sepal.Width)))) %>% 
   mutate(Prediction = list(cbind(Newdata, Prediction = predict(Model, newdata = Newdata)))) %>% 
-  select(Species, Prediction) %>% 
+  dplyr::select(Species, Prediction) %>% 
   unnest(col = Prediction)
 
 ### Create a 3D scatterplot with the fitted lines
@@ -178,19 +178,16 @@ scatterplot3d
 
 ### (2) 3D surface plot
 
-```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
-surfaceplot3d_data <- expand_grid(x = seq(0, 1, 0.01),
-                                  y = seq(0, 1, 0.01)) %>% 
-  mutate(z = abs((x+0.4)*(y+0.8))) %>% 
-  pivot_wider(names_from = "y", values_from = "z") %>% 
-  select(-x) %>% 
-  as.matrix()
-surfaceplot3d_data %>% class()
 
-kd <- with(MASS::geyser, MASS::kde2d(duration, waiting, n = 50))
+
+```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
+library(MASS)
+kd <- kde2d(iris$Sepal.Length, iris$Sepal.Width, n = 100)[[3]]
 
 surfaceplot3d <- plot_ly() %>%
-  add_surface(z = ~ surfaceplot3d_data,
+  add_surface(x = seq(min(iris$Sepal.Length), max(iris$Sepal.Length), length.out = 100),
+              y = seq(min(iris$Sepal.Width), max(iris$Sepal.Width), length.out = 100),
+              z = ~ kd,
               contours = list(z = list(show = T,
                                        start = -3.4, 
                                        end = 4.4, 
@@ -198,8 +195,8 @@ surfaceplot3d <- plot_ly() %>%
                                        usecolormap = F)
                               )
               ) %>% 
-  layout(legend = list(x = 0.9, y = 0.5),
-         scene = list(xaxis = list(title = "X"),
+  layout(legend = list(x = 0.5, y = 0.1, orientation = 'h'),
+         scene = list(xaxis = list(title = "Xaa"),
                       yaxis = list(title = "Y"),
                       zaxis = list(title = "Z")
                       )
