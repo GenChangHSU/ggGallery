@@ -182,29 +182,49 @@ scatterplot3d
 
 ```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
 library(MASS)
-kd <- kde2d(iris$Sepal.Length, iris$Sepal.Width, n = 100)[[3]]
 
+### 2D kernel density estimates of the sepal length and width
+iris_kd_matrix <- kde2d(iris$Sepal.Length, iris$Sepal.Width, n = 100)[[3]]
+
+### Create a 3d surface plot with contours
+### Note that the matrix column (Sepal.Width) will be plotted as the x-axis and the row (Sepal.Length) will be plotted as the y-axis
 surfaceplot3d <- plot_ly() %>%
-  add_surface(x = seq(min(iris$Sepal.Length), max(iris$Sepal.Length), length.out = 100),
-              y = seq(min(iris$Sepal.Width), max(iris$Sepal.Width), length.out = 100),
-              z = ~ kd,
-              contours = list(z = list(show = T,
-                                       start = -3.4, 
-                                       end = 4.4, 
+  add_surface(x = seq(min(iris$Sepal.Width), max(iris$Sepal.Width), length.out = 100),
+              y = seq(min(iris$Sepal.Length), max(iris$Sepal.Length), length.out = 100),
+              z = iris_kd_matrix,
+              contours = list(z = list(start = 0, 
+                                       end = 0.5, 
                                        size = 0.1,
-                                       usecolormap = F)
-                              )
-              ) %>% 
-  layout(legend = list(x = 0.5, y = 0.1, orientation = 'h'),
-         scene = list(xaxis = list(title = "Xaa"),
-                      yaxis = list(title = "Y"),
-                      zaxis = list(title = "Z")
-                      )
-         )
+                                       show = T, 
+                                       usecolormap = F))) %>% 
+  layout(scene = list(xaxis = list(title = "Sepal width"),
+                      yaxis = list(title = "Sepal length"),
+                      zaxis = list(title = "Density")))
 
+### Get a random path on the landscape
+set.seed(123)
+
+df <- data.frame(x = 1, y = 1)
+max_df <- 1
+i <- 1
+
+while (max_df < 100) {
+  df[i + 1, ] <- df[i, ] + sample(c(0, 1), size = 2, replace = F)
+  max_df <- max(df)
+  i <- i + 1
+}
+
+df_density <- df %>% 
+  rowwise() %>% 
+  mutate(Density = iris_kd_matrix[x, y]) %>% 
+  mutate(Sepal.Length = seq(min(iris$Sepal.Length), max(iris$Sepal.Length), length.out = 100)[x], 
+         Sepal.Width = seq(min(iris$Sepal.Width), max(iris$Sepal.Width), length.out = 100)[y])
+
+### Add the path
+surfaceplot3d %>% 
+  add_paths(data = df_density, x = ~ Sepal.Width, y = ~ Sepal.Length, z = ~ Density, line = list(width = 4))
 
 surfaceplot3d
-
 
 
 ```
