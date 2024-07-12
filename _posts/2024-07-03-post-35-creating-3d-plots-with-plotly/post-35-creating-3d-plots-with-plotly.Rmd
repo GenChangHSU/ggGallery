@@ -175,23 +175,27 @@ scatterplot3d
 
 ```
 
-
 ### (2) 3D surface plot
 
+The second plot we're going to create is a 3D surface plot with contour lines. This can be done via the function `add_surface()`, which takes a matrix (instead of a dataframe column or a vector) as the input for the argument "z" . The contour lines are added via the argument "contour".
 
+In the example below, we first estimated the kernel density of the Sepal.Length and Sepal.Width in the `iris` dataset using the `kde2d()` from the `MASS` package. The function returns a matrix of the kernel density estimates, with Sepal.Length as the row and Sepal.Width as the column. This matrix can be passed directly to the "z" argument in `add_surface()` to generate a 3D surface plot. Additionally, we can specify the x- and y-axis via the argument "x" and "y". Also note that matrix column is treated as the x-axis (which is "Sepal.Width") and the matrix row is treated as the y-axis (which is "Sepal.Length") in the plot, so make sure you're specifying the correct variables for the axes (it's a bit confusing I know!).
+
+Finally, we can add a random path that traverses across the 3D landscape surface, using the function `add_paths()`.
 
 ```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
 library(MASS)
 
-### 2D kernel density estimates of the sepal length and width
+### 2D kernel density estimates of the Sepal.Length and Sepal.Width
+### The result is a 100-by-100 matrix with Sepal.Length as the row and Sepal.Width as the column
 iris_kd_matrix <- kde2d(iris$Sepal.Length, iris$Sepal.Width, n = 100)[[3]]
 
-### Create a 3d surface plot with contours
-### Note that the matrix column (Sepal.Width) will be plotted as the x-axis and the row (Sepal.Length) will be plotted as the y-axis
+### Create a 3D surface plot with contours
+### Note that the matrix column (Sepal.Width) will be plotted as the x-axis and the matrix row (Sepal.Length) will be plotted as the y-axis
 surfaceplot3d <- plot_ly() %>%
-  add_surface(x = seq(min(iris$Sepal.Width), max(iris$Sepal.Width), length.out = 100),
-              y = seq(min(iris$Sepal.Length), max(iris$Sepal.Length), length.out = 100),
-              z = iris_kd_matrix,
+  add_surface(x = seq(min(iris$Sepal.Width), max(iris$Sepal.Width), length.out = 100),  # x is the matrix column, corresponding to Sepal.Width
+              y = seq(min(iris$Sepal.Length), max(iris$Sepal.Length), length.out = 100),  # y is the matrix row, corresponding to Sepal.Length
+              z = iris_kd_matrix,  # takes a matrix as the input
               contours = list(z = list(start = 0, 
                                        end = 0.5, 
                                        size = 0.1,
@@ -201,41 +205,51 @@ surfaceplot3d <- plot_ly() %>%
                       yaxis = list(title = "Sepal length"),
                       zaxis = list(title = "Density")))
 
-### Get a random path on the landscape
+### Create a dataframe of a random path across the 3D surface
 set.seed(123)
 
-df <- data.frame(x = 1, y = 1)
-max_df <- 1
+random_path_df <- data.frame(x = 1, y = 1)
+max_random_path_df <- 1
 i <- 1
 
-while (max_df < 100) {
-  df[i + 1, ] <- df[i, ] + sample(c(0, 1), size = 2, replace = F)
-  max_df <- max(df)
+while (max_random_path_df < 100) {
+  random_path_df[i + 1, ] <- random_path_df[i, ] + sample(c(0, 1), size = 2, replace = F)
+  max_random_path_df <- max(random_path_df)
   i <- i + 1
 }
 
-df_density <- df %>% 
+random_path_df <- random_path_df %>% 
   rowwise() %>% 
   mutate(Density = iris_kd_matrix[x, y]) %>% 
   mutate(Sepal.Length = seq(min(iris$Sepal.Length), max(iris$Sepal.Length), length.out = 100)[x], 
          Sepal.Width = seq(min(iris$Sepal.Width), max(iris$Sepal.Width), length.out = 100)[y])
 
-### Add the path
-surfaceplot3d %>% 
-  add_paths(data = df_density, x = ~ Sepal.Width, y = ~ Sepal.Length, z = ~ Density, line = list(width = 4))
+### Add the random path to the plot
+surfaceplot3d <- surfaceplot3d %>% 
+  add_paths(data = random_path_df, 
+            x = ~ Sepal.Width,  # again x-axis is Sepal.Width 
+            y = ~ Sepal.Length,  # again y-axis is Sepal.Length
+            z = ~ Density, 
+            line = list(width = 4))
 
 surfaceplot3d
 
-
 ```
-
-
-
 
 ### (3) Layout the plots
 
-saving the plots in high quality
 
+
+
+
+```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
+
+scatterplot3d
+surfaceplot3d 
+
+```
+
+saving the plots in high quality
 
 
 
