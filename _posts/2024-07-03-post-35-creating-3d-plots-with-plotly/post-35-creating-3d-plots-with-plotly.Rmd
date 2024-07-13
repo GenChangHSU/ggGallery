@@ -236,23 +236,32 @@ surfaceplot3d
 
 ```
 
-### (3) Layout the plots
+### (3) Save the plot
 
+To save the plot, we can set the configuration options for it using `config()` and specify the file format, file name, figure width and height (in pixels), and the scale of the figure (a scale larger than 1 will enlarge the figure). After that, adjust the plot to a desired view and click the camera icon "Download plot as a png" on the mode bar to download it.
 
-
-
+Alternatively, we can install the application Orca and save the plot directly using the function `orca()`. See [this page](https://plotly.com/r/static-image-export/) for more details. Of course, we can modify the default plot appearance by specifying the x, y, and z values in the "eye" argument before we save it.
 
 ```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
+### Option 1. Download the plot from the mode bar
+### Set the condiguration options and click the download icon
+config(surfaceplot3d, toImageButtonOptions = list(format = "png",
+                                                  filename = "surfaceplot3d",
+                                                  height = 500,
+                                                  width = 700,
+                                                  scale = 2))
 
-scatterplot3d
-surfaceplot3d 
+### Option 2. Save the plot using the function orca()
+# modify the plot appearance
+surfaceplot3d_newview <- surfaceplot3d %>% 
+  layout(scene = list(camera = list(eye = list(x = 1.5, y = -1.5, z = 1.5))))
+
+surfaceplot3d_newview
+
+# save the plot
+orca(surfaceplot3d_newview, file = "surfaceplot3d.png", width = 700, height = 500, scale = 2)
 
 ```
-
-saving the plots in high quality
-
-
-
 
 ## 3D plots with `rayshader`
 
