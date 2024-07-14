@@ -266,6 +266,45 @@ orca(surfaceplot3d_newview, file = "surfaceplot3d.png", width = 700, height = 50
 ## 3D plots with `rayshader`
 
 
+```{r, fig.width = 4, fig.height = 3.8, out.width = "80%", fig.show = "hide"}
+library(rayshader)
+
+### Create a contour plot in ggplot
+contourplot3d <- ggplot(data = iris) +
+  geom_density_2d_filled(aes(x = Sepal.Length, y = Sepal.Width, fill = after_stat(nlevel)),
+                         n = 100, bins = 20, contour = TRUE) +
+  scale_fill_viridis_c() + 
+  theme_bw()
+
+### Convert the contour plot into a 3D plot
+plot_gg(contourplot3d, 
+        width = 3.5, 
+        height = 3, 
+        shadow_intensity = 0.8,
+        scale = 250,
+        fov = 25, 
+        zoom = 0.6,
+        theta = 0,
+        windowsize = c(900, 900))
+
+render_snapshot(filename = "contourplot3d")
+
+```
+
+
+```{r, fig.width = 8, fig.height = 4.5, out.width = "90%", fig.align = "center", echo = FALSE}
+ggsave("contourplot3d.tiff", contourplot3d, width = 4.2, height = 3.5, dpi = 600, device = "tiff")
+
+library(cowplot)
+ggdraw() + 
+  draw_image("contourplot3d.tiff", width = 0.5) + 
+  draw_image("contourplot3d.png", width = 0.5, x = 0.5)
+
+```
+
+
+geom_tile for the iris 2d kde
+
 
 
 
