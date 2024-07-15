@@ -186,7 +186,7 @@ Finally, we can add a random path that traverses across the 3D landscape surface
 ```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
 library(MASS)
 
-### 2D kernel density estimates of the Sepal.Length and Sepal.Width
+### 2D kernel density estimates of Sepal.Length and Sepal.Width
 ### The result is a 100-by-100 matrix with Sepal.Length as the row and Sepal.Width as the column
 iris_kd_matrix <- kde2d(iris$Sepal.Length, iris$Sepal.Width, n = 100)[[3]]
 
@@ -246,7 +246,7 @@ Alternatively, we can install the application Orca and save the plot directly us
 ### Option 1. Download the plot from the mode bar
 ### Set the condiguration options and click the download icon
 config(surfaceplot3d, toImageButtonOptions = list(format = "png",
-                                                  filename = "surfaceplot3d",
+                                                  filename = "Surfaceplot3d",
                                                   height = 500,
                                                   width = 700,
                                                   scale = 2))
@@ -259,56 +259,100 @@ surfaceplot3d_newview <- surfaceplot3d %>%
 surfaceplot3d_newview
 
 # save the plot
-orca(surfaceplot3d_newview, file = "surfaceplot3d.png", width = 700, height = 500, scale = 2)
+orca(surfaceplot3d_newview, file = "Surfaceplot3d.png", width = 700, height = 500, scale = 2)
 
 ```
 
+<br>
+
 ## 3D plots with `rayshader`
 
+The second package we're going to explore is [`rayshader`](https://www.rayshader.com/). `rayshader` features awesome 3D elevation maps using a combination of raytracing and hillshading techniques. Besides maps, the package also has the function `plot_gg()` that converts ggplots to 3D plots, which you'll see in a moment. `plot_gg()` will recognize the "fill" and "color" aesthetic and ignore other aesthetics such as "shape" and "linetype" that cannot be rendered into a 3D view. Let's take a look at some examples below.
 
-```{r, fig.width = 4, fig.height = 3.8, out.width = "80%", fig.show = "hide"}
+### 3D contour plot
+
+In this example, we created a contour plot in ggplot and pass the ggplot object to `plot_gg()`. There are many additional arguments you can specify for the 3D plot: the width and height of the plot, the height of the z-axis, the shadow intensity, the isometric field of view angle, the zoom level, the angle of rotation around the z-axis, etc. The 3D plot will be displayed in a pop-up window. To save the plot as a .png file, simply run `rander_snapshot(filename = )`.
+
+```{r, fig.width = 4, fig.height = 4, out.width = "80%", fig.show = "hide"}
 library(rayshader)
 
-### Create a contour plot in ggplot
-contourplot3d <- ggplot(data = iris) +
+### Create a contour ggplot
+contourplot <- ggplot(data = iris) +
   geom_density_2d_filled(aes(x = Sepal.Length, y = Sepal.Width, fill = after_stat(nlevel)),
                          n = 100, bins = 20, contour = TRUE) +
   scale_fill_viridis_c() + 
   theme_bw()
 
-### Convert the contour plot into a 3D plot
-plot_gg(contourplot3d, 
-        width = 3.5, 
-        height = 3, 
-        shadow_intensity = 0.8,
-        scale = 250,
-        fov = 25, 
-        zoom = 0.6,
-        theta = 0,
-        windowsize = c(900, 900))
+### Convert the contour ggplot to a 3D plot
+plot_gg(contourplot, 
+        width = 3.5,  # the width of the 3D plot in inch 
+        height = 3,  # the height of the 3D plot in inch
+        scale = 250,  # the scaling factor controlling the height of the z-axis
+        shadow_intensity = 0.8,  # 0 means full shade and 1 means no shade
+        fov = 25,  # the isometric field of view angle
+        zoom = 0.6,  # the zoom factor; a value smaller than 1 zooms in on the plot
+        theta = 0,  # the rotation around the z-axis
+        windowsize = c(900, 900)  # the size of the pop-up window
+        )
 
-render_snapshot(filename = "contourplot3d")
+render_snapshot(filename = "Contourplot3d")  # save the 3D plot as a .png file
 
 ```
 
 
 ```{r, fig.width = 8, fig.height = 4.5, out.width = "90%", fig.align = "center", echo = FALSE}
-ggsave("contourplot3d.tiff", contourplot3d, width = 4.2, height = 3.5, dpi = 600, device = "tiff")
+ggsave("Contourplot.tiff", contourplot, width = 4.2, height = 3.5, dpi = 600, device = "tiff")
 
 library(cowplot)
 ggdraw() + 
-  draw_image("contourplot3d.tiff", width = 0.5) + 
-  draw_image("contourplot3d.png", width = 0.5, x = 0.5)
+  draw_image("Contourplot.tiff", width = 0.5) + 
+  draw_image("Contourplot3d.png", width = 0.5, x = 0.5)
 
 ```
 
+Here is another example of converting a ggplot heatmap into a 3D plot:
 
-geom_tile for the iris 2d kde
+```{r, fig.width = 8, fig.height = 4.5, out.width = "90%"}
+### 2D kernel density estimates of Sepal.Length and Sepal.Width
+sepal_length_vec <- seq(min(iris$Sepal.Length), max(iris$Sepal.Length), length.out = 30)
+Sepal_width_vec <- seq(min(iris$Sepal.Width), max(iris$Sepal.Width), length.out = 30)
+iris_kd_vec <- kde2d(iris$Sepal.Length, iris$Sepal.Width, n = 30)[[3]] %>% 
+  as.vector()
 
+iris_kd_df <- expand.grid(sepal_length_vec, Sepal_width_vec) %>% 
+  mutate(Density = iris_kd_vec) %>% 
+  rename(Sepal_length = Var1,
+         Sepal_width = Var2)
 
+### Create a ggplot heatmap
+heatmap <- ggplot(iris_kd_df) + 
+  geom_tile(aes(x = Sepal_length, y = Sepal_width, fill = Density)) + 
+  scale_fill_viridis_c() + 
+  theme_bw()
 
+### Convert the heatmap to a 3D plot
+plot_gg(heatmap,
+        width = 3.5,
+        height = 3,
+        scale = 250,
+        fov = 25,
+        theta = 90)
 
+render_snapshot(filename = "Heatmap3d")
 
+```
+
+```{r, fig.width = 8, fig.height = 4.5, out.width = "90%", fig.align = "center", echo = FALSE}
+ggsave("Heatmap.tiff", heatmap, width = 4.2, height = 3.5, dpi = 600, device = "tiff")
+
+library(cowplot)
+ggdraw() + 
+  draw_image("Heatmap.tiff", width = 0.5) + 
+  draw_image("Heatmap3d.png", width = 0.5, x = 0.5)
+
+```
+
+<br>
 
 ## Summary
 
