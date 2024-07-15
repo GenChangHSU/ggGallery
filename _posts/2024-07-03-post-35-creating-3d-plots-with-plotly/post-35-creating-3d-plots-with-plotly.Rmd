@@ -4,7 +4,7 @@ description: |
   Bring your plots to the next dimension with `plotly` and `rayshader`!
 author:
   - name: Gen-Chang Hsu
-date: 2024-07-03
+date: 2024-07-15
 output:
   distill::distill_article:
     self_contained: false
@@ -331,12 +331,15 @@ heatmap <- ggplot(iris_kd_df) +
   theme_bw()
 
 ### Convert the heatmap to a 3D plot
-plot_gg(heatmap,
+plot_gg(heatmap, 
         width = 3.5,
-        height = 3,
+        height = 3, 
         scale = 250,
-        fov = 25,
-        theta = 90)
+        shadow_intensity = 0.8,  
+        fov = 25,  
+        zoom = 0.6,  
+        theta = 0,  
+        windowsize = c(900, 900))
 
 render_snapshot(filename = "Heatmap3d")
 
@@ -352,14 +355,9 @@ ggdraw() +
 
 ```
 
-<br>
-
 ## Summary
 
-
-
-
-
+To recap, we explored two packages for 3D data visualization in R. The first one is `plotly`, which creates a variety of interactive plots, and we made a 3D scatterplot and a 3D contour plot with it. The second one is `rayshader`, which creates stunning 3D elevation maps. It can also convert a 2D ggplot to a 3D plot, and we did that using examples of a contour plot and a heatmap. There are a lot more different kinds of 3D plots you can make with these two packages—the sky's the limit, and we only scratched the surface here. But at least now you know the basics and you can go on and explore more!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
