@@ -7,7 +7,17 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 11 Jun 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 15 Jul 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #35. Creating 3D plots with plotly and rayshader</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2024-07-03-post-35-creating-3d-plots-with-plotly</link>
+      <description>Bring your plots to the next dimension with `plotly` and `rayshader`!</description>
+      <category>2024</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2024-07-03-post-35-creating-3d-plots-with-plotly</guid>
+      <pubDate>Mon, 15 Jul 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2024-07-03-post-35-creating-3d-plots-with-plotly/../../homepage_images/Post35.png" medium="image" type="image/png" width="900" height="700"/>
+    </item>
     <item>
       <title>Post #34. Connecting paired points in ggplots</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>

@@ -6,21 +6,21 @@
       "description": "Welcome to ggGallery! Here is something you would like to know about this blog.",
       "author": [],
       "contents": "\r\n\r\nWho\r\nI am Gen-Chang Hsu, a young budding scientist with a broad interest in ecology and evolutionary biology as well as data science, especially data visualization. Check out my website for more information!\r\nWhat\r\nThis blog is a place for everything related to ggplots and ggplot extensions: proper usage of geoms and scales, handy tips for customizing themes and legends, nice features of extension packages, and so on so forth. In each post, I’ll explore a graphic topic/issue in depth and provide some worked examples to show you how to make the most out of ggplots.\r\nWhy\r\nFor fun and enjoyment, for learning and practice, for brainstorming and communication, for achievement and satisfaction, for…\r\n\r\n\r\nGo wild and be creative!\r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2024-06-15T21:03:44-04:00"
+      "last_modified": "2024-07-16T21:23:24-04:00"
     },
     {
       "path": "contact.html",
       "title": "Contact",
       "author": [],
       "contents": "\r\n\r\nAny cool ideas or suggestions? I would love to hear from you! Contact me by email or find me on GitHub, Twitter, and Facebook. Also visit my website here!\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2024-06-15T21:03:46-04:00"
+      "last_modified": "2024-07-16T21:23:25-04:00"
     },
     {
       "path": "index.html",
       "title": "Posts",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2024-06-15T21:03:47-04:00"
+      "last_modified": "2024-07-16T21:23:27-04:00"
     }
   ],
   "collections": ["posts/posts.json"]

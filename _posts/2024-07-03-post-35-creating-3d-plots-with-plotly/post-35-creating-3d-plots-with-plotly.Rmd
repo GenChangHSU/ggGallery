@@ -11,7 +11,6 @@ output:
 categories:
   - "2024"
 preview: ../../homepage_images/Post35.png
-draft: true
 ---
 
 <!-- Webpage style -->
@@ -113,27 +112,26 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-2D plots with an x- and a y-axis displaying the relationships between two variables are probably the most common type of plots in our everyday life. If we want to incorporate more information into the plots, we can use different appearances (colors, sizes, shapes, etc.) of points and lines (or other graphic elements). But sometimes, plotting the data in a 3D space can be more visually appealing and may even help us gain deeper insights into the data. Although ggplot does not have geoms for 3D plots by the time of this post, there are other R packages that do the job. And in this post, I'm going to introduce two of these packages to you: `plotly` and `rayshader`. They both have cool functions to generate awesome 3D plots. So buckle up and let's get ready to bring our plots to the next dimension!
+2D plots with an x- and a y-axis displaying the relationships between two variables are probably the most common type of plots in our everyday life. If we want to incorporate more information into the plots, we can use different appearances (colors, sizes, shapes, etc.) of points and lines (or other graphic elements). But sometimes, visualizing the data in a 3D space can be more appealing and may even help us gain deeper insights into the data distribution. Although ggplot does not have geoms for 3D plots (at least by the time of this post), there are other R packages that do the job. And in this post, I'm going to introduce two of these packages to you: `plotly` and `rayshader`, both of which have functions for generating cool 3D plots. So buckle up and let's get ready to bring our plots to the next dimension!
 
 
 ## 3D plots with `plotly`
 
-The first package we'll be using is [`plotly`](https://plotly.com/r/). This package features interactive plots and contains functions for generating a wide array of figures. Moreover, besides its own plotting functions, `plotly` also provides the function `ggplotly()`, which directly converts ggplots to the corresponding interactive plots. 
+The first package we'll be using is [`plotly`](https://plotly.com/r/). This package features interactive plots and contains functions for generating a wide array of figures. Moreover, `plotly` also provides the function `ggplotly()`, which converts ggplots to the corresponding interactive plots.
 
 Here, we're going to explore the `plotly` functions for creating 3D plots. Specifically, we'll create a 3D scatterplot with fitted lines and a 3D surface plot with contours and a path.
 
 ### (1) 3D scatterplot
 
-The syntax for plotly is pretty similar to ggplot: we call the global function `plotly()` to create a plotting canvas (akin to `ggplot()`) and add other graphical elements using the functions `add_XXX()` (akin to `geom_XXX()`).
+The syntax for `plotly` is pretty similar to ggplot: we call the global function `plotly()` to create a plotting canvas (akin to `ggplot()`) and add other graphical elements using the function `add_XXX()` (akin to `geom_XXX()`).
 
 To create a basic 3D scatterplot, we use the function `add_markers()` (similar to `geom_point()`). Simply pass the x-, y-, and z-coordinates to the function and specify the variable you would like to color the points by.
 
-To add the lines, we use the function `add_path()` (similar to `geom_path()`). Again, simply pass the x-, y-, and z-coordinates to the function and specify the variable you would like to color the line by.
+To add the lines, we use the function `add_path()` (similar to `geom_path()`). Again, simply pass the x-, y-, and z-coordinates to the function and specify the variable you would like to color the lines by.
 
 We can modify the the appearance of the axes and legend using the function `layout()` (see [here](https://plotly.com/r/reference/layout/) for a complete list of things you can adjust!).
 
-
-```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
+```{r, fig.width = 7, fig.height = 5, out.width = "90%"}
 library(tidyverse)
 library(plotly)
 
@@ -177,13 +175,13 @@ scatterplot3d
 
 ### (2) 3D surface plot
 
-The second plot we're going to create is a 3D surface plot with contour lines. This can be done via the function `add_surface()`, which takes a matrix (instead of a dataframe column or a vector) as the input for the argument "z" . The contour lines are added via the argument "contour".
+The second plot we're going to create is a 3D surface plot with contour lines. This can be done via the function `add_surface()`, which takes a matrix (instead of a dataframe column or a vector) as the input for the argument "z". The contour lines are added via the argument "contour".
 
-In the example below, we first estimated the kernel density of the Sepal.Length and Sepal.Width in the `iris` dataset using the `kde2d()` from the `MASS` package. The function returns a matrix of the kernel density estimates, with Sepal.Length as the row and Sepal.Width as the column. This matrix can be passed directly to the "z" argument in `add_surface()` to generate a 3D surface plot. Additionally, we can specify the x- and y-axis via the argument "x" and "y". Also note that matrix column is treated as the x-axis (which is "Sepal.Width") and the matrix row is treated as the y-axis (which is "Sepal.Length") in the plot, so make sure you're specifying the correct variables for the axes (it's a bit confusing I know!).
+In the example below, we first estimated the kernel density of the Sepal.Length and Sepal.Width in the `iris` dataset using the `kde2d()` from the `MASS` package. The function returns a matrix of the kernel density estimates, with Sepal.Length as the row and Sepal.Width as the column. This matrix can be passed directly to the "z" argument in `add_surface()` to generate a 3D surface plot. Additionally, we can specify the x- and y-axis via the argument "x" and "y". Also note that the matrix column is treated as the x-axis (which is "Sepal.Width") and the matrix row is treated as the y-axis (which is "Sepal.Length") in the plot, so make sure you're specifying the correct variables for the axes (it's a bit confusing I know!).
 
 Finally, we can add a random path that traverses across the 3D landscape surface, using the function `add_paths()`.
 
-```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
+```{r, fig.width = 7, fig.height = 5, out.width = "90%"}
 library(MASS)
 
 ### 2D kernel density estimates of Sepal.Length and Sepal.Width
@@ -227,8 +225,8 @@ random_path_df <- random_path_df %>%
 ### Add the random path to the plot
 surfaceplot3d <- surfaceplot3d %>% 
   add_paths(data = random_path_df, 
-            x = ~ Sepal.Width,  # again x-axis is Sepal.Width 
-            y = ~ Sepal.Length,  # again y-axis is Sepal.Length
+            x = ~ Sepal.Width,  # again the x-axis is Sepal.Width 
+            y = ~ Sepal.Length,  # again the y-axis is Sepal.Length
             z = ~ Density, 
             line = list(width = 4))
 
@@ -238,13 +236,13 @@ surfaceplot3d
 
 ### (3) Save the plot
 
-To save the plot, we can set the configuration options for it using `config()` and specify the file format, file name, figure width and height (in pixels), and the scale of the figure (a scale larger than 1 will enlarge the figure). After that, adjust the plot to a desired view and click the camera icon "Download plot as a png" on the mode bar to download it.
+To save the plot, we can set the configuration options using `config()` and specify the file format, file name, figure width and height (in pixels), and the scale of the figure (a scale larger than 1 will enlarge the figure). After that, adjust the plot to a desired view and click the camera icon "Download plot as a png" on the mode bar to download it.
 
-Alternatively, we can install the application Orca and save the plot directly using the function `orca()`. See [this page](https://plotly.com/r/static-image-export/) for more details. Of course, we can modify the default plot appearance by specifying the x, y, and z values in the "eye" argument before we save it.
+Alternatively, we can install the application Orca and save the plot directly using the function `orca()`. See [this page](https://plotly.com/r/static-image-export/) for more details. Of course, we can modify the default plot view by specifying the x, y, and z values in the "eye" argument before we save it.
 
-```{r, fig.width = 10, fig.height = 5, out.width = "80%"}
+```{r, fig.width = 7, fig.height = 5, out.width = "90%"}
 ### Option 1. Download the plot from the mode bar
-### Set the condiguration options and click the download icon
+### Set the configuration options and click the download icon
 config(surfaceplot3d, toImageButtonOptions = list(format = "png",
                                                   filename = "Surfaceplot3d",
                                                   height = 500,
@@ -252,7 +250,7 @@ config(surfaceplot3d, toImageButtonOptions = list(format = "png",
                                                   scale = 2))
 
 ### Option 2. Save the plot using the function orca()
-# modify the plot appearance
+# modify the plot view
 surfaceplot3d_newview <- surfaceplot3d %>% 
   layout(scene = list(camera = list(eye = list(x = 1.5, y = -1.5, z = 1.5))))
 
@@ -271,7 +269,7 @@ The second package we're going to explore is [`rayshader`](https://www.rayshader
 
 ### 3D contour plot
 
-In this example, we created a contour plot in ggplot and pass the ggplot object to `plot_gg()`. There are many additional arguments you can specify for the 3D plot: the width and height of the plot, the height of the z-axis, the shadow intensity, the isometric field of view angle, the zoom level, the angle of rotation around the z-axis, etc. The 3D plot will be displayed in a pop-up window. To save the plot as a .png file, simply run `rander_snapshot(filename = )`.
+In this example, we first created a contour plot in ggplot and then passed the ggplot object to `plot_gg()`. We can specify additional arguments for the 3D plot: the width and height of the plot, the height of the z-axis, the shadow intensity, the isometric field of view angle, the zoom level, the angle of rotation around the z-axis, etc. The 3D plot will be displayed in a pop-up window. To save the plot as a png file, simply run `rander_snapshot(filename = )`.
 
 ```{r, fig.width = 4, fig.height = 4, out.width = "80%", fig.show = "hide"}
 library(rayshader)
@@ -295,7 +293,7 @@ plot_gg(contourplot,
         windowsize = c(900, 900)  # the size of the pop-up window
         )
 
-render_snapshot(filename = "Contourplot3d")  # save the 3D plot as a .png file
+render_snapshot(filename = "Contourplot3d")  # save the 3D plot as a png file
 
 ```
 
@@ -357,7 +355,7 @@ ggdraw() +
 
 ## Summary
 
-To recap, we explored two packages for 3D data visualization in R. The first one is `plotly`, which creates a variety of interactive plots, and we made a 3D scatterplot and a 3D contour plot with it. The second one is `rayshader`, which creates stunning 3D elevation maps. It can also convert a 2D ggplot to a 3D plot, and we did that using examples of a contour plot and a heatmap. There are a lot more different kinds of 3D plots you can make with these two packages—the sky's the limit, and we only scratched the surface here. But at least now you know the basics and you can go on and explore more!
+To recap, we explored two packages for 3D data visualization in R. The first one is `plotly`, which creates a variety of interactive plots, and we made a 3D scatterplot and a 3D contour plot with it. The second one is `rayshader`, which has the function `plot_gg()` to convert a 2D ggplot into a 3D plot, and we did that using examples of a contour plot and a heatmap. There are a lot more different kinds of 3D plots you can make with these two packages—the sky's the limit, and we only scratched the surface here. But at least now you know the basics and you can go on to explore more!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
