@@ -1,0 +1,252 @@
+---
+title: "Post #36. The nitty-gritty of dodging in ggplots"
+description: |
+  Come and take a look at the useful tips for dodging in ggplots!
+author:
+  - name: Gen-Chang Hsu
+date: 2024-08-02
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2024"
+preview: ../../homepage_images/Post35.png
+draft: true
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+  color: #2780e3 !important;
+  border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+  border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 30% !important;
+}
+
+</style>
+
+<head>
+  <base target="_blank">
+</head>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+Dodging is useful when we have two or more groups at the same position and we would like to place them side-by-side to avoid overlapping or to aid comparisons. We can dodge bars, boxes, points, vertical lines, error bars, etc. In this post, I will show you the basics of dodging in ggplots as well as some common dodging issues you might encounter in the wild. Let's get started.
+
+## Basic dodging in ggplots
+
+The basic principle of dodging in ggplots is to specify the group variable by which you would like to dodge in `aes()` and use the function `position_dodge(width = )` to dodge the objects. The variable mapped to the "color", "fill", and "shape" aesthetics will be automatically treated as the group variable for dodging. The distance between the objects can be adjusted via the argument "width". Take a look at the examples below for a dodged barplot, a dodged boxplot, a dodged dotplot, and a dodged line chart.
+
+```{r, fig.width = 9, fig.height = 7, out.width = "90%"}
+library(tidyverse)
+
+### (1) A dodged barplot with error bars
+ToothGrowth_summary <- ToothGrowth %>% 
+  group_by(dose, supp) %>% 
+  summarise(mean_len = mean(len),
+            n = n(),
+            se_len = sd(len)/sqrt(n))
+
+p_dodged_barplot <- ggplot(ToothGrowth_summary) + 
+  geom_col(aes(x = as.factor(dose), 
+               y = mean_len, 
+               fill = supp),  # "supp" will be used as the group variable for dodging
+           position = position_dodge(width = 0.7), 
+           width = 0.6) + 
+  geom_errorbar(aes(x = as.factor(dose), 
+                    ymin = mean_len - se_len, 
+                    ymax = mean_len + se_len, 
+                    group = supp),  # need to specify the group variable for dodging
+                position = position_dodge(width = 0.7),  # make sure the dodge width is the same as the previous layer(s) 
+                width = 0.1) + 
+  scale_fill_brewer(palette = "Dark2") + 
+  scale_y_continuous(limits = c(0, 32), expand = c(0, 0)) + 
+  labs(x = "Dose", y = "Length", fill = "Supplement") + 
+  theme_classic(base_size = 13) + 
+  theme(legend.position = c(0.2, 0.85))
+
+### (2) A dodged boxplot with background points
+p_dodged_boxplot <- ggplot(ToothGrowth) + 
+  geom_boxplot(aes(x = as.factor(dose), 
+                   y = len, 
+                   color = supp),  # "supp" will be used as the group variable for dodging
+               position = position_dodge(width = 0.8), 
+               width = 0.6) + 
+  geom_point(aes(x = as.factor(dose), 
+                 y = len, 
+                 color = supp),  # "supp" will be used as the group variable for dodging
+             position = position_dodge(width = 0.8), 
+             alpha = 0.7) + 
+  scale_color_brewer(palette = "Dark2") + 
+  labs(x = "Dose", y = "Length", color = "Supplement") + 
+  theme_classic(base_size = 13) + 
+  theme(legend.position = c(0.2, 0.85))
+
+### (3) A dodged dotchart with line ranges 
+p_dodged_dotchart <- ggplot(ToothGrowth) + 
+  stat_summary(geom = "pointrange", 
+               aes(x = as.factor(dose), 
+                   y = len, 
+                   color = supp),  # "supp" will be used as the group variable for dodging
+               fun.data = "mean_cl_boot",
+               position = position_dodge(width = 0.5),
+               size = 1.2,
+               linewidth = 1) + 
+  scale_color_brewer(palette = "Dark2") + 
+  labs(x = "Dose", y = "Length", color = "Supplement") + 
+  theme_classic(base_size = 13) + 
+  theme(legend.position = c(0.2, 0.75),
+        legend.key.size = unit(0.4, "in"))
+
+### (4) A dodged line chart
+ChickWeight_summary <- ChickWeight %>% 
+  group_by(Diet, Time) %>% 
+  summarise(mean_weight = mean(weight),
+            n = n(),
+            se_weight = sd(weight)/sqrt(n))
+
+p_dodged_linechart <- ggplot(ChickWeight_summary) + 
+  geom_point(aes(x = Time,
+                 y = mean_weight,
+                 color = Diet),  # "Diet" will be used as the group variable for dodging
+             position = position_dodge(width = 0.4),
+             size = 2) + 
+  geom_errorbar(aes(x = Time,
+                    ymin = mean_weight - se_weight,
+                    ymax = mean_weight + se_weight,
+                    color = Diet),  # "Diet" will be used as the group variable for dodging
+                position = position_dodge(width = 0.4),
+                width = 0) + 
+  geom_path(aes(x = Time,
+                 y = mean_weight,
+                 color = Diet),  # "Diet" will be used as the group variable for dodging
+            position = position_dodge(width = 0.4)) + 
+  scale_color_brewer(palette = "Dark2") + 
+  labs(x = "Time", y = "Weight", color = "Diet") + 
+  theme_classic(base_size = 13) + 
+  theme(legend.position = c(0.2, 0.75),
+        legend.key.width = unit(0.5, "in"),
+        legend.title = element_text(hjust = 0.5))
+
+### Arrange the plots
+library(patchwork)
+
+(p_dodged_barplot + p_dodged_boxplot)/(p_dodged_dotchart + p_dodged_linechart)
+
+```
+Now we know the basics, we can move on to some more advanced topics. 
+
+### Handling missing categories
+
+
+
+
+
+
+
+### Dodging with two groups
+
+
+### Dodging with date/time axis
+
+
+
+
+
+
+
+
+
+## Summary
+
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
+
+
+
+
+
+
