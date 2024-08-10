@@ -1,17 +1,16 @@
 ---
 title: "Post #36. The nitty-gritty of dodging in ggplots"
 description: |
-  Come and take a look at the useful tips for dodging in ggplots!
+  Here come the useful tips for dodging in ggplots!
 author:
   - name: Gen-Chang Hsu
-date: 2024-08-02
+date: 2024-08-10
 output:
   distill::distill_article:
     self_contained: false
 categories:
   - "2024"
-preview: ../../homepage_images/Post35.png
-draft: true
+preview: ../../homepage_images/Post36.png
 ---
 
 <!-- Webpage style -->
@@ -113,11 +112,11 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-Dodging is useful when we have two or more groups at the same position and we would like to place them side-by-side to avoid overlapping or to aid comparisons. We can dodge bars, boxes, points, vertical lines, error bars, etc. In this post, I will show you the basics of dodging in ggplots as well as some common dodging issues you might encounter in the wild. Let's get started.
+Dodging is useful when we have two or more groups at the same position and we would like to place them side-by-side to avoid overlapping or to aid comparisons. We can dodge bars, boxes, points, vertical lines, error bars, etc. In this post, I will walk you through the basics of dodging in ggplots as well as some handy dodging tips. Let's get started.
 
 ## Basic dodging in ggplots
 
-The basic principle of dodging in ggplots is to specify the group variable by which you would like to dodge in `aes()` and use the function `position_dodge(width = )` to dodge the objects. The variable mapped to the "color", "fill", and "shape" aesthetics will be automatically treated as the group variable for dodging. The distance between the objects can be adjusted via the argument "width". Take a look at the examples below for a dodged barplot, a dodged boxplot, a dodged dotplot, and a dodged line chart.
+The basic principle of dodging in ggplots is to specify the group variable for dodging in `aes(group = )` and use the function `position_dodge(width = )` to dodge the objects. The variable mapped to the "color", "fill", and "shape" aesthetics will be automatically treated as the variable for dodging. The distance between the plot objects can be adjusted via the argument "width". Take a look at the examples below for a dodged barplot, a dodged boxplot, a dodged dotplot, and a dodged line chart.
 
 ```{r, fig.width = 9, fig.height = 7, out.width = "90%"}
 library(tidyverse)
@@ -132,13 +131,13 @@ ToothGrowth_summary <- ToothGrowth %>%
 p_dodged_barplot <- ggplot(ToothGrowth_summary) + 
   geom_col(aes(x = as.factor(dose), 
                y = mean_len, 
-               fill = supp),  # "supp" will be used as the group variable for dodging
+               fill = supp),  # "supp" will be used as the variable for dodging
            position = position_dodge(width = 0.7), 
            width = 0.6) + 
   geom_errorbar(aes(x = as.factor(dose), 
                     ymin = mean_len - se_len, 
                     ymax = mean_len + se_len, 
-                    group = supp),  # need to specify the group variable for dodging
+                    group = supp),  # need to specify the variable for dodging
                 position = position_dodge(width = 0.7),  # make sure the dodge width is the same as the previous layer(s) 
                 width = 0.1) + 
   scale_fill_brewer(palette = "Dark2") + 
@@ -151,12 +150,12 @@ p_dodged_barplot <- ggplot(ToothGrowth_summary) +
 p_dodged_boxplot <- ggplot(ToothGrowth) + 
   geom_boxplot(aes(x = as.factor(dose), 
                    y = len, 
-                   color = supp),  # "supp" will be used as the group variable for dodging
+                   color = supp),  # "supp" will be used as the variable for dodging
                position = position_dodge(width = 0.8), 
                width = 0.6) + 
   geom_point(aes(x = as.factor(dose), 
                  y = len, 
-                 color = supp),  # "supp" will be used as the group variable for dodging
+                 color = supp),  # "supp" will be used as the variable for dodging
              position = position_dodge(width = 0.8), 
              alpha = 0.7) + 
   scale_color_brewer(palette = "Dark2") + 
@@ -169,7 +168,7 @@ p_dodged_dotchart <- ggplot(ToothGrowth) +
   stat_summary(geom = "pointrange", 
                aes(x = as.factor(dose), 
                    y = len, 
-                   color = supp),  # "supp" will be used as the group variable for dodging
+                   color = supp),  # "supp" will be used as the variable for dodging
                fun.data = "mean_cl_boot",
                position = position_dodge(width = 0.5),
                size = 1.2,
@@ -190,18 +189,18 @@ ChickWeight_summary <- ChickWeight %>%
 p_dodged_linechart <- ggplot(ChickWeight_summary) + 
   geom_point(aes(x = Time,
                  y = mean_weight,
-                 color = Diet),  # "Diet" will be used as the group variable for dodging
+                 color = Diet),  # "Diet" will be used as the variable for dodging
              position = position_dodge(width = 0.4),
              size = 2) + 
   geom_errorbar(aes(x = Time,
                     ymin = mean_weight - se_weight,
                     ymax = mean_weight + se_weight,
-                    color = Diet),  # "Diet" will be used as the group variable for dodging
+                    color = Diet),  # "Diet" will be used as the variable for dodging
                 position = position_dodge(width = 0.4),
                 width = 0) + 
   geom_path(aes(x = Time,
                  y = mean_weight,
-                 color = Diet),  # "Diet" will be used as the group variable for dodging
+                 color = Diet),  # "Diet" will be used as the variable for dodging
             position = position_dodge(width = 0.4)) + 
   scale_color_brewer(palette = "Dark2") + 
   labs(x = "Time", y = "Weight", color = "Diet") + 
@@ -216,31 +215,117 @@ library(patchwork)
 (p_dodged_barplot + p_dodged_boxplot)/(p_dodged_dotchart + p_dodged_linechart)
 
 ```
-Now we know the basics, we can move on to some more advanced topics. 
+
+Now we know the basics, we can move on to some more advanced topics.
 
 ### Handling missing categories
 
+When there are missing categories in the group variable, the dodged objects can appear a bit awkward:
 
+```{r, fig.width = 5, fig.height = 4, out.width = "70%"}
+### A dodged barplot with a missing category for the eight-cylinder cars
+ggplot(mtcars) +
+  geom_bar(aes(x = factor(cyl), 
+               fill = factor(vs)), 
+           position = position_dodge(width = 0.6),
+           width = 0.5) + 
+  scale_fill_brewer(palette = "Dark2") + 
+  scale_y_continuous(limits = c(0, 15), expand = c(0, 0)) + 
+  labs(x = "Cyl", y = "Count", fill = "Vs") + 
+  theme_classic(base_size = 13) + 
+  theme(legend.position = c(0.2, 0.85),
+        legend.key.width = unit(0.25, "in"),
+        legend.title = element_text(hjust = 0.5))
 
+```
 
+In this example, there is no eight-cylinder car (Cyl = 8) that has a straight engine (Vs = 1), and therefore the bar for Vs = 0 takes up the entire space. How can we adjust it?
 
+Well, it's actually pretty easy: just specify the argument "preserve = "single"", and the bar will be reduced and shifted to the left as if there were a second bar on the right. If you would like to keep the bar at the center, use `position_dodge2()` instead of `position_dodge()`
 
+```{r, fig.width = 9, fig.height = 4, out.width = "90%"}
+### Use position_dodge()
+p_dodged_barplot_position_dodge <- ggplot(mtcars) +
+  geom_bar(aes(x = factor(cyl), 
+               fill = factor(vs)), 
+           position = position_dodge(width = 0.6, preserve = "single"),  # specify the argument preserve = "single"
+           width = 0.5) + 
+  scale_fill_brewer(palette = "Dark2") + 
+  scale_y_continuous(limits = c(0, 15), expand = c(0, 0)) + 
+  labs(title = "position_dodge()", x = "Cyl", y = "Count", fill = "Vs") + 
+  theme_classic(base_size = 13) + 
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.position = c(0.2, 0.85),
+        legend.key.width = unit(0.25, "in"),
+        legend.title = element_text(hjust = 0.5))
 
-### Dodging with two groups
+### Use position_dodge2()
+p_dodged_barplot_position_dodge2 <- ggplot(mtcars) +
+  geom_bar(aes(x = factor(cyl), 
+               fill = factor(vs)), 
+           position = position_dodge2(width = 0.6, preserve = "single"),
+           width = 0.5) + 
+  scale_fill_brewer(palette = "Dark2") + 
+  scale_y_continuous(limits = c(0, 15), expand = c(0, 0)) + 
+  labs(title = "position_dodge2()", x = "Cyl", y = "Count", fill = "Vs") + 
+  theme_classic(base_size = 13) + 
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.position = c(0.2, 0.85),
+        legend.key.width = unit(0.25, "in"),
+        legend.title = element_text(hjust = 0.5))
 
+### Arrange the plots
+library(patchwork)
+p_dodged_barplot_position_dodge + p_dodged_barplot_position_dodge2
 
-### Dodging with date/time axis
+```
 
+Voila!
 
+### Multiple dodging variables
 
+When having multiple variables for dodging, we can use `interaction(var1, var2, ...)` to create all level combinations of the variables and specify this interaction in the "group" argument. For example, in the example below, we mapped "Treatment" to shape and "Type" to color in `geom_point()`, and we used `interaction(Treatment, Type)` to let ggplot know we would like to dodge the points by the level combinations of these two variables. We also had lines and error bars in the plot, and even if we did not map "Treatment" to any aesthetic, we still specified this interaction so that the lines were aligned with the points.
 
+Another thing to note is that the dodge width should reflect the unit of the x-axis. In previous examples where the x-axis is discrete, the dodge width is a number less than 1 (because the categories on the x-axis are coded as integers 1, 2, 3, and so on). Here, the x-axis is a continuous variable, and we need to set the dodge width to something like 50 to see the effect. This is the same for date/time axes.
 
+```{r, fig.width = 6.5, fig.height = 4, out.width = "80%"}
+### Summarize the CO2 dataset
+CO2_summary <- CO2 %>% 
+  group_by(Type, Treatment, conc) %>% 
+  summarise(mean_uptake = mean(uptake),
+            n = n(),
+            se = sd(uptake)/sqrt(n))
 
+### A dodged line chart with two variables for dodging
+ggplot(CO2_summary) + 
+  geom_point(aes(x = conc, 
+                 y = mean_uptake, 
+                 shape = Treatment, 
+                 color = Type, 
+                 group = interaction(Treatment, Type)),  # use interaction() to create all level combinations for dodging
+             position = position_dodge(width = 50)) +  # set the dodge width based on the unit of the x-axis
+  geom_line(aes(x = conc, 
+                y = mean_uptake, 
+                color = Type, 
+                group = interaction(Treatment, Type)),  # use interaction() to create all level combinations for dodging 
+            position = position_dodge(width = 50)) +  
+  geom_errorbar(aes(x = conc, 
+                    ymin = mean_uptake - se,
+                    ymax = mean_uptake + se,
+                    color = Type, 
+                    group = interaction(Treatment, Type)),  # use interaction() to create all level combinations for dodging
+                    position = position_dodge(width = 50)) + 
+  scale_color_brewer(palette = "Dark2") + 
+  labs(x = expression(CO[2]~concentration), y = expression(CO[2]~uptake), shape = "Treatment", color = "Type") + 
+  theme_classic(base_size = 13) + 
+  theme(legend.position = "right",
+        legend.key.width = unit(0.25, "in"),
+        legend.title = element_text(hjust = 0.5))
 
-
-
+```
 ## Summary
 
+To recap what we did in this post, we first explored the dodging basics in ggplots via examples of various plot types such as the barplot, the boxplot, the dot chart, and the line chart. We then took a loot at how to deal with missing categories and multiple variables for dodging. Dodging is quite common in the real world and the tips you learned here will definitely come in handy in the future!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 

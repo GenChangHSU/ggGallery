@@ -21,7 +21,7 @@
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -88,47 +88,47 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
   <!--radix_placeholder_meta_tags-->
-<title>ggGallery: Post #32. ggplot Map Series No.5: Scale bar and north arrow with `ggsn`</title>
+<title>ggGallery: Post #36. The nitty-gritty of dodging in ggplots</title>
 
-<meta property="description" itemprop="description" content="Enhance your map with a scale bar and a north arrow using the package `ggsn`!"/>
+<meta property="description" itemprop="description" content="Here come the useful tips for dodging in ggplots!"/>
 
-<link rel="canonical" href="https://genchanghsu.github.io/ggGallery/posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn/"/>
+<link rel="canonical" href="https://genchanghsu.github.io/ggGallery/posts/2024-08-02-post-36-the-nitty-gritty-of-dodging-in-ggplots/"/>
 
 <!--  https://schema.org/Article -->
-<meta property="article:published" itemprop="datePublished" content="2023-12-24"/>
-<meta property="article:created" itemprop="dateCreated" content="2023-12-24"/>
+<meta property="article:published" itemprop="datePublished" content="2024-08-10"/>
+<meta property="article:created" itemprop="dateCreated" content="2024-08-10"/>
 <meta name="article:author" content="Gen-Chang Hsu"/>
 
 <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-<meta property="og:title" content="ggGallery: Post #32. ggplot Map Series No.5: Scale bar and north arrow with `ggsn`"/>
+<meta property="og:title" content="ggGallery: Post #36. The nitty-gritty of dodging in ggplots"/>
 <meta property="og:type" content="article"/>
-<meta property="og:description" content="Enhance your map with a scale bar and a north arrow using the package `ggsn`!"/>
-<meta property="og:url" content="https://genchanghsu.github.io/ggGallery/posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn/"/>
-<meta property="og:image" content="https://genchanghsu.github.io/ggGallery/posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn/../../homepage_images/Post32.png"/>
-<meta property="og:image:width" content="672"/>
-<meta property="og:image:height" content="672"/>
+<meta property="og:description" content="Here come the useful tips for dodging in ggplots!"/>
+<meta property="og:url" content="https://genchanghsu.github.io/ggGallery/posts/2024-08-02-post-36-the-nitty-gritty-of-dodging-in-ggplots/"/>
+<meta property="og:image" content="https://genchanghsu.github.io/ggGallery/posts/2024-08-02-post-36-the-nitty-gritty-of-dodging-in-ggplots/../../homepage_images/Post36.png"/>
+<meta property="og:image:width" content="1248"/>
+<meta property="og:image:height" content="768"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="ggGallery"/>
 
 <!--  https://dev.twitter.com/cards/types/summary -->
 <meta property="twitter:card" content="summary_large_image"/>
-<meta property="twitter:title" content="ggGallery: Post #32. ggplot Map Series No.5: Scale bar and north arrow with `ggsn`"/>
-<meta property="twitter:description" content="Enhance your map with a scale bar and a north arrow using the package `ggsn`!"/>
-<meta property="twitter:url" content="https://genchanghsu.github.io/ggGallery/posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn/"/>
-<meta property="twitter:image" content="https://genchanghsu.github.io/ggGallery/posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn/../../homepage_images/Post32.png"/>
-<meta property="twitter:image:width" content="672"/>
-<meta property="twitter:image:height" content="672"/>
+<meta property="twitter:title" content="ggGallery: Post #36. The nitty-gritty of dodging in ggplots"/>
+<meta property="twitter:description" content="Here come the useful tips for dodging in ggplots!"/>
+<meta property="twitter:url" content="https://genchanghsu.github.io/ggGallery/posts/2024-08-02-post-36-the-nitty-gritty-of-dodging-in-ggplots/"/>
+<meta property="twitter:image" content="https://genchanghsu.github.io/ggGallery/posts/2024-08-02-post-36-the-nitty-gritty-of-dodging-in-ggplots/../../homepage_images/Post36.png"/>
+<meta property="twitter:image:width" content="1248"/>
+<meta property="twitter:image:height" content="768"/>
 
 <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Post #32. ggplot Map Series No.5: Scale bar and north arrow with `ggsn`"]},{"type":"character","attributes":{},"value":["Enhance your map with a scale bar and a north arrow using the package `ggsn`!"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2023-12-24"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2023","Map Series"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post32.png"]},{"type":"character","attributes":{},"value":["https://genchanghsu.github.io/ggGallery/posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn/"]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Post #36. The nitty-gritty of dodging in ggplots"]},{"type":"character","attributes":{},"value":["Here come the useful tips for dodging in ggplots!"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2024-08-10"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2024"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post36.png"]},{"type":"character","attributes":{},"value":["https://genchanghsu.github.io/ggGallery/posts/2024-08-02-post-36-the-nitty-gritty-of-dodging-in-ggplots/"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["geoBoundaries-TWN-ADM0-all/CITATION-AND-USE-geoBoundaries.txt","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0-metaData.json","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0-metaData.txt","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0-PREVIEW.png","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.dbf","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.geojson","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.prj","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.shp","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.shx","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.topojson","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0_simplified.dbf","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0_simplified.geojson","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0_simplified.prj","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0_simplified.shp","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0_simplified.shx","geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0_simplified.topojson","geoBoundaries-TWN-ADM0-all.zip","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/anchor-4.2.2/anchor.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/bowser-1.9.3/bowser.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/distill-2.2.21/template.v2.js","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/figure-html5/unnamed-chunk-1-1.png","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/figure-html5/unnamed-chunk-2-1.png","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/figure-html5/unnamed-chunk-3-1.png","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/figure-html5/unnamed-chunk-4-1.png","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/header-attrs-2.25/header-attrs.js","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/jquery-3.6.0/jquery-3.6.0.js","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/jquery-3.6.0/jquery-3.6.0.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/jquery-3.6.0/jquery-3.6.0.min.map","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/popper-2.6.0/popper.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/tippy-6.2.7/tippy-light-border.css","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/tippy-6.2.7/tippy.css","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/tippy-6.2.7/tippy.umd.min.js","post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["post-36-the-nitty-gritty-of-dodging-in-ggplots_files/anchor-4.2.2/anchor.min.js","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/bowser-1.9.3/bowser.min.js","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/distill-2.2.21/template.v2.js","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/figure-html5/unnamed-chunk-4-1.png","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/header-attrs-2.27/header-attrs.js","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.js","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.js","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.map","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/popper-2.6.0/popper.min.js","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/tippy-6.2.7/tippy-light-border.css","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/tippy-6.2.7/tippy.css","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/tippy-6.2.7/tippy.umd.min.js","post-36-the-nitty-gritty-of-dodging-in-ggplots_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2609,7 +2609,7 @@ d-appendix d-footnote-list a.footnote-backlink {
   color: var(--hover-color, white);
 }</style>
 <!--/radix_placeholder_distill-->
-  <script src="../../site_libs/header-attrs-2.25/header-attrs.js"></script>
+  <script src="../../site_libs/header-attrs-2.27/header-attrs.js"></script>
   <script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -2630,7 +2630,7 @@ d-appendix d-footnote-list a.footnote-backlink {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #32. ggplot Map Series No.5: Scale bar and north arrow with `ggsn`","description":"Enhance your map with a scale bar and a north arrow using the package `ggsn`!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-12-24T00:00:00.000+08:00","citationText":"Hsu, 2023"}
+{"title":"Post #36. The nitty-gritty of dodging in ggplots","description":"Here come the useful tips for dodging in ggplots!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2024-08-10T00:00:00.000+08:00","citationText":"Hsu, 2024"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2657,21 +2657,20 @@ d-appendix d-footnote-list a.footnote-backlink {
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>Post #32. ggplot Map Series No.5: Scale bar and north arrow with ggsn</h1>
+<h1>Post #36. The nitty-gritty of dodging in ggplots</h1>
 
 <!--radix_placeholder_categories-->
 <div class="dt-tags">
-  <a href="../../index.html#category:2023" class="dt-tag">2023</a>
-  <a href="../../index.html#category:Map_Series" class="dt-tag">Map Series</a>
+  <a href="../../index.html#category:2024" class="dt-tag">2024</a>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>Enhance your map with a scale bar and a north arrow using the package <code>ggsn</code>!</p></p>
+<p><p>Here come the useful tips for dodging in ggplots!</p></p>
 </div>
 
 <div class="d-byline">
   Gen-Chang Hsu  
   
-<br/>2023-12-24
+<br/>2024-08-10
 </div>
 
 <div class="d-article">
@@ -2761,164 +2760,212 @@ div.l-body img {
 </head>
 <!-- Start of the article -->
 <h2 id="introduction">Introduction</h2>
-<p>Have you ever created a map in ggplot and wondered how to add a scale bar and a north arrow to it? Well, you can do it easily using the package <a href="https://oswaldosantos.github.io/ggsn/"><code>ggsn</code></a>, and this is the topic for this short post.</p>
-<h2 id="an-annotated-topographic-map-of-taiwan">An annotated topographic map of Taiwan</h2>
-<h3 id="create-a-topographic-map">(1) Create a topographic map</h3>
-<p>We’ll create a topographic map of Taiwan as our example here. First, we’ll use the function <code>get_elev_raster()</code> from the package <code>elevatr</code> to retrieve the elevation tiles of Taiwan from the online map databases. Basically, what we need to do is to read in a shapefile of the area of interest and pass it to the function. It’ll return a “RasterLayer” object, which is then converted to a dataframe for plotting in ggplot.</p>
+<p>Dodging is useful when we have two or more groups at the same position and we would like to place them side-by-side to avoid overlapping or to aid comparisons. We can dodge bars, boxes, points, vertical lines, error bars, etc. In this post, I will walk you through the basics of dodging in ggplots as well as some handy dodging tips. Let’s get started.</p>
+<h2 id="basic-dodging-in-ggplots">Basic dodging in ggplots</h2>
+<p>The basic principle of dodging in ggplots is to specify the group variable for dodging in <code>aes(group = )</code> and use the function <code>position_dodge(width = )</code> to dodge the objects. The variable mapped to the “color”, “fill”, and “shape” aesthetics will be automatically treated as the variable for dodging. The distance between the plot objects can be adjusted via the argument “width”. Take a look at the examples below for a dodged barplot, a dodged boxplot, a dodged dotplot, and a dodged line chart.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
 <span></span>
-<span><span class='co'>### Download and read in the shapefile of Taiwan's administrative boundary</span></span>
-<span><span class='co'>### The zipped shapefile is available in the GitHub folder of this post</span></span>
-<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span></span>
+<span><span class='co'>### (1) A dodged barplot with error bars</span></span>
+<span><span class='va'>ToothGrowth_summary</span> <span class='op'>&lt;-</span> <span class='va'>ToothGrowth</span> <span class='op'><a href='https://rdrr.io/pkg/magrittr/man/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>dose</span>, <span class='va'>supp</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/magrittr/man/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/summarise.html'>summarise</a></span><span class='op'>(</span>mean_len <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>len</span><span class='op'>)</span>,</span>
+<span>            n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span>            se_len <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span><span class='op'>(</span><span class='va'>len</span><span class='op'>)</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>Taiwan_boundary_admin0_url</span> <span class='op'>&lt;-</span> <span class='st'>"https://github.com/GenChangHSU/ggGallery/blob/master/_posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn/geoBoundaries-TWN-ADM0-all.zip?raw=TRUE"</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span><span class='va'>Taiwan_boundary_admin0_url</span>, <span class='st'>"geoBoundaries-TWN-ADM0-all.zip"</span>, mode <span class='op'>=</span> <span class='st'>"wb"</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/utils/unzip.html'>unzip</a></span><span class='op'>(</span><span class='st'>"geoBoundaries-TWN-ADM0-all.zip"</span><span class='op'>)</span></span>
+<span><span class='va'>p_dodged_barplot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>ToothGrowth_summary</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_bar.html'>geom_col</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>dose</span><span class='op'>)</span>, </span>
+<span>               y <span class='op'>=</span> <span class='va'>mean_len</span>, </span>
+<span>               fill <span class='op'>=</span> <span class='va'>supp</span><span class='op'>)</span>,  <span class='co'># "supp" will be used as the variable for dodging</span></span>
+<span>           position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>, </span>
+<span>           width <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_linerange.html'>geom_errorbar</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>dose</span><span class='op'>)</span>, </span>
+<span>                    ymin <span class='op'>=</span> <span class='va'>mean_len</span> <span class='op'>-</span> <span class='va'>se_len</span>, </span>
+<span>                    ymax <span class='op'>=</span> <span class='va'>mean_len</span> <span class='op'>+</span> <span class='va'>se_len</span>, </span>
+<span>                    group <span class='op'>=</span> <span class='va'>supp</span><span class='op'>)</span>,  <span class='co'># need to specify the variable for dodging</span></span>
+<span>                position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>,  <span class='co'># make sure the dodge width is the same as the previous layer(s) </span></span>
+<span>                width <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/scale_brewer.html'>scale_fill_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>32</span><span class='op'>)</span>, expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Dose"</span>, y <span class='op'>=</span> <span class='st'>"Length"</span>, fill <span class='op'>=</span> <span class='st'>"Supplement"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='fl'>0.85</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>Taiwan_boundary_admin0</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>st_read</a></span><span class='op'>(</span><span class='st'>"geoBoundaries-TWN-ADM0-all/geoBoundaries-TWN-ADM0.shp"</span>, quiet <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span></span>
+<span><span class='co'>### (2) A dodged boxplot with background points</span></span>
+<span><span class='va'>p_dodged_boxplot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>ToothGrowth</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_boxplot.html'>geom_boxplot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>dose</span><span class='op'>)</span>, </span>
+<span>                   y <span class='op'>=</span> <span class='va'>len</span>, </span>
+<span>                   color <span class='op'>=</span> <span class='va'>supp</span><span class='op'>)</span>,  <span class='co'># "supp" will be used as the variable for dodging</span></span>
+<span>               position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>, </span>
+<span>               width <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>dose</span><span class='op'>)</span>, </span>
+<span>                 y <span class='op'>=</span> <span class='va'>len</span>, </span>
+<span>                 color <span class='op'>=</span> <span class='va'>supp</span><span class='op'>)</span>,  <span class='co'># "supp" will be used as the variable for dodging</span></span>
+<span>             position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>, </span>
+<span>             alpha <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Dose"</span>, y <span class='op'>=</span> <span class='st'>"Length"</span>, color <span class='op'>=</span> <span class='st'>"Supplement"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='fl'>0.85</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='co'>### Get the elevation tiles of Taiwan</span></span>
-<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/jhollist/elevatr/'>elevatr</a></span><span class='op'>)</span></span>
+<span><span class='co'>### (3) A dodged dotchart with line ranges </span></span>
+<span><span class='va'>p_dodged_dotchart</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>ToothGrowth</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/stat_summary.html'>stat_summary</a></span><span class='op'>(</span>geom <span class='op'>=</span> <span class='st'>"pointrange"</span>, </span>
+<span>               <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>dose</span><span class='op'>)</span>, </span>
+<span>                   y <span class='op'>=</span> <span class='va'>len</span>, </span>
+<span>                   color <span class='op'>=</span> <span class='va'>supp</span><span class='op'>)</span>,  <span class='co'># "supp" will be used as the variable for dodging</span></span>
+<span>               fun.data <span class='op'>=</span> <span class='st'>"mean_cl_boot"</span>,</span>
+<span>               position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>,</span>
+<span>               size <span class='op'>=</span> <span class='fl'>1.2</span>,</span>
+<span>               linewidth <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Dose"</span>, y <span class='op'>=</span> <span class='st'>"Length"</span>, color <span class='op'>=</span> <span class='st'>"Supplement"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='fl'>0.75</span><span class='op'>)</span>,</span>
+<span>        legend.key.size <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.4</span>, <span class='st'>"in"</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>Taiwan_elevation</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/elevatr/man/get_elev_raster.html'>get_elev_raster</a></span><span class='op'>(</span>locations <span class='op'>=</span> <span class='va'>Taiwan_boundary_admin0</span>,  <span class='co'># the shapefile</span></span>
-<span>                                    z <span class='op'>=</span> <span class='fl'>9</span>,  <span class='co'># z controls the resolution of the elevation tiles</span></span>
-<span>                                    clip <span class='op'>=</span> <span class='st'>"locations"</span>  <span class='co'># clip the tiles to the polygon area</span></span>
-<span>                                    <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  </span>
-<span>  <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span>xy <span class='op'>=</span> <span class='cn'>T</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># convert the RasterLayer to a dataframe</span></span>
-<span>  <span class='fu'>`colnames&lt;-`</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"lon"</span>, <span class='st'>"lat"</span>, <span class='st'>"elevation"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># rename the columns </span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>elevation <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>elevation</span> <span class='op'>&lt;</span> <span class='fl'>0</span> <span class='op'>|</span> <span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>elevation</span><span class='op'>)</span>, <span class='fl'>0</span>, <span class='va'>elevation</span><span class='op'>)</span><span class='op'>)</span>  <span class='co'># set the negative elevation values and NAs to 0</span></span>
+<span><span class='co'>### (4) A dodged line chart</span></span>
+<span><span class='va'>ChickWeight_summary</span> <span class='op'>&lt;-</span> <span class='va'>ChickWeight</span> <span class='op'><a href='https://rdrr.io/pkg/magrittr/man/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>Diet</span>, <span class='va'>Time</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/magrittr/man/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/summarise.html'>summarise</a></span><span class='op'>(</span>mean_weight <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>weight</span><span class='op'>)</span>,</span>
+<span>            n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span>            se_weight <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span><span class='op'>(</span><span class='va'>weight</span><span class='op'>)</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='co'>### Make the topographic map</span></span>
-<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dieghernan.github.io/tidyterra/'>tidyterra</a></span><span class='op'>)</span>  <span class='co'># for the function hypso.colors()</span></span>
-<span><span class='va'>topo_pal</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dieghernan.github.io/tidyterra/reference/scale_hypso.html'>hypso.colors</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span>, palette <span class='op'>=</span> <span class='st'>"dem_poster"</span><span class='op'>)</span>  <span class='co'># a topographic color palette</span></span>
+<span><span class='va'>p_dodged_linechart</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>ChickWeight_summary</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Time</span>,</span>
+<span>                 y <span class='op'>=</span> <span class='va'>mean_weight</span>,</span>
+<span>                 color <span class='op'>=</span> <span class='va'>Diet</span><span class='op'>)</span>,  <span class='co'># "Diet" will be used as the variable for dodging</span></span>
+<span>             position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>0.4</span><span class='op'>)</span>,</span>
+<span>             size <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_linerange.html'>geom_errorbar</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Time</span>,</span>
+<span>                    ymin <span class='op'>=</span> <span class='va'>mean_weight</span> <span class='op'>-</span> <span class='va'>se_weight</span>,</span>
+<span>                    ymax <span class='op'>=</span> <span class='va'>mean_weight</span> <span class='op'>+</span> <span class='va'>se_weight</span>,</span>
+<span>                    color <span class='op'>=</span> <span class='va'>Diet</span><span class='op'>)</span>,  <span class='co'># "Diet" will be used as the variable for dodging</span></span>
+<span>                position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>0.4</span><span class='op'>)</span>,</span>
+<span>                width <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_path.html'>geom_path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Time</span>,</span>
+<span>                 y <span class='op'>=</span> <span class='va'>mean_weight</span>,</span>
+<span>                 color <span class='op'>=</span> <span class='va'>Diet</span><span class='op'>)</span>,  <span class='co'># "Diet" will be used as the variable for dodging</span></span>
+<span>            position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>0.4</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Time"</span>, y <span class='op'>=</span> <span class='st'>"Weight"</span>, color <span class='op'>=</span> <span class='st'>"Diet"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='fl'>0.75</span><span class='op'>)</span>,</span>
+<span>        legend.key.width <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='st'>"in"</span><span class='op'>)</span>,</span>
+<span>        legend.title <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/element.html'>element_text</a></span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>Taiwan_topographic_map</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_tile.html'>geom_raster</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>Taiwan_elevation</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>lon</span>, y <span class='op'>=</span> <span class='va'>lat</span>, fill <span class='op'>=</span> <span class='va'>elevation</span><span class='op'>)</span>, show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_gradient.html'>scale_fill_gradientn</a></span><span class='op'>(</span>colors <span class='op'>=</span> <span class='va'>topo_pal</span>,</span>
-<span>                       values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0.35</span>, length.out <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>1</span>, length.out <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>coord_sf</a></span><span class='op'>(</span>xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>119</span>, <span class='fl'>123</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>21.5</span>, <span class='fl'>25.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='cn'>NULL</span>, y <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>panel.grid <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='co'>### Arrange the plots</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://patchwork.data-imaginist.com'>patchwork</a></span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>Taiwan_topographic_map</span></span></code></pre>
+<span><span class='op'>(</span><span class='va'>p_dodged_barplot</span> <span class='op'>+</span> <span class='va'>p_dodged_boxplot</span><span class='op'>)</span><span class='op'>/</span><span class='op'>(</span><span class='va'>p_dodged_dotchart</span> <span class='op'>+</span> <span class='va'>p_dodged_linechart</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/figure-html5/unnamed-chunk-1-1.png" width="60%" style="display: block; margin: auto;" /></p>
+<p><img src="post-36-the-nitty-gritty-of-dodging-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png" width="90%" style="display: block; margin: auto;" /></p>
 </div>
-<h3 id="add-a-scale-bar">(2) Add a scale bar</h3>
-<p>It’s time to add a scale bar! <code>ggsn</code> has the function <code>scalebar()</code> for it. There are several things we can customize: the position of the scale bar, the distance and unit of the bar segment, the appearance of the bar and bar labels, etc. Let’s see how it works:</p>
+<p>Now we know the basics, we can move on to some more advanced topics.</p>
+<h3 id="handling-missing-categories">Handling missing categories</h3>
+<p>When there are missing categories in the group variable, the dodged objects can appear a bit awkward:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/oswaldosantos/ggsn'>ggsn</a></span><span class='op'>)</span></span>
-<span></span>
-<span><span class='va'>Taiwan_topographic_map_annotated</span> <span class='op'>&lt;-</span> <span class='va'>Taiwan_topographic_map</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggsn/man/scalebar.html'>scalebar</a></span><span class='op'>(</span>x.min <span class='op'>=</span> <span class='fl'>121.9</span>, </span>
-<span>           x.max <span class='op'>=</span> <span class='fl'>122.9</span>,</span>
-<span>           y.min <span class='op'>=</span> <span class='fl'>21.6</span>,</span>
-<span>           y.max <span class='op'>=</span> <span class='fl'>22.1</span>,</span>
-<span>           dist <span class='op'>=</span> <span class='fl'>50</span>,  <span class='co'># the distance of the bar segment</span></span>
-<span>           dist_unit <span class='op'>=</span> <span class='st'>"km"</span>,  <span class='co'># the unit of the bar segment</span></span>
-<span>           transform <span class='op'>=</span> <span class='cn'>TRUE</span>,  <span class='co'># "TRUE" if the coordinates are in the long-lat format</span></span>
-<span>           model <span class='op'>=</span> <span class='st'>"WGS84"</span>,  <span class='co'># ellipsoid model for the transformation if "transform = TRUE"</span></span>
-<span>           height <span class='op'>=</span> <span class='fl'>0.2</span>,  <span class='co'># the height of the scale bar</span></span>
-<span>           st.dist <span class='op'>=</span> <span class='fl'>0.2</span>,  <span class='co'># the distance between the scale bar and the bar labels</span></span>
-<span>           st.size <span class='op'>=</span> <span class='fl'>2.5</span>,  <span class='co'># the size of the bar labels</span></span>
-<span>           border.size <span class='op'>=</span> <span class='fl'>0.25</span>  <span class='co'># the width of the bar border</span></span>
-<span>           <span class='op'>)</span>  </span>
-<span></span>
-<span><span class='va'>Taiwan_topographic_map_annotated</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### A dodged barplot with a missing category for the eight-cylinder cars</span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_bar.html'>geom_bar</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>cyl</span><span class='op'>)</span>, </span>
+<span>               fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>vs</span><span class='op'>)</span><span class='op'>)</span>, </span>
+<span>           position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span>,</span>
+<span>           width <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/scale_brewer.html'>scale_fill_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>15</span><span class='op'>)</span>, expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Cyl"</span>, y <span class='op'>=</span> <span class='st'>"Count"</span>, fill <span class='op'>=</span> <span class='st'>"Vs"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='fl'>0.85</span><span class='op'>)</span>,</span>
+<span>        legend.key.width <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.25</span>, <span class='st'>"in"</span><span class='op'>)</span>,</span>
+<span>        legend.title <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/element.html'>element_text</a></span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/figure-html5/unnamed-chunk-2-1.png" width="60%" style="display: block; margin: auto;" /></p>
+<p><img src="post-36-the-nitty-gritty-of-dodging-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
-<h3 id="add-a-north-arrow">(3) Add a north arrow</h3>
-<p>Next, the north arrow. This is also easy-peasy: Just use the function <code>north()</code> and specify the position as well as the type of the arrow you like (there are various types of north arrows available; use <code>northSymbols()</code> to see them), and you’re all set! We’ll also add an “N” above the north arrow. It does take some experimentation to get the desired arrow position and size, so be patient!</p>
+<p>In this example, there is no eight-cylinder car (Cyl = 8) that has a straight engine (Vs = 1), and therefore the bar for Vs = 0 takes up the entire space. How can we adjust it?</p>
+<p>Well, it’s actually pretty easy: just specify the argument “preserve =”single”“, and the bar will be reduced and shifted to the left as if there were a second bar on the right. If you would like to keep the bar at the center, use <code>position_dodge2()</code> instead of <code>position_dodge()</code></p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>Taiwan_topographic_map_annotated</span> <span class='op'>&lt;-</span> <span class='va'>Taiwan_topographic_map_annotated</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggsn/man/north.html'>north</a></span><span class='op'>(</span>x.min <span class='op'>=</span> <span class='fl'>122.58</span>, </span>
-<span>        x.max <span class='op'>=</span> <span class='fl'>122.68</span>, </span>
-<span>        y.min <span class='op'>=</span> <span class='fl'>22.4</span>, </span>
-<span>        y.max <span class='op'>=</span> <span class='fl'>22.6</span>, </span>
-<span>        symbol <span class='op'>=</span> <span class='fl'>10</span>,  <span class='co'># the type of the north arrow</span></span>
-<span>        scale <span class='op'>=</span> <span class='fl'>5</span>  <span class='co'># the size of the north arrow</span></span>
-<span>        <span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/annotate.html'>annotate</a></span><span class='op'>(</span>geom <span class='op'>=</span> <span class='st'>"text"</span>, x <span class='op'>=</span> <span class='fl'>122.45</span>, y <span class='op'>=</span> <span class='fl'>22.5</span>, label <span class='op'>=</span> <span class='st'>"N"</span>, size <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Use position_dodge()</span></span>
+<span><span class='va'>p_dodged_barplot_position_dodge</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_bar.html'>geom_bar</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>cyl</span><span class='op'>)</span>, </span>
+<span>               fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>vs</span><span class='op'>)</span><span class='op'>)</span>, </span>
+<span>           position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>0.6</span>, preserve <span class='op'>=</span> <span class='st'>"single"</span><span class='op'>)</span>,  <span class='co'># specify the argument preserve = "single"</span></span>
+<span>           width <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/scale_brewer.html'>scale_fill_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>15</span><span class='op'>)</span>, expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"position_dodge()"</span>, x <span class='op'>=</span> <span class='st'>"Cyl"</span>, y <span class='op'>=</span> <span class='st'>"Count"</span>, fill <span class='op'>=</span> <span class='st'>"Vs"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/theme.html'>theme</a></span><span class='op'>(</span>plot.title <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/element.html'>element_text</a></span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>,</span>
+<span>        legend.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='fl'>0.85</span><span class='op'>)</span>,</span>
+<span>        legend.key.width <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.25</span>, <span class='st'>"in"</span><span class='op'>)</span>,</span>
+<span>        legend.title <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/element.html'>element_text</a></span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>Taiwan_topographic_map_annotated</span></span></code></pre>
+<span><span class='co'>### Use position_dodge2()</span></span>
+<span><span class='va'>p_dodged_barplot_position_dodge2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_bar.html'>geom_bar</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>cyl</span><span class='op'>)</span>, </span>
+<span>               fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>vs</span><span class='op'>)</span><span class='op'>)</span>, </span>
+<span>           position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/position_dodge.html'>position_dodge2</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>0.6</span>, preserve <span class='op'>=</span> <span class='st'>"single"</span><span class='op'>)</span>,</span>
+<span>           width <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/scale_brewer.html'>scale_fill_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>15</span><span class='op'>)</span>, expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"position_dodge2()"</span>, x <span class='op'>=</span> <span class='st'>"Cyl"</span>, y <span class='op'>=</span> <span class='st'>"Count"</span>, fill <span class='op'>=</span> <span class='st'>"Vs"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/theme.html'>theme</a></span><span class='op'>(</span>plot.title <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/element.html'>element_text</a></span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>,</span>
+<span>        legend.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='fl'>0.85</span><span class='op'>)</span>,</span>
+<span>        legend.key.width <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.25</span>, <span class='st'>"in"</span><span class='op'>)</span>,</span>
+<span>        legend.title <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/element.html'>element_text</a></span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>### Arrange the plots</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://patchwork.data-imaginist.com'>patchwork</a></span><span class='op'>)</span></span>
+<span><span class='va'>p_dodged_barplot_position_dodge</span> <span class='op'>+</span> <span class='va'>p_dodged_barplot_position_dodge2</span></span></code></pre>
 </div>
-<p><img src="post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/figure-html5/unnamed-chunk-3-1.png" width="60%" style="display: block; margin: auto;" /></p>
+<p><img src="post-36-the-nitty-gritty-of-dodging-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png" width="90%" style="display: block; margin: auto;" /></p>
 </div>
-<p>Done!</p>
-<h3 id="fun-with-map">(4) Fun with map</h3>
-<p>Let’s play around with the map (a bit extra and just for fun)!</p>
+<p>Voila!</p>
+<h3 id="multiple-dodging-variables">Multiple dodging variables</h3>
+<p>When having multiple variables for dodging, we can use <code>interaction(var1, var2, ...)</code> to create all level combinations of the variables and specify this interaction in the “group” argument. For example, in the example below, we mapped “Treatment” to shape and “Type” to color in <code>geom_point()</code>, and we used <code>interaction(Treatment, Type)</code> to let ggplot know we would like to dodge the points by the level combinations of these two variables. We also had lines and error bars in the plot, and even if we did not map “Treatment” to any aesthetic, we still specified this interaction so that the lines were aligned with the points.</p>
+<p>Another thing to note is that the dodge width should reflect the unit of the x-axis. In previous examples where the x-axis is discrete, the dodge width is a number less than 1 (because the categories on the x-axis are coded as integers 1, 2, 3, and so on). Here, the x-axis is a continuous variable, and we need to set the dodge width to something like 50 to see the effect. This is the same for date/time axes.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### A vector of individual characters in the title</span></span>
-<span><span class='va'>title_vec</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_split.html'>str_split</a></span><span class='op'>(</span><span class='st'>"A Topographic Map of Taiwan"</span>, pattern <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Summarize the CO2 dataset</span></span>
+<span><span class='va'>CO2_summary</span> <span class='op'>&lt;-</span> <span class='va'>CO2</span> <span class='op'><a href='https://rdrr.io/pkg/magrittr/man/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>Type</span>, <span class='va'>Treatment</span>, <span class='va'>conc</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/magrittr/man/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/summarise.html'>summarise</a></span><span class='op'>(</span>mean_uptake <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>uptake</span><span class='op'>)</span>,</span>
+<span>            n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span>            se <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span><span class='op'>(</span><span class='va'>uptake</span><span class='op'>)</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='co'>### Italicize the letters</span></span>
-<span><span class='va'>title_vec_italic</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>title_vec</span> <span class='op'>==</span> <span class='st'>" "</span>, <span class='va'>title_vec</span>, <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_glue.html'>str_glue</a></span><span class='op'>(</span><span class='st'>"_{title_vec}_"</span><span class='op'>)</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='co'>### A dataframe for mapping the characters to the plot</span></span>
-<span><span class='va'>x_seq</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>119.2</span>, <span class='fl'>121.8</span>, by <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span></span>
-<span><span class='va'>x_nudge</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>0.04</span>, <span class='fl'>0.00</span>, <span class='fl'>0.02</span>, <span class='fl'>0.02</span>, <span class='op'>-</span><span class='fl'>0.04</span>, <span class='fl'>0.00</span>, <span class='op'>-</span><span class='fl'>0.03</span>, <span class='fl'>0.00</span>, <span class='fl'>0.00</span>, <span class='op'>-</span><span class='fl'>0.03</span>, </span>
-<span>             <span class='fl'>0.02</span>, <span class='fl'>0.01</span>, <span class='fl'>0.01</span>, <span class='fl'>0.00</span>, <span class='fl'>0.02</span>, <span class='fl'>0.07</span>, <span class='fl'>0.04</span>, <span class='fl'>0.00</span>, <span class='fl'>0.04</span>, <span class='op'>-</span><span class='fl'>0.01</span>, </span>
-<span>             <span class='fl'>0.05</span>, <span class='fl'>0.05</span>, <span class='fl'>0.05</span>, <span class='fl'>0.05</span>, <span class='fl'>0.07</span>, <span class='fl'>0.09</span>, <span class='fl'>0.11</span><span class='op'>)</span></span>
-<span><span class='va'>x_position</span> <span class='op'>&lt;-</span> <span class='va'>x_seq</span> <span class='op'>+</span> <span class='va'>x_nudge</span></span>
-<span></span>
-<span><span class='va'>title_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x_position</span>, </span>
-<span>                       y <span class='op'>=</span> <span class='fl'>25.6</span>, </span>
-<span>                       label <span class='op'>=</span> <span class='va'>title_vec_italic</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='co'>### The font</span></span>
-<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/yixuan/showtext'>showtext</a></span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/pkg/sysfonts/man/font_add_google.html'>font_add_google</a></span><span class='op'>(</span><span class='st'>"IM FELL English"</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/pkg/showtext/man/showtext_auto.html'>showtext_auto</a></span><span class='op'>(</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='co'>### The map</span></span>
-<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://wilkelab.org/ggtext/'>ggtext</a></span><span class='op'>)</span></span>
-<span></span>
-<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_tile.html'>geom_raster</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>Taiwan_elevation</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>lon</span>, y <span class='op'>=</span> <span class='va'>lat</span>, fill <span class='op'>=</span> <span class='va'>elevation</span><span class='op'>)</span>, show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://wilkelab.org/ggtext/reference/geom_richtext.html'>geom_richtext</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>title_df</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, label <span class='op'>=</span> <span class='va'>label</span>, color <span class='op'>=</span> <span class='va'>x</span><span class='op'>)</span>,</span>
-<span>                fill <span class='op'>=</span> <span class='cn'>NA</span>, </span>
-<span>                label.color <span class='op'>=</span> <span class='cn'>NA</span>, </span>
-<span>                family <span class='op'>=</span> <span class='st'>"IM FELL English"</span>,</span>
-<span>                size <span class='op'>=</span> <span class='fl'>7</span>,</span>
-<span>                show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_gradient.html'>scale_fill_gradientn</a></span><span class='op'>(</span>colors <span class='op'>=</span> <span class='va'>topo_pal</span>,</span>
-<span>                       values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0.35</span>, length.out <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>1</span>, length.out <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_gradient.html'>scale_color_gradientn</a></span><span class='op'>(</span>colors <span class='op'>=</span> <span class='va'>topo_pal</span>, limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fl'>122.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>coord_sf</a></span><span class='op'>(</span>xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>119</span>, <span class='fl'>123</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>21.5</span>, <span class='fl'>25.73</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_void</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>panel.background <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_rect</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"#FEFEDF"</span>, color <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggsn/man/scalebar.html'>scalebar</a></span><span class='op'>(</span>x.min <span class='op'>=</span> <span class='fl'>122.1</span>, </span>
-<span>           x.max <span class='op'>=</span> <span class='fl'>122.9</span>,</span>
-<span>           y.min <span class='op'>=</span> <span class='fl'>21.6</span>,</span>
-<span>           y.max <span class='op'>=</span> <span class='fl'>22.2</span>,</span>
-<span>           dist <span class='op'>=</span> <span class='fl'>50</span>,</span>
-<span>           dist_unit <span class='op'>=</span> <span class='st'>"km"</span>,</span>
-<span>           transform <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
-<span>           model <span class='op'>=</span> <span class='st'>"WGS84"</span>,</span>
-<span>           height <span class='op'>=</span> <span class='fl'>0.1</span>,</span>
-<span>           st.dist <span class='op'>=</span> <span class='fl'>0.15</span>,</span>
-<span>           st.size <span class='op'>=</span> <span class='fl'>4.5</span>,</span>
-<span>           border.size <span class='op'>=</span> <span class='fl'>0.2</span>,</span>
-<span>           family <span class='op'>=</span> <span class='st'>"IM FELL English"</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggsn/man/north.html'>north</a></span><span class='op'>(</span>x.min <span class='op'>=</span> <span class='fl'>122.51</span>, </span>
-<span>        x.max <span class='op'>=</span> <span class='fl'>122.61</span>, </span>
-<span>        y.min <span class='op'>=</span> <span class='fl'>22.2</span>, </span>
-<span>        y.max <span class='op'>=</span> <span class='fl'>22.4</span>, </span>
-<span>        symbol <span class='op'>=</span> <span class='fl'>10</span>,</span>
-<span>        scale <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/annotate.html'>annotate</a></span><span class='op'>(</span>geom <span class='op'>=</span> <span class='st'>"text"</span>, x <span class='op'>=</span> <span class='fl'>122.41</span>, y <span class='op'>=</span> <span class='fl'>22.35</span>, label <span class='op'>=</span> <span class='st'>"N"</span>, size <span class='op'>=</span> <span class='fl'>7</span>, family <span class='op'>=</span> <span class='st'>"IM FELL English"</span>, fontface <span class='op'>=</span> <span class='st'>"italic"</span><span class='op'>)</span></span></code></pre>
+<span><span class='co'>### A dodged line chart with two variables for dodging</span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>CO2_summary</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>conc</span>, </span>
+<span>                 y <span class='op'>=</span> <span class='va'>mean_uptake</span>, </span>
+<span>                 shape <span class='op'>=</span> <span class='va'>Treatment</span>, </span>
+<span>                 color <span class='op'>=</span> <span class='va'>Type</span>, </span>
+<span>                 group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/interaction.html'>interaction</a></span><span class='op'>(</span><span class='va'>Treatment</span>, <span class='va'>Type</span><span class='op'>)</span><span class='op'>)</span>,  <span class='co'># use interaction() to create all level combinations for dodging</span></span>
+<span>             position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># set the dodge width based on the unit of the x-axis</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_path.html'>geom_line</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>conc</span>, </span>
+<span>                y <span class='op'>=</span> <span class='va'>mean_uptake</span>, </span>
+<span>                color <span class='op'>=</span> <span class='va'>Type</span>, </span>
+<span>                group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/interaction.html'>interaction</a></span><span class='op'>(</span><span class='va'>Treatment</span>, <span class='va'>Type</span><span class='op'>)</span><span class='op'>)</span>,  <span class='co'># use interaction() to create all level combinations for dodging </span></span>
+<span>            position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>  </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_linerange.html'>geom_errorbar</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>conc</span>, </span>
+<span>                    ymin <span class='op'>=</span> <span class='va'>mean_uptake</span> <span class='op'>-</span> <span class='va'>se</span>,</span>
+<span>                    ymax <span class='op'>=</span> <span class='va'>mean_uptake</span> <span class='op'>+</span> <span class='va'>se</span>,</span>
+<span>                    color <span class='op'>=</span> <span class='va'>Type</span>, </span>
+<span>                    group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/interaction.html'>interaction</a></span><span class='op'>(</span><span class='va'>Treatment</span>, <span class='va'>Type</span><span class='op'>)</span><span class='op'>)</span>,  <span class='co'># use interaction() to create all level combinations for dodging</span></span>
+<span>                    position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span><span class='op'>(</span><span class='va'>CO</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>~</span><span class='va'>concentration</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span><span class='op'>(</span><span class='va'>CO</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>~</span><span class='va'>uptake</span><span class='op'>)</span>, shape <span class='op'>=</span> <span class='st'>"Treatment"</span>, color <span class='op'>=</span> <span class='st'>"Type"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggtheme.html'>theme_classic</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"right"</span>,</span>
+<span>        legend.key.width <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.25</span>, <span class='st'>"in"</span><span class='op'>)</span>,</span>
+<span>        legend.title <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/element.html'>element_text</a></span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="post-32-ggplot-map-series-no5-map-annotation-with-ggsn_files/figure-html5/unnamed-chunk-4-1.png" width="60%" style="display: block; margin: auto;" /></p>
+<p><img src="post-36-the-nitty-gritty-of-dodging-in-ggplots_files/figure-html5/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <h2 id="summary">Summary</h2>
-<p>To summarize what we did, we used the package <code>elevatr</code> to get the elevation tiles and made a topographic map of Taiwan, and then we added a scale bar and a north arrow to the map using the <code>scalebar()</code> and <code>north()</code> function from the package <code>ggsn</code>. Now, it’s your turn to make use of what we learned here!</p>
+<p>To recap what we did in this post, we first explored the dodging basics in ggplots via examples of various plot types such as the barplot, the boxplot, the dot chart, and the line chart. We then took a loot at how to deal with missing categories and multiple variables for dodging. Dodging is quite common in the real world and the tips you learned here will definitely come in handy in the future!</p>
 <p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
@@ -2927,14 +2974,14 @@ div.l-body img {
     <span class="disqus-comments">
       <i class="fas fa-comments"></i>
       &nbsp;
-      <span class="disqus-comment-count" data-disqus-identifier="posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn/">Comment on this article</span>
+      <span class="disqus-comment-count" data-disqus-identifier="posts/2024-08-02-post-36-the-nitty-gritty-of-dodging-in-ggplots/">Comment on this article</span>
     </span>
     <span class="article-sharing">
       Share: &nbsp;
-      <a href="https://twitter.com/share?text=Post%20%2332.%20ggplot%20Map%20Series%20No.5%3A%20Scale%20bar%20and%20north%20arrow%20with%20%60ggsn%60&amp;url=https%3A%2F%2Fgenchanghsu.github.io%2FggGallery%2Fposts%2F2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn%2F" aria-label="share on twitter">
+      <a href="https://twitter.com/share?text=Post%20%2336.%20The%20nitty-gritty%20of%20dodging%20in%20ggplots&amp;url=https%3A%2F%2Fgenchanghsu.github.io%2FggGallery%2Fposts%2F2024-08-02-post-36-the-nitty-gritty-of-dodging-in-ggplots%2F" aria-label="share on twitter">
         <i class="fab fa-twitter" aria-hidden="true"></i>
       </a>
-      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fgenchanghsu.github.io%2FggGallery%2Fposts%2F2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn%2F" aria-label="share on facebook">
+      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fgenchanghsu.github.io%2FggGallery%2Fposts%2F2024-08-02-post-36-the-nitty-gritty-of-dodging-in-ggplots%2F" aria-label="share on facebook">
         <i class="fab fa-facebook" aria-hidden="true"></i>
       </a>
     </span>
@@ -2943,8 +2990,8 @@ div.l-body img {
   <div id="disqus_thread" class="hidden"></div>
   <script type="text/javascript" cookie-consent="functionality">
 var disqus_config = function () {
-  this.page.url = 'https://genchanghsu.github.io/ggGallery/posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn/';
-  this.page.identifier = 'posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn/';
+  this.page.url = 'https://genchanghsu.github.io/ggGallery/posts/2024-08-02-post-36-the-nitty-gritty-of-dodging-in-ggplots/';
+  this.page.identifier = 'posts/2024-08-02-post-36-the-nitty-gritty-of-dodging-in-ggplots/';
 };
 (function() {
   var d = document, s = d.createElement('script');
