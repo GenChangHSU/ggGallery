@@ -1,5 +1,25 @@
 [
   {
+    "path": "posts/2024-10-08-post-37-ggplot-map-series-no6-cartograms-in-ggplots/",
+    "title": "Post #37. ggplot Map Series No.6: Cartograms in ggplots",
+    "description": "Come and learn how to create cartograms in ggplots!",
+    "author": [
+      {
+        "name": "Gen-Chang Hsu",
+        "url": {}
+      }
+    ],
+    "date": "2024-10-08",
+    "categories": [
+      "2024",
+      "Map Series"
+    ],
+    "contents": "\r\n\r\nIntroduction\r\n\r\n\r\n\r\nlibrary(tidyverse)\r\n\r\n\r\nSummary\r\nHope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2024-10-08T21:23:39-04:00",
+    "input_file": "post-37-ggplot-map-series-no6-cartograms-in-ggplots.knit.md"
+  },
+  {
     "path": "posts/2024-08-02-post-36-the-nitty-gritty-of-dodging-in-ggplots/",
     "title": "Post #36. The nitty-gritty of dodging in ggplots",
     "description": "Here come the useful tips for dodging in ggplots!",

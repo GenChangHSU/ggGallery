@@ -1,0 +1,175 @@
+---
+title: "Post #37. ggplot Map Series No.6: Cartograms in ggplots"
+description: |
+  Come and learn how to create cartograms in ggplots!
+author:
+  - name: Gen-Chang Hsu
+date: 2024-10-08
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2024"
+  - "Map Series"
+preview: ../../homepage_images/Post37.png
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+  color: #2780e3 !important;
+  border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+  border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 30% !important;
+}
+
+</style>
+
+<head>
+  <base target="_blank">
+</head>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+A cartogram (also called a value-area map or an anamorphic map, the latter common among German-speakers) is a thematic map of a set of features (countries, provinces, etc.), in which their geographic size is altered to be directly proportional to a selected variable,
+
+A cartogram is a map in which the geometry of regions is distorted in order to convey the information of an alternate variable. The region area will be inflated or deflated according to its numeric value.
+
+It is similar to choropleth maps but the areas are distorted.
+
+They can be easy to understand and make a strong impact.
+
+Some examples of cartograms include the population sizes, agrocultural production.
+
+In this post, I'll show you how to create cartograms in ggplots. We'll then do some variants of cartograms by adding pie charts to the map. Read on!
+
+
+## A world map of the forest area
+
+
+```{r, fig.width = 5, fig.height = 4}
+library(tidyverse)
+
+### Read the forest area data
+country_forest_area <- read_csv("Country_Forest_Area.csv")
+country_forest_area_2020 <- country_forest_area %>% 
+  filter(Year == 2020)
+
+### Get a world map from Natural Earth
+library(rnaturalearth)
+
+world_map <- ne_countries(type = "countries", returnclass = "sf", scale = 110)
+
+### Join the forest data to the map data
+world_map_forest_area_2020 <- world_map %>% 
+  mutate(Code = toupper(adm0_a3)) %>% 
+  left_join(country_forest_area_2020, by = join_by("adm0_a3" == "Code"))
+
+### A choropleth map of the forest area in each country
+library(sf)
+
+ggplot(world_map_forest_area_2020) + 
+  geom_sf(aes(fill = `Forest area`)) + 
+  coord_sf(crs = st_crs("ESRI:54030")) + 
+  theme_void()
+
+
+
+```
+
+
+
+
+
+
+
+## Summary
+
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
+
+
+
