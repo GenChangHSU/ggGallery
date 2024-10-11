@@ -113,31 +113,29 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-A cartogram (also called a value-area map or an anamorphic map, the latter common among German-speakers) is a thematic map of a set of features (countries, provinces, etc.), in which their geographic size is altered to be directly proportional to a selected variable,
+In a [previous post](https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/) in this Map Series, I wrote about how to create choropleth maps in ggplots: they are thematic maps that visualize the quantity of a focal variable across a geographical area (e.g., the population size of each country in the world) using different colors. Choropleth maps are easy to read and provide a quick glance at the spatial patterns of the focal variable.
 
-A cartogram is a map in which the geometry of regions is distorted in order to convey the information of an alternate variable. The region area will be inflated or deflated according to its numeric value.
+Similar to choropleth maps, cartograms also visualize the quantity of a variable across a geographical area, but now the geographic size of the regions is altered to be proportional to the numerical values of the focal variable. This enhances the visual impacts of the maps. And in fact, it's easy to switch between a choropleth to a cartogram as they are both created from data with the same underlying structure!
 
-It is similar to choropleth maps but the areas are distorted.
-
-They can be easy to understand and make a strong impact.
-
-Some examples of cartograms include the population sizes, agrocultural production.
-
-In this post, I'll show you how to create cartograms in ggplots. We'll then do some variants of cartograms by adding pie charts to the map. Read on!
+In this post, I'll show you how to create cartograms in ggplots. We'll then make a variant of cartogram by adding pie charts to the map. Read on!
 
 
-## A world map of the forest area
+## A map of the world forest area
 
+We're going to make a thematic map of the world forest area by country. The dataset can be downloaded from the website [Our World in Data](https://ourworldindata.org/forest-area): it contains the forest area in each country from 1990 to 2020.
 
-```{r, fig.width = 5, fig.height = 4}
+First, let's create a choropleth map of the forest area in 2020. We retrieved the world base map from the [Natural Earth](https://www.naturalearthdata.com/) database using the package `rnaturalearth` and joined the forest data to the world map data to draw the choropleth map:
+
+```{r, fig.width = 7, fig.height = 4, out.width = "90%"}
 library(tidyverse)
 
 ### Read the forest area data
 country_forest_area <- read_csv("Country_Forest_Area.csv")
+
 country_forest_area_2020 <- country_forest_area %>% 
   filter(Year == 2020)
 
-### Get a world map from Natural Earth
+### Get a world base map from Natural Earth
 library(rnaturalearth)
 
 world_map <- ne_countries(type = "countries", returnclass = "sf", scale = 110)
@@ -147,20 +145,31 @@ world_map_forest_area_2020 <- world_map %>%
   mutate(Code = toupper(adm0_a3)) %>% 
   left_join(country_forest_area_2020, by = join_by("adm0_a3" == "Code"))
 
-### A choropleth map of the forest area in each country
-library(sf)
+### Create a choropleth map of the world forest area by country
+library(sf)  # for the function "st_crs()"
 
 ggplot(world_map_forest_area_2020) + 
   geom_sf(aes(fill = `Forest area`)) + 
-  coord_sf(crs = st_crs("ESRI:54030")) + 
-  theme_void()
-
+  coord_sf(crs = st_crs("ESRI:54030")) +  # Robinson projection
+  theme_bw()
 
 
 ```
 
 
 
+
+```{r, fig.width = 7, fig.height = 4, out.width = "90%"}
+# install.packages("cartogram")  # install the package if you haven't
+library(cartogram)
+
+ggplot(world_map_forest_area_2020) + 
+  geom_sf(aes(fill = `Forest area`)) + 
+  coord_sf(crs = st_crs("ESRI:54030")) +  # Robinson projection
+  theme_bw()
+
+
+```
 
 
 
