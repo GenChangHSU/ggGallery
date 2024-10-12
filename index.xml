@@ -118,17 +118,17 @@ are both created from data with the same underlying structure!&lt;/p&gt;
 &lt;p&gt;In this post, I’ll show you how to create cartograms in ggplots.
 We’ll then make a variant of cartogram by adding pie charts to the map.
 Read on!&lt;/p&gt;
-&lt;h2 id="a-world-map-of-the-forest-area"&gt;A world map of the forest
+&lt;h2 id="a-map-of-the-world-forest-area"&gt;A map of the world forest
 area&lt;/h2&gt;
-&lt;p&gt;We’re going to make a world map of the forest area in each country.
-The dataset can be downloaded from the website &lt;a
+&lt;p&gt;We’re going to make a thematic map of the world forest area by
+country. The dataset can be downloaded from the website &lt;a
 href="https://ourworldindata.org/forest-area"&gt;Our World in Data&lt;/a&gt;: it
 contains the forest area in each country from 1990 to 2020.&lt;/p&gt;
-&lt;p&gt;First, let’s create a choropleth map of forest area in 2020 by
-country. We retrieved the world base map from the &lt;a
-href="https://www.naturalearthdata.com/"&gt;Natural Earth&lt;/a&gt; platform
+&lt;p&gt;First, let’s create a choropleth map of the forest area in 2020. We
+retrieved the world base map from the &lt;a
+href="https://www.naturalearthdata.com/"&gt;Natural Earth&lt;/a&gt; database
 using the package &lt;code&gt;rnaturalearth&lt;/code&gt; and joined the forest data
-to the world map data to draw the choroplath map:&lt;/p&gt;
+to the world map data to draw the choropleth map:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
 
 ### Read the forest area data
@@ -137,7 +137,7 @@ country_forest_area &amp;lt;- read_csv(&amp;quot;Country_Forest_Area.csv&amp;quo
 country_forest_area_2020 &amp;lt;- country_forest_area %&amp;gt;% 
   filter(Year == 2020)
 
-### Get a world map from Natural Earth
+### Get a world base map from Natural Earth
 library(rnaturalearth)
 
 world_map &amp;lt;- ne_countries(type = &amp;quot;countries&amp;quot;, returnclass = &amp;quot;sf&amp;quot;, scale = 110)
@@ -147,14 +147,26 @@ world_map_forest_area_2020 &amp;lt;- world_map %&amp;gt;%
   mutate(Code = toupper(adm0_a3)) %&amp;gt;% 
   left_join(country_forest_area_2020, by = join_by(&amp;quot;adm0_a3&amp;quot; == &amp;quot;Code&amp;quot;))
 
-### A choropleth map of the forest area in each country
-library(sf)
+### Create a choropleth map of the world forest area by country
+library(sf)  # for the function &amp;quot;st_crs()&amp;quot;
+library(ggtext)  # for the function &amp;quot;element_markdown()&amp;quot;
+library(colorspace)  # for the function &amp;quot;scale_fill_continuous_sequential()&amp;quot;
 
 ggplot(world_map_forest_area_2020) + 
   geom_sf(aes(fill = `Forest area`)) + 
   coord_sf(crs = st_crs(&amp;quot;ESRI:54030&amp;quot;)) +  # Robinson projection
-  theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file281878e56563_files/figure-html/unnamed-chunk-1-1.png" width="90%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+  scale_fill_continuous_sequential(palette = &amp;quot;Greens&amp;quot;,
+                                   breaks = seq(1e8, 8e8, by = 2e8), 
+                                   labels = str_glue(&amp;quot;&amp;lt;span&amp;gt;{c(1, 3, 5, 7)}×10^8^&amp;lt;/span&amp;gt;&amp;quot;), 
+                                   name = &amp;quot;&amp;lt;span&amp;gt;Forest area (km^2^)&amp;lt;/span&amp;gt;&amp;quot;) + 
+  theme_bw() + 
+  theme(panel.border = element_blank(),
+        legend.title = element_markdown(hjust = 0.5),
+        legend.text = element_markdown(),
+        legend.direction = &amp;quot;horizontal&amp;quot;,
+        legend.position = &amp;quot;top&amp;quot;,
+        legend.title.position = &amp;quot;top&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file54a4367c6122_files/figure-html/unnamed-chunk-1-1.png" width="90%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;cartogram&amp;quot;)  # install the package if you haven&amp;#39;t
 library(cartogram)
 
@@ -162,7 +174,7 @@ ggplot(world_map_forest_area_2020) +
   geom_sf(aes(fill = `Forest area`)) + 
   coord_sf(crs = st_crs(&amp;quot;ESRI:54030&amp;quot;)) +  # Robinson projection
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file281878e56563_files/figure-html/unnamed-chunk-2-1.png" width="90%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file54a4367c6122_files/figure-html/unnamed-chunk-2-1.png" width="90%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;Hope you learn something useful from this post and don’t forget to
 leave your comments and suggestions below if you have any!&lt;/p&gt;
@@ -172,7 +184,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <category>Map Series</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2024-10-08-post-37-ggplot-map-series-no6-cartograms-in-ggplots</guid>
       <pubDate>Tue, 08 Oct 2024 00:00:00 +0000</pubDate>
-      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2024-10-08-post-37-ggplot-map-series-no6-cartograms-in-ggplots/post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="1344" height="768"/>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2024-10-08-post-37-ggplot-map-series-no6-cartograms-in-ggplots/post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png" medium="image" type="image/png" width="1536" height="960"/>
     </item>
     <item>
       <title>Post #36. The nitty-gritty of dodging in ggplots</title>

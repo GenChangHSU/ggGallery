@@ -105,8 +105,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="og:description" content="Come and learn how to create cartograms in ggplots!"/>
 <meta property="og:url" content="https://genchanghsu.github.io/ggGallery/posts/2024-10-08-post-37-ggplot-map-series-no6-cartograms-in-ggplots/"/>
 <meta property="og:image" content="https://genchanghsu.github.io/ggGallery/posts/2024-10-08-post-37-ggplot-map-series-no6-cartograms-in-ggplots/post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png"/>
-<meta property="og:image:width" content="1344"/>
-<meta property="og:image:height" content="768"/>
+<meta property="og:image:width" content="1536"/>
+<meta property="og:image:height" content="960"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="ggGallery"/>
 
@@ -116,8 +116,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="twitter:description" content="Come and learn how to create cartograms in ggplots!"/>
 <meta property="twitter:url" content="https://genchanghsu.github.io/ggGallery/posts/2024-10-08-post-37-ggplot-map-series-no6-cartograms-in-ggplots/"/>
 <meta property="twitter:image" content="https://genchanghsu.github.io/ggGallery/posts/2024-10-08-post-37-ggplot-map-series-no6-cartograms-in-ggplots/post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png"/>
-<meta property="twitter:image:width" content="1344"/>
-<meta property="twitter:image:height" content="768"/>
+<meta property="twitter:image:width" content="1536"/>
+<meta property="twitter:image:height" content="960"/>
 
 <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
@@ -2764,9 +2764,9 @@ div.l-body img {
 <p>In a <a href="https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/">previous post</a> in this Map Series, I wrote about how to create choropleth maps in ggplots: they are thematic maps that visualize the quantity of a focal variable across a geographical area (e.g., the population size of each country in the world) using different colors. Choropleth maps are easy to read and provide a quick glance at the spatial patterns of the focal variable.</p>
 <p>Similar to choropleth maps, cartograms also visualize the quantity of a variable across a geographical area, but now the geographic size of the regions is altered to be proportional to the numerical values of the focal variable. This enhances the visual impacts of the maps. And in fact, it’s easy to switch between a choropleth to a cartogram as they are both created from data with the same underlying structure!</p>
 <p>In this post, I’ll show you how to create cartograms in ggplots. We’ll then make a variant of cartogram by adding pie charts to the map. Read on!</p>
-<h2 id="a-world-map-of-the-forest-area">A world map of the forest area</h2>
-<p>We’re going to make a world map of the forest area in each country. The dataset can be downloaded from the website <a href="https://ourworldindata.org/forest-area">Our World in Data</a>: it contains the forest area in each country from 1990 to 2020.</p>
-<p>First, let’s create a choropleth map of forest area in 2020 by country. We retrieved the world base map from the <a href="https://www.naturalearthdata.com/">Natural Earth</a> platform using the package <code>rnaturalearth</code> and joined the forest data to the world map data to draw the choroplath map:</p>
+<h2 id="a-map-of-the-world-forest-area">A map of the world forest area</h2>
+<p>We’re going to make a thematic map of the world forest area by country. The dataset can be downloaded from the website <a href="https://ourworldindata.org/forest-area">Our World in Data</a>: it contains the forest area in each country from 1990 to 2020.</p>
+<p>First, let’s create a choropleth map of the forest area in 2020. We retrieved the world base map from the <a href="https://www.naturalearthdata.com/">Natural Earth</a> database using the package <code>rnaturalearth</code> and joined the forest data to the world map data to draw the choropleth map:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
@@ -2777,7 +2777,7 @@ div.l-body img {
 <span><span class='va'>country_forest_area_2020</span> <span class='op'>&lt;-</span> <span class='va'>country_forest_area</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Year</span> <span class='op'>==</span> <span class='fl'>2020</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='co'>### Get a world map from Natural Earth</span></span>
+<span><span class='co'>### Get a world base map from Natural Earth</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://docs.ropensci.org/rnaturalearth/'>rnaturalearth</a></span><span class='op'>)</span></span>
 <span></span>
 <span><span class='va'>world_map</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://docs.ropensci.org/rnaturalearth/reference/ne_countries.html'>ne_countries</a></span><span class='op'>(</span>type <span class='op'>=</span> <span class='st'>"countries"</span>, returnclass <span class='op'>=</span> <span class='st'>"sf"</span>, scale <span class='op'>=</span> <span class='fl'>110</span><span class='op'>)</span></span>
@@ -2787,13 +2787,25 @@ div.l-body img {
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Code <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span><span class='op'>(</span><span class='va'>adm0_a3</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>country_forest_area_2020</span>, by <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/join_by.html'>join_by</a></span><span class='op'>(</span><span class='st'>"adm0_a3"</span> <span class='op'>==</span> <span class='st'>"Code"</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='co'>### A choropleth map of the forest area in each country</span></span>
-<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span></span>
+<span><span class='co'>### Create a choropleth map of the world forest area by country</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span>  <span class='co'># for the function "st_crs()"</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://wilkelab.org/ggtext/'>ggtext</a></span><span class='op'>)</span>  <span class='co'># for the function "element_markdown()"</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://colorspace.R-Forge.R-project.org/'>colorspace</a></span><span class='op'>)</span>  <span class='co'># for the function "scale_fill_continuous_sequential()"</span></span>
 <span></span>
 <span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>world_map_forest_area_2020</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='va'>`Forest area`</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>coord_sf</a></span><span class='op'>(</span>crs <span class='op'>=</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_crs.html'>st_crs</a></span><span class='op'>(</span><span class='st'>"ESRI:54030"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># Robinson projection</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/colorspace/man/scale_colour_continuous_sequential.html'>scale_fill_continuous_sequential</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Greens"</span>,</span>
+<span>                                   breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1e8</span>, <span class='fl'>8e8</span>, by <span class='op'>=</span> <span class='fl'>2e8</span><span class='op'>)</span>, </span>
+<span>                                   labels <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_glue.html'>str_glue</a></span><span class='op'>(</span><span class='st'>"&lt;span&gt;{c(1, 3, 5, 7)}×10^8^&lt;/span&gt;"</span><span class='op'>)</span>, </span>
+<span>                                   name <span class='op'>=</span> <span class='st'>"&lt;span&gt;Forest area (km^2^)&lt;/span&gt;"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>panel.border <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span>        legend.title <span class='op'>=</span> <span class='fu'><a href='https://wilkelab.org/ggtext/reference/element_markdown.html'>element_markdown</a></span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>,</span>
+<span>        legend.text <span class='op'>=</span> <span class='fu'><a href='https://wilkelab.org/ggtext/reference/element_markdown.html'>element_markdown</a></span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span>        legend.direction <span class='op'>=</span> <span class='st'>"horizontal"</span>,</span>
+<span>        legend.position <span class='op'>=</span> <span class='st'>"top"</span>,</span>
+<span>        legend.title.position <span class='op'>=</span> <span class='st'>"top"</span><span class='op'>)</span></span></code></pre>
 </div>
 <p><img src="post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png" width="90%" style="display: block; margin: auto;" /></p>
 </div>
