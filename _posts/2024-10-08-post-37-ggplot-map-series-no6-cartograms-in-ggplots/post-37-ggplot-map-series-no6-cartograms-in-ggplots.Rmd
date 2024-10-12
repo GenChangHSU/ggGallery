@@ -167,7 +167,7 @@ ggplot(world_map_forest_area_2020) +
 
 ```
 
-
+Now we'll create a cartogram
 
 
 ```{r, fig.width = 7, fig.height = 4, out.width = "90%"}
