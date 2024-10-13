@@ -138,12 +138,13 @@ country_forest_area_2020 <- country_forest_area %>%
 ### Get a world base map from Natural Earth
 library(rnaturalearth)
 
-world_map <- ne_countries(type = "countries", returnclass = "sf", scale = 110)
+world_map <- ne_countries(type = "countries", returnclass = "sf", scale = 110) %>% st_transform(crs = 3857)  # Spherical/Web Mercator projection
 
 ### Join the forest data to the map data
 world_map_forest_area_2020 <- world_map %>% 
   mutate(Code = toupper(adm0_a3)) %>% 
-  left_join(country_forest_area_2020, by = join_by("adm0_a3" == "Code"))
+  left_join(country_forest_area_2020, by = join_by("adm0_a3" == "Code")) %>% 
+  drop_na("Forest area")
 
 ### Create a choropleth map of the world forest area by country
 library(sf)  # for the function "st_crs()"
@@ -167,16 +168,31 @@ ggplot(world_map_forest_area_2020) +
 
 ```
 
-Now we'll create a cartogram
+## Creating the cartograms
+
+Now we'll create the cartograms
 
 
 ```{r, fig.width = 7, fig.height = 4, out.width = "90%"}
 # install.packages("cartogram")  # install the package if you haven't
 library(cartogram)
 
-ggplot(world_map_forest_area_2020) + 
+### Change the map projection
+world_map_forest_area_2020_projected <- st_transform(drop_na(world_map_forest_area_2020, "Forest area") , crs = 3857)
+
+st_crs(world_map_forest_area_2020)
+
+cartogram_continuous111 <- cartogram_cont(world_map_forest_area_2020_projected, 
+                                       "Forest area", 
+                                       itermax = 5)
+
+cartogram_continuous2 <- cartogram::cartogram_dorling(
+  world_map_forest_area_20201, weight = "Forest area", k = 5,
+  m_weight = 1, itermax = 1000)
+
+ggplot(cartogram_continuous111) + 
   geom_sf(aes(fill = `Forest area`)) + 
-  coord_sf(crs = st_crs("ESRI:54030")) +  # Robinson projection
+  coord_sf(crs = 4326) +  # Robinson projection
   theme_bw()
 
 
