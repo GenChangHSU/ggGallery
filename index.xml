@@ -139,8 +139,10 @@ country_forest_area_2020 &amp;lt;- country_forest_area %&amp;gt;%
 
 ### Get a world base map from Natural Earth
 library(rnaturalearth)
+library(sf)  # for the function &amp;quot;st_transform()&amp;quot;
 
-world_map &amp;lt;- ne_countries(type = &amp;quot;countries&amp;quot;, returnclass = &amp;quot;sf&amp;quot;, scale = 110)
+world_map &amp;lt;- ne_countries(type = &amp;quot;countries&amp;quot;, returnclass = &amp;quot;sf&amp;quot;, scale = 110) %&amp;gt;%
+  st_transform(crs = &amp;quot;ESRI:54009&amp;quot;)  # Mollweide projection
 
 ### Join the forest data to the map data
 world_map_forest_area_2020 &amp;lt;- world_map %&amp;gt;% 
@@ -148,33 +150,82 @@ world_map_forest_area_2020 &amp;lt;- world_map %&amp;gt;%
   left_join(country_forest_area_2020, by = join_by(&amp;quot;adm0_a3&amp;quot; == &amp;quot;Code&amp;quot;))
 
 ### Create a choropleth map of the world forest area by country
-library(sf)  # for the function &amp;quot;st_crs()&amp;quot;
 library(ggtext)  # for the function &amp;quot;element_markdown()&amp;quot;
 library(colorspace)  # for the function &amp;quot;scale_fill_continuous_sequential()&amp;quot;
 
 ggplot(world_map_forest_area_2020) + 
   geom_sf(aes(fill = `Forest area`)) + 
-  coord_sf(crs = st_crs(&amp;quot;ESRI:54030&amp;quot;)) +  # Robinson projection
   scale_fill_continuous_sequential(palette = &amp;quot;Greens&amp;quot;,
                                    breaks = seq(1e8, 8e8, by = 2e8), 
                                    labels = str_glue(&amp;quot;&amp;lt;span&amp;gt;{c(1, 3, 5, 7)}×10^8^&amp;lt;/span&amp;gt;&amp;quot;), 
                                    name = &amp;quot;&amp;lt;span&amp;gt;Forest area (km^2^)&amp;lt;/span&amp;gt;&amp;quot;) + 
+  coord_sf(expand = F) + 
   theme_bw() + 
   theme(panel.border = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
         legend.title = element_markdown(hjust = 0.5),
         legend.text = element_markdown(),
         legend.direction = &amp;quot;horizontal&amp;quot;,
         legend.position = &amp;quot;top&amp;quot;,
         legend.title.position = &amp;quot;top&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file54a4367c6122_files/figure-html/unnamed-chunk-1-1.png" width="90%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file287c27b429b6_files/figure-html/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h2 id="create-the-cartograms"&gt;Create the cartograms&lt;/h2&gt;
+&lt;p&gt;Now we have the data at hand, it’s time to create the cartograms!
+We’ll use the handy extension package &lt;a
+href="https://sjewo.github.io/cartogram/"&gt;&lt;code&gt;cartograms&lt;/code&gt;&lt;/a&gt; to
+make the maps. This package offers two types of cartograms: a continuous
+one where the geographical sizes of the regions are altered to be
+proportional to the focal variable values, and a discrete one (also
+called a “Dorling cartogram”) where the regions are redrawn as circles
+with the sizes proportional to the focal variable values.&lt;/p&gt;
+&lt;p&gt;Let’s take a look at how it works:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;cartogram&amp;quot;)  # install the package if you haven&amp;#39;t
 library(cartogram)
 
-ggplot(world_map_forest_area_2020) + 
-  geom_sf(aes(fill = `Forest area`)) + 
-  coord_sf(crs = st_crs(&amp;quot;ESRI:54030&amp;quot;)) +  # Robinson projection
-  theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file54a4367c6122_files/figure-html/unnamed-chunk-2-1.png" width="90%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+### Drop NA values for the forest area (otherwise the cartogram function will throw an error)
+world_map_forest_area_2020 &amp;lt;- drop_na(world_map_forest_area_2020, &amp;quot;Forest area&amp;quot;)
+
+### Compute the continuous cartogram
+### This might take a while to run!
+cartogram_continuous &amp;lt;-  cartogram_cont(world_map_forest_area_2020, 
+                                        weight = &amp;quot;Forest area&amp;quot;, 
+                                        itermax = 100)
+
+### Compute the discrete cartogram (Dorling cartogram)
+cartogram_discrete &amp;lt;- cartogram_dorling(world_map_forest_area_2020, 
+                                        weight = &amp;quot;Forest area&amp;quot;,
+                                        itermax = 100)
+
+### Visualize the cartograms
+library(patchwork)
+
+p_continuous_cartogram &amp;lt;- 
+ggplot() + 
+  geom_sf(data = cartogram_continuous, fill = &amp;quot;#2ca25f&amp;quot;, color = alpha(&amp;quot;#b2e2e2&amp;quot;, 0.75)) +
+  labs(title = &amp;quot;Continuous cartogram&amp;quot;) + 
+  theme_void() + 
+  theme(plot.title = element_text(hjust = 0.5, vjust = 3, size = 14, color = &amp;quot;grey&amp;quot;),
+        plot.background = element_rect(fill = &amp;quot;#045a8d&amp;quot;, color = NA),
+        plot.margin = margin(t = 15))
+
+p_discrete_cartogram &amp;lt;- ggplot() + 
+  geom_sf(data = world_map_forest_area_2020, fill = &amp;quot;#2ca25f&amp;quot;, color = alpha(&amp;quot;#b2e2e2&amp;quot;, 0.5)) + 
+  geom_sf(data = cartogram_discrete, fill = alpha(&amp;quot;#dfc27d&amp;quot;, 0.8), color = alpha(&amp;quot;#a6611a&amp;quot;, 0.8)) + 
+  labs(title = &amp;quot;Discrete cartogram (Dorling cartogram)&amp;quot;) + 
+  theme_void() + 
+  theme(plot.title = element_text(hjust = 0.5, vjust = 3, size = 14, color = &amp;quot;grey&amp;quot;),
+        plot.background = element_rect(fill = &amp;quot;#045a8d&amp;quot;, color = NA),
+        plot.margin = margin(t = 15))
+
+p_continuous_cartogram / plot_spacer() / p_discrete_cartogram + 
+  plot_layout(heights = c(1, 0.1, 1))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file287c27b429b6_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+As you can see, Russia has the largest share of the world’s forest area,
+followed by Brazil, Canada, the United States, and China (the big
+five!).&lt;/p&gt;
+&lt;h2 id="a-variant-of-dorling-cartogram"&gt;A variant of Dorling
+cartogram&lt;/h2&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;Hope you learn something useful from this post and don’t forget to
 leave your comments and suggestions below if you have any!&lt;/p&gt;
