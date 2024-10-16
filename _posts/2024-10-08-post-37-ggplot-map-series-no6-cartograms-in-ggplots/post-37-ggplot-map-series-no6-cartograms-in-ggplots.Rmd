@@ -156,7 +156,7 @@ ggplot(world_map_forest_area_2020) +
   scale_fill_continuous_sequential(palette = "Greens",
                                    breaks = seq(1e8, 8e8, by = 2e8), 
                                    labels = str_glue("<span>{c(1, 3, 5, 7)}×10^8^</span>"), 
-                                   name = "<span>Forest area (km^2^)</span>") + 
+                                   name = "<span>Forest area (hectares)</span>") + 
   coord_sf(expand = F) + 
   theme_bw() + 
   theme(panel.border = element_blank(),
@@ -226,17 +226,94 @@ As you can see, Russia has the largest share of the world's forest area, followe
 
 
 ```{r, fig.width = 7, fig.height = 4, out.width = "80%"}
+### Calculate the percent forest area for each country
+world_map_percent_forest_area_2020 <- world_map_forest_area_2020 %>% 
+  # use st_area() to get the country areas in square meters and convert them to hectares
+  mutate(country_area_hectares = st_area(world_map_forest_area_2020)/10000) %>%  
+  mutate(percent_forest_area = as.numeric(`Forest area`/country_area_hectares*100))
+
+### Create pie charts
+world_map_percent_forest_area_2020_pies <- world_map_percent_forest_area_2020 %>% 
+  mutate(pie_chart = map(percent_forest_area, function(percent_forest_area){
+    p_grob <- ggplotGrob(ggplot() + 
+      geom_col(aes(x = 1, y = percent_forest_area), fill = alpha("#a6611a", 0.8), width = 1) + 
+      # geom_vline(xintercept = 0.5, linewidth = 0.1, color = alpha("#a6611a", 0.8)) + 
+      # geom_vline(xintercept = 1.5, linewidth = 0.1, color = alpha("#a6611a", 0.8)) + 
+      scale_y_continuous(limits = c(0, 100), expand = c(0, 0)) + 
+      scale_x_continuous(limits = c(0.5, 1.5), expand = c(0, 0)) + 
+      coord_polar(theta = "y") + 
+      theme_void() +
+      theme(plot.margin = unit(c(0, 0, 0, 0),"cm")))
+  }))
+
+            
+### Get the country centroids from the Dorling cartogram circles
+country_centroids <- cartogram_discrete %>% 
+  mutate(country_centroid_lon = st_coordinates(st_centroid(cartogram_discrete)$geometry)[, 1],
+         country_centroid_lat = st_coordinates(st_centroid(cartogram_discrete)$geometry)[, 2]) %>%
+  select(Code, country_centroid_lon, country_centroid_lat) %>% 
+  st_drop_geometry()
+
+world_map_percent_forest_area_2020_pies <- world_map_percent_forest_area_2020_pies %>% 
+  inner_join(., country_centroids, by = join_by("Code"))
+
+### Add the pie charts to the discrete cartogram
+
+cartogram_dorling %>%
+  mutate(
+    # Compute area
+    ar = as.numeric(st_area(cartogram_dorling)),
+    # Compute radius based on area
+    rad = as.numeric(sqrt(ar/pi))
+  )
 
 
-### 1. Get the percent forest area data
-st_area(world_map_forest_area_2020)
+ggplot() + 
+    geom_sf(data = world_map_percent_forest_area_2020_pies, fill = "#2ca25f", color = alpha("#b2e2e2", 0.5)) + 
+    geom_sf(data = cartogram_discrete, fill = alpha("#dfc27d", 0.8), color = alpha("#a6611a", 0.8)) + 
+    theme_void() + 
+    theme(plot.title = element_text(hjust = 0.5, vjust = 3, size = 14, color = "grey"),
+          plot.background = element_rect(fill = "#045a8d", color = NA)) + 
+    annotation_custom(world_map_percent_forest_area_2020_pies$pie_chart[[3]],
+                        xmin = world_map_percent_forest_area_2020_pies$country_centroid_lon[[3]] - 1510493*1.2,
+                        xmax = world_map_percent_forest_area_2020_pies$country_centroid_lon[[3]] + 1510493*1.2,
+                        ymin = world_map_percent_forest_area_2020_pies$country_centroid_lat[[3]] - 1510493*1.2,
+                        ymax = world_map_percent_forest_area_2020_pies$country_centroid_lat[[3]] + 1510493*1.2)
+  
+
+### 
+reduce(1:nrow(world_map_percent_forest_area_2020_pies), .f = function(x, y){
+  x + annotation_custom(world_map_percent_forest_area_2020_pies$pie_chart[[y]],
+                        xmin = world_map_percent_forest_area_2020_pies$country_centroid_lon[[y]] - 500000,
+                        xmax = world_map_percent_forest_area_2020_pies$country_centroid_lon[[y]] + 500000,
+                        ymin = world_map_percent_forest_area_2020_pies$country_centroid_lat[[y]] - 500000,
+                        ymax = world_map_percent_forest_area_2020_pies$country_centroid_lat[[y]] + 500000)
+  }, 
+  .init = ggplot() + 
+    geom_sf(data = world_map_percent_forest_area_2020_pies, fill = "#2ca25f", color = alpha("#b2e2e2", 0.5)) + 
+    geom_sf(data = cartogram_discrete, fill = alpha("#dfc27d", 0.8), color = alpha("#a6611a", 0.8)) + 
+    theme_void() + 
+    theme(plot.title = element_text(hjust = 0.5, vjust = 3, size = 14, color = "grey"),
+          plot.background = element_rect(fill = "#045a8d", color = NA))
+  )
 
 
-### 2. Create pie charts
-### 3. Get the centroids
-### 4. Add the pie charts to the map with pie area proportional to the forest area
 
-
+ggplot() + 
+      geom_col(aes(x = 1, y = 55), fill = alpha("#a6611a", 0.8), width = 1) + 
+      # geom_vline(xintercept = 0.5, linewidth = 0.1, color = alpha("#a6611a", 0.8)) + 
+      # geom_vline(xintercept = 1.5, linewidth = 0.1, color = alpha("#a6611a", 0.8)) + 
+      scale_y_continuous(limits = c(0, 100), expand = c(0, 0)) + 
+      scale_x_continuous(limits = c(0.5, 1.5), expand = c(0, 0)) + 
+  coord_radial(theta = "y", expand = F) + 
+      # coord_polar() + 
+      theme_void() +
+      theme(panel.border = element_rect(color = "black", fill = NA),
+            # plot.margin = margin(0, 0, 0, 0),
+            plot.background = element_rect(color = "red"),
+            axis.text = element_blank(),
+            axis.title = element_blank(),
+            plot.margin = unit(c(-1,-1,-1,-1),"cm"))
 ```
 
 
