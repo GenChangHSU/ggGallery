@@ -158,7 +158,7 @@ ggplot(world_map_forest_area_2020) +
   scale_fill_continuous_sequential(palette = &amp;quot;Greens&amp;quot;,
                                    breaks = seq(1e8, 8e8, by = 2e8), 
                                    labels = str_glue(&amp;quot;&amp;lt;span&amp;gt;{c(1, 3, 5, 7)}×10^8^&amp;lt;/span&amp;gt;&amp;quot;), 
-                                   name = &amp;quot;&amp;lt;span&amp;gt;Forest area (km^2^)&amp;lt;/span&amp;gt;&amp;quot;) + 
+                                   name = &amp;quot;&amp;lt;span&amp;gt;Forest area (hectares)&amp;lt;/span&amp;gt;&amp;quot;) + 
   coord_sf(expand = F) + 
   theme_bw() + 
   theme(panel.border = element_blank(),
@@ -169,7 +169,7 @@ ggplot(world_map_forest_area_2020) +
         legend.direction = &amp;quot;horizontal&amp;quot;,
         legend.position = &amp;quot;top&amp;quot;,
         legend.title.position = &amp;quot;top&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file287c27b429b6_files/figure-html/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file72d84fd3430b_files/figure-html/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h2 id="create-the-cartograms"&gt;Create the cartograms&lt;/h2&gt;
 &lt;p&gt;Now we have the data at hand, it’s time to create the cartograms!
 We’ll use the handy extension package &lt;a
@@ -192,16 +192,15 @@ cartogram_continuous &amp;lt;-  cartogram_cont(world_map_forest_area_2020,
                                         weight = &amp;quot;Forest area&amp;quot;, 
                                         itermax = 100)
 
-### Compute the discrete cartogram (Dorling cartogram)
-cartogram_discrete &amp;lt;- cartogram_dorling(world_map_forest_area_2020, 
-                                        weight = &amp;quot;Forest area&amp;quot;,
-                                        itermax = 100)
+### Compute the discrete Dorling cartogram
+cartogram_dorling &amp;lt;- cartogram_dorling(world_map_forest_area_2020, 
+                                       weight = &amp;quot;Forest area&amp;quot;,
+                                       itermax = 100)
 
 ### Visualize the cartograms
 library(patchwork)
 
-p_continuous_cartogram &amp;lt;- 
-ggplot() + 
+p_continuous_cartogram &amp;lt;- ggplot() + 
   geom_sf(data = cartogram_continuous, fill = &amp;quot;#2ca25f&amp;quot;, color = alpha(&amp;quot;#b2e2e2&amp;quot;, 0.75)) +
   labs(title = &amp;quot;Continuous cartogram&amp;quot;) + 
   theme_void() + 
@@ -209,23 +208,80 @@ ggplot() +
         plot.background = element_rect(fill = &amp;quot;#045a8d&amp;quot;, color = NA),
         plot.margin = margin(t = 15))
 
-p_discrete_cartogram &amp;lt;- ggplot() + 
+p_dorling_cartogram &amp;lt;- ggplot() + 
   geom_sf(data = world_map_forest_area_2020, fill = &amp;quot;#2ca25f&amp;quot;, color = alpha(&amp;quot;#b2e2e2&amp;quot;, 0.5)) + 
-  geom_sf(data = cartogram_discrete, fill = alpha(&amp;quot;#dfc27d&amp;quot;, 0.8), color = alpha(&amp;quot;#a6611a&amp;quot;, 0.8)) + 
-  labs(title = &amp;quot;Discrete cartogram (Dorling cartogram)&amp;quot;) + 
+  geom_sf(data = cartogram_dorling, fill = alpha(&amp;quot;#dfc27d&amp;quot;, 0.8), color = alpha(&amp;quot;#a6611a&amp;quot;, 0.8)) +   labs(title = &amp;quot;Dorling cartogram&amp;quot;) + 
   theme_void() + 
   theme(plot.title = element_text(hjust = 0.5, vjust = 3, size = 14, color = &amp;quot;grey&amp;quot;),
         plot.background = element_rect(fill = &amp;quot;#045a8d&amp;quot;, color = NA),
         plot.margin = margin(t = 15))
 
-p_continuous_cartogram / plot_spacer() / p_discrete_cartogram + 
+p_continuous_cartogram / plot_spacer() / p_dorling_cartogram + 
   plot_layout(heights = c(1, 0.1, 1))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file287c27b429b6_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;
-As you can see, Russia has the largest share of the world’s forest area,
-followed by Brazil, Canada, the United States, and China (the big
+&lt;p&gt;&lt;img src="file72d84fd3430b_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;As you can see, Russia has the largest share of the world’s forest
+area, followed by Brazil, Canada, the United States, and China (the big
 five!).&lt;/p&gt;
 &lt;h2 id="a-variant-of-dorling-cartogram"&gt;A variant of Dorling
 cartogram&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Calculate the percent forest area for each country
+percent_forest_area_2020 &amp;lt;- world_map_forest_area_2020 %&amp;gt;% 
+  # use st_area() to get the country areas in square meters and convert them to hectares
+  mutate(country_area_hectares = st_area(world_map_forest_area_2020)/10000) %&amp;gt;%  
+  mutate(percent_forest_area = as.numeric(`Forest area`/country_area_hectares*100)) %&amp;gt;% 
+  select(Code, percent_forest_area) %&amp;gt;% 
+  st_drop_geometry()
+
+### Create pie charts of the percent forest area for the countries
+percent_forest_area_2020_pie_charts &amp;lt;- percent_forest_area_2020 %&amp;gt;% 
+  mutate(pie_chart = map(percent_forest_area, function(percent_forest_area){
+    p_grob &amp;lt;- ggplotGrob(ggplot() + 
+      geom_col(aes(x = 1, y = percent_forest_area), fill = alpha(&amp;quot;#a6611a&amp;quot;, 0.8), width = 1) + 
+      scale_y_continuous(limits = c(0, 100), expand = c(0, 0)) + 
+      scale_x_continuous(limits = c(0.5, 1.5), expand = c(0, 0)) + 
+      coord_polar(theta = &amp;quot;y&amp;quot;) + 
+      theme_void() +
+      theme(plot.margin = unit(c(0, 0, 0, 0),&amp;quot;cm&amp;quot;)))
+  }))
+
+### Get the centroids of the country circles from the Dorling cartogram
+country_centroids &amp;lt;- cartogram_dorling %&amp;gt;% 
+  mutate(country_centroid_lon = st_coordinates(st_centroid(cartogram_dorling)$geometry)[, 1],
+         country_centroid_lat = st_coordinates(st_centroid(cartogram_dorling)$geometry)[, 2]) %&amp;gt;%
+  select(Code, country_centroid_lon, country_centroid_lat) %&amp;gt;% 
+  st_drop_geometry()
+
+### Get the radii of the country circles from the Dorling cartogram
+country_circle_radius &amp;lt;- cartogram_dorling %&amp;gt;%
+  mutate(circle_area = as.numeric(st_area(cartogram_dorling)),
+         circle_radius = as.numeric(sqrt(circle_area/pi))) %&amp;gt;% 
+  select(Code, circle_radius) %&amp;gt;% 
+  st_drop_geometry()
+
+### Merge the centroids, the radii, and the pie charts into a dataframe
+pie_chart_df &amp;lt;- country_centroids %&amp;gt;% 
+  left_join(country_circle_radius, by = join_by(&amp;quot;Code&amp;quot;)) %&amp;gt;% 
+  inner_join(., percent_forest_area_2020_pie_charts, by = join_by(&amp;quot;Code&amp;quot;))
+  
+### Create the Dorling cartogram base map
+p_dorling_cartogram_base_map &amp;lt;- ggplot() + 
+  geom_sf(data = world_map_forest_area_2020, fill = &amp;quot;#2ca25f&amp;quot;, color = alpha(&amp;quot;#b2e2e2&amp;quot;, 0.5)) + 
+  geom_sf(data = cartogram_dorling, fill = alpha(&amp;quot;#dfc27d&amp;quot;, 0.8), color = alpha(&amp;quot;#a6611a&amp;quot;, 0.8)) +
+  theme_void() + 
+  theme(plot.background = element_rect(fill = &amp;quot;#045a8d&amp;quot;, color = NA),
+        plot.margin = margin(t = 15, b = 15))
+
+### Add the pie charts to the Dorling cartogram
+reduce(1:nrow(pie_chart_df), 
+       .f = function(x, y){
+         x + annotation_custom(grob = pie_chart_df$pie_chart[[y]],
+                               xmin = pie_chart_df$country_centroid_lon[y] - pie_chart_df$circle_radius[y] * 1.2,
+                               xmax = pie_chart_df$country_centroid_lon[y] + pie_chart_df$circle_radius[y] * 1.2,
+                               ymin = pie_chart_df$country_centroid_lat[y] - pie_chart_df$circle_radius[y] * 1.2,
+                               ymax = pie_chart_df$country_centroid_lat[y] + pie_chart_df$circle_radius[y] * 1.2)},
+       .init = p_dorling_cartogram_base_map)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file72d84fd3430b_files/figure-html/unnamed-chunk-3-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+VOILÀ!&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;Hope you learn something useful from this post and don’t forget to
 leave your comments and suggestions below if you have any!&lt;/p&gt;

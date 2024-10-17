@@ -189,16 +189,15 @@ cartogram_continuous <-  cartogram_cont(world_map_forest_area_2020,
                                         weight = "Forest area", 
                                         itermax = 100)
 
-### Compute the discrete cartogram (Dorling cartogram)
-cartogram_discrete <- cartogram_dorling(world_map_forest_area_2020, 
-                                        weight = "Forest area",
-                                        itermax = 100)
+### Compute the discrete Dorling cartogram
+cartogram_dorling <- cartogram_dorling(world_map_forest_area_2020, 
+                                       weight = "Forest area",
+                                       itermax = 100)
 
 ### Visualize the cartograms
 library(patchwork)
 
-p_continuous_cartogram <- 
-ggplot() + 
+p_continuous_cartogram <- ggplot() + 
   geom_sf(data = cartogram_continuous, fill = "#2ca25f", color = alpha("#b2e2e2", 0.75)) +
   labs(title = "Continuous cartogram") + 
   theme_void() + 
@@ -206,39 +205,39 @@ ggplot() +
         plot.background = element_rect(fill = "#045a8d", color = NA),
         plot.margin = margin(t = 15))
 
-p_discrete_cartogram <- ggplot() + 
+p_dorling_cartogram <- ggplot() + 
   geom_sf(data = world_map_forest_area_2020, fill = "#2ca25f", color = alpha("#b2e2e2", 0.5)) + 
-  geom_sf(data = cartogram_discrete, fill = alpha("#dfc27d", 0.8), color = alpha("#a6611a", 0.8)) + 
-  labs(title = "Discrete cartogram (Dorling cartogram)") + 
+  geom_sf(data = cartogram_dorling, fill = alpha("#dfc27d", 0.8), color = alpha("#a6611a", 0.8)) +   labs(title = "Dorling cartogram") + 
   theme_void() + 
   theme(plot.title = element_text(hjust = 0.5, vjust = 3, size = 14, color = "grey"),
         plot.background = element_rect(fill = "#045a8d", color = NA),
         plot.margin = margin(t = 15))
 
-p_continuous_cartogram / plot_spacer() / p_discrete_cartogram + 
+p_continuous_cartogram / plot_spacer() / p_dorling_cartogram + 
   plot_layout(heights = c(1, 0.1, 1))
 
 ```
+
 As you can see, Russia has the largest share of the world's forest area, followed by Brazil, Canada, the United States, and China (the big five!).
 
 ## A variant of Dorling cartogram
 
 
 
-```{r, fig.width = 7, fig.height = 4, out.width = "80%"}
+```{r, fig.width = 7, fig.height = 5, out.width = "80%"}
 ### Calculate the percent forest area for each country
-world_map_percent_forest_area_2020 <- world_map_forest_area_2020 %>% 
+percent_forest_area_2020 <- world_map_forest_area_2020 %>% 
   # use st_area() to get the country areas in square meters and convert them to hectares
   mutate(country_area_hectares = st_area(world_map_forest_area_2020)/10000) %>%  
-  mutate(percent_forest_area = as.numeric(`Forest area`/country_area_hectares*100))
+  mutate(percent_forest_area = as.numeric(`Forest area`/country_area_hectares*100)) %>% 
+  select(Code, percent_forest_area) %>% 
+  st_drop_geometry()
 
-### Create pie charts
-world_map_percent_forest_area_2020_pies <- world_map_percent_forest_area_2020 %>% 
+### Create pie charts of the percent forest area for the countries
+percent_forest_area_2020_pie_charts <- percent_forest_area_2020 %>% 
   mutate(pie_chart = map(percent_forest_area, function(percent_forest_area){
     p_grob <- ggplotGrob(ggplot() + 
       geom_col(aes(x = 1, y = percent_forest_area), fill = alpha("#a6611a", 0.8), width = 1) + 
-      # geom_vline(xintercept = 0.5, linewidth = 0.1, color = alpha("#a6611a", 0.8)) + 
-      # geom_vline(xintercept = 1.5, linewidth = 0.1, color = alpha("#a6611a", 0.8)) + 
       scale_y_continuous(limits = c(0, 100), expand = c(0, 0)) + 
       scale_x_continuous(limits = c(0.5, 1.5), expand = c(0, 0)) + 
       coord_polar(theta = "y") + 
@@ -246,79 +245,48 @@ world_map_percent_forest_area_2020_pies <- world_map_percent_forest_area_2020 %>
       theme(plot.margin = unit(c(0, 0, 0, 0),"cm")))
   }))
 
-            
-### Get the country centroids from the Dorling cartogram circles
-country_centroids <- cartogram_discrete %>% 
-  mutate(country_centroid_lon = st_coordinates(st_centroid(cartogram_discrete)$geometry)[, 1],
-         country_centroid_lat = st_coordinates(st_centroid(cartogram_discrete)$geometry)[, 2]) %>%
+### Get the centroids of the country circles from the Dorling cartogram
+country_centroids <- cartogram_dorling %>% 
+  mutate(country_centroid_lon = st_coordinates(st_centroid(cartogram_dorling)$geometry)[, 1],
+         country_centroid_lat = st_coordinates(st_centroid(cartogram_dorling)$geometry)[, 2]) %>%
   select(Code, country_centroid_lon, country_centroid_lat) %>% 
   st_drop_geometry()
 
-world_map_percent_forest_area_2020_pies <- world_map_percent_forest_area_2020_pies %>% 
-  inner_join(., country_centroids, by = join_by("Code"))
+### Get the radii of the country circles from the Dorling cartogram
+country_circle_radius <- cartogram_dorling %>%
+  mutate(circle_area = as.numeric(st_area(cartogram_dorling)),
+         circle_radius = as.numeric(sqrt(circle_area/pi))) %>% 
+  select(Code, circle_radius) %>% 
+  st_drop_geometry()
 
-### Add the pie charts to the discrete cartogram
-
-cartogram_dorling %>%
-  mutate(
-    # Compute area
-    ar = as.numeric(st_area(cartogram_dorling)),
-    # Compute radius based on area
-    rad = as.numeric(sqrt(ar/pi))
-  )
-
-
-ggplot() + 
-    geom_sf(data = world_map_percent_forest_area_2020_pies, fill = "#2ca25f", color = alpha("#b2e2e2", 0.5)) + 
-    geom_sf(data = cartogram_discrete, fill = alpha("#dfc27d", 0.8), color = alpha("#a6611a", 0.8)) + 
-    theme_void() + 
-    theme(plot.title = element_text(hjust = 0.5, vjust = 3, size = 14, color = "grey"),
-          plot.background = element_rect(fill = "#045a8d", color = NA)) + 
-    annotation_custom(world_map_percent_forest_area_2020_pies$pie_chart[[3]],
-                        xmin = world_map_percent_forest_area_2020_pies$country_centroid_lon[[3]] - 1510493*1.2,
-                        xmax = world_map_percent_forest_area_2020_pies$country_centroid_lon[[3]] + 1510493*1.2,
-                        ymin = world_map_percent_forest_area_2020_pies$country_centroid_lat[[3]] - 1510493*1.2,
-                        ymax = world_map_percent_forest_area_2020_pies$country_centroid_lat[[3]] + 1510493*1.2)
+### Merge the centroids, the radii, and the pie charts into a dataframe
+pie_chart_df <- country_centroids %>% 
+  left_join(country_circle_radius, by = join_by("Code")) %>% 
+  inner_join(., percent_forest_area_2020_pie_charts, by = join_by("Code"))
   
+### Create the Dorling cartogram base map
+p_dorling_cartogram_base_map <- ggplot() + 
+  geom_sf(data = world_map_forest_area_2020, fill = "#2ca25f", color = alpha("#b2e2e2", 0.5)) + 
+  geom_sf(data = cartogram_dorling, fill = alpha("#dfc27d", 0.8), color = alpha("#a6611a", 0.8)) +
+  theme_void() + 
+  theme(plot.background = element_rect(fill = "#045a8d", color = NA),
+        plot.margin = margin(t = 15, b = 15))
 
-### 
-reduce(1:nrow(world_map_percent_forest_area_2020_pies), .f = function(x, y){
-  x + annotation_custom(world_map_percent_forest_area_2020_pies$pie_chart[[y]],
-                        xmin = world_map_percent_forest_area_2020_pies$country_centroid_lon[[y]] - 500000,
-                        xmax = world_map_percent_forest_area_2020_pies$country_centroid_lon[[y]] + 500000,
-                        ymin = world_map_percent_forest_area_2020_pies$country_centroid_lat[[y]] - 500000,
-                        ymax = world_map_percent_forest_area_2020_pies$country_centroid_lat[[y]] + 500000)
-  }, 
-  .init = ggplot() + 
-    geom_sf(data = world_map_percent_forest_area_2020_pies, fill = "#2ca25f", color = alpha("#b2e2e2", 0.5)) + 
-    geom_sf(data = cartogram_discrete, fill = alpha("#dfc27d", 0.8), color = alpha("#a6611a", 0.8)) + 
-    theme_void() + 
-    theme(plot.title = element_text(hjust = 0.5, vjust = 3, size = 14, color = "grey"),
-          plot.background = element_rect(fill = "#045a8d", color = NA))
-  )
+### Add the pie charts to the Dorling cartogram
+reduce(1:nrow(pie_chart_df), 
+       .f = function(x, y){
+         x + annotation_custom(grob = pie_chart_df$pie_chart[[y]],
+                               xmin = pie_chart_df$country_centroid_lon[y] - pie_chart_df$circle_radius[y] * 1.2,
+                               xmax = pie_chart_df$country_centroid_lon[y] + pie_chart_df$circle_radius[y] * 1.2,
+                               ymin = pie_chart_df$country_centroid_lat[y] - pie_chart_df$circle_radius[y] * 1.2,
+                               ymax = pie_chart_df$country_centroid_lat[y] + pie_chart_df$circle_radius[y] * 1.2)},
+       .init = p_dorling_cartogram_base_map)
 
-
-
-ggplot() + 
-      geom_col(aes(x = 1, y = 55), fill = alpha("#a6611a", 0.8), width = 1) + 
-      # geom_vline(xintercept = 0.5, linewidth = 0.1, color = alpha("#a6611a", 0.8)) + 
-      # geom_vline(xintercept = 1.5, linewidth = 0.1, color = alpha("#a6611a", 0.8)) + 
-      scale_y_continuous(limits = c(0, 100), expand = c(0, 0)) + 
-      scale_x_continuous(limits = c(0.5, 1.5), expand = c(0, 0)) + 
-  coord_radial(theta = "y", expand = F) + 
-      # coord_polar() + 
-      theme_void() +
-      theme(panel.border = element_rect(color = "black", fill = NA),
-            # plot.margin = margin(0, 0, 0, 0),
-            plot.background = element_rect(color = "red"),
-            axis.text = element_blank(),
-            axis.title = element_blank(),
-            plot.margin = unit(c(-1,-1,-1,-1),"cm"))
 ```
-
-
+VOILÀ!
 
 ## Summary
+
 
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
