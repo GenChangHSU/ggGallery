@@ -95,6 +95,10 @@ div.l-body img {
     margin-right: 30% !important;
 }
 
+d-article ol {
+  width: 120% !important;
+}
+
 </style>
 
 <head>
@@ -222,21 +226,33 @@ As you can see, Russia has the largest share of the world's forest area, followe
 
 ## A variant of Dorling cartogram
 
+In this final section, we'll create a variant of Dorling cartogram by adding pie charts of the percent forest cover in the countries. This involves four steps:
 
+1. First, we got the areas of the countries using `st_area()` to calculate the percent forest area.
 
-```{r, fig.width = 7, fig.height = 5, out.width = "80%"}
-### Calculate the percent forest area for each country
+<div style="height: -1em;"></div>
+
+```{r, fig.width = 7, fig.height = 4.5, out.width = "80%"}
+### Step 1. Calculate the percent forest area for each country
 percent_forest_area_2020 <- world_map_forest_area_2020 %>% 
   # use st_area() to get the country areas in square meters and convert them to hectares
   mutate(country_area_hectares = st_area(world_map_forest_area_2020)/10000) %>%  
   mutate(percent_forest_area = as.numeric(`Forest area`/country_area_hectares*100)) %>% 
   select(Code, percent_forest_area) %>% 
   st_drop_geometry()
+```
 
-### Create pie charts of the percent forest area for the countries
+<div style="height: 2em;"></div>
+
+2. Second, we made pie charts of the percent forest areas for the countries. The plots were converted to "grob" objects via `ggplotGrob()` so that they can be added to the cartogram later.
+
+<div style="height: -1em;"></div>
+
+```{r, fig.width = 7, fig.height = 4.5, out.width = "80%"}
+### Step 2. Create pie charts of the percent forest area for the countries
 percent_forest_area_2020_pie_charts <- percent_forest_area_2020 %>% 
   mutate(pie_chart = map(percent_forest_area, function(percent_forest_area){
-    p_grob <- ggplotGrob(ggplot() + 
+    p_grob <- ggplotGrob(ggplot() +  # convert the ggplots into grobs
       geom_col(aes(x = 1, y = percent_forest_area), fill = alpha("#a6611a", 0.8), width = 1) + 
       scale_y_continuous(limits = c(0, 100), expand = c(0, 0)) + 
       scale_x_continuous(limits = c(0.5, 1.5), expand = c(0, 0)) + 
@@ -244,27 +260,44 @@ percent_forest_area_2020_pie_charts <- percent_forest_area_2020 %>%
       theme_void() +
       theme(plot.margin = unit(c(0, 0, 0, 0),"cm")))
   }))
+```
 
-### Get the centroids of the country circles from the Dorling cartogram
+<div style="height: 2em;"></div>
+
+3. Third, we got the centroids and areas of the circles in the Dorling diagram using `st_centroid()` and `st_area()` and calculated the radii of the circles. These were used for drawing the pie charts.
+
+<div style="height: -1em;"></div>
+
+```{r, fig.width = 7, fig.height = 4.5, out.width = "80%"}
+### Step 3. Get the centroids and radii of the country circles from the Dorling cartogram
 country_centroids <- cartogram_dorling %>% 
   mutate(country_centroid_lon = st_coordinates(st_centroid(cartogram_dorling)$geometry)[, 1],
          country_centroid_lat = st_coordinates(st_centroid(cartogram_dorling)$geometry)[, 2]) %>%
   select(Code, country_centroid_lon, country_centroid_lat) %>% 
   st_drop_geometry()
 
-### Get the radii of the country circles from the Dorling cartogram
-country_circle_radius <- cartogram_dorling %>%
+country_circle_radii <- cartogram_dorling %>%
   mutate(circle_area = as.numeric(st_area(cartogram_dorling)),
          circle_radius = as.numeric(sqrt(circle_area/pi))) %>% 
   select(Code, circle_radius) %>% 
   st_drop_geometry()
 
-### Merge the centroids, the radii, and the pie charts into a dataframe
+# put the pie charts, centroids, and radii into a single dataframe
 pie_chart_df <- country_centroids %>% 
-  left_join(country_circle_radius, by = join_by("Code")) %>% 
+  left_join(country_circle_radii, by = join_by("Code")) %>% 
   inner_join(., percent_forest_area_2020_pie_charts, by = join_by("Code"))
   
-### Create the Dorling cartogram base map
+```
+
+<div style="height: 2em;"></div>
+
+4. Finally, we added the pie charts to the dorling cartogram using the function `annotation_custom()`. The radii of the pies were multiplied with a scalar (in this example 1.2) so that the pies fit to the circles. The function `reduce()` allowed us to iterate over the rows to add the pie chart of each country based on its centroid and radius.
+
+<div style="height: -1em;"></div>
+
+```{r, fig.width = 7, fig.height = 4.5, out.width = "80%"}
+### Step 4. Add the pie charts to the Dorling cartogram
+# create a Dorling cartogram base map
 p_dorling_cartogram_base_map <- ggplot() + 
   geom_sf(data = world_map_forest_area_2020, fill = "#2ca25f", color = alpha("#b2e2e2", 0.5)) + 
   geom_sf(data = cartogram_dorling, fill = alpha("#dfc27d", 0.8), color = alpha("#a6611a", 0.8)) +
@@ -272,7 +305,7 @@ p_dorling_cartogram_base_map <- ggplot() +
   theme(plot.background = element_rect(fill = "#045a8d", color = NA),
         plot.margin = margin(t = 15, b = 15))
 
-### Add the pie charts to the Dorling cartogram
+# iterate over the rows to add the pie chart for each country
 reduce(1:nrow(pie_chart_df), 
        .f = function(x, y){
          x + annotation_custom(grob = pie_chart_df$pie_chart[[y]],

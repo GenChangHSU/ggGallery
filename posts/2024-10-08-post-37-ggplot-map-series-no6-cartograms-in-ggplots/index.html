@@ -128,7 +128,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["Country_Forest_Area.csv","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/anchor-4.2.2/anchor.min.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/bowser-1.9.3/bowser.min.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/distill-2.2.21/template.v2.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-2-2.png","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/header-attrs-2.27/header-attrs.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.map","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/popper-2.6.0/popper.min.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/tippy-6.2.7/tippy-light-border.css","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/tippy-6.2.7/tippy.css","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/tippy-6.2.7/tippy.umd.min.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["Country_Forest_Area.csv","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/anchor-4.2.2/anchor.min.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/bowser-1.9.3/bowser.min.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/distill-2.2.21/template.v2.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-2-2.png","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-6-1.png","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/header-attrs-2.27/header-attrs.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/jquery-3.6.0/jquery-3.6.0.min.map","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/popper-2.6.0/popper.min.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/tippy-6.2.7/tippy-bundle.umd.min.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/tippy-6.2.7/tippy-light-border.css","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/tippy-6.2.7/tippy.css","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/tippy-6.2.7/tippy.umd.min.js","post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2755,6 +2755,10 @@ div.l-body img {
     margin-right: 30% !important;
 }
 
+d-article ol {
+  width: 120% !important;
+}
+
 </style>
 <head>
 <base target="_blank">
@@ -2860,48 +2864,91 @@ div.l-body img {
 </div>
 <p>As you can see, Russia has the largest share of the world’s forest area, followed by Brazil, Canada, the United States, and China (the big five!).</p>
 <h2 id="a-variant-of-dorling-cartogram">A variant of Dorling cartogram</h2>
+<p>In this final section, we’ll create a variant of Dorling cartogram by adding pie charts of the percent forest cover in the countries. This involves four steps:</p>
+<ol type="1">
+<li>First, we got the areas of the countries using <code>st_area()</code> to calculate the percent forest area.</li>
+</ol>
+<div style="height: -1em;">
+
+</div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Calculate the percent forest area for each country</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Step 1. Calculate the percent forest area for each country</span></span>
 <span><span class='va'>percent_forest_area_2020</span> <span class='op'>&lt;-</span> <span class='va'>world_map_forest_area_2020</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='co'># use st_area() to get the country areas in square meters and convert them to hectares</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>country_area_hectares <span class='op'>=</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>world_map_forest_area_2020</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>10000</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>percent_forest_area <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>`Forest area`</span><span class='op'>/</span><span class='va'>country_area_hectares</span><span class='op'>*</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>Code</span>, <span class='va'>percent_forest_area</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_geometry.html'>st_drop_geometry</a></span><span class='op'>(</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='co'>### Create pie charts of the percent forest area for the countries</span></span>
+<span>  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_geometry.html'>st_drop_geometry</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div style="height: 2em;">
+
+</div>
+<ol start="2" type="1">
+<li>Second, we made pie charts of the percent forest areas for the countries. The plots were converted to “grob” objects via <code>ggplotGrob()</code> so that they can be added to the cartogram later.</li>
+</ol>
+<div style="height: -1em;">
+
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Step 2. Create pie charts of the percent forest area for the countries</span></span>
 <span><span class='va'>percent_forest_area_2020_pie_charts</span> <span class='op'>&lt;-</span> <span class='va'>percent_forest_area_2020</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>pie_chart <span class='op'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='va'>percent_forest_area</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>percent_forest_area</span><span class='op'>)</span><span class='op'>{</span></span>
-<span>    <span class='va'>p_grob</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplotGrob.html'>ggplotGrob</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>    <span class='va'>p_grob</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplotGrob.html'>ggplotGrob</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># convert the ggplots into grobs</span></span>
 <span>      <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, y <span class='op'>=</span> <span class='va'>percent_forest_area</span><span class='op'>)</span>, fill <span class='op'>=</span> <span class='fu'><a href='https://scales.r-lib.org/reference/alpha.html'>alpha</a></span><span class='op'>(</span><span class='st'>"#a6611a"</span>, <span class='fl'>0.8</span><span class='op'>)</span>, width <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>      <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>100</span><span class='op'>)</span>, expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>      <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_x_continuous</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>1.5</span><span class='op'>)</span>, expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>      <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_polar.html'>coord_polar</a></span><span class='op'>(</span>theta <span class='op'>=</span> <span class='st'>"y"</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>      <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_void</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>      <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>plot.margin <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,<span class='st'>"cm"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
-<span>  <span class='op'>}</span><span class='op'>)</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='co'>### Get the centroids of the country circles from the Dorling cartogram</span></span>
+<span>  <span class='op'>}</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div style="height: 2em;">
+
+</div>
+<ol start="3" type="1">
+<li>Third, we got the centroids and areas of the circles in the Dorling diagram using <code>st_centroid()</code> and <code>st_area()</code> and calculated the radii of the circles. These were used for drawing the pie charts.</li>
+</ol>
+<div style="height: -1em;">
+
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Step 3. Get the centroids and radii of the country circles from the Dorling cartogram</span></span>
 <span><span class='va'>country_centroids</span> <span class='op'>&lt;-</span> <span class='va'>cartogram_dorling</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>country_centroid_lon <span class='op'>=</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_coordinates.html'>st_coordinates</a></span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_unary.html'>st_centroid</a></span><span class='op'>(</span><span class='va'>cartogram_dorling</span><span class='op'>)</span><span class='op'>$</span><span class='va'>geometry</span><span class='op'>)</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>]</span>,</span>
 <span>         country_centroid_lat <span class='op'>=</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_coordinates.html'>st_coordinates</a></span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_unary.html'>st_centroid</a></span><span class='op'>(</span><span class='va'>cartogram_dorling</span><span class='op'>)</span><span class='op'>$</span><span class='va'>geometry</span><span class='op'>)</span><span class='op'>[</span>, <span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>Code</span>, <span class='va'>country_centroid_lon</span>, <span class='va'>country_centroid_lat</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_geometry.html'>st_drop_geometry</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='co'>### Get the radii of the country circles from the Dorling cartogram</span></span>
-<span><span class='va'>country_circle_radius</span> <span class='op'>&lt;-</span> <span class='va'>cartogram_dorling</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span><span class='va'>country_circle_radii</span> <span class='op'>&lt;-</span> <span class='va'>cartogram_dorling</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>circle_area <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>cartogram_dorling</span><span class='op'>)</span><span class='op'>)</span>,</span>
 <span>         circle_radius <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='va'>circle_area</span><span class='op'>/</span><span class='va'>pi</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>Code</span>, <span class='va'>circle_radius</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_geometry.html'>st_drop_geometry</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='co'>### Merge the centroids, the radii, and the pie charts into a dataframe</span></span>
+<span><span class='co'># put the pie charts, centroids, and radii into a single dataframe</span></span>
 <span><span class='va'>pie_chart_df</span> <span class='op'>&lt;-</span> <span class='va'>country_centroids</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>country_circle_radius</span>, by <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/join_by.html'>join_by</a></span><span class='op'>(</span><span class='st'>"Code"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>inner_join</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='va'>percent_forest_area_2020_pie_charts</span>, by <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/join_by.html'>join_by</a></span><span class='op'>(</span><span class='st'>"Code"</span><span class='op'>)</span><span class='op'>)</span></span>
-<span>  </span>
-<span><span class='co'>### Create the Dorling cartogram base map</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>country_circle_radii</span>, by <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/join_by.html'>join_by</a></span><span class='op'>(</span><span class='st'>"Code"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>inner_join</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='va'>percent_forest_area_2020_pie_charts</span>, by <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/join_by.html'>join_by</a></span><span class='op'>(</span><span class='st'>"Code"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div style="height: 2em;">
+
+</div>
+<ol start="4" type="1">
+<li>Finally, we added the pie charts to the dorling cartogram using the function <code>annotation_custom()</code>. The radii of the pies were multiplied with a scalar (in this example 1.2) so that the pies fit to the circles. The function <code>reduce()</code> allowed us to iterate over the rows to add the pie chart of each country based on its centroid and radius.</li>
+</ol>
+<div style="height: -1em;">
+
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Step 4. Add the pie charts to the Dorling cartogram</span></span>
+<span><span class='co'># create a Dorling cartogram base map</span></span>
 <span><span class='va'>p_dorling_cartogram_base_map</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>world_map_forest_area_2020</span>, fill <span class='op'>=</span> <span class='st'>"#2ca25f"</span>, color <span class='op'>=</span> <span class='fu'><a href='https://scales.r-lib.org/reference/alpha.html'>alpha</a></span><span class='op'>(</span><span class='st'>"#b2e2e2"</span>, <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>cartogram_dorling</span>, fill <span class='op'>=</span> <span class='fu'><a href='https://scales.r-lib.org/reference/alpha.html'>alpha</a></span><span class='op'>(</span><span class='st'>"#dfc27d"</span>, <span class='fl'>0.8</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='fu'><a href='https://scales.r-lib.org/reference/alpha.html'>alpha</a></span><span class='op'>(</span><span class='st'>"#a6611a"</span>, <span class='fl'>0.8</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
@@ -2909,7 +2956,7 @@ div.l-body img {
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>plot.background <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_rect</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"#045a8d"</span>, color <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>,</span>
 <span>        plot.margin <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>margin</a></span><span class='op'>(</span>t <span class='op'>=</span> <span class='fl'>15</span>, b <span class='op'>=</span> <span class='fl'>15</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='co'>### Add the pie charts to the Dorling cartogram</span></span>
+<span><span class='co'># iterate over the rows to add the pie chart for each country</span></span>
 <span><span class='fu'><a href='https://purrr.tidyverse.org/reference/reduce.html'>reduce</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>pie_chart_df</span><span class='op'>)</span>, </span>
 <span>       .f <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>{</span></span>
 <span>         <span class='va'>x</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/annotation_custom.html'>annotation_custom</a></span><span class='op'>(</span>grob <span class='op'>=</span> <span class='va'>pie_chart_df</span><span class='op'>$</span><span class='va'>pie_chart</span><span class='op'>[[</span><span class='va'>y</span><span class='op'>]</span><span class='op'>]</span>,</span>
@@ -2919,7 +2966,7 @@ div.l-body img {
 <span>                               ymax <span class='op'>=</span> <span class='va'>pie_chart_df</span><span class='op'>$</span><span class='va'>country_centroid_lat</span><span class='op'>[</span><span class='va'>y</span><span class='op'>]</span> <span class='op'>+</span> <span class='va'>pie_chart_df</span><span class='op'>$</span><span class='va'>circle_radius</span><span class='op'>[</span><span class='va'>y</span><span class='op'>]</span> <span class='op'>*</span> <span class='fl'>1.2</span><span class='op'>)</span><span class='op'>}</span>,</span>
 <span>       .init <span class='op'>=</span> <span class='va'>p_dorling_cartogram_base_map</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png" width="90%" style="display: block; margin: auto;" /></p>
+<p><img src="post-37-ggplot-map-series-no6-cartograms-in-ggplots_files/figure-html5/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <p>VOILÀ!</p>
 <h2 id="summary">Summary</h2>

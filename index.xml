@@ -95,6 +95,10 @@ div.l-body img {
     margin-right: 30% !important;
 }
 
+d-article ol {
+  width: 120% !important;
+}
+
 &lt;/style&gt;
 &lt;head&gt;
 &lt;base target="_blank"&gt;
@@ -169,7 +173,7 @@ ggplot(world_map_forest_area_2020) +
         legend.direction = &amp;quot;horizontal&amp;quot;,
         legend.position = &amp;quot;top&amp;quot;,
         legend.title.position = &amp;quot;top&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file72d84fd3430b_files/figure-html/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file27704aa51ab5_files/figure-html/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h2 id="create-the-cartograms"&gt;Create the cartograms&lt;/h2&gt;
 &lt;p&gt;Now we have the data at hand, it’s time to create the cartograms!
 We’ll use the handy extension package &lt;a
@@ -218,52 +222,97 @@ p_dorling_cartogram &amp;lt;- ggplot() +
 
 p_continuous_cartogram / plot_spacer() / p_dorling_cartogram + 
   plot_layout(heights = c(1, 0.1, 1))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file72d84fd3430b_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file27704aa51ab5_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;As you can see, Russia has the largest share of the world’s forest
 area, followed by Brazil, Canada, the United States, and China (the big
 five!).&lt;/p&gt;
 &lt;h2 id="a-variant-of-dorling-cartogram"&gt;A variant of Dorling
 cartogram&lt;/h2&gt;
-&lt;pre class="r"&gt;&lt;code&gt;### Calculate the percent forest area for each country
+&lt;p&gt;In this final section, we’ll create a variant of Dorling cartogram by
+adding pie charts of the percent forest cover in the countries. This
+involves four steps:&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;First, we got the areas of the countries using
+&lt;code&gt;st_area()&lt;/code&gt; to calculate the percent forest area.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div style="height: -1em;"&gt;
+
+&lt;/div&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Step 1. Calculate the percent forest area for each country
 percent_forest_area_2020 &amp;lt;- world_map_forest_area_2020 %&amp;gt;% 
   # use st_area() to get the country areas in square meters and convert them to hectares
   mutate(country_area_hectares = st_area(world_map_forest_area_2020)/10000) %&amp;gt;%  
   mutate(percent_forest_area = as.numeric(`Forest area`/country_area_hectares*100)) %&amp;gt;% 
   select(Code, percent_forest_area) %&amp;gt;% 
-  st_drop_geometry()
+  st_drop_geometry()&lt;/code&gt;&lt;/pre&gt;
+&lt;div style="height: 2em;"&gt;
 
-### Create pie charts of the percent forest area for the countries
+&lt;/div&gt;
+&lt;ol start="2" style="list-style-type: decimal"&gt;
+&lt;li&gt;Second, we made pie charts of the percent forest areas for the
+countries. The plots were converted to “grob” objects via
+&lt;code&gt;ggplotGrob()&lt;/code&gt; so that they can be added to the cartogram
+later.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div style="height: -1em;"&gt;
+
+&lt;/div&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Step 2. Create pie charts of the percent forest area for the countries
 percent_forest_area_2020_pie_charts &amp;lt;- percent_forest_area_2020 %&amp;gt;% 
   mutate(pie_chart = map(percent_forest_area, function(percent_forest_area){
-    p_grob &amp;lt;- ggplotGrob(ggplot() + 
+    p_grob &amp;lt;- ggplotGrob(ggplot() +  # convert the ggplots into grobs
       geom_col(aes(x = 1, y = percent_forest_area), fill = alpha(&amp;quot;#a6611a&amp;quot;, 0.8), width = 1) + 
       scale_y_continuous(limits = c(0, 100), expand = c(0, 0)) + 
       scale_x_continuous(limits = c(0.5, 1.5), expand = c(0, 0)) + 
       coord_polar(theta = &amp;quot;y&amp;quot;) + 
       theme_void() +
       theme(plot.margin = unit(c(0, 0, 0, 0),&amp;quot;cm&amp;quot;)))
-  }))
+  }))&lt;/code&gt;&lt;/pre&gt;
+&lt;div style="height: 2em;"&gt;
 
-### Get the centroids of the country circles from the Dorling cartogram
+&lt;/div&gt;
+&lt;ol start="3" style="list-style-type: decimal"&gt;
+&lt;li&gt;Third, we got the centroids and areas of the circles in the Dorling
+diagram using &lt;code&gt;st_centroid()&lt;/code&gt; and &lt;code&gt;st_area()&lt;/code&gt; and
+calculated the radii of the circles. These were used for drawing the pie
+charts.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div style="height: -1em;"&gt;
+
+&lt;/div&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Step 3. Get the centroids and radii of the country circles from the Dorling cartogram
 country_centroids &amp;lt;- cartogram_dorling %&amp;gt;% 
   mutate(country_centroid_lon = st_coordinates(st_centroid(cartogram_dorling)$geometry)[, 1],
          country_centroid_lat = st_coordinates(st_centroid(cartogram_dorling)$geometry)[, 2]) %&amp;gt;%
   select(Code, country_centroid_lon, country_centroid_lat) %&amp;gt;% 
   st_drop_geometry()
 
-### Get the radii of the country circles from the Dorling cartogram
-country_circle_radius &amp;lt;- cartogram_dorling %&amp;gt;%
+country_circle_radii &amp;lt;- cartogram_dorling %&amp;gt;%
   mutate(circle_area = as.numeric(st_area(cartogram_dorling)),
          circle_radius = as.numeric(sqrt(circle_area/pi))) %&amp;gt;% 
   select(Code, circle_radius) %&amp;gt;% 
   st_drop_geometry()
 
-### Merge the centroids, the radii, and the pie charts into a dataframe
+# put the pie charts, centroids, and radii into a single dataframe
 pie_chart_df &amp;lt;- country_centroids %&amp;gt;% 
-  left_join(country_circle_radius, by = join_by(&amp;quot;Code&amp;quot;)) %&amp;gt;% 
-  inner_join(., percent_forest_area_2020_pie_charts, by = join_by(&amp;quot;Code&amp;quot;))
-  
-### Create the Dorling cartogram base map
+  left_join(country_circle_radii, by = join_by(&amp;quot;Code&amp;quot;)) %&amp;gt;% 
+  inner_join(., percent_forest_area_2020_pie_charts, by = join_by(&amp;quot;Code&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;div style="height: 2em;"&gt;
+
+&lt;/div&gt;
+&lt;ol start="4" style="list-style-type: decimal"&gt;
+&lt;li&gt;Finally, we added the pie charts to the dorling cartogram using the
+function &lt;code&gt;annotation_custom()&lt;/code&gt;. The radii of the pies were
+multiplied with a scalar (in this example 1.2) so that the pies fit to
+the circles. The function &lt;code&gt;reduce()&lt;/code&gt; allowed us to iterate
+over the rows to add the pie chart of each country based on its centroid
+and radius.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div style="height: -1em;"&gt;
+
+&lt;/div&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Step 4. Add the pie charts to the Dorling cartogram
+# create a Dorling cartogram base map
 p_dorling_cartogram_base_map &amp;lt;- ggplot() + 
   geom_sf(data = world_map_forest_area_2020, fill = &amp;quot;#2ca25f&amp;quot;, color = alpha(&amp;quot;#b2e2e2&amp;quot;, 0.5)) + 
   geom_sf(data = cartogram_dorling, fill = alpha(&amp;quot;#dfc27d&amp;quot;, 0.8), color = alpha(&amp;quot;#a6611a&amp;quot;, 0.8)) +
@@ -271,7 +320,7 @@ p_dorling_cartogram_base_map &amp;lt;- ggplot() +
   theme(plot.background = element_rect(fill = &amp;quot;#045a8d&amp;quot;, color = NA),
         plot.margin = margin(t = 15, b = 15))
 
-### Add the pie charts to the Dorling cartogram
+# iterate over the rows to add the pie chart for each country
 reduce(1:nrow(pie_chart_df), 
        .f = function(x, y){
          x + annotation_custom(grob = pie_chart_df$pie_chart[[y]],
@@ -280,7 +329,7 @@ reduce(1:nrow(pie_chart_df),
                                ymin = pie_chart_df$country_centroid_lat[y] - pie_chart_df$circle_radius[y] * 1.2,
                                ymax = pie_chart_df$country_centroid_lat[y] + pie_chart_df$circle_radius[y] * 1.2)},
        .init = p_dorling_cartogram_base_map)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file72d84fd3430b_files/figure-html/unnamed-chunk-3-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;p&gt;&lt;img src="file27704aa51ab5_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 VOILÀ!&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;Hope you learn something useful from this post and don’t forget to
