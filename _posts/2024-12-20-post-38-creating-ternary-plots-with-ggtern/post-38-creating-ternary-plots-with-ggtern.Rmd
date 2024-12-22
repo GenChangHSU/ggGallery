@@ -125,45 +125,93 @@ The extension package [`ggtern`](https://cran.r-project.org/web/packages/ggtern/
 
 ### 1. Create a basic ternary plot 
 
-First, let's create a super simple ternary plot with just one single point. 
+First, let's create a super simple ternary plot with just a single point. 
 
 `ggtern()` is the master function here: it takes a dataframe with three numeric columns, which are then mapped to the "x", "y", and "z" aesthetic. If the three columns are not proportions but instead raw values, the function will automatically rescale them so that each row sums to 1.
 
-In the example below, I also drew the lines connecting the point to the sides using the function `geom_crosshair_tern()` and added the arrows to the axes to indicate the corresponding variables using the function `theme_arrownormal()`. These will help us better understand what the plot is doing.
+In the example below, I also drew the lines connecting the point to the sides using the function `geom_crosshair_tern()` and added the arrows and labels along the axes using the function `theme_arrownormal()`. These will help us better understand what the plot is doing.
 
 ```{r, fig.width = 5, fig.height = 4}
 library(tidyverse)
 library(ggtern)
 
-### Generate ternary data
-ternary_df <- data.frame(x = 1, y = 2, z = 3)
+### Generate the data
+ternary_df_point <- data.frame(x = 1, y = 2, z = 3)
 
 ### Create a basic ternary plot
-ggtern(data = ternary_df, aes(x = x, y = y, z = z)) +
-  geom_point() + 
-  geom_crosshair_tern() +  # draw the connecting lines
-  theme_arrownormal()  # add the axes arrows
+ggtern(data = ternary_df_point, aes(x = x, y = y, z = z)) +  # the values will be rescaled 
+  geom_point() +
+  geom_crosshair_tern() +  # draw the lines
+  theme_arrownormal()  # add the arrows and labels
 
 ```
 
-If you're new to ternary plots, you may wonder how to read the plot. Well, as indicated by the lines connected to the edges, this point corresponds to an x-value of around 17% (1/6), an y-value of around 33% (2/6), and an z-value of 50% (3/6). 
+If you're new to ternary plots, you may be scratching your head about how to read the plot. Well, it's not that difficult once you understand the principle: as indicated by the lines, the point corresponds to an x-value of around 17% (1/6), a y-value of around 33% (2/6), and a z-value of 50% (3/6). 
 
-For plots that do not show the lines (which are most likely what you'll see in the wild), you can also use the angle of the axis text to tell the corresponding edges.
+For plots that do not have the lines (which are most likely what you'll see in the wild), you can draw mental lines from the point to the sides with the same angle as the numbers. So for example, the numbers on the "x" side have an angle of 120°, so you can draw a line with an angle of 120° from the point to the side and see what the corresponding value is.
 
+### 2. From points to lines
 
-### 2. ternary line charts
+Now that we have a better idea of how ternary plots work, we can take a step further and add . Instead of just showing the individual points, we can actually connect them to create a "ternary line chart". This will be useful for visualizing how compositions change over time.
 
 ```{r, fig.width = 5, fig.height = 4}
-library(tidyverse)
-library(ggtern)
+### Generate the data
+ternary_df_line <- data.frame(x = seq(2, 9, length.out = 10)^2, 
+                              y = seq(9, 2, length.out = 10)^2) %>% 
+  mutate(z = 100 - x - y) %>% 
+  rowid_to_column(var = "time")
 
-
-
+### Create a ternary line chart
+ggtern(data = ternary_df_line, aes(x = x, y = y, z = z)) +
+  geom_point(aes(color = time)) +
+  geom_line(aes(color = time)) +
+  scale_color_viridis_c(breaks = c(1, 10)) + 
+  guides(color = guide_colorbar(reverse = T)) + 
+  theme_arrownormal()
 
 ```
 
+### 3. Contour ternary plot
 
-### 3. Density plot and contour plot
+Next, we'll go from lines to areas by adding density contours to the ternary plot.
+
+Remember I mentioned that one application of ternary plots is to visualize the nutrient composition of food, and this is what we're going to do now.
+
+We'll show the carbs, protein, and fat proportion of different food items at starbucks using the [`starbucks`]() dataset from the package `openintro`.
+
+We can add the contours using the function `stat_density_tern()`. We also used `theme_rgbw()` to color the sides for easier reading. 
+
+
+```{r, fig.width = 5, fig.height = 4}
+library(openintro)  # for the dataset "starbucks"
+
+data("starbucks")
+
+ggtern(data = starbucks,
+       mapping = aes(x = carb, y = protein, z = fat)) +
+  stat_density_tern(geom="polygon",
+                     aes(fill  = after_stat(nlevel),
+                         alpha = after_stat(nlevel)),
+                    binwidth = 0.5) + 
+      stat_density_tern(geom="polygon",
+                      coutour = T,
+                      color = "black",
+                      fill = NA,
+                    binwidth = 5,
+                    size = 0.05) + 
+    geom_point(size = 1, alpha = 0.7) +
+    scale_fill_distiller(name = "Relative density", palette = "Reds", direction = 1,
+                         breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) + 
+  guides(alpha = "none") + 
+    theme_rgbw() + 
+  theme(legend.position = c(1.05, 0.5),
+        legend.title = element_text(hjust = 0.5),
+        plot.margin = margin(r = 70))
+
+```
+Seems like most food at Starbucks is high in carbs and low in protein (not surprising?!).
+
+
 
 
 ### 4. hex plot and tri plot
