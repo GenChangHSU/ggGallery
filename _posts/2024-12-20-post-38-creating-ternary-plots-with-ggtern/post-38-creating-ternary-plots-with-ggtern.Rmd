@@ -123,13 +123,13 @@ I remember I first came across a ternary plot in an Ecology textbook years ago w
 
 The extension package [`ggtern`](https://cran.r-project.org/web/packages/ggtern/index.html) provides a suite of functions for creating ternary plots in ggplot. We'll start from the very basics, gradually add in some variation and complexity, and finally finish by polishing the plot appearance.
 
-### 1. Create a basic ternary plot 
+### 1. Start with a point: basic ternary plot 
 
 First, let's create a super simple ternary plot with just a single point. 
 
 `ggtern()` is the master function here: it takes a dataframe with three numeric columns, which are then mapped to the "x", "y", and "z" aesthetic. If the three columns are not proportions but instead raw values, the function will automatically rescale them so that each row sums to 1.
 
-In the example below, I also drew the lines connecting the point to the sides using the function `geom_crosshair_tern()` and added the arrows and labels along the axes using the function `theme_arrownormal()`. These will help us better understand what the plot is doing.
+In the example below, I drew the lines connecting the point to the sides using the function `geom_crosshair_tern()`. I also colored the axes and gridlines as well as added the arrows and labels using the function `theme_rgbw()`. These will help us better understand what the plot is doing.
 
 ```{r, fig.width = 5, fig.height = 4}
 library(tidyverse)
@@ -141,8 +141,8 @@ ternary_df_point <- data.frame(x = 1, y = 2, z = 3)
 ### Create a basic ternary plot
 ggtern(data = ternary_df_point, aes(x = x, y = y, z = z)) +  # the values will be rescaled 
   geom_point() +
-  geom_crosshair_tern() +  # draw the lines
-  theme_arrownormal()  # add the arrows and labels
+  geom_crosshair_tern() +  # draw the lines connecting the point to the sides
+  theme_rgbw()  # color the axes and gridlines & add the arrows and labels
 
 ```
 
@@ -150,9 +150,9 @@ If you're new to ternary plots, you may be scratching your head about how to rea
 
 For plots that do not have the lines (which are most likely what you'll see in the wild), you can draw mental lines from the point to the sides with the same angle as the numbers. So for example, the numbers on the "x" side have an angle of 120°, so you can draw a line with an angle of 120° from the point to the side and see what the corresponding value is.
 
-### 2. From points to lines
+### 2. From point to line: ternary line chart
 
-Now that we have a better idea of how ternary plots work, we can take a step further and add . Instead of just showing the individual points, we can actually connect them to create a "ternary line chart". This will be useful for visualizing how compositions change over time.
+Now that we have a better idea of how ternary plots work, we can take a step further. Instead of just showing the individual points, we can connect them to create a "ternary line chart". This will be useful for visualizing how composition changes over time.
 
 ```{r, fig.width = 5, fig.height = 4}
 ### Generate the data
@@ -167,63 +167,141 @@ ggtern(data = ternary_df_line, aes(x = x, y = y, z = z)) +
   geom_line(aes(color = time)) +
   scale_color_viridis_c(breaks = c(1, 10)) + 
   guides(color = guide_colorbar(reverse = T)) + 
-  theme_arrownormal()
+  theme_arrownormal()  # add the arrows and labels without colors
 
 ```
 
-### 3. Contour ternary plot
+### 3. From line to area: ternary contour plot
 
-Next, we'll go from lines to areas by adding density contours to the ternary plot.
+Next, we'll go from a line to an area by adding density contours to the ternary plot.
 
-Remember I mentioned that one application of ternary plots is to visualize the nutrient composition of food, and this is what we're going to do now.
+As mentioned in the beginning, one application of ternary plots is visualizing the nutrient composition of food, and this is what we're going to do now. We'll use the `starbucks` dataset from the package `openintro` to visualize the carbs, protein, and fat content of different food items sold at starbucks.
 
-We'll show the carbs, protein, and fat proportion of different food items at starbucks using the [`starbucks`]() dataset from the package `openintro`.
-
-We can add the contours using the function `stat_density_tern()`. We also used `theme_rgbw()` to color the sides for easier reading. 
-
+We can add density contours to the plot using the function `stat_density_tern()` and map the relative density "nlevel" (computed via the 2D kernel density estimation) to the "fill" and "alpha" aesthetics. We can adjust how close the contour lines are (i.e., the "steepness" of the slope) using the argument "binwidth": a larger binwidth produces sparser, smoother contour lines, whereas a smaller binwidth produces denser, more detailed contour lines.
 
 ```{r, fig.width = 5, fig.height = 4}
 library(openintro)  # for the dataset "starbucks"
-
 data("starbucks")
 
-ggtern(data = starbucks,
-       mapping = aes(x = carb, y = protein, z = fat)) +
-  stat_density_tern(geom="polygon",
-                     aes(fill  = after_stat(nlevel),
-                         alpha = after_stat(nlevel)),
-                    binwidth = 0.5) + 
-      stat_density_tern(geom="polygon",
-                      coutour = T,
-                      color = "black",
-                      fill = NA,
+### Create a ternary contour plot
+ggtern(data = starbucks, aes(x = carb, y = protein, z = fat)) +
+  stat_density_tern(geom = "polygon", 
+                    aes(fill = after_stat(nlevel), alpha = after_stat(nlevel)),
+                    binwidth = 0.5) +   # binwidth controls how close the contour lines are
+  stat_density_tern(geom = "polygon",
+                    color = "black", 
+                    fill = NA,
                     binwidth = 5,
-                    size = 0.05) + 
-    geom_point(size = 1, alpha = 0.7) +
-    scale_fill_distiller(name = "Relative density", palette = "Reds", direction = 1,
-                         breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) + 
+                    linewidth = 0.1) + 
+  geom_point(size = 1, alpha = 0.5) + 
+  scale_fill_distiller(name = "Relative density", 
+                       palette = "Reds", 
+                       direction = 1,
+                       breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) + 
   guides(alpha = "none") + 
-    theme_rgbw() + 
+  theme_rgbw() + 
   theme(legend.position = c(1.05, 0.5),
         legend.title = element_text(hjust = 0.5),
         plot.margin = margin(r = 70))
 
 ```
-Seems like most food at Starbucks is high in carbs and low in protein (not surprising?!).
+
+Seems like most Starbucks food is high in carbs and low in protein (not surprising?!).
+
+### 4. From area to bin: ternary tribin and hexbin plot
+
+When there are a ton of data points to show, we can run into the issue of overplotting: the overlapping points will make the plot unreadable. A solution is to divide the plot into triangular or hexagonal bins, count the number of points in each bin, and color the bins accordingly. These are easily done with `geom_tri_tern()` and `geom_hex_tern()`. We can use the argument "bins" to specify the number of bins along the axes.
+
+```{r, fig.width = 5, fig.height = 4}
+### Generate the data
+set.seed(1)
+ternary_df_tri_hex <- data.frame(x = runif(5000), 
+                                 y = runif(5000),
+                                 z = runif(5000))
+
+### Create a ternary tribin plot
+ggtern(data = ternary_df_tri_hex, aes(x = x, y = y, z = z)) +
+  geom_tri_tern(aes(fill = after_stat(count)),
+                bins = 10) +  # number of bins along the axes
+  scale_fill_viridis_c()
+
+```
+
+```{r, fig.width = 5, fig.height = 4}
+### Create a ternary hexbin plot
+ggtern(data = ternary_df_tri_hex, aes(x = x, y = y, z = z)) +
+  geom_hex_tern(aes(fill = after_stat(count)),
+                bins = 20) + 
+  scale_fill_viridis_c()
+
+```
+
+### 5. Ternary interpolation plot
+
+One more cool thing we can do is creating a ternary interpolation plot. We'll first create a grid of points evenly distributed across the plot area, each associated with a value ("height"). We can then use `geom_interpolate_tern()` to perform interpolation on these data points and plot the interpolated values as contour lines. The "breaks" argument allows us to specify the interpolated values at which the contour lines are drawn.
+
+```{r, fig.width = 5, fig.height = 4}
+### Generate the data
+ternary_df_interpolation <- expand_grid(x = seq(0, 100, 10),
+                                        y = seq(0, 100, 10)) %>% 
+  mutate(z = 100 - x - y) %>% 
+  filter(z >= 0) %>% 
+  mutate(height = x * y - 0.05 * z)
+
+### Create a ternary interpolation plot
+library(tidyterra)  # for the function "scale_color_hypso_c()"
+
+ggtern(data = ternary_df_interpolation, aes(x = x, y = y, z = z, value = height)) +
+  geom_interpolate_tern(aes(color = after_stat(level)),
+                        base = "identity",
+                        breaks = seq(1, 3000, length.out = 30),  # the interpolated values to draw contour lines
+                        size = 2) +
+  geom_point(aes(color = height)) + 
+  scale_color_hypso_c(name = "Height", palette = "dem_screen", limits = c(0, 3000)) +
+  theme_bw()
+
+```
+
+### 6. Polish the plot: appearance, axis, labels, and annotations
+
+```{r, fig.width = 5, fig.height = 4}
+### The original ternary interpolation plot
+p_ternary_interpolation_original <- ggtern(data = ternary_df_interpolation, aes(x = x, y = y, z = z, value = height)) +
+  geom_interpolate_tern(aes(color = after_stat(level)),
+                        base = "identity",
+                        breaks = seq(1, 3000, length.out = 30),
+                        size = 2) +
+  geom_point(aes(color = height)) + 
+  scale_color_hypso_c(name = "Height", palette = "dem_screen", limits = c(0, 3000)) +
+  theme_bw()
+
+### The polished ternary interpolation plot
+p_ternary_interpolation_polished <- p_ternary_interpolation_original + 
+
+
+  scale_L_continuous(breaks = 0:5 / 5, labels = 0:5/ 5, name = "L") +
+  scale_R_continuous(breaks = 0:5 / 5, labels = 0:5/ 5) +
+  scale_T_continuous(breaks = 0:5 / 5, labels = 0:5/ 5) +
+  labs(title = "Example Density/Contour Plot") +
+  guides(fill = guide_colorbar(order = 1), alpha = guide_none()) +
+  theme_bw() +
+  theme_noarrows() +
+  theme(legend.justification = c(0, 1), 
+        legend.position      = c(0, 1),
+        tern.axis.text.L = element_text(angle = 60),
+        tern.axis.title.L = element_text(color= "red"))
+
+
+
+p_ternary_interpolation_polished
 
 
 
 
-### 4. hex plot and tri plot
 
 
 
-### 5. Interpolation of z values
-
-
-
-### 6. Adjust the appearance and axis and annotations
-
+```
 
 
 
