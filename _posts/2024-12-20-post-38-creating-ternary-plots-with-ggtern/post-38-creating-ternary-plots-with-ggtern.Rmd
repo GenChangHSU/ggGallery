@@ -112,11 +112,11 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-Welcome to the end-of-year post! Really glad to conclude 2024 with this one!
+Welcome to the end-of-year post! Really stoked to conclude 2024 with ternary plots!
 
-You may (or may not) have heard of it, a [ternary plot](https://en.wikipedia.org/wiki/Ternary_plot#) is a type of plot that displays the relative proportions of three variables in an equilateral triangle. It's a more specialized plot type and certainly not the one you'll see in everyday life, but it can be quite handy when it comes to visualizing compositional data, for example, the carbohydrates, protein, and fat composition of food items.
+You may (or may not) have seen it, a [ternary plot](https://en.wikipedia.org/wiki/Ternary_plot#) is a type of plot that displays the relative proportions of three variables in an equilateral triangle. It's a more specialized plot type and certainly not the one you'll encounter in everyday life, but it can be quite handy when it comes to visualizing compositional data, for example, the carbohydrates, protein, and fat composition of food items.
 
-I remember I first came across a ternary plot in an Ecology textbook years ago when I was learning the classic [Grime's CRS Triangle](https://meristemhorticulture.com/planted/tag/Grime%27s+triangle) for depicting three major plant life strategies (competitor, stress-tolerator, and ruderal) under different stress, resource, and disturbance regimes. I was really fascinated with it, but I didn't know how to make one myself back then. Now I know, and I thought it would be fun (and useful too!) to write a post on creating ternary plots in ggplot. So let's dive in!
+I remember I first came across a ternary plot in an Ecology textbook years ago when I was learning the classic [Grime's CSR Triangle](https://meristemhorticulture.com/planted/tag/Grime%27s+triangle) for depicting three major plant life strategies (competitor, stress-tolerator, and ruderal) under different stress, resource, and disturbance regimes. I was really fascinated with this kind of plot, but I didn't know how to make it back then. Now I know, and I think it would be fun (and useful too!) to write a post on creating ternary plots in ggplot. So here it is!
 
 ## Ternary plots with `ggtern`
 
@@ -126,7 +126,7 @@ The extension package [`ggtern`](https://cran.r-project.org/web/packages/ggtern/
 
 First, let's create a super simple ternary plot with just a single point. 
 
-`ggtern()` is the master function here: it takes a dataframe with three numeric columns, which are then mapped to the "x", "y", and "z" aesthetic. If the three columns are not proportions but instead raw values, the function will automatically rescale them so that each row sums to 1.
+`ggtern()` is the master function here: it takes a dataframe with three numeric columns, which are then mapped to the "x", "y", and "z" aesthetics. If the three columns are not proportions but instead raw values, the function will automatically rescale them so that each row sums to 1.
 
 In the example below, I drew the lines connecting the point to the sides using the function `geom_crosshair_tern()`. I also colored the axes and gridlines as well as added the arrows and labels using the function `theme_rgbw()`. These will help us better understand what the plot is doing.
 
@@ -147,11 +147,11 @@ ggtern(data = ternary_df_point, aes(x = x, y = y, z = z)) +  # the values will b
 
 If you're new to ternary plots, you may be scratching your head about how to read the plot. Well, it's not that difficult once you understand the principle: as indicated by the lines, the point corresponds to an x-value of around 17% (1/6), a y-value of around 33% (2/6), and a z-value of 50% (3/6). 
 
-For plots that do not have the lines (which are most likely what you'll see in the wild), you can draw mental lines from the point to the sides with the same angle as the numbers. So for example, the numbers on the "x" side have an angle of 120°, so you can draw a line with an angle of 120° from the point to the side and see what the corresponding value is.
+For plots that do not have the lines (which are most likely what you'll see in the wild), you can draw mental lines from the point to the sides with the same angle as the numbers. So for example, the numbers on the "x" side have an angle of 120°, so you can draw a line with an angle of 120° from the point to that side and see what the corresponding value is.
 
 ### 2. From point to line: ternary line chart
 
-Now that we have a better idea of how ternary plots work, we can take a step further. Instead of just showing the individual points, we can connect them to create a "ternary line chart". This will be useful for visualizing how composition changes over time.
+Now that we have a better idea of how ternary plots work, we can take a step further. Instead of just showing individual points, we can connect them to create a "ternary line chart". This will be useful for visualizing how composition changes over time.
 
 ```{r, fig.width = 5, fig.height = 4}
 ### Generate the data
@@ -174,7 +174,7 @@ ggtern(data = ternary_df_line, aes(x = x, y = y, z = z)) +
 
 Next, we'll go from a line to an area by adding density contours to the ternary plot.
 
-As mentioned in the beginning, one application of ternary plots is visualizing the nutrient composition of food, and this is what we're going to do now. We'll use the `starbucks` dataset from the package `openintro` to visualize the carbs, protein, and fat content of different food items sold at starbucks.
+As mentioned in the beginning, one application of ternary plots is visualizing the nutrient composition of food, and this is what we're going to do now. We'll use the `starbucks` dataset from the package `openintro` to visualize the carbs, protein, and fat content of different food items sold at Starbucks.
 
 We can add density contours to the plot using the function `stat_density_tern()` and map the relative density "nlevel" (computed via the 2D kernel density estimation) to the "fill" and "alpha" aesthetics. We can adjust how close the contour lines are (i.e., the "steepness" of the slope) using the argument "binwidth": a larger binwidth produces sparser, smoother contour lines, whereas a smaller binwidth produces denser, more detailed contour lines.
 
@@ -315,7 +315,7 @@ p_ternary_interpolation_polished
 
 In this post, we created a wide variety of ternary plots, including a basic ternary plot, a ternary line chart, a ternary contour plot, a ternary tribin/hexbin plot, and a ternary interpolation plot. In the end, we also learned how to customize the appearance of axis labels and add annotations. 
 
-To be perfectly honest with you, I've never used ternary plots in my research and presentation in the past, not because I didn't want to use them, but because I didn't really get the chance to use them. That said, I believe I'll encounter compositional data in the future, and by that time I'll certainly make some nice-looking ternary plots. I think you should keep it in your data viz toolbox too!
+To be perfectly honest with you, I've never used ternary plots in my research and presentation in the past, not because I didn't want to use them, but because I didn't really get the chance to use them. That said, I believe I'll encounter compositional data in the future, and by that time I'll certainly make some nice-looking ternary plots. I think you should keep these plots in your data viz toolbox too!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 

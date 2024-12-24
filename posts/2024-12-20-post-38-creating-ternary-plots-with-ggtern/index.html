@@ -95,8 +95,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <link rel="canonical" href="https://genchanghsu.github.io/ggGallery/posts/2024-12-20-post-38-creating-ternary-plots-with-ggtern/"/>
 
 <!--  https://schema.org/Article -->
-<meta property="article:published" itemprop="datePublished" content="2024-12-20"/>
-<meta property="article:created" itemprop="dateCreated" content="2024-12-20"/>
+<meta property="article:published" itemprop="datePublished" content="2024-12-24"/>
+<meta property="article:created" itemprop="dateCreated" content="2024-12-24"/>
 <meta name="article:author" content="Gen-Chang Hsu"/>
 
 <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
@@ -123,7 +123,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Post #38. Creating ternary plots with `ggtern`"]},{"type":"character","attributes":{},"value":["Come and learn some useful tips for creating ternary plots in ggplot!"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2024-12-20"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2024"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post38.png"]},{"type":"character","attributes":{},"value":["https://genchanghsu.github.io/ggGallery/posts/2024-12-20-post-38-creating-ternary-plots-with-ggtern/"]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Post #38. Creating ternary plots with `ggtern`"]},{"type":"character","attributes":{},"value":["Come and learn some useful tips for creating ternary plots in ggplot!"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2024-12-24"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2024"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post38.png"]},{"type":"character","attributes":{},"value":["https://genchanghsu.github.io/ggGallery/posts/2024-12-20-post-38-creating-ternary-plots-with-ggtern/"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -2630,7 +2630,7 @@ d-appendix d-footnote-list a.footnote-backlink {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #38. Creating ternary plots with `ggtern`","description":"Come and learn some useful tips for creating ternary plots in ggplot!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2024-12-20T00:00:00.000-05:00","citationText":"Hsu, 2024"}
+{"title":"Post #38. Creating ternary plots with `ggtern`","description":"Come and learn some useful tips for creating ternary plots in ggplot!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2024-12-24T00:00:00.000-05:00","citationText":"Hsu, 2024"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2670,7 +2670,7 @@ d-appendix d-footnote-list a.footnote-backlink {
 <div class="d-byline">
   Gen-Chang Hsu  
   
-<br/>2024-12-20
+<br/>2024-12-24
 </div>
 
 <div class="d-article">
@@ -2760,14 +2760,14 @@ div.l-body img {
 </head>
 <!-- Start of the article -->
 <h2 id="introduction">Introduction</h2>
-<p>Welcome to the end-of-year post! Really glad to conclude 2024 with this one!</p>
-<p>You may (or may not) have heard of it, a <a href="https://en.wikipedia.org/wiki/Ternary_plot#">ternary plot</a> is a type of plot that displays the relative proportions of three variables in an equilateral triangle. It’s a more specialized plot type and certainly not the one you’ll see in everyday life, but it can be quite handy when it comes to visualizing compositional data, for example, the carbohydrates, protein, and fat composition of food items.</p>
-<p>I remember I first came across a ternary plot in an Ecology textbook years ago when I was learning the classic <a href="https://meristemhorticulture.com/planted/tag/Grime%27s+triangle">Grime’s CRS Triangle</a> for depicting three major plant life strategies (competitor, stress-tolerator, and ruderal) under different stress, resource, and disturbance regimes. I was really fascinated with it, but I didn’t know how to make one myself back then. Now I know, and I thought it would be fun (and useful too!) to write a post on creating ternary plots in ggplot. So let’s dive in!</p>
+<p>Welcome to the end-of-year post! Really stoked to conclude 2024 with ternary plots!</p>
+<p>You may (or may not) have seen it, a <a href="https://en.wikipedia.org/wiki/Ternary_plot#">ternary plot</a> is a type of plot that displays the relative proportions of three variables in an equilateral triangle. It’s a more specialized plot type and certainly not the one you’ll encounter in everyday life, but it can be quite handy when it comes to visualizing compositional data, for example, the carbohydrates, protein, and fat composition of food items.</p>
+<p>I remember I first came across a ternary plot in an Ecology textbook years ago when I was learning the classic <a href="https://meristemhorticulture.com/planted/tag/Grime%27s+triangle">Grime’s CSR Triangle</a> for depicting three major plant life strategies (competitor, stress-tolerator, and ruderal) under different stress, resource, and disturbance regimes. I was really fascinated with this kind of plot, but I didn’t know how to make it back then. Now I know, and I think it would be fun (and useful too!) to write a post on creating ternary plots in ggplot. So here it is!</p>
 <h2 id="ternary-plots-with-ggtern">Ternary plots with <code>ggtern</code></h2>
 <p>The extension package <a href="https://cran.r-project.org/web/packages/ggtern/index.html"><code>ggtern</code></a> provides a suite of functions for creating ternary plots in ggplot. We’ll start from the very basics, gradually add in some variation and complexity, and finally finish by polishing the plot appearance.</p>
 <h3 id="start-with-a-point-basic-ternary-plot">1. Start with a point: basic ternary plot</h3>
 <p>First, let’s create a super simple ternary plot with just a single point.</p>
-<p><code>ggtern()</code> is the master function here: it takes a dataframe with three numeric columns, which are then mapped to the “x”, “y”, and “z” aesthetic. If the three columns are not proportions but instead raw values, the function will automatically rescale them so that each row sums to 1.</p>
+<p><code>ggtern()</code> is the master function here: it takes a dataframe with three numeric columns, which are then mapped to the “x”, “y”, and “z” aesthetics. If the three columns are not proportions but instead raw values, the function will automatically rescale them so that each row sums to 1.</p>
 <p>In the example below, I drew the lines connecting the point to the sides using the function <code>geom_crosshair_tern()</code>. I also colored the axes and gridlines as well as added the arrows and labels using the function <code>theme_rgbw()</code>. These will help us better understand what the plot is doing.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2786,9 +2786,9 @@ div.l-body img {
 <p><img src="post-38-creating-ternary-plots-with-ggtern_files/figure-html5/unnamed-chunk-1-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 <p>If you’re new to ternary plots, you may be scratching your head about how to read the plot. Well, it’s not that difficult once you understand the principle: as indicated by the lines, the point corresponds to an x-value of around 17% (1/6), a y-value of around 33% (2/6), and a z-value of 50% (3/6).</p>
-<p>For plots that do not have the lines (which are most likely what you’ll see in the wild), you can draw mental lines from the point to the sides with the same angle as the numbers. So for example, the numbers on the “x” side have an angle of 120°, so you can draw a line with an angle of 120° from the point to the side and see what the corresponding value is.</p>
+<p>For plots that do not have the lines (which are most likely what you’ll see in the wild), you can draw mental lines from the point to the sides with the same angle as the numbers. So for example, the numbers on the “x” side have an angle of 120°, so you can draw a line with an angle of 120° from the point to that side and see what the corresponding value is.</p>
 <h3 id="from-point-to-line-ternary-line-chart">2. From point to line: ternary line chart</h3>
-<p>Now that we have a better idea of how ternary plots work, we can take a step further. Instead of just showing the individual points, we can connect them to create a “ternary line chart”. This will be useful for visualizing how composition changes over time.</p>
+<p>Now that we have a better idea of how ternary plots work, we can take a step further. Instead of just showing individual points, we can connect them to create a “ternary line chart”. This will be useful for visualizing how composition changes over time.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Generate the data</span></span>
@@ -2809,7 +2809,7 @@ div.l-body img {
 </div>
 <h3 id="from-line-to-area-ternary-contour-plot">3. From line to area: ternary contour plot</h3>
 <p>Next, we’ll go from a line to an area by adding density contours to the ternary plot.</p>
-<p>As mentioned in the beginning, one application of ternary plots is visualizing the nutrient composition of food, and this is what we’re going to do now. We’ll use the <code>starbucks</code> dataset from the package <code>openintro</code> to visualize the carbs, protein, and fat content of different food items sold at starbucks.</p>
+<p>As mentioned in the beginning, one application of ternary plots is visualizing the nutrient composition of food, and this is what we’re going to do now. We’ll use the <code>starbucks</code> dataset from the package <code>openintro</code> to visualize the carbs, protein, and fat content of different food items sold at Starbucks.</p>
 <p>We can add density contours to the plot using the function <code>stat_density_tern()</code> and map the relative density “nlevel” (computed via the 2D kernel density estimation) to the “fill” and “alpha” aesthetics. We can adjust how close the contour lines are (i.e., the “steepness” of the slope) using the argument “binwidth”: a larger binwidth produces sparser, smoother contour lines, whereas a smaller binwidth produces denser, more detailed contour lines.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2944,7 +2944,7 @@ div.l-body img {
 </div>
 <h2 id="summary">Summary</h2>
 <p>In this post, we created a wide variety of ternary plots, including a basic ternary plot, a ternary line chart, a ternary contour plot, a ternary tribin/hexbin plot, and a ternary interpolation plot. In the end, we also learned how to customize the appearance of axis labels and add annotations.</p>
-<p>To be perfectly honest with you, I’ve never used ternary plots in my research and presentation in the past, not because I didn’t want to use them, but because I didn’t really get the chance to use them. That said, I believe I’ll encounter compositional data in the future, and by that time I’ll certainly make some nice-looking ternary plots. I think you should keep it in your data viz toolbox too!</p>
+<p>To be perfectly honest with you, I’ve never used ternary plots in my research and presentation in the past, not because I didn’t want to use them, but because I didn’t really get the chance to use them. That said, I believe I’ll encounter compositional data in the future, and by that time I’ll certainly make some nice-looking ternary plots. I think you should keep these plots in your data viz toolbox too!</p>
 <p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
