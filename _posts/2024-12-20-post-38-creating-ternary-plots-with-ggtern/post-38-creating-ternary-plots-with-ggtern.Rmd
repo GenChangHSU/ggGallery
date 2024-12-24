@@ -4,14 +4,13 @@ description: |
   Come and learn some useful tips for creating ternary plots in ggplot!
 author:
   - name: Gen-Chang Hsu
-date: 2024-12-20
+date: 2024-12-24
 output:
   distill::distill_article:
     self_contained: false
 categories:
   - "2024"
 preview: ../../homepage_images/Post38.png
-draft: true
 ---
 
 <!-- Webpage style -->
@@ -258,11 +257,14 @@ ggtern(data = ternary_df_interpolation, aes(x = x, y = y, z = z, value = height)
                         size = 2) +
   geom_point(aes(color = height)) + 
   scale_color_hypso_c(name = "Height", palette = "dem_screen", limits = c(0, 3000)) +
-  theme_bw()
+  theme_bw() + 
+  theme(legend.position = c(0.08, 0.7))
 
 ```
 
-### 6. Polish the plot: appearance, axis, labels, and annotations
+### 6. Polish the plot: axis labels and annotations
+
+To wrap things up, we'll give the above ternary interpolation plot a finishing touch by adjusting the axis labels and adding some annotations:
 
 ```{r, fig.width = 5, fig.height = 4}
 ### The original ternary interpolation plot
@@ -273,48 +275,48 @@ p_ternary_interpolation_original <- ggtern(data = ternary_df_interpolation, aes(
                         size = 2) +
   geom_point(aes(color = height)) + 
   scale_color_hypso_c(name = "Height", palette = "dem_screen", limits = c(0, 3000)) +
-  theme_bw()
+  theme_bw() + 
+  theme(legend.position = c(0.08, 0.7))
 
 ### The polished ternary interpolation plot
 p_ternary_interpolation_polished <- p_ternary_interpolation_original + 
-
-
-  scale_L_continuous(breaks = 0:5 / 5, labels = 0:5/ 5, name = "L") +
-  scale_R_continuous(breaks = 0:5 / 5, labels = 0:5/ 5) +
-  scale_T_continuous(breaks = 0:5 / 5, labels = 0:5/ 5) +
-  labs(title = "Example Density/Contour Plot") +
-  guides(fill = guide_colorbar(order = 1), alpha = guide_none()) +
-  theme_bw() +
-  theme_noarrows() +
-  theme(legend.justification = c(0, 1), 
-        legend.position      = c(0, 1),
-        tern.axis.text.L = element_text(angle = 60),
-        tern.axis.title.L = element_text(color= "red"))
-
-
+  
+  # axis label text
+  scale_L_continuous(name = "X-axis",  # L for "left" axis label (i.e., x-axis)
+                     breaks = seq(0, 1, 0.2),  
+                     labels = seq(0, 1, 0.2)) +  
+  scale_T_continuous(name = "Y-axis",  # T for "top" axis label (i.e., y-axis)
+                     breaks = seq(0, 1, 0.2),  
+                     labels = seq(0, 1, 0.2)) +  
+  scale_R_continuous(name = "Z-axis",  # R for "right" axis label (i.e., z-axis)
+                     breaks = seq(0, 1, 0.2),
+                     labels = seq(0, 1, 0.2)) + 
+  
+  # axis label appearance
+  theme(tern.axis.title.L = element_text(vjust = -2.25, hjust = -3.5, angle = 60),
+        tern.axis.text.L = element_text(color = "black"),
+        tern.axis.title.T = element_text(vjust = -1.5, hjust = -3.5, angle = 300),
+        tern.axis.text.T = element_text(color = "black"),
+        tern.axis.title.R = element_text(vjust = 2.5, hjust = 4.75, angle = 0),
+        tern.axis.text.R = element_text(color = "black")) + 
+  
+  # annotations
+  annotate(geom = "point", x = 0.5, y = 0.5, z = 0, shape = 17, size = 5, color = "brown") + 
+  annotate(geom = "curve", x = 0.5, y = 0.45, z = 0.05, xend = 0.45, yend = 0.35, zend = 0.2,
+           arrow = arrow(length = unit(0.03, "npc")), color = "brown") + 
+  annotate(geom = "text", x = 0.45, y = 0.35, z = 0.2, 
+           label = "Peak", size = 4, color = "brown", hjust = -0.1)
 
 p_ternary_interpolation_polished
 
-
-
-
-
-
-
 ```
-
-
-
-
-
-
-
-
-
-
-
 
 ## Summary
 
+In this post, we created a wide variety of ternary plots, including a basic ternary plot, a ternary line chart, a ternary contour plot, a ternary tribin/hexbin plot, and a ternary interpolation plot. In the end, we also learned how to customize the appearance of axis labels and add annotations. 
+
+To be perfectly honest with you, I've never used ternary plots in my research and presentation in the past, not because I didn't want to use them, but because I didn't really get the chance to use them. That said, I believe I'll encounter compositional data in the future, and by that time I'll certainly make some nice-looking ternary plots. I think you should keep it in your data viz toolbox too!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
+
