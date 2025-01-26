@@ -1,0 +1,154 @@
+---
+title: "Post #39. Lay them out—arranging multiple ggplots with `patchwork`"
+description: |
+  In this post, you will learn all the nuts and bolts of arranging multiple ggplots with the package `patchwork`!
+author:
+  - name: Gen-Chang Hsu
+date: 2025-01-24
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2025"
+preview: ../../homepage_images/Post39.png
+draft: True
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+  color: #2780e3 !important;
+  border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+  border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 30% !important;
+}
+
+</style>
+
+<head>
+  <base target="_blank">
+</head>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+Welcome to the first post of 2025! I'm going to kick this year off with a handy post: arranging multiple ggplots!
+
+Oftentimes, we have multiple related plots and we would like to combine them into one single figure. The traditional way to do it is to save the individual plots and manually merge them in other software programs like PowerPoint. This method can be convenient; however, it is not reproducible and we will need to redo everything again if we change the component plots. A more "modern" way is to merge the plots in R and output them as a single figure. If you do it in this way, then the next time when you modify your component plots, the final figure will be automatically updated. Also, you can avoid the hassle of aligning the plots or adjusting the aspect ratios, and you will always get the exact same output.
+
+There are several extension packages that can arrange multiple ggplots. In fact, I've written a [post](https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/) on this topic a few years ago. In that post, I introduced two packages `ggpubr` and `cowplot`. These two packages provide basic functionality for plot arrangements, but in this follow-up post I will dive deeper into a much more powerful package [`patchwork`](https://patchwork.data-imaginist.com/index.html). Thanks to this awesome package, arranging multiple ggplots has become easier than ever, especially when we want to make complex multipanel figures!
+
+Get some ggplots on hand? Buckle up and we're ready to lay them out!
+
+## Arranging multiple ggplots with `patchwork`
+
+`patchwork` offers a wide variety of functions for arranging and polishing multipanel figures. In the following sections, I'll walk you through them and show you some examples.
+
+### 1. 
+
+
+
+```{r, fig.width = 5, fig.height = 4}
+library(tidyverse)
+library(patchwork)
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+## Summary
+
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
