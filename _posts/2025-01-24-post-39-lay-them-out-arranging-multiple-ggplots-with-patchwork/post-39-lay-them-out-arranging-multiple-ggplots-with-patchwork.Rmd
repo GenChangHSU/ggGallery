@@ -125,17 +125,60 @@ Get some ggplots on hand? Buckle up and we're ready to lay them out!
 
 `patchwork` offers a wide variety of functions for arranging and polishing multipanel figures. In the following sections, I'll walk you through them and show you some examples.
 
-### 1. 
+### 1. Plot layout
 
-
+Let's start by creating some example plots:
 
 ```{r, fig.width = 5, fig.height = 4}
 library(tidyverse)
 library(patchwork)
 
+### Create some example plots
+p1 <- ggplot(iris) + 
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width))
 
+p2 <- ggplot(iris) + 
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species))
+
+p3 <- ggplot(iris) + 
+  geom_boxplot(aes(x = Species, y = Sepal.Length))
+
+p4 <- ggplot(iris) + 
+  geom_boxplot(aes(x = Species, y = Sepal.Length, fill = Species))
+```
+
+The simplest way to combine these plots is using "`+`": this results in "plot packing" where the plots are arranged in a grid-like fashion and the function will make the figure as close to a square as possible.
+
+```{r, fig.width = 5.5, fig.height = 4}
+### Plot packing
+p1 + p2 + p3 + p4
 
 ```
+
+Besides "`+`", we can use "`|`" to stack the plots horizontally and "`/`" to stack the plots vertically.
+
+```{r, fig.width = 9, fig.height = 2}
+### Horizontal stacking
+p1 | p2 | p3 | p4
+```
+
+```{r, fig.width = 3, fig.height = 6}
+### Vertical stacking
+p1 / p2 / p3 / p4
+
+```
+
+When we have a mix of "`+`", "`|`", and "`/`", we can use parentheses to indicate precedence. For example, compare the following figures
+
+```{r, fig.width = 6, fig.height = 4}
+p1 / p2 | p3 | p4
+(p1 / p2) | (p3 | p4)
+p1 / (p2 | p3 | p4)
+
+```
+
+
+
 
 
 
