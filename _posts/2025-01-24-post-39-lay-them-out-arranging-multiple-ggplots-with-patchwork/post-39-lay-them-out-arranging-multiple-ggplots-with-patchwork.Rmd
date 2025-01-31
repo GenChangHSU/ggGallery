@@ -184,7 +184,7 @@ p1 / (p2 | p3) + p4
 
 In the first default specification, p3 and p4 are packed first, then p1 and p2 are stacked vertically, and finally these two composite plots are stacked horizontally to produce the final figure. In the second specification, p2 and p3 are stacked horizontally first, then the composite plot is packed with p4, and finally it is vertically stacked with p1.
 
-Sometimes, we have a set of ggplots we would like to arrange and they are stored in a list. We can simply pass the entire list to the function `wrap_plot()`, which will pack all the plots in the list. This is essentially the same as "p1 + p2 + ... + pn", but it saves us the time of having to pull the individual plots out and add "`+`" between them.
+Sometimes, we have a list of ggplots to arrange. We can simply pass the list to the function `wrap_plot()`, which will pack all the plots in the list. This is essentially the same as "p1 + p2 + ... + pn", but it saves us the time of having to pull the individual plots out and add "`+`" between them.
 
 ```{r, fig.width = 6, fig.height = 4}
 ### A list of ggplots
@@ -194,14 +194,40 @@ p_list <- list(p1, p2, p3, p4)
 wrap_plots(p_list)
 
 ```
+Now that we know the basics, let's take a step further and change the layout design using `plot_layout()`, where we can specify the number of rows/columns and their relative heights/widths. Moreover, we can create extra white space by adding empty plots using `plot_spacer()`:
 
+```{r, fig.width = 6, fig.height = 4}
+### Change the layout design and add empty plots
+p1 + plot_spacer() + p2 + p3 + p4 + plot_layout(ncol = 2, widths = c(2, 1))
 
+```
+Another way to specify the layout design is to use a matrix with letters denoting different panels:
 
+```{r, fig.width = 7, fig.height = 4}
+### Create a layout matrix
+layout <- "
+#AA##CC#
+BBBBDDDD
+BBBBDDDD
+"
 
+p1 + p2 + p3 + p4 + plot_layout(design = layout)
 
+```
 
+Yet another way to specify the layout design is to use a matrix with letters denoting different panels:
 
+```{r, fig.width = 7, fig.height = 4}
+# layout using coordinates
+layout <- c(
+  area(t = 1, l = 1, b = 10, r = 6),
+  area(t = 3, l = 7, b = 8, r = 8),
+  area(t = 5, l = 9, b = 6, r = 9.5)
+)
+p1 + p2 + p3 + 
+  plot_layout(design = layout)
 
+```
 
 
 
