@@ -168,7 +168,7 @@ p1 / p2 / p3 / p4
 
 ```
 
-When we have a mix of "`+`", "`|`", and "`/`", "`+`" goes first, then "`/`", and finally "`/`". If we want to change the precedence, we can use parentheses. Compared the following two figures:
+When we have a mix of "`+`", "`|`", and "`/`", "`+`" goes first, then "`/`", and finally "`|`". If we want to change the precedence, we can use parentheses. Compared the following two figures:
 
 ```{r, fig.width = 7, fig.height = 3}
 ### Default precedence
@@ -184,7 +184,7 @@ p1 / (p2 | p3) + p4
 
 In the first default specification, p3 and p4 are packed first, then p1 and p2 are stacked vertically, and finally these two composite plots are stacked horizontally to produce the final figure. In the second specification, p2 and p3 are stacked horizontally first, then the composite plot is packed with p4, and finally it is vertically stacked with p1.
 
-Sometimes, we have a list of ggplots to arrange. We can simply pass the list to the function `wrap_plot()`, which will pack all the plots in the list. This is essentially the same as "p1 + p2 + ... + pn", but it saves us the time of having to pull the individual plots out and add "`+`" between them.
+Sometimes, we have multiple ggplots stored in a list. We can simply pass the list to the function `wrap_plot()`, which will pack all the plots in the list. This is essentially the same as "p1 + p2 + ... + pn", but it saves us the time of having to pull the individual plots out and add "`+`" between them.
 
 ```{r, fig.width = 6, fig.height = 4}
 ### A list of ggplots
@@ -194,7 +194,7 @@ p_list <- list(p1, p2, p3, p4)
 wrap_plots(p_list)
 
 ```
-Now that we know the basics, let's take a step further and change the layout design using `plot_layout()`, where we can specify the number of rows/columns and their relative heights/widths. Moreover, we can create extra white space by adding empty plots using `plot_spacer()`:
+Now that we know the basics, let's take a step further to change the layout design using `plot_layout()`, where we can specify the number of rows/columns and their relative heights/widths. Moreover, we can create extra white space by adding empty plots using `plot_spacer()`:
 
 ```{r, fig.width = 6, fig.height = 4}
 ### Change the layout design and add empty plots
@@ -205,27 +205,52 @@ Another way to specify the layout design is to use a matrix with letters denotin
 
 ```{r, fig.width = 7, fig.height = 4}
 ### Create a layout matrix
-layout <- "
+layout_matrix <- "
 #AA##CC#
 BBBBDDDD
 BBBBDDDD
 "
 
-p1 + p2 + p3 + p4 + plot_layout(design = layout)
+p1 + p2 + p3 + p4 + plot_layout(design = layout_matrix)
 
 ```
 
-Yet another way to specify the layout design is to use a matrix with letters denoting different panels:
+Yet another way to specify the layout design is create a set of coordinates for the panels using `area()`:
 
 ```{r, fig.width = 7, fig.height = 4}
-# layout using coordinates
-layout <- c(
-  area(t = 1, l = 1, b = 10, r = 6),
-  area(t = 3, l = 7, b = 8, r = 8),
-  area(t = 5, l = 9, b = 6, r = 9.5)
-)
-p1 + p2 + p3 + 
-  plot_layout(design = layout)
+### Create a set of coordinates for the panels
+layout_coord <- c(area(t = 1, b = 7, l = 1, r = 7),
+                  area(t = 2, b = 6, l = 8, r = 12),
+                  area(t = 3, b = 5, l = 13, r = 15))
+
+p1 + p2 + p3 + plot_layout(design = layout_coord)
+
+```
+
+Phew, that's a lot! We're done with plot layout, and next we'll move on to our second topic: plot alignment.
+
+### Plot alignment
+
+Plots are aligned by their panel borders by default, but can use free() to change the alignment
+
+```{r, fig.width = 5, fig.height = 4}
+# layout design
+p1 + p2 + p3 + p4 + plot_layout(ncol = 2, widths = c(2, 1))
+
+# un-align the whole panel
+free(p3) + p2 + p1 + p4 + p4 + p1 + p2
+p3 + p2 + p1 + p4 + p4 + p1 + p2
+
+p3_very_precise <- p3 +
+  scale_y_continuous(labels = \(x) format(as.numeric(x), nsmall = 10))
+
+p1 / p3_very_precise
+p1 / free(p3_very_precise)
+p1 / free(p3_very_precise, side = "l")
+p1 / free(p3_very_precise, side = "r")
+free(p1, type = "label") / p3_very_precise
+plot_spacer() + free(p3_very_precise, type = "space", side = "l") +
+  p1 + p2
 
 ```
 
