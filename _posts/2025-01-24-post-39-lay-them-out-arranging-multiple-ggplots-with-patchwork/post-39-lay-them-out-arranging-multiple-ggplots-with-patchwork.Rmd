@@ -231,26 +231,47 @@ Phew, that's a lot! We're done with plot layout, and next we'll move on to our s
 
 ### Plot alignment
 
-Plots are aligned by their panel borders by default, but can use free() to change the alignment
+A neat thing about `patchwork` is that the plots are automatically aligned by their panel borders:
 
 ```{r, fig.width = 5, fig.height = 4}
-# layout design
-p1 + p2 + p3 + p4 + plot_layout(ncol = 2, widths = c(2, 1))
+### Default alignment by panel border
+p1 / p2 / p3  # the legend of p2 takes extra space
 
-# un-align the whole panel
-free(p3) + p2 + p1 + p4 + p4 + p1 + p2
-p3 + p2 + p1 + p4 + p4 + p1 + p2
+```
 
-p3_very_precise <- p3 +
-  scale_y_continuous(labels = \(x) format(as.numeric(x), nsmall = 10))
+However, this default behavior can sometimes be a bit troublesome, especially when some plots have legends (like the one above) and long axis text. To this end, we can use the function `free()` to "free" the plots from the alignment constraints. There are three ways to realign the plots:
 
-p1 / p3_very_precise
-p1 / free(p3_very_precise)
-p1 / free(p3_very_precise, side = "l")
-p1 / free(p3_very_precise, side = "r")
-free(p1, type = "label") / p3_very_precise
-plot_spacer() + free(p3_very_precise, type = "space", side = "l") +
-  p1 + p2
+1. Free the panel border. This allows the panel border of the plot to move freely, which is useful for aligning a mix of plots with and without legends:
+
+```{r, fig.width = 4, fig.height = 4}
+### 1. Free the right panel border of p2
+p1 / free(p2, type = "panel", side = "r") / p3  # the right panel border of p2 is no longer forced to be aligned with those of p1 and p3
+
+```
+
+2. Free the axis label. When we combine plots with different axis text lengths, all the axis labels will be aligned with the farthest one, leading to extra white space between axis text and label. We can adjust this by freeing the axis label of the plot with extra white space so that the label can come back to its original position:
+
+```{r, fig.width = 5, fig.height = 4}
+### Create a plot with long y-axis text
+p2_long_axis_text <- p2 + scale_y_continuous(labels = ~ format(as.numeric(.x), nsmall = 5))
+
+### Default alignment
+p1 / p2_long_axis_text / p3  # extra white space between y-axis label and text in p1 and p3
+
+### 2. Free the y-axis label of p1
+free(p1, type = "label", side = "l") / p2_long_axis_text / p3  # no extra space between y-axis label and text in p1
+
+```
+
+3. Free the space.
+
+
+
+
+```{r, fig.width = 5, fig.height = 4}
+### by space
+plot_spacer() + free(p2, type = "space", side = "l") +
+  p1 + p3
 
 ```
 
