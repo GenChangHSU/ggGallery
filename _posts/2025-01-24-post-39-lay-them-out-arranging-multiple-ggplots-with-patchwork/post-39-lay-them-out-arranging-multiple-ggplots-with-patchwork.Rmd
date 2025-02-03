@@ -263,15 +263,28 @@ free(p1, type = "label", side = "l") / p2_long_axis_text / p3  # no extra space 
 
 ```
 
-3. Free the space.
+3. Free the space. When the plots have legends or long axis text, we can first create some extra empty space using `plot_spacer()` and free the plots so that the legends or long axis text can take up the space:
+
+```{r, fig.width = 5, fig.height = 4}
+### Default alignment
+p2 + plot_spacer() + p1 + p3  # the legend of p2 creates a space gap between p1 and p3
+
+### 3. Free the space to the right of p2
+free(p2, type = "space", side = "r") + plot_spacer() + p1 + p3  # now the legend of p2 can take up the white space created by plot_spacer()
+
+```
+
+This is a good segue into our third topic: legends.
+
+### Legend (combine, remove, position)
+
 
 
 
 
 ```{r, fig.width = 5, fig.height = 4}
-### by space
-plot_spacer() + free(p2, type = "space", side = "l") +
-  p1 + p3
+
+
 
 ```
 
