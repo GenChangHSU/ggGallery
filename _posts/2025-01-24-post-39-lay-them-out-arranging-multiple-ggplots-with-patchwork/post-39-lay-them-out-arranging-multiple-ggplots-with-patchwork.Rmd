@@ -274,19 +274,76 @@ free(p2, type = "space", side = "r") + plot_spacer() + p1 + p3  # now the legend
 
 ```
 
-This is a good segue into our third topic: legends.
+This is a good segue into our third topic: legends and axes.
 
-### Legend (combine, remove, position)
+### Legends and axes
+
+`patchwork` provides some basic means for adjusting legend positions. As we saw earlier, when we combine plots with and without legends, it can lead to white gaps between panels. A solution to this is to collect and place all the legends on the right using the argument "guides = 'collect'" in `plot_layout()`:
+
+```{r, fig.width = 5, fig.height = 4}
+### Place the legends on the right
+p1 + p3 + p2 + p4 + plot_layout(guides = "collect")
+
+```
+A neat thing about this argument is that the duplicates will be removed automatically when there are multiple same legends:
+
+```{r, fig.width = 5, fig.height = 4}
+### Duplicate legends are removed
+p1 + p3 + p2 + p2 + plot_layout(guides = "collect")
+
+```
+We can also create a designated area to place the legend(s) using `guide_area()`:
+
+```{r, fig.width = 5, fig.height = 4}
+### Create a designated area for the legend(s)
+p1 + p3 + p2 + guide_area() + plot_layout(guides = "collect")
+
+```
+
+Similar to legends, for plots that share the same axes, we can 
+
+```{r, fig.width = 5, fig.height = 4}
+### Create a designated area for the legend(s)
+p1 + p3 + p2 + plot_layout(axes = "collect")
+p1 + p3 + p2 + plot_layout(axis_titles = "collect")
+
+```
 
 
 
+### Text annotation (title, subtitle, tags, axis text)
 
 
 ```{r, fig.width = 5, fig.height = 4}
+library(tidyverse)
+library(patchwork)
 
+p1 <- ggplot(mtcars) + 
+  geom_point(aes(mpg, disp)) + 
+  ggtitle('Plot 1')
+
+p2 <- ggplot(mtcars) + 
+  geom_boxplot(aes(gear, disp, group = gear)) + 
+  ggtitle('Plot 2')
+
+p3 <- ggplot(mtcars) + 
+  geom_point(aes(hp, wt, colour = mpg)) + 
+  ggtitle('Plot 3')
+
+p4 <- ggplot(mtcars) + 
+  geom_bar(aes(gear)) + 
+  facet_wrap(~cyl) + 
+  ggtitle('Plot 4')
+
+(p1 | (p2 / p3)) + 
+  plot_annotation(title = 'The surprising story about mtcars',
+                  tag_levels = "A")
 
 
 ```
+
+
+### Inset (position, border line around)
 
 
 
