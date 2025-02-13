@@ -2636,148 +2636,161 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_site_before_body-->
 <!--/radix_placeholder_site_before_body-->
 <!--radix_placeholder_article_listing-->
-
-
-<script type="application/javascript">
-
-function init_posts_list() {
-
-  function load_image(img) {
-    var src = $(img).attr('data-src');
-    if (src) {
-      $(img).attr('src', src);
-      $(img).on("load", function() {
-        img.removeAttribute('data-src');
-      });
-    }
-  }
-
-  function set_posts_visible(posts, visible) {
-    if (visible) {
-
-      // show bottom border by default
-      $(posts).removeClass('post-preview-last');
-
-      // apply limits if need be
-      var max_posts = 25;
-      var apply_limits = $('.posts-container').hasClass('posts-apply-limit');
-      if (apply_limits && posts.length > max_posts) {
-        posts = $(posts).slice(0, max_posts);
-      } else {
-        $('.posts-more a').addClass('hidden');
-      }
-
-      // apply last style
-      $(posts.slice(-1)[0]).addClass('post-preview-last');
-
-      $(posts).removeClass('hidden');
-      $(posts).find('img[data-src]').each(function(i, img) {
-        load_image(img);
-      });
-    } else {
-      $(posts).addClass('hidden');
-    }
-  }
-
-  function apply_hash_filter() {
-
-    // clear active state
-    $('.categories .active').removeClass('active');
-
-    // mark all posts invisible to start
-    set_posts_visible($('.posts-list').children('a'), false);
-
-    // if we have a hash filter
-    if (window.location.hash && window.location.hash.startsWith("#category:")) {
-
-      // mark posts that match the category visible
-      var page_category = window.location.hash.replace(/^#category:/, "");
-      page_category = decodeURIComponent(page_category)
-      var posts = $('.post-metadata').map(function(idx, script) {
-        var metadata = $.parseJSON($(script).html());
-        var post = null;
-        $.each(metadata.categories, function(idx, category) {
-          category = category.replace(/ /g,"_");
-          if ((page_category || '').toLowerCase() === "articles" || category === page_category) {
-            post = $(script).parent().get();
-            return false;
-          }
-        });
-        return post;
-      });
-      set_posts_visible(posts, true);
-
-      // mark the hash active
-      $('.categories li>a[href="' + decodeURIComponent(window.location.hash) + '"]').addClass('active');
-
-      // update the list_caption
-      var list_caption = $('.posts-list-caption');
-      var caption = (page_category || '').toLowerCase() === "articles"
-        ? list_caption.attr('data-caption')
-        : ('Category: ' + page_category.replace(/_/g," "));
-      list_caption.text(caption);
-
-    } else {
-
-      // no hash filter, make all posts visible (subject to max display)
-      set_posts_visible($('.posts-list').children(), true);
-
-      // reset list caption
-      var list_caption = $('.posts-list-caption');
-      list_caption.text(list_caption.attr('data-caption'));
-
-
-    }
-  }
-
-  // more articles
-  function apply_post_limits(apply) {
-    if (apply) {
-      $('.posts-container').addClass('posts-apply-limit');
-      $('.posts-more a').removeClass('hidden');
-    } else {
-      $('.posts-container').removeClass('posts-apply-limit');
-      $('.posts-more a').addClass('hidden');
-    }
-  }
-
-  // click handling for tags
-  $('.dt-tag').click(function(ev) {
-    window.location.hash = '#category:' + $(this).text().replace(/ /g, "_");
-    return false;
-  })
-
-  // hash filter handling
-  apply_hash_filter();
-  $(window).on('hashchange',function() {
-    apply_post_limits(true);
-    apply_hash_filter();
-  });
-
-  // more articles link
-  $('.posts-more a').click(function(e) {
-    e.preventDefault();
-    apply_post_limits(false);
-    apply_hash_filter();
-    return false;
-  });
-
-}
-
-</script>
-
-
+
+
+<script type="application/javascript">
+
+function init_posts_list() {
+
+  function load_image(img) {
+    var src = $(img).attr('data-src');
+    if (src) {
+      $(img).attr('src', src);
+      $(img).on("load", function() {
+        img.removeAttribute('data-src');
+      });
+    }
+  }
+
+  function set_posts_visible(posts, visible) {
+    if (visible) {
+
+      // show bottom border by default
+      $(posts).removeClass('post-preview-last');
+
+      // apply limits if need be
+      var max_posts = 25;
+      var apply_limits = $('.posts-container').hasClass('posts-apply-limit');
+      if (apply_limits && posts.length > max_posts) {
+        posts = $(posts).slice(0, max_posts);
+      } else {
+        $('.posts-more a').addClass('hidden');
+      }
+
+      // apply last style
+      $(posts.slice(-1)[0]).addClass('post-preview-last');
+
+      $(posts).removeClass('hidden');
+      $(posts).find('img[data-src]').each(function(i, img) {
+        load_image(img);
+      });
+    } else {
+      $(posts).addClass('hidden');
+    }
+  }
+
+  function apply_hash_filter() {
+
+    // clear active state
+    $('.categories .active').removeClass('active');
+
+    // mark all posts invisible to start
+    set_posts_visible($('.posts-list').children('a'), false);
+
+    // if we have a hash filter
+    if (window.location.hash && window.location.hash.startsWith("#category:")) {
+
+      // mark posts that match the category visible
+      var page_category = window.location.hash.replace(/^#category:/, "");
+      page_category = decodeURIComponent(page_category)
+      var posts = $('.post-metadata').map(function(idx, script) {
+        var metadata = $.parseJSON($(script).html());
+        var post = null;
+        $.each(metadata.categories, function(idx, category) {
+          category = category.replace(/ /g,"_");
+          if ((page_category || '').toLowerCase() === "articles" || category === page_category) {
+            post = $(script).parent().get();
+            return false;
+          }
+        });
+        return post;
+      });
+      set_posts_visible(posts, true);
+
+      // mark the hash active
+      $('.categories li>a[href="' + decodeURIComponent(window.location.hash) + '"]').addClass('active');
+
+      // update the list_caption
+      var list_caption = $('.posts-list-caption');
+      var caption = (page_category || '').toLowerCase() === "articles"
+        ? list_caption.attr('data-caption')
+        : ('Category: ' + page_category.replace(/_/g," "));
+      list_caption.text(caption);
+
+    } else {
+
+      // no hash filter, make all posts visible (subject to max display)
+      set_posts_visible($('.posts-list').children(), true);
+
+      // reset list caption
+      var list_caption = $('.posts-list-caption');
+      list_caption.text(list_caption.attr('data-caption'));
+
+
+    }
+  }
+
+  // more articles
+  function apply_post_limits(apply) {
+    if (apply) {
+      $('.posts-container').addClass('posts-apply-limit');
+      $('.posts-more a').removeClass('hidden');
+    } else {
+      $('.posts-container').removeClass('posts-apply-limit');
+      $('.posts-more a').addClass('hidden');
+    }
+  }
+
+  // click handling for tags
+  $('.dt-tag').click(function(ev) {
+    window.location.hash = '#category:' + $(this).text().replace(/ /g, "_");
+    return false;
+  })
+
+  // hash filter handling
+  apply_hash_filter();
+  $(window).on('hashchange',function() {
+    apply_post_limits(true);
+    apply_hash_filter();
+  });
+
+  // more articles link
+  $('.posts-more a').click(function(e) {
+    e.preventDefault();
+    apply_post_limits(false);
+    apply_hash_filter();
+    return false;
+  });
+
+}
+
+</script>
+
+
 
 <div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
 <div class="posts-list">
 <h1 class="posts-list-caption" data-caption="Posts">Posts</h1>
+<a href="posts/2025-01-24-post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["2025"]}</script>
+<div class="metadata">
+<div class="publishedDate">Feb. 8, 2025</div>
+</div>
+<div class="thumbnail">
+<img src="posts/2025-01-24-post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork/post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-2-1.png"/>
+</div>
+<div class="description">
+<h2>Post #39. Lay them out—arranging multiple ggplots with `patchwork`</h2>
+<p>In this post, you will learn the nuts and bolts of arranging multiple ggplots with the package `patchwork`!</p>
+</div>
+</a>
 <a href="posts/2024-12-20-post-38-creating-ternary-plots-with-ggtern/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["2024"]}</script>
 <div class="metadata">
 <div class="publishedDate">Dec. 24, 2024</div>
 </div>
 <div class="thumbnail">
-<img src="homepage_images/Post38.png"/>
+<img src="posts/2024-12-20-post-38-creating-ternary-plots-with-ggtern/../../homepage_images/Post38.png"/>
 </div>
 <div class="description">
 <h2>Post #38. Creating ternary plots with `ggtern`</h2>
@@ -2790,7 +2803,7 @@ function init_posts_list() {
 <div class="publishedDate">Oct. 8, 2024</div>
 </div>
 <div class="thumbnail">
-<img src="homepage_images/Post37.png"/>
+<img src="posts/2024-10-08-post-37-ggplot-map-series-no6-cartograms-in-ggplots/../../homepage_images/Post37.png"/>
 </div>
 <div class="description">
 <h2>Post #37. ggplot Map Series No.6: Cartograms in ggplot</h2>
@@ -2803,7 +2816,7 @@ function init_posts_list() {
 <div class="publishedDate">Aug. 10, 2024</div>
 </div>
 <div class="thumbnail">
-<img src="homepage_images/Post36.png"/>
+<img src="posts/2024-08-02-post-36-the-nitty-gritty-of-dodging-in-ggplots/../../homepage_images/Post36.png"/>
 </div>
 <div class="description">
 <h2>Post #36. The nitty-gritty of dodging in ggplots</h2>
@@ -2816,7 +2829,7 @@ function init_posts_list() {
 <div class="publishedDate">July 15, 2024</div>
 </div>
 <div class="thumbnail">
-<img src="homepage_images/Post35.png"/>
+<img src="posts/2024-07-03-post-35-creating-3d-plots-with-plotly/../../homepage_images/Post35.png"/>
 </div>
 <div class="description">
 <h2>Post #35. Creating 3D plots with plotly and rayshader</h2>
@@ -2829,7 +2842,7 @@ function init_posts_list() {
 <div class="publishedDate">June 11, 2024</div>
 </div>
 <div class="thumbnail">
-<img src="homepage_images/Post34.png"/>
+<img data-src="posts/2024-06-11-post-34-connecting-paired-points-by-groups-in-ggplots/../../homepage_images/Post34.png"/>
 </div>
 <div class="description">
 <h2>Post #34. Connecting paired points in ggplots</h2>
@@ -2842,7 +2855,7 @@ function init_posts_list() {
 <div class="publishedDate">Feb. 21, 2024</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post33.png"/>
+<img data-src="posts/2024-02-21-post-33-a-timely-plotvisualizing-time-series-in-ggplots/../../homepage_images/Post33.png"/>
 </div>
 <div class="description">
 <h2>Post #33. A "timely" plot—Visualizing time series data in ggplot</h2>
@@ -2855,7 +2868,7 @@ function init_posts_list() {
 <div class="publishedDate">Dec. 24, 2023</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post32.png"/>
+<img data-src="posts/2023-12-24-post-32-ggplot-map-series-no5-map-annotation-with-ggsn/../../homepage_images/Post32.png"/>
 </div>
 <div class="description">
 <h2>Post #32. ggplot Map Series No.5: Scale bar and north arrow with `ggsn`</h2>
@@ -2868,7 +2881,7 @@ function init_posts_list() {
 <div class="publishedDate">Dec. 9, 2023</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post31.gif"/>
+<img data-src="posts/2023-12-09-post-31-from-static-to-dynamic-animations-in-ggplots/../../homepage_images/Post31.gif"/>
 </div>
 <div class="description">
 <h2>Post #31. From static to dynamic—Create ggplot animations by hand</h2>
@@ -2881,7 +2894,7 @@ function init_posts_list() {
 <div class="publishedDate">Oct. 26, 2023</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post30.png"/>
+<img data-src="posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap/../../homepage_images/Post30.png"/>
 </div>
 <div class="description">
 <h2>Post #30. ggplot Map Series No.4: Google Maps in R with `ggmap`</h2>
@@ -2894,7 +2907,7 @@ function init_posts_list() {
 <div class="publishedDate">Sept. 9, 2023</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post29.png"/>
+<img data-src="posts/2023-09-09-post-29-creating-raincloud-plots-in-ggplots/../../homepage_images/Post29.png"/>
 </div>
 <div class="description">
 <h2>Post #29. Bad weather today—Creating raincloud plots in ggplots</h2>
@@ -2907,7 +2920,7 @@ function init_posts_list() {
 <div class="publishedDate">Aug. 22, 2023</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post28.png"/>
+<img data-src="posts/2023-08-22-post-28-adding-images-to-ggplots/../../homepage_images/Post28.png"/>
 </div>
 <div class="description">
 <h2>Post #28. Adding an external image to ggplots</h2>
@@ -2920,7 +2933,7 @@ function init_posts_list() {
 <div class="publishedDate">July 31, 2023</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post27.png"/>
+<img data-src="posts/2023-07-31-post-27-ggplot-map-series-no3-the-veins-of-taiwan/../../homepage_images/Post27.png"/>
 </div>
 <div class="description">
 <h2>Post #27. ggplot Map Series No.3: Visualizing the veins of Taiwan in ggplots with `osmdata`</h2>
@@ -2933,7 +2946,7 @@ function init_posts_list() {
 <div class="publishedDate">May 24, 2023</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post26.png"/>
+<img data-src="posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/../../homepage_images/Post26.png"/>
 </div>
 <div class="description">
 <h2>Post #26. ggplot Map Series No.2: Creating simple feature ggplot maps from shapefiles</h2>
@@ -2946,7 +2959,7 @@ function init_posts_list() {
 <div class="publishedDate">March 9, 2023</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post25.png"/>
+<img data-src="posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/../../homepage_images/Post25.png"/>
 </div>
 <div class="description">
 <h2>Post #25. ggplot Map Series No.1: Creating polygon maps in ggplots</h2>
@@ -2959,7 +2972,7 @@ function init_posts_list() {
 <div class="publishedDate">Feb. 18, 2023</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post24.png"/>
+<img data-src="posts/2023-02-18-post-24-gt-and-ggplot-visualizing-bwc-in-taiwan/../../homepage_images/Post24.png"/>
 </div>
 <div class="description">
 <h2>Post #24. The spark between gt and ggplot2: Visualizing the top ten bird-window collision species in Taiwan</h2>
@@ -2972,7 +2985,7 @@ function init_posts_list() {
 <div class="publishedDate">Jan. 13, 2023</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post23.png"/>
+<img data-src="posts/2023-01-13-post-23-ggplot-legend-tips-series-no8-legend-item-spacing/../../homepage_images/Post23.png"/>
 </div>
 <div class="description">
 <h2>Post #23. ggplot Legend Tips Series No.8: The nuts and bolts of legend item spacing</h2>
@@ -2985,7 +2998,7 @@ function init_posts_list() {
 <div class="publishedDate">Nov. 2, 2022</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post22.png"/>
+<img data-src="posts/2022-11-02-post-22-the-glowing-solar-system/../../homepage_images/Post22.png"/>
 </div>
 <div class="description">
 <h2>Post #22. An epic ggplot journey through the glowing solar system</h2>
@@ -2998,7 +3011,7 @@ function init_posts_list() {
 <div class="publishedDate">Oct. 22, 2022</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post21.png"/>
+<img data-src="posts/2022-10-22-post-21-useful-tips-for-mapping-color-and-fill-aesthetics-in-the-same-geom-layer/../../homepage_images/Post21.png"/>
 </div>
 <div class="description">
 <h2>Post #21. Useful tips for mapping color and fill aesthetic in the same geom layer</h2>
@@ -3011,7 +3024,7 @@ function init_posts_list() {
 <div class="publishedDate">Oct. 4, 2022</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post20.png"/>
+<img data-src="posts/2022-10-01-post-20-ggplot-legend-tips-series-no7-working-on-legends-with-theme/../../homepage_images/Post20.png"/>
 </div>
 <div class="description">
 <h2>Post #20. ggplot Legend Tips Series No.7: Working on legends with theme()</h2>
@@ -3024,7 +3037,7 @@ function init_posts_list() {
 <div class="publishedDate">Sept. 10, 2022</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post19.png"/>
+<img data-src="posts/2022-09-10-post-19-go-with-the-flow-alluvial-plots-with-ggplot/../../homepage_images/Post19.png"/>
 </div>
 <div class="description">
 <h2>Post #19. Go with the flow - alluvial diagrams in ggplot</h2>
@@ -3037,7 +3050,7 @@ function init_posts_list() {
 <div class="publishedDate">Aug. 1, 2022</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post18.png"/>
+<img data-src="posts/2022-08-01-post-18-bump-charts-with-ggplot/../../homepage_images/Post18.png"/>
 </div>
 <div class="description">
 <h2>Post #18. Bump charts with ggplot</h2>
@@ -3050,7 +3063,7 @@ function init_posts_list() {
 <div class="publishedDate">July 3, 2022</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post17.png"/>
+<img data-src="posts/2022-07-02-post-17-ggplot-legend-tips-series-no6-working-on-continuous-legends-with-scalexx-functions/../../homepage_images/Post17.png"/>
 </div>
 <div class="description">
 <h2>Post #17. ggplot Legend Tips Series No.6: Working on continuous legends with scale_XX functions</h2>
@@ -3063,7 +3076,7 @@ function init_posts_list() {
 <div class="publishedDate">June 9, 2022</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post16.png"/>
+<img data-src="posts/2022-06-09-post-16-ggplot-legend-tips-series-no5-working-on-discrete-legends-with-scalexx-functions/../../homepage_images/Post16.png"/>
 </div>
 <div class="description">
 <h2>Post #16. ggplot Legend Tips Series No.5: Working on discrete legends with scale_XX functions</h2>
@@ -3076,7 +3089,7 @@ function init_posts_list() {
 <div class="publishedDate">May 12, 2022</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post15.png"/>
+<img data-src="posts/2022-05-12-post-15-manipulating-axis-scales-for-individual-facets/../../homepage_images/Post15.png"/>
 </div>
 <div class="description">
 <h2>Post #15. Manipulating the axes for individual facets with `tidytext` and `ggh4x`</h2>
@@ -3089,7 +3102,7 @@ function init_posts_list() {
 <div class="publishedDate">April 24, 2022</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post14.png"/>
+<img data-src="posts/2022-04-24-post-14-multiple-color-scales-in-one-ggplot/../../homepage_images/Post14.png"/>
 </div>
 <div class="description">
 <h2>Post #14. Multiple color scales in one ggplot</h2>
@@ -3102,7 +3115,7 @@ function init_posts_list() {
 <div class="publishedDate">March 2, 2022</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post13.png"/>
+<img data-src="posts/2022-03-02-post-13-ggplot-legend-tips-series-no4-merging-ggplot-legends/../../homepage_images/Post13.png"/>
 </div>
 <div class="description">
 <h2>Post #13. ggplot Legend Tips Series No.4: Merging ggplot legends</h2>
@@ -3115,7 +3128,7 @@ function init_posts_list() {
 <div class="publishedDate">Feb. 5, 2022</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post12.png"/>
+<img data-src="posts/2022-02-05-post-12-ggplot-legend-tips-series-no3-three-ways-to-turn-off-ggplot-legends/../../homepage_images/Post12.png"/>
 </div>
 <div class="description">
 <h2>Post #12. ggplot Legend Tips Series No.3: Three ways to turn off the legends in ggplots</h2>
@@ -3128,7 +3141,7 @@ function init_posts_list() {
 <div class="publishedDate">Feb. 1, 2022</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post11.png"/>
+<img data-src="posts/2022-02-01-post-11-ggplot-legend-tips-series-no2-working-on-continuous-legends-with-guides/../../homepage_images/Post11.png"/>
 </div>
 <div class="description">
 <h2>Post #11. ggplot Legend Tips Series No.2: Working on continuous legends with guides()</h2>
@@ -3141,7 +3154,7 @@ function init_posts_list() {
 <div class="publishedDate">Jan. 28, 2022</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post10.png"/>
+<img data-src="posts/2022-01-28-post-10-ggplot-legend-tips-series-no1-working-on-discrete-scale-legends-with-guides/../../homepage_images/Post10.png"/>
 </div>
 <div class="description">
 <h2>Post #10. ggplot Legend Tips Series No.1: Working on discrete legends with guides()</h2>
@@ -3154,7 +3167,7 @@ function init_posts_list() {
 <div class="publishedDate">Dec. 20, 2021</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post9.png"/>
+<img data-src="posts/2021-12-20-post-9-arrange-multiple-ggplots/../../homepage_images/Post9.png"/>
 </div>
 <div class="description">
 <h2>Post #9. Arrange multiple ggplots on one graphic device</h2>
@@ -3167,7 +3180,7 @@ function init_posts_list() {
 <div class="publishedDate">Oct. 1, 2021</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post8.png"/>
+<img data-src="posts/2021-10-01-post-8-pokemon-phylogeny-with-ggdendro/../../homepage_images/Post8.png"/>
 </div>
 <div class="description">
 <h2>Post #8. Pokemon phylogeny with ggdendro</h2>
@@ -3180,7 +3193,7 @@ function init_posts_list() {
 <div class="publishedDate">Sept. 11, 2021</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post7.png"/>
+<img data-src="posts/2021-09-11-post-7-customize-the-axis-scales-for-individual-facets/../../homepage_images/Post7.png"/>
 </div>
 <div class="description">
 <h2>Post #7. Customize the axis scales for individual ggplot facets</h2>
@@ -3193,7 +3206,7 @@ function init_posts_list() {
 <div class="publishedDate">Aug. 2, 2021</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post6.png"/>
+<img data-src="posts/2021-08-02-post-6-play-good-music-for-your-data-violin-plots-with-ggplot/../../homepage_images/Post6.png"/>
 </div>
 <div class="description">
 <h2>Post #6. Play good music for your data - violin plots with ggplot</h2>
@@ -3206,7 +3219,7 @@ function init_posts_list() {
 <div class="publishedDate">July 10, 2021</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post5.png"/>
+<img data-src="posts/2021-07-10-post-5-awesome-text-display-with-ggtext/../../homepage_images/Post5.png"/>
 </div>
 <div class="description">
 <h2>Post #5. Awesome text displays with ggtext</h2>
@@ -3219,7 +3232,7 @@ function init_posts_list() {
 <div class="publishedDate">June 26, 2021</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post4.png"/>
+<img data-src="posts/2021-06-26-post-4-consistent-colors-of-the-same-factor-levels-across-figures/../../homepage_images/Post4.png"/>
 </div>
 <div class="description">
 <h2>Post #4. Consistent colors of the same factor levels across figures</h2>
@@ -3232,7 +3245,7 @@ function init_posts_list() {
 <div class="publishedDate">June 18, 2021</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post3.png"/>
+<img data-src="posts/2021-06-18-post-3-pie-charts-with-ggplot/../../homepage_images/Post3.png"/>
 </div>
 <div class="description">
 <h2>Post #3. Pie charts with ggplot</h2>
@@ -3245,7 +3258,7 @@ function init_posts_list() {
 <div class="publishedDate">May 26, 2021</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Guest_post1.gif"/>
+<img data-src="posts/2021-05-26-guest-post-1-communicating-the-essence-of-your-data/../../homepage_images/Guest_post1.gif"/>
 </div>
 <div class="description">
 <h2>Guest Post #1. Communicating the ESSENCE of your data</h2>
@@ -3258,7 +3271,7 @@ function init_posts_list() {
 <div class="publishedDate">May 7, 2021</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post2.png"/>
+<img data-src="posts/2021-05-07-post-2-three-ways-to-create-log-axes-in-ggplots-which-one-should-you-use/../../homepage_images/Post2.png"/>
 </div>
 <div class="description">
 <h2>Post #2. Three ways to create log axes in ggplots: which one should you use?</h2>
@@ -3271,7 +3284,7 @@ function init_posts_list() {
 <div class="publishedDate">May 1, 2021</div>
 </div>
 <div class="thumbnail">
-<img data-src="homepage_images/Post1.png"/>
+<img data-src="posts/2021-05-01-post-1-center-long-legend-titles-in-ggplots/../../homepage_images/Post1.png"/>
 </div>
 <div class="description">
 <h2>Post #1. Center long legend titles in ggplots</h2>
@@ -3280,30 +3293,30 @@ function init_posts_list() {
 </a>
 </div>
 <div class="posts-sidebar">
-<div><div class="sidebar-section custom" style="font-size: 18px; line-height: 1.25em;">
-  <h3>About</h3>
-  A gallery of <a href="https://ggplot2.tidyverse.org/index.html" target="_blank" style="text-decoration: none;">ggplots</a> and <a href="https://exts.ggplot2.tidyverse.org/" target="_blank" style="text-decoration: none;">beyond</a>! 
-</div>
-
-<div class="sidebar-section custom" style="font-size: 18px; display: none;">
-  <h3>Search</h3>
-  <form action="https://duckduckgo.com/">
-    <input type="text" name="q" placeholder="Search..." style="font-size: 18px; height: 30px; border-radius: 3px; border-style: solid; border-color: #D3D3D3;">
-    <input type="hidden" name="sites" 
-      value="https://beta.rstudioconnect.com/content/3776/"> <!-- Replace with your blog URL -->
-    <!--<button type="submit">Search</button>-->
-  </form>
-</div>
+<div><div class="sidebar-section custom" style="font-size: 18px; line-height: 1.25em;">
+  <h3>About</h3>
+  A gallery of <a href="https://ggplot2.tidyverse.org/index.html" target="_blank" style="text-decoration: none;">ggplots</a> and <a href="https://exts.ggplot2.tidyverse.org/" target="_blank" style="text-decoration: none;">beyond</a>! 
+</div>
+
+<div class="sidebar-section custom" style="font-size: 18px; display: none;">
+  <h3>Search</h3>
+  <form action="https://duckduckgo.com/">
+    <input type="text" name="q" placeholder="Search..." style="font-size: 18px; height: 30px; border-radius: 3px; border-style: solid; border-color: #D3D3D3;">
+    <input type="hidden" name="sites" 
+      value="https://beta.rstudioconnect.com/content/3776/"> <!-- Replace with your blog URL -->
+    <!--<button type="submit">Search</button>-->
+  </form>
+</div>
 </div>
 <div class="sidebar-section subscribe">
 <h3>Subscribe</h3>
-<form method='post' action='https://blogtrottr.com'>
-  <p style="font-size: 18px; line-height: 1.25em;">Like it? Subscribe to get the latest post:</p>
-  <input type='text' name='btr_email' style="font-size: 18px; height: 30px; border-radius: 3px; border-style: solid; border-color: #D3D3D3;" placeholder="Email"/>
-  <input type='hidden' name='btr_url'
-         value='https://genchanghsu.github.io/ggGallery/index.xml'/>
-  <input type='hidden' name='schedule_type' value='0' />
-  <input type='submit' value='Subscribe'/>
+<form method='post' action='https://blogtrottr.com'>
+  <p style="font-size: 18px; line-height: 1.25em;">Like it? Subscribe to get the latest post:</p>
+  <input type='text' name='btr_email' style="font-size: 18px; height: 30px; border-radius: 3px; border-style: solid; border-color: #D3D3D3;" placeholder="Email"/>
+  <input type='hidden' name='btr_url'
+         value='https://genchanghsu.github.io/ggGallery/index.xml'/>
+  <input type='hidden' name='schedule_type' value='0' />
+  <input type='submit' value='Subscribe'/>
 </form>
 </div>
 <div class="sidebar-section categories">
@@ -3311,7 +3324,7 @@ function init_posts_list() {
 <ul>
 <li>
 <a href="#category:Articles">Articles</a>
-<span class="category-count">(39)</span>
+<span class="category-count">(40)</span>
 </li>
 <li>
 <a href="#category:2021">2021</a>
@@ -3330,6 +3343,10 @@ function init_posts_list() {
 <span class="category-count">(6)</span>
 </li>
 <li>
+<a href="#category:2025">2025</a>
+<span class="category-count">(1)</span>
+</li>
+<li>
 <a href="#category:Legend_Tips_Series">Legend Tips Series</a>
 <span class="category-count">(8)</span>
 </li>
@@ -3344,7 +3361,7 @@ function init_posts_list() {
 <a href="#">More articles &raquo;</a>
 </div>
 </div>
-<!--/radix_placeholder_article_listing-->
+<!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
 <h1>Posts</h1>

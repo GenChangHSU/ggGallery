@@ -1,17 +1,16 @@
 ---
 title: "Post #39. Lay them out—arranging multiple ggplots with `patchwork`"
 description: |
-  In this post, you will learn all the nuts and bolts of arranging multiple ggplots with the package `patchwork`!
+  In this post, you will learn the nuts and bolts of arranging multiple ggplots with the package `patchwork`!
 author:
   - name: Gen-Chang Hsu
-date: 2025-01-24
+date: 2025-02-08
 output:
   distill::distill_article:
     self_contained: false
 categories:
   - "2025"
 preview: ../../homepage_images/Post39.png
-draft: True
 ---
 
 <!-- Webpage style -->
@@ -95,6 +94,10 @@ div.l-body img {
     margin-right: 30% !important;
 }
 
+.vertical_stacking {
+    margin-right: 80% !important;
+}
+
 </style>
 
 <head>
@@ -113,13 +116,13 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-Welcome to the first post of 2025! I'm going to kick this year off with a handy post: arranging multiple ggplots!
+Welcome to the first post of 2025! I'm looking forward to writing some interesting posts this year, and I'll kick it off here with a handy post: arranging multiple ggplots!
 
 Oftentimes, we have multiple related plots and we would like to combine them into one single figure. The traditional way to do it is to save the individual plots and manually merge them in other software programs like PowerPoint. This method can be convenient; however, it is not reproducible and we will need to redo everything again if we change the component plots. A more "modern" way is to merge the plots in R and output them as a single figure. If you do it in this way, then the next time when you modify your component plots, the final figure will be automatically updated. Also, you can avoid the hassle of aligning the plots or adjusting the aspect ratios, and you will always get the exact same output.
 
 There are several extension packages that can arrange multiple ggplots. In fact, I've written a [post](https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/) on this topic a few years ago. In that post, I introduced two packages `ggpubr` and `cowplot`. These two packages provide basic functionality for plot arrangements, but in this follow-up post I will dive deeper into a much more powerful package [`patchwork`](https://patchwork.data-imaginist.com/index.html). Thanks to this awesome package, arranging multiple ggplots has become easier than ever, especially when we want to make complex multipanel figures!
 
-Get some ggplots on hand? Buckle up and we're ready to lay them out!
+Get some ggplots on hand? Time to lay them out!
 
 ## Arranging multiple ggplots with `patchwork`
 
@@ -147,6 +150,8 @@ p4 <- ggplot(iris) +
   geom_boxplot(aes(x = Species, y = Sepal.Length, fill = Species))
 ```
 
+<br>
+
 The simplest way to combine these plots is using "`+`": this results in "plot packing" where the plots are arranged in a grid-like fashion and the function will make the figure as close to a square as possible.
 
 ```{r, fig.width = 5.5, fig.height = 4}
@@ -162,7 +167,7 @@ Besides "`+`", we can use "`|`" to stack the plots horizontally and "`/`" to sta
 p1 | p2 | p3 | p4
 ```
 
-```{r, fig.width = 3, fig.height = 6}
+```{r, fig.width = 4, fig.height = 6, out.width = "40%", fig.align = "center"}
 ### Vertical stacking
 p1 / p2 / p3 / p4
 
@@ -170,21 +175,21 @@ p1 / p2 / p3 / p4
 
 When we have a mix of "`+`", "`|`", and "`/`", "`+`" goes first, then "`/`", and finally "`|`". If we want to change the precedence, we can use parentheses. Compared the following two figures:
 
-```{r, fig.width = 7, fig.height = 3}
+```{r, fig.width = 7, fig.height = 3, out.width = "90%"}
 ### Default precedence
 p1 / p2 | p3 + p4
 
 ```
 
-```{r, fig.width = 6, fig.height = 4}
+```{r, fig.width = 6, fig.height = 5, out.width = "60%"}
 ### Indicate precedence with parentheses
 p1 / (p2 | p3) + p4
 
 ```
 
-In the first default specification, p3 and p4 are packed first, then p1 and p2 are stacked vertically, and finally these two composite plots are stacked horizontally to produce the final figure. In the second specification, p2 and p3 are stacked horizontally first, then the composite plot is packed with p4, and finally it is vertically stacked with p1.
+In the first specification (the default precedence), p3 and p4 are packed first, then p1 and p2 are stacked vertically, and finally these two composite plots are stacked horizontally to produce the final figure. In the second specification, p2 and p3 are stacked horizontally first, then the composite plot is packed with p4, and finally it is vertically stacked with p1.
 
-Sometimes, we have multiple ggplots stored in a list. We can simply pass the list to the function `wrap_plot()`, which will pack all the plots in the list. This is essentially the same as "p1 + p2 + ... + pn", but it saves us the time of having to pull the individual plots out and add "`+`" between them.
+When have multiple ggplots stored in a list, we can simply pass the list to the function `wrap_plot()`, which will pack all the plots in the list. This is essentially the same as "p1 + p2 + ... + pn", but it saves us the time of having to pull the individual plots out and add "`+`" between them.
 
 ```{r, fig.width = 6, fig.height = 4}
 ### A list of ggplots
@@ -201,9 +206,11 @@ Now that we know the basics, let's take a step further to change the layout desi
 p1 + plot_spacer() + p2 + p3 + p4 + plot_layout(ncol = 2, widths = c(2, 1))
 
 ```
-Another way to specify the layout design is to use a matrix with letters denoting different panels:
+<br>
 
-```{r, fig.width = 7, fig.height = 4}
+Another way to specify the layout design is to use a matrix with letters denoting different panels ("#" denotes white space):
+
+```{r, fig.width = 7, fig.height = 4, out.width = "80%"}
 ### Create a layout matrix
 layout_matrix <- "
 #AA##CC#
@@ -214,10 +221,11 @@ BBBBDDDD
 p1 + p2 + p3 + p4 + plot_layout(design = layout_matrix)
 
 ```
+<br>
 
 Yet another way to specify the layout design is create a set of coordinates for the panels using `area()`:
 
-```{r, fig.width = 7, fig.height = 4}
+```{r, fig.width = 7, fig.height = 3, out.width = "80%"}
 ### Create a set of coordinates for the panels
 layout_coord <- c(area(t = 1, b = 7, l = 1, r = 7),
                   area(t = 2, b = 6, l = 8, r = 12),
@@ -331,25 +339,19 @@ p1 + p2 + p3 + p4 +
 
 ```
 
-### Inset (position, border line around)
+### Inset plots
 
-
-
-
+The last (but certainly not least) thing we can do it to add an inset plot to the figure. This can easily be done via the function `inset_element()`. Just pass the inset plot to the function and specify the desired location, and you're all set!
 
 ```{r, fig.width = 5, fig.height = 4}
-
-
+p1 + inset_element(p3, top = 0.95, bottom = 0.55, left = 0.55, right = 0.95)
 
 ```
 
-
-
-
-
-
-
 ## Summary
+
+
+
 
 
 
