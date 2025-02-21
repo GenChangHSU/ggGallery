@@ -7,7 +7,7 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 08 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 21 Feb 2025 00:00:00 +0000</lastBuildDate>
     <item>
       <title>Post #39. Lay them out—arranging multiple ggplots with `patchwork`</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
@@ -99,12 +99,16 @@ d-article ol {
   width: 120% !important;
 }
 
-body &gt; d-article &gt; div:nth-child(50) &gt; p &gt; img {
-  margin-right: 35% !important;
+body &gt; d-article &gt; div:nth-child(54) &gt; p &gt; img {
+  margin-right: 37.5% !important;
 }
 
-.vertical_stacking {
-  margin-right: 80% !important;
+body &gt; d-article &gt; div:nth-child(58) &gt; img {
+  margin-right: 15% !important;
+}
+
+body &gt; d-article &gt; div:nth-child(64) &gt; img {
+  margin-right: 15% !important;
 }
 
 &lt;/style&gt;
@@ -161,33 +165,41 @@ p3 &amp;lt;- ggplot(iris) +
 
 p4 &amp;lt;- ggplot(iris) + 
   geom_boxplot(aes(x = Species, y = Sepal.Length, fill = Species))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div style="height: 1em;"&gt;
+
+&lt;/div&gt;
 &lt;p&gt;The simplest way to combine these plots is using “&lt;code&gt;+&lt;/code&gt;”:
 this results in “plot packing” where the plots are arranged in a
 grid-like fashion and the function will make the figure as close to a
 square as possible.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Plot packing
 p1 + p2 + p3 + p4&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-2-1.png" width="528" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-2-1.png" width="528" style="display: block; margin: auto;" /&gt;
+&lt;div style="height: 0.5em;"&gt;
+
+&lt;/div&gt;
 &lt;p&gt;Besides “&lt;code&gt;+&lt;/code&gt;”, we can use “&lt;code&gt;|&lt;/code&gt;” to stack the
 plots horizontally and “&lt;code&gt;/&lt;/code&gt;” to stack the plots
 vertically.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Horizontal stacking
 p1 | p2 | p3 | p4&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-3-1.png" width="864" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-3-1.png" width="864" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Vertical stacking
 p1 / p2 / p3 / p4&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-4-1.png" width="40%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-4-1.png" width="40%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;div style="height: 0.5em;"&gt;
+
+&lt;/div&gt;
 &lt;p&gt;When we have a mix of “&lt;code&gt;+&lt;/code&gt;”, “&lt;code&gt;|&lt;/code&gt;”, and
 “&lt;code&gt;/&lt;/code&gt;”, “&lt;code&gt;+&lt;/code&gt;” goes first, then “&lt;code&gt;/&lt;/code&gt;”,
 and finally “&lt;code&gt;|&lt;/code&gt;”. If we want to change the precedence, we
 can use parentheses. Compared the following two figures:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Default precedence
 p1 / p2 | p3 + p4&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-5-1.png" width="90%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-5-1.png" width="90%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Indicate precedence with parentheses
 p1 / (p2 | p3) + p4&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-6-1.png" width="60%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-6-1.png" width="60%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;In the first specification (the default precedence), p3 and p4 are
 packed first, then p1 and p2 are stacked vertically, and finally these
 two composite plots are stacked horizontally to produce the final
@@ -204,16 +216,21 @@ p_list &amp;lt;- list(p1, p2, p3, p4)
 
 ### Wrap the plots
 wrap_plots(p_list)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;" /&gt;
-Now that we know the basics, let’s take a step further to change the
+&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;" /&gt;
+&lt;div style="height: 1em;"&gt;
+
+&lt;/div&gt;
+&lt;p&gt;Now that we know the basics, let’s take a step further to change the
 layout design using &lt;code&gt;plot_layout()&lt;/code&gt;, where we can specify the
 number of rows/columns and their relative heights/widths. Moreover, we
 can create extra white space by adding empty plots using
 &lt;code&gt;plot_spacer()&lt;/code&gt;:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Change the layout design and add empty plots
 p1 + plot_spacer() + p2 + p3 + p4 + plot_layout(ncol = 2, widths = c(2, 1))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;" /&gt;
-&lt;br&gt;&lt;/p&gt;
+&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;" /&gt;
+&lt;div style="height: 1em;"&gt;
+
+&lt;/div&gt;
 &lt;p&gt;Another way to specify the layout design is to use a matrix with
 letters denoting different panels (“#” denotes white space):&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Create a layout matrix
@@ -224,8 +241,10 @@ BBBBDDDD
 &amp;quot;
 
 p1 + p2 + p3 + p4 + plot_layout(design = layout_matrix)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /&gt;
-&lt;br&gt;&lt;/p&gt;
+&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;div style="height: 1em;"&gt;
+
+&lt;/div&gt;
 &lt;p&gt;Yet another way to specify the layout design is to create a set of
 coordinates for the panels using &lt;code&gt;area()&lt;/code&gt;:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Create a set of coordinates for the panels
@@ -234,19 +253,22 @@ layout_coord &amp;lt;- c(area(t = 1, b = 7, l = 1, r = 7),
                   area(t = 3, b = 5, l = 13, r = 15))
 
 p1 + p2 + p3 + plot_layout(design = layout_coord)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;div style="height: 0.8em;"&gt;
+
+&lt;/div&gt;
 &lt;p&gt;Phew, that’s a lot! We’re done with plot layout. Next, we’ll move on
 to our second topic: plot alignment.&lt;/p&gt;
 &lt;h3 id="plot-alignment"&gt;Plot alignment&lt;/h3&gt;
 &lt;p&gt;A neat thing about &lt;code&gt;patchwork&lt;/code&gt; is that the plots are
 automatically aligned by their panel borders:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Default plot alignment by panel borders
-p1 / p2 / p3  # the legend of p2 takes extra space&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-11-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+p1 / p2 / p3  # the legend of p2 takes up extra space&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-11-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;However, this default behavior can sometimes be a bit troublesome
-because the legends (like the one above) or long axis text will take up
+because the legend (like the one above) or long axis text will take up
 extra space. To deal with this issue, we can use the function
-&lt;code&gt;free()&lt;/code&gt; to “free” the plots from the alignment constraints.
+&lt;code&gt;free()&lt;/code&gt; to “free” the plot from the alignment constraints.
 There are three ways to realign the plots:&lt;/p&gt;
 &lt;ol style="list-style-type: decimal"&gt;
 &lt;li&gt;Free the panel border. This allows the panel border of the plot to
@@ -255,34 +277,46 @@ without legends:&lt;/li&gt;
 &lt;/ol&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### 1. Free the right panel border of p2
 p1 / free(p2, type = &amp;quot;panel&amp;quot;, side = &amp;quot;r&amp;quot;) / p3  # the right panel border of p2 is no longer forced to be aligned with those of p1 and p3&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-12-1.png" width="403.2" style="display: block; margin: auto;" /&gt;
-Here!!! 2. Free the axis label. When we combine plots with different
-axis text lengths, all the axis labels will be aligned with the farthest
-one, leading to extra white space between axis text and label. We can
-adjust this by freeing the axis label of the plot with extra white space
-so that the label can come back to its original position:&lt;/p&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-12-1.png" width="403.2" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;div style="height: 1em;"&gt;
+
+&lt;/div&gt;
+&lt;ol start="2" style="list-style-type: decimal"&gt;
+&lt;li&gt;Free the axis title. When we combine plots with different axis text
+lengths, all the axis titles will be aligned with the farthest one,
+leading to extra white space between axis text and title. We can adjust
+this by freeing the axis title of the plot with extra white space so
+that the title can come back to its original position:&lt;/li&gt;
+&lt;/ol&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Create a plot with long y-axis text
 p2_long_axis_text &amp;lt;- p2 + scale_y_continuous(labels = ~ format(as.numeric(.x), nsmall = 5))
 
 ### Default alignment
-p1 / p2_long_axis_text / p3  # extra white space between y-axis label and text in p1 and p3&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-13-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;### 2. Free the y-axis label of p1
-free(p1, type = &amp;quot;label&amp;quot;, side = &amp;quot;l&amp;quot;) / p2_long_axis_text / p3  # no extra space between y-axis label and text in p1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-13-2.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+p1 / p2_long_axis_text / p3  # extra white space between y-axis title and text in p1 and p3&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-13-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### 2. Free the y-axis title of p1
+free(p1, type = &amp;quot;label&amp;quot;, side = &amp;quot;l&amp;quot;) / p2_long_axis_text / p3  # no extra space between y-axis title and text in p1&lt;/code&gt;&lt;/pre&gt;
+&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-13-2.png" width="480" style="display: block; margin: auto;" /&gt;
+&lt;div style="height: 1em;"&gt;
+
+&lt;/div&gt;
 &lt;ol start="3" style="list-style-type: decimal"&gt;
 &lt;li&gt;Free the space. When the plots have legends or long axis text, we
 can first create some extra empty space using &lt;code&gt;plot_spacer()&lt;/code&gt;
-and free the plots so that the legends or long axis text can take up the
-space:&lt;/li&gt;
+and free the plot so that the legend or long axis text can take up the
+designated space:&lt;/li&gt;
 &lt;/ol&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Default alignment
 p2 + plot_spacer() + p1 + p3  # the legend of p2 creates a space gap between p1 and p3&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### 3. Free the space to the right of p2
 free(p2, type = &amp;quot;space&amp;quot;, side = &amp;quot;r&amp;quot;) + plot_spacer() + p1 + p3  # now the legend of p2 can take up the white space created by plot_spacer()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-14-2.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
-&lt;p&gt;This is a good segue into our third topic: legends and axes.&lt;/p&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-14-2.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;div style="height: 0.5em;"&gt;
+
+&lt;/div&gt;
+&lt;p&gt;Cool. This is a good segue into our third topic: legends and
+axes.&lt;/p&gt;
 &lt;h3 id="legends-and-axes"&gt;Legends and axes&lt;/h3&gt;
 &lt;p&gt;&lt;code&gt;patchwork&lt;/code&gt; provides some basic means for adjusting legend
 positions. As we saw earlier, when we combine plots with and without
@@ -291,26 +325,26 @@ to collect and place all the legends on the right using the argument
 “guides = ‘collect’” in &lt;code&gt;plot_layout()&lt;/code&gt;:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Place the legends on the right
 p1 + p3 + p2 + p4 + plot_layout(guides = &amp;quot;collect&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;" /&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;" /&gt;
 A neat thing about this argument is that the duplicates will be removed
 automatically when there are multiple same legends:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Duplicate legends are removed
 p1 + p3 + p2 + p2 + plot_layout(guides = &amp;quot;collect&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-16-1.png" width="480" style="display: block; margin: auto;" /&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-16-1.png" width="480" style="display: block; margin: auto;" /&gt;
 We can also use &lt;code&gt;guide_area()&lt;/code&gt; to create a designated area
 for the legend(s):&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Create a designated area for the legend(s)
 p1 + p3 + p2 + guide_area() + plot_layout(guides = &amp;quot;collect&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;Similar to legends, for plots that share the same axes, we can remove
 duplicate title and text using the argument “axes = ‘collect’” or
 “axis_titles = ‘collect’” in &lt;code&gt;plot_layout()&lt;/code&gt;:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Remove duplicate axis title and text
 p1 + p2 + p3 + p4 + plot_layout(axes = &amp;quot;collect&amp;quot;)  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Remove duplicate axis title only
 p1 + p2 + p3 + p4 + plot_layout(axis_titles = &amp;quot;collect&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-18-2.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-18-2.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="text-annotations"&gt;Text annotations&lt;/h3&gt;
 &lt;p&gt;We can add a title, a subtitle, a caption, and panel tags to the
 patchwork figure using the function &lt;code&gt;plot_annotation()&lt;/code&gt;. The
@@ -327,14 +361,14 @@ p1 + p2 + p3 + p4 +
                                 plot.subtitle = element_text(size = 12),
                                 plot.tag.position = c(0.1, 1),
                                 plot.tag = element_text(size = 13, hjust = 0)))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-19-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-19-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="inset-plots"&gt;Inset plots&lt;/h3&gt;
 &lt;p&gt;The last (but certainly not least) thing we can do it to add an inset
 plot to the figure. This can easily be done via the function
 &lt;code&gt;inset_element()&lt;/code&gt;. Just pass the inset plot to the function
 and specify the desired location, and you’re all set!&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;p1 + inset_element(p3, top = 0.95, bottom = 0.55, left = 0.55, right = 0.95)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file50a818c7759f_files/figure-html/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file11c2ddc2ecf_files/figure-html/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;Hope you learn something useful from this post and don’t forget to
 leave your comments and suggestions below if you have any!&lt;/p&gt;
@@ -342,7 +376,7 @@ leave your comments and suggestions below if you have any!&lt;/p&gt;
       <distill:md5>1fe4e9e890866e6029e4d002f4937be0</distill:md5>
       <category>2025</category>
       <guid>https://genchanghsu.github.io/ggGallery/posts/2025-01-24-post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork</guid>
-      <pubDate>Sat, 08 Feb 2025 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 21 Feb 2025 00:00:00 +0000</pubDate>
       <media:content url="https://genchanghsu.github.io/ggGallery/posts/2025-01-24-post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork/post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-2-1.png" medium="image" type="image/png" width="1056" height="768"/>
     </item>
     <item>

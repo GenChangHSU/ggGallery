@@ -4,7 +4,7 @@ description: |
   In this post, you will learn the nuts and bolts of arranging multiple ggplots with the package `patchwork`!
 author:
   - name: Gen-Chang Hsu
-date: 2025-02-08
+date: 2025-02-21
 output:
   distill::distill_article:
     self_contained: false
@@ -98,12 +98,16 @@ d-article ol {
   width: 120% !important;
 }
 
-body > d-article > div:nth-child(50) > p > img {
-  margin-right: 35% !important;
+body > d-article > div:nth-child(54) > p > img {
+  margin-right: 37.5% !important;
 }
 
-.vertical_stacking {
-  margin-right: 80% !important;
+body > d-article > div:nth-child(58) > img {
+  margin-right: 15% !important;
+}
+
+body > d-article > div:nth-child(64) > img {
+  margin-right: 15% !important;
 }
 
 </style>
@@ -158,7 +162,7 @@ p4 <- ggplot(iris) +
   geom_boxplot(aes(x = Species, y = Sepal.Length, fill = Species))
 ```
 
-<br>
+<div style="height: 1em;"></div>
 
 The simplest way to combine these plots is using "`+`": this results in "plot packing" where the plots are arranged in a grid-like fashion and the function will make the figure as close to a square as possible.
 
@@ -167,6 +171,7 @@ The simplest way to combine these plots is using "`+`": this results in "plot pa
 p1 + p2 + p3 + p4
 
 ```
+<div style="height: 0.5em;"></div>
 
 Besides "`+`", we can use "`|`" to stack the plots horizontally and "`/`" to stack the plots vertically.
 
@@ -180,6 +185,8 @@ p1 | p2 | p3 | p4
 p1 / p2 / p3 / p4
 
 ```
+
+<div style="height: 0.5em;"></div>
 
 When we have a mix of "`+`", "`|`", and "`/`", "`+`" goes first, then "`/`", and finally "`|`". If we want to change the precedence, we can use parentheses. Compared the following two figures:
 
@@ -207,6 +214,8 @@ p_list <- list(p1, p2, p3, p4)
 wrap_plots(p_list)
 
 ```
+<div style="height: 1em;"></div>
+
 Now that we know the basics, let's take a step further to change the layout design using `plot_layout()`, where we can specify the number of rows/columns and their relative heights/widths. Moreover, we can create extra white space by adding empty plots using `plot_spacer()`:
 
 ```{r, fig.width = 6, fig.height = 4}
@@ -214,7 +223,7 @@ Now that we know the basics, let's take a step further to change the layout desi
 p1 + plot_spacer() + p2 + p3 + p4 + plot_layout(ncol = 2, widths = c(2, 1))
 
 ```
-<br>
+<div style="height: 1em;"></div>
 
 Another way to specify the layout design is to use a matrix with letters denoting different panels ("#" denotes white space):
 
@@ -229,7 +238,7 @@ BBBBDDDD
 p1 + p2 + p3 + p4 + plot_layout(design = layout_matrix)
 
 ```
-<br>
+<div style="height: 1em;"></div>
 
 Yet another way to specify the layout design is to create a set of coordinates for the panels using `area()`:
 
@@ -242,6 +251,7 @@ layout_coord <- c(area(t = 1, b = 7, l = 1, r = 7),
 p1 + p2 + p3 + plot_layout(design = layout_coord)
 
 ```
+<div style="height: 0.8em;"></div>
 
 Phew, that's a lot! We're done with plot layout. Next, we'll move on to our second topic: plot alignment.
 
@@ -251,11 +261,11 @@ A neat thing about `patchwork` is that the plots are automatically aligned by th
 
 ```{r, fig.width = 5, fig.height = 4}
 ### Default plot alignment by panel borders
-p1 / p2 / p3  # the legend of p2 takes extra space
+p1 / p2 / p3  # the legend of p2 takes up extra space
 
 ```
 
-However, this default behavior can sometimes be a bit troublesome because the legends (like the one above) or long axis text will take up extra space. To deal with this issue, we can use the function `free()` to "free" the plots from the alignment constraints. There are three ways to realign the plots:
+However, this default behavior can sometimes be a bit troublesome because the legend (like the one above) or long axis text will take up extra space. To deal with this issue, we can use the function `free()` to "free" the plot from the alignment constraints. There are three ways to realign the plots:
 
 1. Free the panel border. This allows the panel border of the plot to move freely, which is useful for aligning a mix of plots with and without legends:
 
@@ -264,22 +274,25 @@ However, this default behavior can sometimes be a bit troublesome because the le
 p1 / free(p2, type = "panel", side = "r") / p3  # the right panel border of p2 is no longer forced to be aligned with those of p1 and p3
 
 ```
-Here!!!
-2. Free the axis label. When we combine plots with different axis text lengths, all the axis labels will be aligned with the farthest one, leading to extra white space between axis text and label. We can adjust this by freeing the axis label of the plot with extra white space so that the label can come back to its original position:
+
+<div style="height: 1em;"></div>
+
+2. Free the axis title. When we combine plots with different axis text lengths, all the axis titles will be aligned with the farthest one, leading to extra white space between axis text and title. We can adjust this by freeing the axis title of the plot with extra white space so that the title can come back to its original position:
 
 ```{r, fig.width = 5, fig.height = 4}
 ### Create a plot with long y-axis text
 p2_long_axis_text <- p2 + scale_y_continuous(labels = ~ format(as.numeric(.x), nsmall = 5))
 
 ### Default alignment
-p1 / p2_long_axis_text / p3  # extra white space between y-axis label and text in p1 and p3
+p1 / p2_long_axis_text / p3  # extra white space between y-axis title and text in p1 and p3
 
-### 2. Free the y-axis label of p1
-free(p1, type = "label", side = "l") / p2_long_axis_text / p3  # no extra space between y-axis label and text in p1
+### 2. Free the y-axis title of p1
+free(p1, type = "label", side = "l") / p2_long_axis_text / p3  # no extra space between y-axis title and text in p1
 
 ```
+<div style="height: 1em;"></div>
 
-3. Free the space. When the plots have legends or long axis text, we can first create some extra empty space using `plot_spacer()` and free the plots so that the legends or long axis text can take up the space:
+3. Free the space. When the plots have legends or long axis text, we can first create some extra empty space using `plot_spacer()` and free the plot so that the legend or long axis text can take up the designated space:
 
 ```{r, fig.width = 5, fig.height = 4}
 ### Default alignment
@@ -290,7 +303,9 @@ free(p2, type = "space", side = "r") + plot_spacer() + p1 + p3  # now the legend
 
 ```
 
-This is a good segue into our third topic: legends and axes.
+<div style="height: 0.5em;"></div>
+
+Cool. This is a good segue into our third topic: legends and axes.
 
 ### Legends and axes
 
