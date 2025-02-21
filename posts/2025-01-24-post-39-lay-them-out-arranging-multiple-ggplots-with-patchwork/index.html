@@ -2694,7 +2694,7 @@ d-title {
   margin-left: -10%;
 }
 
-d-title h1{
+d-title h1 {
   font-size: 45px;
   width: 130%;
 }
@@ -2751,11 +2751,19 @@ d-article table tbody tr td {
 }
 
 div.l-body img {
-    margin-right: 30% !important;
+  margin-right: 30% !important;
+}
+
+d-article ol {
+  width: 120% !important;
+}
+
+body > d-article > div:nth-child(50) > p > img {
+  margin-right: 35% !important;
 }
 
 .vertical_stacking {
-    margin-right: 80% !important;
+  margin-right: 80% !important;
 }
 
 </style>
@@ -2764,7 +2772,7 @@ div.l-body img {
 </head>
 <!-- Start of the article -->
 <h2 id="introduction">Introduction</h2>
-<p>Welcome to the first post of 2025! I’m looking forward to writing some interesting posts this year, and I’ll kick it off here with a handy post: arranging multiple ggplots!</p>
+<p>Welcome to the first post of 2025! I’m looking forward to writing some interesting posts this year, and I’ll kick it off here with a handy post: arranging multiple ggplots.</p>
 <p>Oftentimes, we have multiple related plots and we would like to combine them into one single figure. The traditional way to do it is to save the individual plots and manually merge them in other software programs like PowerPoint. This method can be convenient; however, it is not reproducible and we will need to redo everything again if we change the component plots. A more “modern” way is to merge the plots in R and output them as a single figure. If you do it in this way, then the next time when you modify your component plots, the final figure will be automatically updated. Also, you can avoid the hassle of aligning the plots or adjusting the aspect ratios, and you will always get the exact same output.</p>
 <p>There are several extension packages that can arrange multiple ggplots. In fact, I’ve written a <a href="https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/">post</a> on this topic a few years ago. In that post, I introduced two packages <code>ggpubr</code> and <code>cowplot</code>. These two packages provide basic functionality for plot arrangements, but in this follow-up post I will dive deeper into a much more powerful package <a href="https://patchwork.data-imaginist.com/index.html"><code>patchwork</code></a>. Thanks to this awesome package, arranging multiple ggplots has become easier than ever, especially when we want to make complex multipanel figures!</p>
 <p>Get some ggplots on hand? Time to lay them out!</p>
@@ -2866,7 +2874,7 @@ div.l-body img {
 <p><img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <p><br></p>
-<p>Yet another way to specify the layout design is create a set of coordinates for the panels using <code>area()</code>:</p>
+<p>Yet another way to specify the layout design is to create a set of coordinates for the panels using <code>area()</code>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Create a set of coordinates for the panels</span></span>
@@ -2878,17 +2886,17 @@ div.l-body img {
 </div>
 <p><img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
-<p>Phew, that’s a lot! We’re done with plot layout, and next we’ll move on to our second topic: plot alignment.</p>
+<p>Phew, that’s a lot! We’re done with plot layout. Next, we’ll move on to our second topic: plot alignment.</p>
 <h3 id="plot-alignment">Plot alignment</h3>
 <p>A neat thing about <code>patchwork</code> is that the plots are automatically aligned by their panel borders:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Default alignment by panel border</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Default plot alignment by panel borders</span></span>
 <span><span class='va'>p1</span> <span class='op'>/</span> <span class='va'>p2</span> <span class='op'>/</span> <span class='va'>p3</span>  <span class='co'># the legend of p2 takes extra space</span></span></code></pre>
 </div>
 <p><img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-11-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
-<p>However, this default behavior can sometimes be a bit troublesome, especially when some plots have legends (like the one above) and long axis text. To this end, we can use the function <code>free()</code> to “free” the plots from the alignment constraints. There are three ways to realign the plots:</p>
+<p>However, this default behavior can sometimes be a bit troublesome because the legends (like the one above) or long axis text will take up extra space. To deal with this issue, we can use the function <code>free()</code> to “free” the plots from the alignment constraints. There are three ways to realign the plots:</p>
 <ol type="1">
 <li>Free the panel border. This allows the panel border of the plot to move freely, which is useful for aligning a mix of plots with and without legends:</li>
 </ol>
@@ -2897,11 +2905,10 @@ div.l-body img {
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### 1. Free the right panel border of p2</span></span>
 <span><span class='va'>p1</span> <span class='op'>/</span> <span class='fu'><a href='https://patchwork.data-imaginist.com/reference/free.html'>free</a></span><span class='op'>(</span><span class='va'>p2</span>, type <span class='op'>=</span> <span class='st'>"panel"</span>, side <span class='op'>=</span> <span class='st'>"r"</span><span class='op'>)</span> <span class='op'>/</span> <span class='va'>p3</span>  <span class='co'># the right panel border of p2 is no longer forced to be aligned with those of p1 and p3</span></span></code></pre>
 </div>
-<p><img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-12-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p><img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-12-1.png" width="403.2" style="display: block; margin: auto;" /></p>
 </div>
-<ol start="2" type="1">
-<li>Free the axis label. When we combine plots with different axis text lengths, all the axis labels will be aligned with the farthest one, leading to extra white space between axis text and label. We can adjust this by freeing the axis label of the plot with extra white space so that the label can come back to its original position:</li>
-</ol>
+<p>Here!!!
+2. Free the axis label. When we combine plots with different axis text lengths, all the axis labels will be aligned with the farthest one, leading to extra white space between axis text and label. We can adjust this by freeing the axis label of the plot with extra white space so that the label can come back to its original position:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Create a plot with long y-axis text</span></span>

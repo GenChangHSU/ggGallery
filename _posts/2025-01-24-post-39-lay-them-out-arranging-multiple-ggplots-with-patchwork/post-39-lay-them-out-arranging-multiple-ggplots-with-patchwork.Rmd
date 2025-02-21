@@ -34,7 +34,7 @@ d-title {
   margin-left: -10%;
 }
 
-d-title h1{
+d-title h1 {
   font-size: 45px;
   width: 130%;
 }
@@ -91,11 +91,19 @@ d-article table tbody tr td {
 }
 
 div.l-body img {
-    margin-right: 30% !important;
+  margin-right: 30% !important;
+}
+
+d-article ol {
+  width: 120% !important;
+}
+
+body > d-article > div:nth-child(50) > p > img {
+  margin-right: 35% !important;
 }
 
 .vertical_stacking {
-    margin-right: 80% !important;
+  margin-right: 80% !important;
 }
 
 </style>
@@ -116,7 +124,7 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-Welcome to the first post of 2025! I'm looking forward to writing some interesting posts this year, and I'll kick it off here with a handy post: arranging multiple ggplots!
+Welcome to the first post of 2025! I'm looking forward to writing some interesting posts this year, and I'll kick it off here with a handy post: arranging multiple ggplots.
 
 Oftentimes, we have multiple related plots and we would like to combine them into one single figure. The traditional way to do it is to save the individual plots and manually merge them in other software programs like PowerPoint. This method can be convenient; however, it is not reproducible and we will need to redo everything again if we change the component plots. A more "modern" way is to merge the plots in R and output them as a single figure. If you do it in this way, then the next time when you modify your component plots, the final figure will be automatically updated. Also, you can avoid the hassle of aligning the plots or adjusting the aspect ratios, and you will always get the exact same output.
 
@@ -223,7 +231,7 @@ p1 + p2 + p3 + p4 + plot_layout(design = layout_matrix)
 ```
 <br>
 
-Yet another way to specify the layout design is create a set of coordinates for the panels using `area()`:
+Yet another way to specify the layout design is to create a set of coordinates for the panels using `area()`:
 
 ```{r, fig.width = 7, fig.height = 3, out.width = "80%"}
 ### Create a set of coordinates for the panels
@@ -235,28 +243,28 @@ p1 + p2 + p3 + plot_layout(design = layout_coord)
 
 ```
 
-Phew, that's a lot! We're done with plot layout, and next we'll move on to our second topic: plot alignment.
+Phew, that's a lot! We're done with plot layout. Next, we'll move on to our second topic: plot alignment.
 
 ### Plot alignment
 
 A neat thing about `patchwork` is that the plots are automatically aligned by their panel borders:
 
 ```{r, fig.width = 5, fig.height = 4}
-### Default alignment by panel border
+### Default plot alignment by panel borders
 p1 / p2 / p3  # the legend of p2 takes extra space
 
 ```
 
-However, this default behavior can sometimes be a bit troublesome, especially when some plots have legends (like the one above) and long axis text. To this end, we can use the function `free()` to "free" the plots from the alignment constraints. There are three ways to realign the plots:
+However, this default behavior can sometimes be a bit troublesome because the legends (like the one above) or long axis text will take up extra space. To deal with this issue, we can use the function `free()` to "free" the plots from the alignment constraints. There are three ways to realign the plots:
 
 1. Free the panel border. This allows the panel border of the plot to move freely, which is useful for aligning a mix of plots with and without legends:
 
-```{r, fig.width = 4, fig.height = 4}
+```{r, fig.width = 4.2, fig.height = 4.2}
 ### 1. Free the right panel border of p2
 p1 / free(p2, type = "panel", side = "r") / p3  # the right panel border of p2 is no longer forced to be aligned with those of p1 and p3
 
 ```
-
+Here!!!
 2. Free the axis label. When we combine plots with different axis text lengths, all the axis labels will be aligned with the farthest one, leading to extra white space between axis text and label. We can adjust this by freeing the axis label of the plot with extra white space so that the label can come back to its original position:
 
 ```{r, fig.width = 5, fig.height = 4}
