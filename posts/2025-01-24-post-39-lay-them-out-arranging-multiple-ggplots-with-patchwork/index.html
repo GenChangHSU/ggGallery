@@ -2770,16 +2770,28 @@ body > d-article > div:nth-child(64) > img {
   margin-right: 15% !important;
 }
 
+body > d-article > div:nth-child(80) > p > img {
+  margin-right: 35% !important;
+}
+
+body > d-article > div:nth-child(84) > img {
+  margin-right: 15% !important;
+}
+
+body > d-article > div:nth-child(94) > p > img {
+  margin-right: 35% !important;
+}
+
 </style>
 <head>
 <base target="_blank">
 </head>
 <!-- Start of the article -->
 <h2 id="introduction">Introduction</h2>
-<p>Welcome to the first post of 2025! I’m looking forward to writing some interesting posts this year, and I’ll kick it off here with a handy post: arranging multiple ggplots.</p>
+<p>Welcome to the first post of 2025! I’m looking forward to writing some interesting posts this year, and I’ll kick it off here with a handy post: arranging multiple ggplots with the extension package <code>patchwork</code>.</p>
 <p>Oftentimes, we have multiple related plots and we would like to combine them into one single figure. The traditional way to do it is to save the individual plots and manually merge them in other software programs like PowerPoint. This method can be convenient; however, it is not reproducible and we will need to redo everything again if we change the component plots. A more “modern” way is to merge the plots in R and output them as a single figure. If you do it in this way, then the next time when you modify your component plots, the final figure will be automatically updated. Also, you can avoid the hassle of aligning the plots or adjusting the aspect ratios, and you will always get the exact same output.</p>
 <p>There are several extension packages that can arrange multiple ggplots. In fact, I’ve written a <a href="https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/">post</a> on this topic a few years ago. In that post, I introduced two packages <code>ggpubr</code> and <code>cowplot</code>. These two packages provide basic functionality for plot arrangements, but in this follow-up post I will dive deeper into a much more powerful package <a href="https://patchwork.data-imaginist.com/index.html"><code>patchwork</code></a>. Thanks to this awesome package, arranging multiple ggplots has become easier than ever, especially when we want to make complex multipanel figures!</p>
-<p>Get some ggplots on hand? Time to lay them out!</p>
+<p>Get some plots on hand? Time to lay them out!</p>
 <h2 id="arranging-multiple-ggplots-with-patchwork">Arranging multiple ggplots with <code>patchwork</code></h2>
 <p><code>patchwork</code> offers a wide variety of functions for arranging and polishing multipanel figures. In the following sections, I’ll walk you through them and show you some examples.</p>
 <h3 id="plot-layout">1. Plot layout</h3>
@@ -2979,15 +2991,21 @@ body > d-article > div:nth-child(64) > img {
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Place the legends on the right</span></span>
 <span><span class='va'>p1</span> <span class='op'>+</span> <span class='va'>p3</span> <span class='op'>+</span> <span class='va'>p2</span> <span class='op'>+</span> <span class='va'>p4</span> <span class='op'>+</span> <span class='fu'><a href='https://patchwork.data-imaginist.com/reference/plot_layout.html'>plot_layout</a></span><span class='op'>(</span>guides <span class='op'>=</span> <span class='st'>"collect"</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-15-1.png" width="528" style="display: block; margin: auto;" /></p>
 </div>
-<p>A neat thing about this argument is that the duplicates will be removed automatically when there are multiple same legends:</p>
+<div style="height: 1em;">
+
+</div>
+<p>A useful feature of this argument is that the duplicates will be removed automatically when there are multiple same legends:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Duplicate legends are removed</span></span>
 <span><span class='va'>p1</span> <span class='op'>+</span> <span class='va'>p3</span> <span class='op'>+</span> <span class='va'>p2</span> <span class='op'>+</span> <span class='va'>p2</span> <span class='op'>+</span> <span class='fu'><a href='https://patchwork.data-imaginist.com/reference/plot_layout.html'>plot_layout</a></span><span class='op'>(</span>guides <span class='op'>=</span> <span class='st'>"collect"</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-16-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-16-1.png" width="528" style="display: block; margin: auto;" /></p>
+</div>
+<div style="height: 1em;">
+
 </div>
 <p>We can also use <code>guide_area()</code> to create a designated area for the legend(s):</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -2997,18 +3015,21 @@ body > d-article > div:nth-child(64) > img {
 </div>
 <p><img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
+<div style="height: 1em;">
+
+</div>
 <p>Similar to legends, for plots that share the same axes, we can remove duplicate title and text using the argument “axes = ‘collect’” or “axis_titles = ‘collect’” in <code>plot_layout()</code>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Remove duplicate axis title and text</span></span>
 <span><span class='va'>p1</span> <span class='op'>+</span> <span class='va'>p2</span> <span class='op'>+</span> <span class='va'>p3</span> <span class='op'>+</span> <span class='va'>p4</span> <span class='op'>+</span> <span class='fu'><a href='https://patchwork.data-imaginist.com/reference/plot_layout.html'>plot_layout</a></span><span class='op'>(</span>axes <span class='op'>=</span> <span class='st'>"collect"</span><span class='op'>)</span>  </span></code></pre>
 </div>
-<img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;" />
+<img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-18-1.png" width="528" style="display: block; margin: auto;" />
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Remove duplicate axis title only</span></span>
 <span><span class='va'>p1</span> <span class='op'>+</span> <span class='va'>p2</span> <span class='op'>+</span> <span class='va'>p3</span> <span class='op'>+</span> <span class='va'>p4</span> <span class='op'>+</span> <span class='fu'><a href='https://patchwork.data-imaginist.com/reference/plot_layout.html'>plot_layout</a></span><span class='op'>(</span>axis_titles <span class='op'>=</span> <span class='st'>"collect"</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-18-2.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-18-2.png" width="528" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="text-annotations">Text annotations</h3>
 <p>We can add a title, a subtitle, a caption, and panel tags to the patchwork figure using the function <code>plot_annotation()</code>. The text appearance can be adjusted via the “theme =” argument:</p>
@@ -3024,13 +3045,14 @@ body > d-article > div:nth-child(64) > img {
 <span>                  tag_suffix <span class='op'>=</span> <span class='st'>")"</span>,</span>
 <span>                  theme <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>plot.title <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>15</span>, hjust <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>,</span>
 <span>                                plot.subtitle <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span>,</span>
+<span>                                plot.caption <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>face <span class='op'>=</span> <span class='st'>"italic"</span><span class='op'>)</span>,</span>
 <span>                                plot.tag.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>1</span><span class='op'>)</span>,</span>
 <span>                                plot.tag <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>13</span>, hjust <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-19-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-19-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="inset-plots">Inset plots</h3>
-<p>The last (but certainly not least) thing we can do it to add an inset plot to the figure. This can easily be done via the function <code>inset_element()</code>. Just pass the inset plot to the function and specify the desired location, and you’re all set!</p>
+<p>The last (but certainly not least) thing we can do is to add an inset plot to the figure. This can easily be done via the function <code>inset_element()</code>. Just pass the inset plot to the function and specify the desired location (using the relative coordinates from 0 to 1), and you’re all set!</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>p1</span> <span class='op'>+</span> <span class='fu'><a href='https://patchwork.data-imaginist.com/reference/inset_element.html'>inset_element</a></span><span class='op'>(</span><span class='va'>p3</span>, top <span class='op'>=</span> <span class='fl'>0.95</span>, bottom <span class='op'>=</span> <span class='fl'>0.55</span>, left <span class='op'>=</span> <span class='fl'>0.55</span>, right <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span></span></code></pre>
@@ -3038,6 +3060,7 @@ body > d-article > div:nth-child(64) > img {
 <p><img src="post-39-lay-them-out-arranging-multiple-ggplots-with-patchwork_files/figure-html5/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 <h2 id="summary">Summary</h2>
+<p>To summarize what we did, we first learned several ways to arrange multiple ggplots. We then learned how to adjust plot alignments and modify legends and axes. Finally, we learned how to add text annotations and inset plots. <code>patchwork</code> is such a handy package that I use it all the time when combining ggplots. I believe you will join me after reading this post!</p>
 <p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->

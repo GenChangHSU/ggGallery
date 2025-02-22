@@ -110,6 +110,18 @@ body > d-article > div:nth-child(64) > img {
   margin-right: 15% !important;
 }
 
+body > d-article > div:nth-child(80) > p > img {
+  margin-right: 35% !important;
+}
+
+body > d-article > div:nth-child(84) > img {
+  margin-right: 15% !important;
+}
+
+body > d-article > div:nth-child(94) > p > img {
+  margin-right: 35% !important;
+}
+
 </style>
 
 <head>
@@ -128,13 +140,13 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-Welcome to the first post of 2025! I'm looking forward to writing some interesting posts this year, and I'll kick it off here with a handy post: arranging multiple ggplots.
+Welcome to the first post of 2025! I'm looking forward to writing some interesting posts this year, and I'll kick it off here with a handy post: arranging multiple ggplots with the extension package `patchwork`.
 
 Oftentimes, we have multiple related plots and we would like to combine them into one single figure. The traditional way to do it is to save the individual plots and manually merge them in other software programs like PowerPoint. This method can be convenient; however, it is not reproducible and we will need to redo everything again if we change the component plots. A more "modern" way is to merge the plots in R and output them as a single figure. If you do it in this way, then the next time when you modify your component plots, the final figure will be automatically updated. Also, you can avoid the hassle of aligning the plots or adjusting the aspect ratios, and you will always get the exact same output.
 
 There are several extension packages that can arrange multiple ggplots. In fact, I've written a [post](https://genchanghsu.github.io/ggGallery/posts/2021-12-20-post-9-arrange-multiple-ggplots/) on this topic a few years ago. In that post, I introduced two packages `ggpubr` and `cowplot`. These two packages provide basic functionality for plot arrangements, but in this follow-up post I will dive deeper into a much more powerful package [`patchwork`](https://patchwork.data-imaginist.com/index.html). Thanks to this awesome package, arranging multiple ggplots has become easier than ever, especially when we want to make complex multipanel figures!
 
-Get some ggplots on hand? Time to lay them out!
+Get some plots on hand? Time to lay them out!
 
 ## Arranging multiple ggplots with `patchwork`
 
@@ -311,18 +323,22 @@ Cool. This is a good segue into our third topic: legends and axes.
 
 `patchwork` provides some basic means for adjusting legend positions. As we saw earlier, when we combine plots with and without legends, it can lead to white gaps between panels. A solution to this is to collect and place all the legends on the right using the argument "guides = 'collect'" in `plot_layout()`:
 
-```{r, fig.width = 5, fig.height = 4}
+```{r, fig.width = 5.5, fig.height = 4}
 ### Place the legends on the right
 p1 + p3 + p2 + p4 + plot_layout(guides = "collect")
 
 ```
-A neat thing about this argument is that the duplicates will be removed automatically when there are multiple same legends:
+<div style="height: 1em;"></div>
 
-```{r, fig.width = 5, fig.height = 4}
+A useful feature of this argument is that the duplicates will be removed automatically when there are multiple same legends:
+
+```{r, fig.width = 5.5, fig.height = 4}
 ### Duplicate legends are removed
 p1 + p3 + p2 + p2 + plot_layout(guides = "collect")
 
 ```
+<div style="height: 1em;"></div>
+
 We can also use `guide_area()` to create a designated area for the legend(s):
 
 ```{r, fig.width = 5, fig.height = 4}
@@ -330,10 +346,11 @@ We can also use `guide_area()` to create a designated area for the legend(s):
 p1 + p3 + p2 + guide_area() + plot_layout(guides = "collect")
 
 ```
+<div style="height: 1em;"></div>
 
 Similar to legends, for plots that share the same axes, we can remove duplicate title and text using the argument "axes = 'collect'" or "axis_titles = 'collect'" in `plot_layout()`:
 
-```{r, fig.width = 5, fig.height = 4}
+```{r, fig.width = 5.5, fig.height = 4}
 ### Remove duplicate axis title and text
 p1 + p2 + p3 + p4 + plot_layout(axes = "collect")  
 
@@ -346,7 +363,7 @@ p1 + p2 + p3 + p4 + plot_layout(axis_titles = "collect")
 
 We can add a title, a subtitle, a caption, and panel tags to the patchwork figure using the function `plot_annotation()`. The text appearance can be adjusted via the "theme = " argument:
 
-```{r, fig.width = 5, fig.height = 4}
+```{r, fig.width = 6, fig.height = 5}
 ### Add a title, a subtitle, a caption, and tag labels
 p1 + p2 + p3 + p4 + 
   plot_annotation(title = "This is a patchwork figure",
@@ -357,6 +374,7 @@ p1 + p2 + p3 + p4 +
                   tag_suffix = ")",
                   theme = theme(plot.title = element_text(size = 15, hjust = 0.5),
                                 plot.subtitle = element_text(size = 12),
+                                plot.caption = element_text(face = "italic"),
                                 plot.tag.position = c(0.1, 1),
                                 plot.tag = element_text(size = 13, hjust = 0)))
 
@@ -364,7 +382,7 @@ p1 + p2 + p3 + p4 +
 
 ### Inset plots
 
-The last (but certainly not least) thing we can do it to add an inset plot to the figure. This can easily be done via the function `inset_element()`. Just pass the inset plot to the function and specify the desired location, and you're all set!
+The last (but certainly not least) thing we can do is to add an inset plot to the figure. This can easily be done via the function `inset_element()`. Just pass the inset plot to the function and specify the desired location (using the relative coordinates from 0 to 1), and you're all set!
 
 ```{r, fig.width = 5, fig.height = 4}
 p1 + inset_element(p3, top = 0.95, bottom = 0.55, left = 0.55, right = 0.95)
@@ -373,10 +391,6 @@ p1 + inset_element(p3, top = 0.95, bottom = 0.55, left = 0.55, right = 0.95)
 
 ## Summary
 
-
-
-
-
-
+To summarize what we did, we first learned several ways to arrange multiple ggplots. We then learned how to adjust plot alignments and modify legends and axes. Finally, we learned how to add text annotations and inset plots. `patchwork` is such a handy package that I use it all the time when combining ggplots. I believe you will join me after reading this post!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
