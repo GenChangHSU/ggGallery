@@ -1,0 +1,246 @@
+---
+title: "Post #40. Mathematical expressions in ggplots"
+description: |
+  A short description of the post.
+author:
+  - name: Gen-Chang Hsu
+date: 2025-03-28
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2025"
+preview: ../../homepage_images/Post40.png
+draft: true
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+  color: #2780e3 !important;
+  border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+  border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 30% !important;
+}
+
+</style>
+
+<head>
+  <base target="_blank">
+</head>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+Mathematical expressions are super common in figures: adding stats results or text labels with subscripts and superscripts, using Greek letters and math symbols in axis titles, just to name a few. In this short post, I'm going to show you several ways to annotate math expressions in ggplots. Read on!
+
+
+## Mathematical expressions in ggplots 
+
+### (1) Math expressions using expression()
+
+We can use the function `expression()` to create a wide variety of math expressions: italic and bold fonts, superscripts and subscripts, Greek letters, hat and bar symbols, fractions, integrals and derivatives, etc. Here are some commonly used ones (see `?plotmath` for a complete list of math expressions!): 
+
+```{r}
+library(tidyverse)
+
+### Various math expressions and symbols
+ggplot() + 
+  annotate(geom = "text", x = 1, y = 1, label = expression(Italic~and~bold~font:~This~is~italic(italic~R)~and~bold(bold~R)~and~bolditalic(bold~italic~R)), size = 5, hjust = 0) + 
+  annotate(geom = "text", x = 1, y = 0.8, label = expression(Superscript~and~subscript:~italic(F[1*","*20]) == 5.2*";"~italic(R^2) == 0.8), size = 5, hjust = 0) + 
+  annotate(geom = "text", x = 1, y = 0.6, label = expression(Greek~letter:~italic(alpha) == 0.05*";"~italic(chi^2) == 3.5), size = 5, hjust = 0) + 
+  annotate(geom = "text", x = 1, y = 0.4, label = expression(Math~Annotation:~y == frac(1, sigma*sqrt(2*pi))~e^-frac((x-mu)^2, 2*sigma^2)), size = 5, hjust = 0) + 
+  annotate(geom = "text", x = 1, y = 0.2, label = expression(Calculus:~italic(frac(partialdiff*N, partialdiff*t))*";"~italic(integral(f(x)*dx, a, b))), size = 5, hjust = 0) + 
+  scale_x_continuous(limits = c(0.9, 10)) +
+  scale_y_continuous(limits = c(0, 1.1)) + 
+  theme_void() +
+  theme(plot.background = element_rect())
+
+```
+
+
+We can use objects in math expressions too. However, `expression()` can't handle that. Instead, we use the sister function `bquote()`: the syntax is the same as that for `expression()`, but now you can enclose the objects in ".()" and the object values will show up in the text!
+
+As an example, we can extract the linear model results, store them as objects, and add text annotations to the plot using `bquote()`: 
+
+```{r}
+### Create functions that extract linear model results
+# function for extracting coefficients
+lm_coefficients_fun <- function(model){
+  
+  a <- round(coef(model)[1], 2)
+  b <- round(coef(model)[2], 2)
+  
+  if (b > 0) {
+    
+    # use ".()" to substitute object values in the expression
+    equation <- bquote(italic(y) == .(a) + .(b)*x)
+    
+  } else {
+    
+    b <- abs(b)
+    equation <- bquote(italic(y) == .(a) - .(b)*x)
+    
+  }
+  
+  return(equation)
+}
+
+# function for extracting statistical results
+lm_stat_results_fun <- function(model){
+  
+  f <- round(summary(model)$fstatistic[1], digits = 2)
+  df1 <- round(summary(model)$fstatistic[2], 1)
+  df2 <- round(summary(model)$fstatistic[3], 1)
+  p_value <- round(anova(model)$`Pr(>F)`[1], 3)
+  r2 <- round(summary(model)$r.squared, digits = 2)
+  
+  
+  if (p_value > 0.001) {
+    
+    # use ".()" to substitute object values in the expression
+    statistics <- bquote(italic(F[.(df1)*","*.(df2)]) == .(f)*","~italic(p) == .(p_value)*","~italic(R^2) ==.(r2))
+    
+  } else {
+    
+    statistics <- bquote(italic(F[.(df1)*","*.(df2)]) == .(f)*","~italic(p) < 0.001*","~italic(R^2) == .(r2))
+    
+  }
+  
+  return(statistics)
+}
+
+### Extract model results and store the expressions as objects
+lm_iris <- lm(Sepal.Width ~ Sepal.Length, data = iris)
+coefs <- lm_coefficients_fun(model = lm_iris)
+stats <- lm_stat_results_fun(model = lm_iris)
+
+### Use "bquote()" again to add the expressions to the plot
+ggplot() +
+  annotate(geom = "text", x = 1, y = 1, label = bquote(.(coefs)), size = 5, hjust = 0) + 
+  annotate(geom = "text", x = 1, y = 0.9, label = bquote(.(stats)), size = 5, hjust = 0) + 
+  scale_x_continuous(limits = c(0.9, 10)) +
+  scale_y_continuous(limits = c(0.6, 1.1)) + 
+  theme_void() +
+  theme(plot.background = element_rect())
+
+```
+
+
+### (2) Math expressions using the package `ggtext`
+
+If you have a keen eye, you might have noticed that the words in *italic* and _**bold italic**_ in the first example look a bit funky: the letters seem to be spaced out a bit. 
+
+This is totally fine, but we can make the words look better by use the package `ggtext` (check out my [previous post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) on this!) using HTML syntax.
+
+Another benefit of using `ggtext` is that you can insert line breaks between text, which `expression()` can't.
+
+```{r}
+library(ggtext)
+
+ggplot() +
+  geom_richtext(aes(x = 1, y = 1), label = "This is *italic R* and **bold R** and _**bold italic R**_", size = 5, hjust = 0, fill = NA, label.color = NA) + 
+  geom_richtext(aes(x = 1, y = 0.8), label = "*F*<sub><span style='font-size: 8pt'>1,20</span></sub> = 5.2; *R<sup><span style='font-size: 10pt'>2</span></sup>* = 0.8", size = 5, hjust = 0, fill = NA, label.color = NA) + 
+  geom_richtext(aes(x = 1, y = 0.6), label = "*&alpha;* = 0.05; *&chi;<sup><span style='font-size: 10pt'>2</span></sup>* = 3.5", size = 5, hjust = 0, fill = NA, label.color = NA) + 
+  geom_richtext(aes(x = 1, y = 0.4), label = "This is a line break: <br> *p* = 0.001", size = 5, hjust = 0, fill = NA, label.color = NA) + 
+  scale_x_continuous(limits = c(0.9, 10)) +
+  scale_y_continuous(limits = c(0, 1.1)) + 
+  theme_void() +
+  theme(plot.background = element_rect())
+
+```
+
+However, `ggtext` also has its limitations: currently it only supports a limited number of HTML <tags>, and it is a bit more difficult to work with math symbols like fraction, integral, and partial derivative.
+
+
+## Summary
+
+To recap, we learned how to add math expressions to ggplots using `expression()`, `bquote()`, and the package `ggtext`. Knowing the strength of each method and when to use it will give you the best outcome!
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
+
+
+
+
