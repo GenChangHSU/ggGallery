@@ -1,7 +1,7 @@
 ---
 title: "Post #40. Mathematical expressions in ggplots"
 description: |
-  A short description of the post.
+  Come and learn some quick tips for adding mathematical expressions in ggplots!
 author:
   - name: Gen-Chang Hsu
 date: 2025-03-28
@@ -11,7 +11,6 @@ output:
 categories:
   - "2025"
 preview: ../../homepage_images/Post40.png
-draft: true
 ---
 
 <!-- Webpage style -->
@@ -130,7 +129,7 @@ ggplot() +
   annotate(geom = "text", x = 1, y = 1, label = expression(Italic~and~bold~font:~This~is~italic(italic~R)~and~bold(bold~R)~and~bolditalic(bold~italic~R)), size = 5, hjust = 0) + 
   annotate(geom = "text", x = 1, y = 0.8, label = expression(Superscript~and~subscript:~italic(F[1*","*20]) == 5.2*";"~italic(R^2) == 0.8), size = 5, hjust = 0) + 
   annotate(geom = "text", x = 1, y = 0.6, label = expression(Greek~letter:~italic(alpha) == 0.05*";"~italic(chi^2) == 3.5), size = 5, hjust = 0) + 
-  annotate(geom = "text", x = 1, y = 0.4, label = expression(Math~Annotation:~y == frac(1, sigma*sqrt(2*pi))~e^-frac((x-mu)^2, 2*sigma^2)), size = 5, hjust = 0) + 
+  annotate(geom = "text", x = 1, y = 0.4, label = expression(Math~annotation:~y == frac(1, sigma*sqrt(2*pi))~e^-frac((x-mu)^2, 2*sigma^2)), size = 5, hjust = 0) + 
   annotate(geom = "text", x = 1, y = 0.2, label = expression(Calculus:~italic(frac(partialdiff*N, partialdiff*t))*";"~italic(integral(f(x)*dx, a, b))), size = 5, hjust = 0) + 
   scale_x_continuous(limits = c(0.9, 10)) +
   scale_y_continuous(limits = c(0, 1.1)) + 
@@ -210,11 +209,7 @@ ggplot() +
 
 ### (2) Math expressions using the package `ggtext`
 
-If you have a keen eye, you might have noticed that the words in *italic* and _**bold italic**_ in the first example look a bit funky: the letters seem to be spaced out a bit. 
-
-This is totally fine, but we can make the words look better by use the package `ggtext` (check out my [previous post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) on this!) using HTML syntax.
-
-Another benefit of using `ggtext` is that you can insert line breaks between text, which `expression()` can't.
+If you have a keen eye, you might have noticed that the words in *italic* and _**bold italic**_ in the first example look a bit funky: the letters seem to be spaced out a bit. This is totally fine, but we can make the words look "more normal" (well this depends on your perspective) using the package `ggtext`. The package allows users to add text annotations to ggplots using HTML syntax (check out my [previous post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) to learn more!). Another benefit of using `ggtext` is that you can directly insert a line break between text, which `expression()` or `bquote()` can't.
 
 ```{r}
 library(ggtext)
@@ -231,12 +226,12 @@ ggplot() +
 
 ```
 
-However, `ggtext` also has its limitations: currently it only supports a limited number of HTML <tags>, and it is a bit more difficult to work with math symbols like fraction, integral, and partial derivative.
+However, `ggtext` has its limitations: currently it only supports a limited number of HTML tags, and therefore it's a bit more difficult to work with math symbols (like fractions, integrals, and partial derivatives in the first example).
 
 
 ## Summary
 
-To recap, we learned how to add math expressions to ggplots using `expression()`, `bquote()`, and the package `ggtext`. Knowing the strength of each method and when to use it will give you the best outcome!
+To recap, we learned how to add math expressions to ggplots using `expression()` and `bquote()` in base R as well as the package `ggtext`. Knowing the strength of each method and when to use it will give you the best outcome!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
