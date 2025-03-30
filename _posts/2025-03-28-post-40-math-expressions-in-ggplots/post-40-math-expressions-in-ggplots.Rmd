@@ -112,19 +112,19 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-Mathematical expressions are super common in figures: adding stats results or text labels with subscripts and superscripts, using Greek letters and math symbols in axis titles, just to name a few. In this short post, I'm going to show you several ways to annotate math expressions in ggplots. Read on!
+Mathematical expressions are super common in figures: stats results or text labels that involve italic fonts, subscripts and superscripts, Greek letters, and math symbols, just to name a few. In this quick post, I'm going to show you three ways to add math expressions to ggplots. Read on!
 
 
 ## Mathematical expressions in ggplots 
 
 ### (1) Math expressions using expression()
 
-We can use the function `expression()` to create a wide variety of math expressions: italic and bold fonts, superscripts and subscripts, Greek letters, hat and bar symbols, fractions, integrals and derivatives, etc. Here are some commonly used ones (see `?plotmath` for a complete list of math expressions!): 
+We can use the function `expression()` in base R to create a wide variety of math expressions: italic and bold fonts, superscripts and subscripts, Greek letters, hat and bar symbols, fractions, integrals and derivatives, etc. Here are some commonly used ones (see `?plotmath` for a complete list of math expressions!): 
 
 ```{r}
 library(tidyverse)
 
-### Various math expressions and symbols
+### Common math expressions and symbols
 ggplot() + 
   annotate(geom = "text", x = 1, y = 1, label = expression(Italic~and~bold~font:~This~is~italic(italic~R)~and~bold(bold~R)~and~bolditalic(bold~italic~R)), size = 5, hjust = 0) + 
   annotate(geom = "text", x = 1, y = 0.8, label = expression(Superscript~and~subscript:~italic(F[1*","*20]) == 5.2*";"~italic(R^2) == 0.8), size = 5, hjust = 0) + 
@@ -139,9 +139,9 @@ ggplot() +
 ```
 
 
-We can use objects in math expressions too. However, `expression()` can't handle that. Instead, we use the sister function `bquote()`: the syntax is the same as that for `expression()`, but now you can enclose the objects in ".()" and the object values will show up in the text!
+We can use objects in math expressions too. However, `expression()` can't handle that. Instead, we use the sister function `bquote()` (also in base R): the syntax is the same as that for `expression()`, but now we can enclose the objects in ".()" and the object values will show up in the text!
 
-As an example, we can extract the linear model results, store them as objects, and add text annotations to the plot using `bquote()`: 
+As an example, we can extract the linear model results, store them as objects, and add text annotations to the plot using `bquote()`:
 
 ```{r}
 ### Create functions that extract linear model results
@@ -209,7 +209,7 @@ ggplot() +
 
 ### (2) Math expressions using the package `ggtext`
 
-If you have a keen eye, you might have noticed that the words in *italic* and _**bold italic**_ in the first example look a bit funky: the letters seem to be spaced out a bit. This is totally fine, but we can make the words look "more normal" (well this depends on your perspective) using the package `ggtext`. The package allows users to add text annotations to ggplots using HTML syntax (check out my [previous post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) to learn more!). Another benefit of using `ggtext` is that you can directly insert a line break between text, which `expression()` or `bquote()` can't.
+If you have a keen eye, you might have noticed that the words in *italic* and _**bold italic**_ in the first example look a bit funky: the letters seem to be spaced out a bit. This is totally fine, but we can make the words look "more normal" (well this depends on your perspective) using the package `ggtext`. The package allows users to add text annotations to ggplots using HTML syntax (check out my [previous post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) to learn more!). Another benefit of using `ggtext` is that you can directly insert a line break between text, which `expression()` and `bquote()` can't.
 
 ```{r}
 library(ggtext)
