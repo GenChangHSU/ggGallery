@@ -1,0 +1,185 @@
+---
+title: "Post #41. ggplot Map Series No.7: Spatial raster mapping in ggplot"
+description: |
+  In this post, you will learn how to create maps in ggplot using spatial raster data!
+author:
+  - name: Gen-Chang Hsu
+date: 2025-05-05
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2025"
+  - "Map Series"
+preview: ../../homepage_images/Post41.png
+draft: true
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+  color: #2780e3 !important;
+  border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+  border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 30% !important;
+}
+
+</style>
+
+<head>
+  <base target="_blank">
+</head>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+What are spatial raster data?
+
+
+
+
+
+
+## Spatial raster mapping in ggplot
+
+We'll use the [WorldClim 1970-2000 5-km^2^ global monthly precipitation data](https://www.worldclim.org/data/worldclim21.html), which contain 12 GeoTIFF files for each month. These GeoTIFF files can be read into R via the function `rast()` from the package `terra` as "SpatRaster" objects.
+
+```{r}
+library(tidyverse)
+library(terra)
+
+### Download the WorldClim data
+download.file("https://geodata.ucdavis.edu/climate/worldclim/2_1/base/wc2.1_2.5m_prec.zip",
+              destfile = "./WorldClim_Precipitation.zip")
+unzip("WorldClim_Precipitation.zip", exdir = "WorldClim")
+
+### Read the GeoTIFF files
+worldclim_filepath <- list.files("./WorldClim", pattern = ".tif") %>% 
+  str_c("./WorldClim/", .)
+worldclim_precipitation_raster <- map(worldclim_filepath, rast)  # rast() reads the GeoTIFF files as "SpatRaster" objects
+
+```
+
+### Basic visualization
+
+
+
+```{r, fig.width = 5, fig.height = 4}
+library(tidyverse)
+
+
+
+```
+
+
+### Add country boundaries
+
+
+
+
+
+### Change map projections
+
+
+
+
+
+### Create a chloropheth map using country average
+
+
+
+
+
+### Create an animation of monthly average
+
+
+
+
+
+
+## Summary
+
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
