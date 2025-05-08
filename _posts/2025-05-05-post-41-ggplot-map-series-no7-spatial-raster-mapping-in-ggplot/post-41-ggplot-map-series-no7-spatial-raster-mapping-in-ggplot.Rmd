@@ -123,6 +123,8 @@ What are spatial raster data?
 
 ## Spatial raster mapping in ggplot
 
+### 1. Data preparation
+
 We'll use the [WorldClim 1970-2000 5-km^2^ global monthly precipitation data](https://www.worldclim.org/data/worldclim21.html), which contain 12 GeoTIFF files for each month. These GeoTIFF files can be read into R via the function `rast()` from the package `terra` as "SpatRaster" objects.
 
 ```{r}
@@ -141,15 +143,39 @@ worldclim_precipitation_raster <- map(worldclim_filepath, rast)  # rast() reads 
 
 ```
 
-### Basic visualization
+### 2. Create a basic raster map
 
 
 
-```{r, fig.width = 5, fig.height = 4}
-library(tidyverse)
+```{r, fig.width = 10, fig.height = 8, out.width = "85%"}
+### Convert the Spatraster object into a dataframe
+worldclim_precipitation_january_df <- worldclim_precipitation_raster[[1]] %>% 
+  as.data.frame(xy = T) %>% 
+  mutate(precipitation = `wc2.1_2.5m_prec_01`)
 
+### Get country boundaries
+library(rnaturalearth)
+country_boundary <- ne_countries(type = "countries", scale = "small")
 
+### Create a basic raster map
+library(colorspace)
 
+ggplot() + 
+  geom_tile(data = worldclim_precipitation_january_df,
+            aes(x = x, y = y, fill = precipitation)) +
+  geom_sf(data = country_boundary, fill = NA, color = "black", size = 0.8) + 
+  geom_hline(yintercept = Inf, color = "grey") +  # top panel border
+  geom_hline(yintercept = -Inf, color = "grey") +  # bottom panel border
+  geom_vline(xintercept = Inf, color = "grey") +  # right panel border
+  geom_vline(xintercept = -Inf, color = "grey") +  # left panel border
+  scale_fill_continuous_sequential(palette = "Blues", name = "January precipitation (mm)") + 
+  theme_void() + 
+  theme(legend.position = "top",
+        legend.direction = "horizontal",
+        legend.key.width = unit(0.8, "in"),
+        legend.title = element_text(hjust = -5, vjust = 0.75, size = 12),
+        legend.text = element_text(size = 10))
+  
 ```
 
 
