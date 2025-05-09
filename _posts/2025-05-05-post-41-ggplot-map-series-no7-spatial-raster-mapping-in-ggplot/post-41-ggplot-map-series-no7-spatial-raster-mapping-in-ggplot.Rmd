@@ -145,37 +145,45 @@ worldclim_precipitation_raster <- map(worldclim_filepath, rast)  # rast() reads 
 
 ### 2. Create a basic raster map
 
+The object "worldclim_precipitation_raster" contains 12 lists of SpatRaster objects, each of which has x, y, and a layer. Sometime, a SpatRaster may have more than one layer, and we can get the layer names using `names()` from the package `tidyterra`. 
+
+Let's make a map of the average global precipitation in January. We can use the function `geom_spatraster()` from the package `tidyterra` to create a map directly from a SpatRaster object. This function is a wrapper for `geom_raster()`. If there are multiple layers, we need to specify the layer names in the "fill" aesthetic.
+
+We'll also add the country boundaries from the package `rnaturalearth` to the map. 
 
 
 ```{r, fig.width = 10, fig.height = 8, out.width = "85%"}
-### Convert the Spatraster object into a dataframe
-worldclim_precipitation_january_df <- worldclim_precipitation_raster[[1]] %>% 
-  as.data.frame(xy = T) %>% 
-  mutate(precipitation = `wc2.1_2.5m_prec_01`)
-
 ### Get country boundaries
 library(rnaturalearth)
 country_boundary <- ne_countries(type = "countries", scale = "small")
 
-### Create a basic raster map
+### A palette for the precipitation
 library(colorspace)
+col_pal <- sequential_hcl(n = 6, palette = "BluYl", rev = T)
 
-ggplot() + 
-  geom_tile(data = worldclim_precipitation_january_df,
-            aes(x = x, y = y, fill = precipitation)) +
+### Create a raster map
+library(tidyterra)
+
+# raster layer names
+names(worldclim_precipitation_raster[[1]])
+
+# map
+ggplot() +
+  geom_spatraster(data = worldclim_precipitation_raster[[1]],
+                  aes(fill = wc2.1_2.5m_prec_01)) + 
   geom_sf(data = country_boundary, fill = NA, color = "black", size = 0.8) + 
   geom_hline(yintercept = Inf, color = "grey") +  # top panel border
   geom_hline(yintercept = -Inf, color = "grey") +  # bottom panel border
   geom_vline(xintercept = Inf, color = "grey") +  # right panel border
   geom_vline(xintercept = -Inf, color = "grey") +  # left panel border
-  scale_fill_continuous_sequential(palette = "Blues", name = "January precipitation (mm)") + 
+  scale_fill_gradientn(colors = col_pal[c(1, 3, 5, 6)], na.value = "transparent") + 
   theme_void() + 
   theme(legend.position = "top",
         legend.direction = "horizontal",
         legend.key.width = unit(0.8, "in"),
         legend.title = element_text(hjust = -5, vjust = 0.75, size = 12),
         legend.text = element_text(size = 10))
-  
+
 ```
 
 
