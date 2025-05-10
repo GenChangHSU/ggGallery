@@ -183,37 +183,40 @@ ggplot() +
 
 
 
-```{r}
-### Transform the map projection to Robinson
-terraOptions(progress = 0)
-january_precipitation_raster_proj <- project(worldclim_precipitation_raster[[1]], "ESRI:54030")
-
-### Create the long-lat lines and axis labels
+```{r out.width = "80%", fig.width = 8, fig.height = 6, cache = T}
 library(sf)
-country_boundary_proj <- st_transform(country_boundary, crs = "ESRI:54030")
 
+### Transform map projection
+terraOptions(progress = 0)  # hide the progress bar
+january_precipitation_raster_robinson <- project(worldclim_precipitation_raster[[1]], "ESRI:54030")  # ESRI:54030 for Robinson projection
+country_boundary_robinson <- st_transform(country_boundary, crs = "ESRI:54030")
 
-grid <- list(
-       st_sf(geometry = st_sfc(
-  st_multilinestring(x = lapply(c(-180, -120, -60, 0, 60, 120, 180), 
-                function(x) cbind(x, seq(-90, 90, 1)))), crs = 'WGS84')),
-        st_sf(geometry = st_sfc(
-  st_multilinestring(x = lapply(c(-90, -60, -30, 0, 30, 60, 90), function(x) {
-    cbind(seq(-180, 180, 1), x)
-  })), crs = 'WGS84'))) %>% bind_rows()
+### Create sf objects for the long-lat lines and latitude labels
+### https://stackoverflow.com/questions/77216826/preserve-axis-labels-in-geom-sf-when-changing-projection
 
-ylabs <- lapply(c(-90, -60, -30, 0, 30, 60, 90), function(x) {
-  st_sf(label = paste0(abs(x), '\u00b0', 
-                       ifelse(x == 0, '', ifelse(x < 0, 'S', 'N'))),
+# longitude lines
+lon_lines <- lapply(c(-180, -120, -60, 0, 60, 120, 180), function(x) {cbind(x, seq(-90, 90, 1))})
+
+# latitude lines
+lat_lines <- lapply(c(-90, -60, -30, 0, 30, 60, 90), function(x) { cbind(seq(-180, 180, 1), x)})
+
+# create an sf object for the long-lat lines 
+grid_lines <- st_sf(geometry = st_sfc(st_multilinestring(x = append(lon_lines, lat_lines)), crs = 'WGS84'))
+
+# latitude labels
+x <- c(-90, -60, -30, 0, 30, 60, 90)
+
+lat_labels <- lapply(c(-90, -60, -30, 0, 30, 60, 90), function(x) {
+  st_sf(label = str_glue("{abs(x)} °{if_else(x == 0, '', if_else(x < 0, 'S', 'N'))}"),
         geometry = st_sfc(st_point(c(-180, x)), crs = 'WGS84'))
 }) %>% bind_rows()
 
 ### Make the map
 ggplot() +
-  geom_spatraster(data = january_precipitation_raster_proj) +  # January precipitation
-  geom_sf(data = country_boundary_proj, fill = NA, color = "black", size = 0.8) + 
-    geom_sf(data = grid, linewidth = 0.1, color = "grey") +
-  geom_sf_text(data = ylabs, aes(label = label), size = 3, color = 'gray30',
+  geom_spatraster(data = january_precipitation_raster_robinson) +  # January precipitation
+  geom_sf(data = country_boundary_robinson, fill = NA, color = "black", size = 0.8) + 
+    geom_sf(data = grid_lines, linewidth = 0.1, color = "grey") +
+  geom_sf_text(data = lat_labels, aes(label = label), size = 3, color = 'gray30',
                nudge_x = c(-2e6, -1.5e6, -1.3e6, -1e6, -1.3e6, -1.5e6, -2e6)) +
 # country boundaries
   # scale_x_continuous(expand = c(0, 0)) +
@@ -222,7 +225,8 @@ ggplot() +
                        na.value = "transparent",
                        name = "January precipitation (mm)") + 
   theme_minimal() +
-    coord_sf(label_axes = "E--N",
+    coord_sf(
+      # label_axes = "E--N",
            expand = FALSE,
            crs =  "ESRI:54030",
            clip = "off") +
