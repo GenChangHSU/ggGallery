@@ -204,12 +204,23 @@ lat_lines <- lapply(c(-90, -60, -30, 0, 30, 60, 90), function(x) { cbind(seq(-18
 grid_lines <- st_sf(geometry = st_sfc(st_multilinestring(x = append(lon_lines, lat_lines)), crs = 'WGS84'))
 
 # latitude labels
-x <- c(-90, -60, -30, 0, 30, 60, 90)
+
 
 lat_labels <- lapply(c(-90, -60, -30, 0, 30, 60, 90), function(x) {
-  st_sf(label = str_glue("{abs(x)} °{if_else(x == 0, '', if_else(x < 0, 'S', 'N'))}"),
+  st_sf(label = ,
         geometry = st_sfc(st_point(c(-180, x)), crs = 'WGS84'))
 }) %>% bind_rows()
+
+lat <- c(-90, -60, -30, 0, 30, 60, 90)
+lat_labels_df <- data.frame(label = str_glue("{abs(lat)} °{if_else(lat == 0, '', if_else(lat < 0, 'S', 'N'))}"),
+                            lon = -180,
+                            lat = lat)
+
+lat_labels <- st_as_sf(lat_labels_df, coords = c("lon", "lat"), crs = "WGS84")
+
+
+
+
 
 ### Make the map
 ggplot() +
