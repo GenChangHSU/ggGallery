@@ -175,7 +175,8 @@ ggplot() +
         legend.direction = "horizontal",
         legend.key.width = unit(0.8, "in"),
         legend.title = element_text(hjust = -5, vjust = 0.75, size = 12),
-        legend.text = element_text(size = 10))
+        legend.text = element_text(size = 10),
+        axis.text = element_text(color = "black"))
 
 ```
 
@@ -230,34 +231,54 @@ ggplot() +
         panel.border = element_blank(),
         plot.background = element_blank(),
         panel.grid = element_blank(),
-        axis.title = element_blank())
+        axis.title = element_blank(),
+        axis.text = element_text(color = "black"))
 
 ```
 
-### Create a choropheth map of average precipitation in each country
 
+### Create a choropheth map of mean precipitation by country
 
+The package `terra` has a suite of functions for geospatial computation. A useful one is `extract()`, which extracts cell values from SpatRaster layers based on a set of vector locations (points, lines, or polygons) and summarizes the extracted values (min, max, mean, length, etc.).
 
+Below, we'll extract the cell values from the January precipitation SpatRaster based on the country boundary polygons and calculate the mean precipitation for each country. We'll then add the country means to the same country boundary object and make a choropleth map.
 
-```{r}
-### Calculate the mean precipitation in each country
+```{r out.width = "80%", fig.width = 8, fig.height = 6, cache = F}
+### Summarize mean precipitation by country
+january_precipitation_country_mean <- extract(worldclim_precipitation_raster[[1]],  # the SpatRaster to extract cell values from
+                                              country_boundary,  # the vector polygons to define the zones
+                                              fun = mean,  # the summary function 
+                                              na.rm = T) %>% 
+  rename(mean_precipitation = `wc2.1_2.5m_prec_01`)
 
-
-
-
-
-
-
+### Add country means to the country boundary sf object
+january_precipitation_country_mean_sf <- bind_cols(country_boundary_robinson, january_precipitation_country_mean)
+  
 ### Make the choropleth map
-
-
-
-
-
+ggplot() +
+  geom_sf(data = january_precipitation_country_mean_sf, aes(fill = mean_precipitation), color = "black", size = 0.8) + 
+  geom_sf(data = grid_lines, linewidth = 0.1, color = "grey") +  
+  geom_sf_text(data = lat_labels, aes(label = label), size = 3,
+               nudge_x = c(-2e6, -1.5e6, -1.3e6, -1e6, -1.3e6, -1.5e6, -2e6)) +
+  scale_fill_gradientn(colors = col_pal[c(1, 4, 6, 7)], 
+                       na.value = "transparent",
+                       name = "January precipitation (mm)") + 
+  theme_minimal() +
+  coord_sf(expand = F,
+           crs = "ESRI:54030",
+           clip = "off") +
+  theme(legend.position = "top",
+        legend.direction = "horizontal",
+        legend.key.width = unit(0.8, "in"),
+        legend.title = element_text(hjust = -5, vjust = 0.75, size = 12),
+        legend.text = element_text(size = 10),
+        panel.border = element_blank(),
+        plot.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.title = element_blank(),
+        axis.text = element_text(color = "black"))
 
 ```
-
-
 
 
 ### Create an animation of monthly average
