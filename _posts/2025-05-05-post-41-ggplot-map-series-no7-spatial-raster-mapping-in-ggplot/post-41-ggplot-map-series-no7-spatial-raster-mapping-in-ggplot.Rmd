@@ -11,7 +11,7 @@ output:
 categories:
   - "2025"
   - "Map Series"
-preview: ../../homepage_images/Post41.png
+preview: ../../homepage_images/Post41.gif
 draft: true
 ---
 
@@ -280,15 +280,90 @@ ggplot() +
 
 ```
 
-
 ### Create an animation of monthly average
 
+Since we have 12 SpatRaster objects in "worldclim_precipitation_raster", we can create a map for each and turn them into an animation to explore the annual patterns of world precipitation. 
+
+We simply
 
 
+```{r}
+### Loop over the months
+p_world_precipitation_by_month <- map(1:12, function(x) { 
+  
+  # precipitation SpatRaster for each month
+  terraOptions(progress = 0)
+  precipitation_raster_robinson <- project(worldclim_precipitation_raster[[x]], "ESRI:54030")
+  
+  # name of month
+  month <- month.name[x]
 
+  # map
+  p <- ggplot() +
+    geom_spatraster(data = precipitation_raster_robinson) +
+    geom_sf(data = country_boundary_robinson, fill = NA, color = "black", size = 0.8) + 
+    geom_sf(data = grid_lines, linewidth = 0.1, color = "grey") + 
+    geom_sf_text(data = lat_labels, aes(label = label), size = 3, 
+                 nudge_x = c(-2e6, -1.5e6, -1.3e6, -1e6, -1.3e6, -1.5e6, -2e6)) +
+    scale_fill_gradientn(colors = c("#ffffd9", "#238443", "#41b6c4", "#225ea8", "#253494", "#54278f", "#3f007d", "#980043", "#980043"),
+                         limits = c(0, 1000),
+                         breaks = c(0, 250, 500, 750, 1000),
+                         labels = c("0 mm", "250 mm", "500 mm", "750 mm", "> 1,000 mm"),
+                         na.value = "transparent",
+                         name = NULL) +
+    theme_minimal() +
+    labs(title = month) + 
+    coord_sf(expand = F,
+             crs = "ESRI:54030",
+             clip = "off") +
+    theme(legend.position = "top",
+          legend.direction = "horizontal",
+          legend.key.width = unit(0.8, "in"),
+          legend.title = element_text(hjust = -5, vjust = 0.75, size = 12),
+          legend.text = element_text(size = 10),
+          panel.border = element_blank(),
+          plot.background = element_blank(),
+          panel.grid = element_blank(),
+          plot.title = element_text(hjust = 0.51, size = 13, vjust = 0),
+          axis.title = element_blank(),
+          axis.text = element_text(color = "black"))
+  
+  return(p)
+  
+})
 
+### Make the animation
+library(magick)
+
+img <- image_graph(width = 1350, height = 900, res = 200)
+
+out <- lapply(1:length(p_world_precipitation_by_month), function(x) {
+  
+  p <- p_world_precipitation_by_month[[x]]
+  print(p)
+  
+})
+
+dev.off()
+
+animation <- image_animate(img, fps = 2, optimize = T)
+animation
+
+```
 
 ## Summary
+
+To recap, we learned how to create raster maps in ggplot from GeoTIFF files.
+
+We first created a basic raster map of world precipitation.
+
+Next, we changed the map projection and customized the grid lines and labels.
+
+We also created a choropleth map of the country precipitation.
+
+Finally, we created an animation of the monthly precipitation.
+
+Raster data are quite common, especially when it comes to geospatial analysis. Being able to handle these data types will certain help you go a long way! 
 
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
