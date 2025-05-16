@@ -1,5 +1,5 @@
 ---
-title: "Post #41. ggplot Map Series No.7: Spatial raster mapping in ggplot"
+title: "Post #41. ggplot Map Series No.7: Spatial raster maps in ggplot"
 description: |
   In this post, you will learn how to create maps in ggplot using spatial raster data!
 author:
@@ -12,7 +12,6 @@ categories:
   - "2025"
   - "Map Series"
 preview: ../../homepage_images/Post41.gif
-draft: true
 ---
 
 <!-- Webpage style -->
@@ -114,18 +113,13 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-What are spatial raster data?
+Welcome to a new post in my ggplot Map Series! So far, we've covered [polygon maps](https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/), [vector maps using shapfiles](https://genchanghsu.github.io/ggGallery/posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/), and [Google Maps](https://genchanghsu.github.io/ggGallery/posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap/). Today, we're going to look at yet another type of maps: raster maps, which are maps created from raster data. Specifically, we'll be working with [GeoTIFF](https://en.wikipedia.org/wiki/GeoTIFF) files. These are special TIFF files embedded with georeferencing information such as map projection, coordinate systems, ellipsoids, and datums. They are commonly used in satellite imagery, aerial photography, and digitized maps that can be used for GIS analysis (e.g., climatic maps). So without further ado, let's get started!
 
-
-
-
-
-
-## Spatial raster mapping in ggplot
+## Spatial raster maps in ggplot
 
 ### 1. Data preparation
 
-We'll use the [WorldClim 1970-2000 5-km^2^ global monthly precipitation data](https://www.worldclim.org/data/worldclim21.html), which contain 12 GeoTIFF files for each month. These GeoTIFF files can be read into R via the function `rast()` from the package `terra` as "SpatRaster" objects.
+The data we'll be using are the [WorldClim 1970-2000 5-km^2^ global monthly precipitation data](https://www.worldclim.org/data/worldclim21.html), which contain 12 GeoTIFF files for each month. These GeoTIFF files can be read into R via the function `rast()` from the package `terra` as "SpatRaster" objects.
 
 ```{r cache = F}
 library(tidyverse)
@@ -282,25 +276,35 @@ ggplot() +
 
 ### Create an animation of monthly average
 
-Since we have 12 SpatRaster objects in "worldclim_precipitation_raster", we can create a map for each and turn them into an animation to explore the annual patterns of world precipitation. 
+Remember we have 12 SpatRaster objects in "worldclim_precipitation_raster". We can create a map for each and turn them into an animation to explore the temporal patterns of world precipitation. We'll simply loop through each month and make a map for it, just like what we did for January. This gives us a list of 12 maps. We can then use the functions from the package 
+[`magick`](https://cran.r-project.org/web/packages/magick/vignettes/intro.html) to make an animation of those maps. 
 
-We simply
-
-
-```{r}
-### Loop over the months
+```{r out.width = "80%", fig.width = 8, fig.height = 6, cache = F}
+### Create a map for each month
 p_world_precipitation_by_month <- map(1:12, function(x) { 
   
-  # precipitation SpatRaster for each month
+  # SpatRaster for each month
+  monthly_precipitation_raster <- worldclim_precipitation_raster[[x]]
+  
+  # name of precipitation layer
+  monthly_precipitation_raster_layer <- names(monthly_precipitation_raster)
+  
+  # set the max precipitation to 1,000 mm (for a better color visualization)
+  monthly_precipitation_raster <- monthly_precipitation_raster %>% 
+    mutate(!!monthly_precipitation_raster_layer := if_else(!!sym(monthly_precipitation_raster_layer) >= 1000, 
+                                                           1000, 
+                                                           !!sym(monthly_precipitation_raster_layer)))
+
+  # change map projection
   terraOptions(progress = 0)
-  precipitation_raster_robinson <- project(worldclim_precipitation_raster[[x]], "ESRI:54030")
+  monthly_precipitation_raster_robinson <- project(monthly_precipitation_raster, "ESRI:54030")
   
   # name of month
-  month <- month.name[x]
+  month_name <- month.name[x]
 
   # map
   p <- ggplot() +
-    geom_spatraster(data = precipitation_raster_robinson) +
+    geom_spatraster(data = monthly_precipitation_raster_robinson) +
     geom_sf(data = country_boundary_robinson, fill = NA, color = "black", size = 0.8) + 
     geom_sf(data = grid_lines, linewidth = 0.1, color = "grey") + 
     geom_sf_text(data = lat_labels, aes(label = label), size = 3, 
@@ -312,7 +316,7 @@ p_world_precipitation_by_month <- map(1:12, function(x) {
                          na.value = "transparent",
                          name = NULL) +
     theme_minimal() +
-    labs(title = month) + 
+    labs(title = month_name) + 
     coord_sf(expand = F,
              crs = "ESRI:54030",
              clip = "off") +
@@ -335,36 +339,29 @@ p_world_precipitation_by_month <- map(1:12, function(x) {
 ### Make the animation
 library(magick)
 
-img <- image_graph(width = 1350, height = 900, res = 200)
+# create a Magick image object
+image <- image_graph(width = 1350, height = 900, res = 200)
 
-out <- lapply(1:length(p_world_precipitation_by_month), function(x) {
+# display the maps on the plotting device
+out <- lapply(1:12, function(x) {
   
   p <- p_world_precipitation_by_month[[x]]
   print(p)
   
 })
 
+# close the plotting device
 dev.off()
 
-animation <- image_animate(img, fps = 2, optimize = T)
+# animate the images
+animation <- image_animate(image, fps = 2, optimize = T)
 animation
 
 ```
 
 ## Summary
 
-To recap, we learned how to create raster maps in ggplot from GeoTIFF files.
-
-We first created a basic raster map of world precipitation.
-
-Next, we changed the map projection and customized the grid lines and labels.
-
-We also created a choropleth map of the country precipitation.
-
-Finally, we created an animation of the monthly precipitation.
-
-Raster data are quite common, especially when it comes to geospatial analysis. Being able to handle these data types will certain help you go a long way! 
-
+To recap, we learned how to create raster maps from GeoTIFF files in ggplot. We first created a basic raster map of world precipitation using the packages `terra` and `tidyterra`. Next, we modified the map by changing the map projection and customizing the grid lines and axis labels. We also did some basic manipulations of the raster data by calculating the average precipitation in each country and created a choropleth map for it. Finally, we made a map for each of the 12 months and turned them into an animation using the package `magick`. Raster data are quite common, especially when it comes to geospatial analysis. Having some "raster" skills under your belt will certainly go a long way!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 

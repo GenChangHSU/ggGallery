@@ -7,7 +7,400 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Fri, 28 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 05 May 2025 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #41. ggplot Map Series No.7: Spatial raster maps in ggplot</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2025-05-05-post-41-ggplot-map-series-no7-spatial-raster-mapping-in-ggplot</link>
+      <description>
+
+
+&lt;!-- Webpage style --&gt;
+&lt;style&gt;
+d-article a {
+  color: #2780e3 !important;
+  border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+  border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 30% !important;
+}
+
+&lt;/style&gt;
+&lt;head&gt;
+&lt;base target="_blank"&gt;
+&lt;/head&gt;
+&lt;!-- Start of the article --&gt;
+&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Welcome to a new post in my ggplot Map Series! So far, we’ve covered
+&lt;a
+href="https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/"&gt;polygon
+maps&lt;/a&gt;, &lt;a
+href="https://genchanghsu.github.io/ggGallery/posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/"&gt;vector
+maps using shapfiles&lt;/a&gt;, and &lt;a
+href="https://genchanghsu.github.io/ggGallery/posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap/"&gt;Google
+Maps&lt;/a&gt;. Today, we’re going to look at yet another type of maps: raster
+maps, which are maps created from raster data. Specifically, we’ll be
+working with &lt;a href="https://en.wikipedia.org/wiki/GeoTIFF"&gt;GeoTIFF&lt;/a&gt;
+files. These are special TIFF files embedded with georeferencing
+information such as map projection, coordinate systems, ellipsoids, and
+datums. They are commonly used in satellite imagery, aerial photography,
+and digitized maps that can be used for GIS analysis (e.g., climatic
+maps). So without further ado, let’s get started!&lt;/p&gt;
+&lt;h2 id="spatial-raster-maps-in-ggplot"&gt;Spatial raster maps in
+ggplot&lt;/h2&gt;
+&lt;h3 id="data-preparation"&gt;1. Data preparation&lt;/h3&gt;
+&lt;p&gt;The data we’ll be using are the &lt;a
+href="https://www.worldclim.org/data/worldclim21.html"&gt;WorldClim
+1970-2000 5-km&lt;sup&gt;2&lt;/sup&gt; global monthly precipitation data&lt;/a&gt;, which
+contain 12 GeoTIFF files for each month. These GeoTIFF files can be read
+into R via the function &lt;code&gt;rast()&lt;/code&gt; from the package
+&lt;code&gt;terra&lt;/code&gt; as “SpatRaster” objects.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+library(terra)
+
+### Download the WorldClim data
+download.file(&amp;quot;https://geodata.ucdavis.edu/climate/worldclim/2_1/base/wc2.1_2.5m_prec.zip&amp;quot;,
+              destfile = &amp;quot;./WorldClim_Precipitation.zip&amp;quot;)
+unzip(&amp;quot;WorldClim_Precipitation.zip&amp;quot;, exdir = &amp;quot;WorldClim&amp;quot;)
+
+### Read the GeoTIFF files
+worldclim_filepath &amp;lt;- list.files(&amp;quot;./WorldClim&amp;quot;, pattern = &amp;quot;.tif&amp;quot;) %&amp;gt;% 
+  str_c(&amp;quot;./WorldClim/&amp;quot;, .)
+worldclim_precipitation_raster &amp;lt;- map(worldclim_filepath, rast)  # rast() reads the GeoTIFF files as &amp;quot;SpatRaster&amp;quot; objects&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id="create-a-basic-raster-map"&gt;2. Create a basic raster map&lt;/h3&gt;
+&lt;p&gt;The object “worldclim_precipitation_raster” contains 12 lists of
+SpatRaster objects, each of which has x- and y-coordinates as well as a
+layer for the precipitation. Sometimes, a SpatRaster object may have
+more than one layer, and we can get all the layer names using
+&lt;code&gt;names()&lt;/code&gt; from the package &lt;code&gt;tidyterra&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Let’s make a map of the average global precipitation in January (the
+first list in “worldclim_precipitation_raster”). To create a map from a
+SpatRaster object, we can use the function
+&lt;code&gt;geom_spatraster()&lt;/code&gt; from the package &lt;code&gt;tidyterra&lt;/code&gt;.
+This function is a wrapper for &lt;code&gt;geom_raster()&lt;/code&gt;. In this
+example, we only have one layer, so it’s not necessarily to specify the
+layer for the “fill” aesthetic, but we need to do so if there are
+multiple layers. We’ll also draw the country boundaries from the package
+&lt;code&gt;rnaturalearth&lt;/code&gt; on the map.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Get country boundaries
+library(rnaturalearth)
+country_boundary &amp;lt;- ne_countries(type = &amp;quot;countries&amp;quot;, scale = &amp;quot;small&amp;quot;)
+
+### Create a palette for the precipitation
+library(colorspace)
+col_pal &amp;lt;- sequential_hcl(n = 7, palette = &amp;quot;BluYl&amp;quot;, rev = T)
+
+### Get raster layer names
+library(tidyterra)
+names(worldclim_precipitation_raster[[1]])&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;wc2.1_2.5m_prec_01&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Create a map
+ggplot() +
+  geom_spatraster(data = worldclim_precipitation_raster[[1]]) +  # January precipitation
+  geom_sf(data = country_boundary, fill = NA, color = &amp;quot;black&amp;quot;, size = 0.8) +  # country boundaries
+  scale_fill_gradientn(colors = col_pal[c(1, 4, 6, 7)], 
+                       na.value = &amp;quot;transparent&amp;quot;,
+                       name = &amp;quot;January precipitation (mm)&amp;quot;) + 
+  coord_sf(xlim = c(-180, 180), ylim = c(-90, 90), expand = F) + 
+  theme_bw(base_size = 13) +  
+  theme(legend.position = &amp;quot;top&amp;quot;,
+        legend.direction = &amp;quot;horizontal&amp;quot;,
+        legend.key.width = unit(0.8, &amp;quot;in&amp;quot;),
+        legend.title = element_text(hjust = -5, vjust = 0.75, size = 12),
+        legend.text = element_text(size = 10),
+        axis.text = element_text(color = &amp;quot;black&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file8682f013e7_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="change-the-map-projection"&gt;Change the map projection&lt;/h3&gt;
+&lt;p&gt;To change the map projection, we need to transform the CRS of the
+SpatRaster object for the precipitation using the function
+&lt;code&gt;project()&lt;/code&gt; from the package &lt;code&gt;terra&lt;/code&gt; as well as
+the sf object for the country boundaries using the function
+&lt;code&gt;st_transform()&lt;/code&gt; from the package &lt;code&gt;sf&lt;/code&gt;. In this
+example, we’ll use the Robinson projection (ESRI:54030). Moreover,
+because of the new projection, the lon-lat lines and labels can be a
+little messy and hard to control. To deal with this, we can manually add
+the lines and labels to the map as additional geom layers. Basically, we
+create a set of lon-lat coordinates where we would like the grid lines
+to be drawn as well as a dataframe specifying the axis labels and
+positions. We then convert these into sf objects and add them to the
+map. (This method is inspired by this &lt;a
+href="https://stackoverflow.com/questions/77216826/preserve-axis-labels-in-geom-sf-when-changing-projection"&gt;stack
+overflow solution&lt;/a&gt;!)&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(sf)
+
+### Transform map projection
+terraOptions(progress = 0)  # hide the progress bar
+january_precipitation_raster_robinson &amp;lt;- project(worldclim_precipitation_raster[[1]], &amp;quot;ESRI:54030&amp;quot;)  # ESRI:54030 for Robinson projection
+country_boundary_robinson &amp;lt;- st_transform(country_boundary, crs = &amp;quot;ESRI:54030&amp;quot;)
+
+### Create sf objects for the long-lat lines and latitude labels
+# longitude lines
+lon_lines &amp;lt;- lapply(c(-180, -120, -60, 0, 60, 120, 180), function(x) {cbind(x, seq(-90, 90, 1))})
+
+# latitude lines
+lat_lines &amp;lt;- lapply(c(-90, -60, -30, 0, 30, 60, 90), function(x) {cbind(seq(-180, 180, 1), x)})
+
+# an sf object for the long-lat lines 
+grid_lines &amp;lt;- st_sf(geometry = st_sfc(st_multilinestring(x = append(lon_lines, lat_lines)), crs = &amp;quot;WGS84&amp;quot;))
+
+# an sf objects for the latitude labels
+lat &amp;lt;- c(-90, -60, -30, 0, 30, 60, 90)
+lat_labels &amp;lt;- data.frame(label = str_glue(&amp;quot;{abs(lat)} °{if_else(lat == 0, &amp;#39;&amp;#39;, if_else(lat &amp;lt; 0, &amp;#39;S&amp;#39;, &amp;#39;N&amp;#39;))}&amp;quot;),
+                         lon = -180,
+                         lat = lat) %&amp;gt;% 
+  st_as_sf(., coords = c(&amp;quot;lon&amp;quot;, &amp;quot;lat&amp;quot;), crs = &amp;quot;WGS84&amp;quot;)
+
+### Make the map
+ggplot() +
+  geom_spatraster(data = january_precipitation_raster_robinson) +
+  geom_sf(data = country_boundary_robinson, fill = NA, color = &amp;quot;black&amp;quot;, size = 0.8) + 
+  geom_sf(data = grid_lines, linewidth = 0.1, color = &amp;quot;grey&amp;quot;) +  # add grid lines
+  geom_sf_text(data = lat_labels, aes(label = label), size = 3,  # add latitude labels
+               nudge_x = c(-2e6, -1.5e6, -1.3e6, -1e6, -1.3e6, -1.5e6, -2e6)) +  # need to adjust the amount of nudging depending on the specific map projection used
+  scale_fill_gradientn(colors = col_pal[c(1, 4, 6, 7)], 
+                       na.value = &amp;quot;transparent&amp;quot;,
+                       name = &amp;quot;January precipitation (mm)&amp;quot;) + 
+  theme_minimal() +
+  coord_sf(expand = F,
+           crs = &amp;quot;ESRI:54030&amp;quot;,
+           clip = &amp;quot;off&amp;quot;) +
+  theme(legend.position = &amp;quot;top&amp;quot;,
+        legend.direction = &amp;quot;horizontal&amp;quot;,
+        legend.key.width = unit(0.8, &amp;quot;in&amp;quot;),
+        legend.title = element_text(hjust = -5, vjust = 0.75, size = 12),
+        legend.text = element_text(size = 10),
+        panel.border = element_blank(),
+        plot.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.title = element_blank(),
+        axis.text = element_text(color = &amp;quot;black&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file8682f013e7_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="create-a-choropheth-map-of-mean-precipitation-by-country"&gt;Create
+a choropheth map of mean precipitation by country&lt;/h3&gt;
+&lt;p&gt;The package &lt;code&gt;terra&lt;/code&gt; has a suite of functions for
+geospatial computation. A useful one is &lt;code&gt;extract()&lt;/code&gt;, which
+extracts cell values from SpatRaster layers based on a set of vector
+locations (points, lines, or polygons) and summarizes the extracted
+values (min, max, mean, length, etc.).&lt;/p&gt;
+&lt;p&gt;Below, we’ll extract the cell values from the January precipitation
+SpatRaster based on the country boundary polygons and calculate the mean
+precipitation for each country. We’ll then add the country means to the
+same country boundary object and make a choropleth map.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Summarize mean precipitation by country
+january_precipitation_country_mean &amp;lt;- extract(worldclim_precipitation_raster[[1]],  # the SpatRaster to extract cell values from
+                                              country_boundary,  # the vector polygons to define the zones
+                                              fun = mean,  # the summary function 
+                                              na.rm = T) %&amp;gt;% 
+  rename(mean_precipitation = `wc2.1_2.5m_prec_01`)
+
+### Add country means to the country boundary sf object
+january_precipitation_country_mean_sf &amp;lt;- bind_cols(country_boundary_robinson, january_precipitation_country_mean)
+  
+### Make the choropleth map
+ggplot() +
+  geom_sf(data = january_precipitation_country_mean_sf, aes(fill = mean_precipitation), color = &amp;quot;black&amp;quot;, size = 0.8) + 
+  geom_sf(data = grid_lines, linewidth = 0.1, color = &amp;quot;grey&amp;quot;) +  
+  geom_sf_text(data = lat_labels, aes(label = label), size = 3,
+               nudge_x = c(-2e6, -1.5e6, -1.3e6, -1e6, -1.3e6, -1.5e6, -2e6)) +
+  scale_fill_gradientn(colors = col_pal[c(1, 4, 6, 7)], 
+                       na.value = &amp;quot;transparent&amp;quot;,
+                       name = &amp;quot;January precipitation (mm)&amp;quot;) + 
+  theme_minimal() +
+  coord_sf(expand = F,
+           crs = &amp;quot;ESRI:54030&amp;quot;,
+           clip = &amp;quot;off&amp;quot;) +
+  theme(legend.position = &amp;quot;top&amp;quot;,
+        legend.direction = &amp;quot;horizontal&amp;quot;,
+        legend.key.width = unit(0.8, &amp;quot;in&amp;quot;),
+        legend.title = element_text(hjust = -5, vjust = 0.75, size = 12),
+        legend.text = element_text(size = 10),
+        panel.border = element_blank(),
+        plot.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.title = element_blank(),
+        axis.text = element_text(color = &amp;quot;black&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file8682f013e7_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="create-an-animation-of-monthly-average"&gt;Create an animation of
+monthly average&lt;/h3&gt;
+&lt;p&gt;Remember we have 12 SpatRaster objects in
+“worldclim_precipitation_raster”. We can create a map for each and turn
+them into an animation to explore the temporal patterns of world
+precipitation. We’ll simply loop through each month and make a map for
+it, just like what we did for January. This gives us a list of 12 maps.
+We can then use the functions from the package (&lt;code&gt;magick&lt;/code&gt;)[&lt;a
+href="https://cran.r-project.org/web/packages/magick/vignettes/intro.html"
+class="uri"&gt;https://cran.r-project.org/web/packages/magick/vignettes/intro.html&lt;/a&gt;]
+to make an animation of those maps.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Create a map for each month
+p_world_precipitation_by_month &amp;lt;- map(1:12, function(x) { 
+  
+  # SpatRaster for each month
+  monthly_precipitation_raster &amp;lt;- worldclim_precipitation_raster[[x]]
+  
+  # name of precipitation layer
+  monthly_precipitation_raster_layer &amp;lt;- names(monthly_precipitation_raster)
+  
+  # set the max precipitation to 1,000 mm (for a better color visualization)
+  monthly_precipitation_raster &amp;lt;- monthly_precipitation_raster %&amp;gt;% 
+    mutate(!!monthly_precipitation_raster_layer := if_else(!!sym(monthly_precipitation_raster_layer) &amp;gt;= 1000, 
+                                                           1000, 
+                                                           !!sym(monthly_precipitation_raster_layer)))
+
+  # change map projection
+  terraOptions(progress = 0)
+  monthly_precipitation_raster_robinson &amp;lt;- project(monthly_precipitation_raster, &amp;quot;ESRI:54030&amp;quot;)
+  
+  # name of month
+  month_name &amp;lt;- month.name[x]
+
+  # map
+  p &amp;lt;- ggplot() +
+    geom_spatraster(data = monthly_precipitation_raster_robinson) +
+    geom_sf(data = country_boundary_robinson, fill = NA, color = &amp;quot;black&amp;quot;, size = 0.8) + 
+    geom_sf(data = grid_lines, linewidth = 0.1, color = &amp;quot;grey&amp;quot;) + 
+    geom_sf_text(data = lat_labels, aes(label = label), size = 3, 
+                 nudge_x = c(-2e6, -1.5e6, -1.3e6, -1e6, -1.3e6, -1.5e6, -2e6)) +
+    scale_fill_gradientn(colors = c(&amp;quot;#ffffd9&amp;quot;, &amp;quot;#238443&amp;quot;, &amp;quot;#41b6c4&amp;quot;, &amp;quot;#225ea8&amp;quot;, &amp;quot;#253494&amp;quot;, &amp;quot;#54278f&amp;quot;, &amp;quot;#3f007d&amp;quot;, &amp;quot;#980043&amp;quot;, &amp;quot;#980043&amp;quot;),
+                         limits = c(0, 1000),
+                         breaks = c(0, 250, 500, 750, 1000),
+                         labels = c(&amp;quot;0 mm&amp;quot;, &amp;quot;250 mm&amp;quot;, &amp;quot;500 mm&amp;quot;, &amp;quot;750 mm&amp;quot;, &amp;quot;&amp;gt; 1,000 mm&amp;quot;),
+                         na.value = &amp;quot;transparent&amp;quot;,
+                         name = NULL) +
+    theme_minimal() +
+    labs(title = month_name) + 
+    coord_sf(expand = F,
+             crs = &amp;quot;ESRI:54030&amp;quot;,
+             clip = &amp;quot;off&amp;quot;) +
+    theme(legend.position = &amp;quot;top&amp;quot;,
+          legend.direction = &amp;quot;horizontal&amp;quot;,
+          legend.key.width = unit(0.8, &amp;quot;in&amp;quot;),
+          legend.title = element_text(hjust = -5, vjust = 0.75, size = 12),
+          legend.text = element_text(size = 10),
+          panel.border = element_blank(),
+          plot.background = element_blank(),
+          panel.grid = element_blank(),
+          plot.title = element_text(hjust = 0.51, size = 13, vjust = 0),
+          axis.title = element_blank(),
+          axis.text = element_text(color = &amp;quot;black&amp;quot;))
+  
+  return(p)
+  
+})
+
+### Make the animation
+library(magick)
+
+# create a Magick image object
+image &amp;lt;- image_graph(width = 1350, height = 900, res = 200)
+
+# display the maps on the plotting device
+out &amp;lt;- lapply(1:12, function(x) {
+  
+  p &amp;lt;- p_world_precipitation_by_month[[x]]
+  print(p)
+  
+})
+
+# close the plotting device
+dev.off()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;png 
+  2 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# animate the images
+animation &amp;lt;- image_animate(image, fps = 2, optimize = T)
+animation&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="../file8682f013e7_files/figure-html/unnamed-chunk-5-1.gif" width="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;p&gt;To recap, we learned how to create raster maps from GeoTIFF files in
+ggplot. We first created a basic raster map of world precipitation using
+the packages &lt;code&gt;terra&lt;/code&gt; and &lt;code&gt;tidyterra&lt;/code&gt;. Next, we
+modified the map by changing the map projection and customizing the grid
+lines and axis labels. We also did some basic manipulations of the
+raster data by calculating the average precipitation in each country and
+created a choropleth map for it. Finally, we made a map for each of the
+12 months and turned them into an animation using the package
+&lt;code&gt;magick&lt;/code&gt;. Raster data are quite common, especially when it
+comes to geospatial analysis. Having some “raster” skills under your
+belt will certainly go a long way!&lt;/p&gt;
+&lt;p&gt;Hope you learn something useful from this post and don’t forget to
+leave your comments and suggestions below if you have any!&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>f28439450dd313b3f1f56133d747852a</distill:md5>
+      <category>2025</category>
+      <category>Map Series</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2025-05-05-post-41-ggplot-map-series-no7-spatial-raster-mapping-in-ggplot</guid>
+      <pubDate>Mon, 05 May 2025 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2025-05-05-post-41-ggplot-map-series-no7-spatial-raster-mapping-in-ggplot/../../homepage_images/Post41.gif" medium="image" type="image/gif"/>
+    </item>
     <item>
       <title>Post #40. Mathematical expressions in ggplots</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>
@@ -197,7 +590,7 @@ grid-like fashion and the function will make the figure as close to a
 square as possible.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Plot packing
 p1 + p2 + p3 + p4&lt;/code&gt;&lt;/pre&gt;
-&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-2-1.png" width="528" style="display: block; margin: auto;" /&gt;
+&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-2-1.png" width="528" style="display: block; margin: auto;" /&gt;
 &lt;div style="height: 0.5em;"&gt;
 
 &lt;/div&gt;
@@ -206,10 +599,10 @@ plots horizontally and “&lt;code&gt;/&lt;/code&gt;” to stack the plots
 vertically.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Horizontal stacking
 p1 | p2 | p3 | p4&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-3-1.png" width="864" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-3-1.png" width="864" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Vertical stacking
 p1 / p2 / p3 / p4&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-4-1.png" width="40%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-4-1.png" width="40%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;div style="height: 0.5em;"&gt;
 
 &lt;/div&gt;
@@ -219,10 +612,10 @@ and finally “&lt;code&gt;|&lt;/code&gt;”. If we want to change the precedenc
 can use parentheses. Compared the following two figures:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Default precedence
 p1 / p2 | p3 + p4&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-5-1.png" width="90%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-5-1.png" width="90%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Indicate precedence with parentheses
 p1 / (p2 | p3) + p4&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-6-1.png" width="60%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-6-1.png" width="60%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;In the first specification (the default precedence), p3 and p4 are
 packed first, then p1 and p2 are stacked vertically, and finally these
 two composite plots are stacked horizontally to produce the final
@@ -239,7 +632,7 @@ p_list &amp;lt;- list(p1, p2, p3, p4)
 
 ### Wrap the plots
 wrap_plots(p_list)&lt;/code&gt;&lt;/pre&gt;
-&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;" /&gt;
+&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;" /&gt;
 &lt;div style="height: 1em;"&gt;
 
 &lt;/div&gt;
@@ -250,7 +643,7 @@ can create extra white space by adding empty plots using
 &lt;code&gt;plot_spacer()&lt;/code&gt;:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Change the layout design and add empty plots
 p1 + plot_spacer() + p2 + p3 + p4 + plot_layout(ncol = 2, widths = c(2, 1))&lt;/code&gt;&lt;/pre&gt;
-&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;" /&gt;
+&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;" /&gt;
 &lt;div style="height: 1em;"&gt;
 
 &lt;/div&gt;
@@ -264,7 +657,7 @@ BBBBDDDD
 &amp;quot;
 
 p1 + p2 + p3 + p4 + plot_layout(design = layout_matrix)&lt;/code&gt;&lt;/pre&gt;
-&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 &lt;div style="height: 1em;"&gt;
 
 &lt;/div&gt;
@@ -276,7 +669,7 @@ layout_coord &amp;lt;- c(area(t = 1, b = 7, l = 1, r = 7),
                   area(t = 3, b = 5, l = 13, r = 15))
 
 p1 + p2 + p3 + plot_layout(design = layout_coord)&lt;/code&gt;&lt;/pre&gt;
-&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 &lt;div style="height: 0.8em;"&gt;
 
 &lt;/div&gt;
@@ -287,7 +680,7 @@ to our second topic: plot alignment.&lt;/p&gt;
 automatically aligned by their panel borders:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Default plot alignment by panel borders
 p1 / p2 / p3  # the legend of p2 takes up extra space&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-11-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-11-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;p&gt;However, this default behavior can sometimes be a bit troublesome
 because the legend (like the one above) or long axis text will take up
 extra space. To deal with this issue, we can use the function
@@ -300,7 +693,7 @@ without legends:&lt;/li&gt;
 &lt;/ol&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### 1. Free the right panel border of p2
 p1 / free(p2, type = &amp;quot;panel&amp;quot;, side = &amp;quot;r&amp;quot;) / p3  # the right panel border of p2 is no longer forced to be aligned with those of p1 and p3&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-12-1.png" width="403.2" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-12-1.png" width="403.2" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;div style="height: 1em;"&gt;
 
 &lt;/div&gt;
@@ -316,10 +709,10 @@ p2_long_axis_text &amp;lt;- p2 + scale_y_continuous(labels = ~ format(as.numeric
 
 ### Default alignment
 p1 / p2_long_axis_text / p3  # extra white space between y-axis title and text in p1 and p3&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-13-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-13-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### 2. Free the y-axis title of p1
 free(p1, type = &amp;quot;label&amp;quot;, side = &amp;quot;l&amp;quot;) / p2_long_axis_text / p3  # no extra space between y-axis title and text in p1&lt;/code&gt;&lt;/pre&gt;
-&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-13-2.png" width="480" style="display: block; margin: auto;" /&gt;
+&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-13-2.png" width="480" style="display: block; margin: auto;" /&gt;
 &lt;div style="height: 1em;"&gt;
 
 &lt;/div&gt;
@@ -331,10 +724,10 @@ designated space:&lt;/li&gt;
 &lt;/ol&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Default alignment
 p2 + plot_spacer() + p1 + p3  # the legend of p2 creates a space gap between p1 and p3&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### 3. Free the space to the right of p2
 free(p2, type = &amp;quot;space&amp;quot;, side = &amp;quot;r&amp;quot;) + plot_spacer() + p1 + p3  # now the legend of p2 can take up the white space created by plot_spacer()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-14-2.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-14-2.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;div style="height: 0.5em;"&gt;
 
 &lt;/div&gt;
@@ -348,7 +741,7 @@ to collect and place all the legends on the right using the argument
 “guides = ‘collect’” in &lt;code&gt;plot_layout()&lt;/code&gt;:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Place the legends on the right
 p1 + p3 + p2 + p4 + plot_layout(guides = &amp;quot;collect&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-15-1.png" width="528" style="display: block; margin: auto;" /&gt;
+&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-15-1.png" width="528" style="display: block; margin: auto;" /&gt;
 &lt;div style="height: 1em;"&gt;
 
 &lt;/div&gt;
@@ -356,7 +749,7 @@ p1 + p3 + p2 + p4 + plot_layout(guides = &amp;quot;collect&amp;quot;)&lt;/code&g
 removed automatically when there are multiple same legends:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Duplicate legends are removed
 p1 + p3 + p2 + p2 + plot_layout(guides = &amp;quot;collect&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-16-1.png" width="528" style="display: block; margin: auto;" /&gt;
+&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-16-1.png" width="528" style="display: block; margin: auto;" /&gt;
 &lt;div style="height: 1em;"&gt;
 
 &lt;/div&gt;
@@ -364,7 +757,7 @@ p1 + p3 + p2 + p2 + plot_layout(guides = &amp;quot;collect&amp;quot;)&lt;/code&g
 for the legend(s):&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Create a designated area for the legend(s)
 p1 + p3 + p2 + guide_area() + plot_layout(guides = &amp;quot;collect&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;" /&gt;
+&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;" /&gt;
 &lt;div style="height: 1em;"&gt;
 
 &lt;/div&gt;
@@ -373,10 +766,10 @@ duplicate title and text using the argument “axes = ‘collect’” or
 “axis_titles = ‘collect’” in &lt;code&gt;plot_layout()&lt;/code&gt;:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Remove duplicate axis title and text
 p1 + p2 + p3 + p4 + plot_layout(axes = &amp;quot;collect&amp;quot;)  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-18-1.png" width="528" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-18-1.png" width="528" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;### Remove duplicate axis title only
 p1 + p2 + p3 + p4 + plot_layout(axis_titles = &amp;quot;collect&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-18-2.png" width="528" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-18-2.png" width="528" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="text-annotations"&gt;Text annotations&lt;/h3&gt;
 &lt;p&gt;We can add a title, a subtitle, a caption, and panel tags to the
 patchwork figure using the function &lt;code&gt;plot_annotation()&lt;/code&gt;. The
@@ -394,7 +787,7 @@ p1 + p2 + p3 + p4 +
                                 plot.caption = element_text(face = &amp;quot;italic&amp;quot;),
                                 plot.tag.position = c(0.1, 1),
                                 plot.tag = element_text(size = 13, hjust = 0)))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-19-1.png" width="576" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-19-1.png" width="576" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h3 id="inset-plots"&gt;Inset plots&lt;/h3&gt;
 &lt;p&gt;The last (but certainly not least) thing we can do is to add an inset
 plot to the figure. This can easily be done via the function
@@ -402,7 +795,7 @@ plot to the figure. This can easily be done via the function
 and specify the desired location (using the relative coordinates from 0
 to 1), and you’re all set!&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;p1 + inset_element(p3, top = 0.95, bottom = 0.55, left = 0.55, right = 0.95)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file69707ded75d5_files/figure-html/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file868bf1fe2_files/figure-html/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;To summarize what we did, we first learned several ways to arrange
 multiple ggplots. We then learned how to adjust plot alignments and
