@@ -1,7 +1,7 @@
 ---
 title: "Post #41. ggplot Map Series No.7: Spatial raster maps in ggplot"
 description: |
-  In this post, you will learn how to create maps in ggplot using spatial raster data!
+  In this post, we will explore how to create maps in ggplot using spatial raster data!
 author:
   - name: Gen-Chang Hsu
 date: 2025-05-05
@@ -113,7 +113,7 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-Welcome to a new post in my ggplot Map Series! So far, we've covered [polygon maps](https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/), [vector maps using shapfiles](https://genchanghsu.github.io/ggGallery/posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/), and [Google Maps](https://genchanghsu.github.io/ggGallery/posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap/). Today, we're going to look at yet another type of maps: raster maps, which are maps created from raster data. Specifically, we'll be working with [GeoTIFF](https://en.wikipedia.org/wiki/GeoTIFF) files. These are special TIFF files embedded with georeferencing information such as map projection, coordinate systems, ellipsoids, and datums. They are commonly used in satellite imagery, aerial photography, and digitized maps that can be used for GIS analysis (e.g., climatic maps). So without further ado, let's get started!
+Welcome to a new post in my ggplot Map Series! So far, we've covered [polygon maps](https://genchanghsu.github.io/ggGallery/posts/2023-03-09-post-25-ggplot-map-series-no1-basic-ggplot-maps/), [vector maps using shapefiles](https://genchanghsu.github.io/ggGallery/posts/2023-05-24-post-26-ggplot-map-series-no2-simple-feature-maps/), and [Google Maps](https://genchanghsu.github.io/ggGallery/posts/2023-10-26-post-30-ggplot-map-series-no4-creating-maps-with-ggmap/). Today, we're going to explore yet another type of maps: raster maps, which are maps created from raster data. Specifically, we'll be working with [GeoTIFF](https://en.wikipedia.org/wiki/GeoTIFF) files. They are special TIFF files embedded with georeferencing information such as map projection, coordinate systems, ellipsoids, and datums. GeoTIFFs are commonly used in satellite imagery, aerial photography, and digitized maps for GIS analysis (e.g., climatic maps). So without further ado, let's get started!
 
 ## Spatial raster maps in ggplot
 
@@ -139,9 +139,9 @@ worldclim_precipitation_raster <- map(worldclim_filepath, rast)  # rast() reads 
 
 ### 2. Create a basic raster map
 
-The object "worldclim_precipitation_raster" contains 12 lists of SpatRaster objects, each of which has x- and y-coordinates as well as a layer for the precipitation. Sometimes, a SpatRaster object may have more than one layer, and we can get all the layer names using `names()` from the package `tidyterra`. 
+The object "worldclim_precipitation_raster" contains 12 lists of SpatRaster objects, each of which has x- and y-coordinates as well as a layer for the precipitation. Sometimes, a SpatRaster object may have more than one layer, and we can get the layer names using `names()` from the package `tidyterra`. 
 
-Let's make a map of the average global precipitation in January (the first list in "worldclim_precipitation_raster"). To create a map from a SpatRaster object, we can use the function `geom_spatraster()` from the package `tidyterra`. This function is a wrapper for `geom_raster()`. In this example, we only have one layer, so it's not necessarily to specify the layer for the "fill" aesthetic, but we need to do so if there are multiple layers. We'll also draw the country boundaries from the package `rnaturalearth` on the map.
+Let's make a map of the average global precipitation in January (the first list in "worldclim_precipitation_raster"). To create a map from a SpatRaster object, we can use the function `geom_spatraster()` from the package `tidyterra`. This function is a wrapper for `geom_raster()`. In this example, we only have one layer, so it's not necessary to specify which layer we would like to map to the "fill" aesthetic (but we need to do so if there are multiple layers). We'll also draw the country boundaries retrieved from the package `rnaturalearth` on the map.
 
 ```{r, out.width = "80%", fig.width = 8, fig.height = 6, cache = F}
 ### Get country boundaries
@@ -152,7 +152,7 @@ country_boundary <- ne_countries(type = "countries", scale = "small")
 library(colorspace)
 col_pal <- sequential_hcl(n = 7, palette = "BluYl", rev = T)
 
-### Get raster layer names
+### Get raster layer name(s)
 library(tidyterra)
 names(worldclim_precipitation_raster[[1]])
 
@@ -176,14 +176,14 @@ ggplot() +
 
 ### Change the map projection
 
-To change the map projection, we need to transform the CRS of the SpatRaster object for the precipitation using the function `project()` from the package `terra` as well as the sf object for the country boundaries using the function `st_transform()` from the package `sf`. In this example, we'll use the Robinson projection (ESRI:54030). Moreover, because of the new projection, the lon-lat lines and labels can be a little messy and hard to control. To deal with this, we can manually add the lines and labels to the map as additional geom layers. Basically, we create a set of lon-lat coordinates where we would like the grid lines to be drawn as well as a dataframe specifying the axis labels and positions. We then convert these into sf objects and add them to the map. (This method is inspired by this [stack overflow solution](https://stackoverflow.com/questions/77216826/preserve-axis-labels-in-geom-sf-when-changing-projection)!)
+To change the map projection, we need to transform the CRS of the precipitation SpatRaster object using the function `project()` from the package `terra` as well as the CRS of the country boundary sf object using the function `st_transform()` from the package `sf`. In this example, we'll use the Robinson projection (ESRI:54030). Moreover, because of the new projection, the lon-lat lines and labels get a little messy and hard to control via ggplot functions. To deal with this, we can manually add the grid lines and labels to the map as additional geom layers. Basically, we create a set of lon-lat coordinates where we would like the grid lines to be drawn as well as a dataframe specifying the axis labels and positions. We can then convert these into sf objects and add them to the map using `geom_sf()`. (This method is inspired by this [stack overflow solution](https://stackoverflow.com/questions/77216826/preserve-axis-labels-in-geom-sf-when-changing-projection)!)
 
 ```{r out.width = "80%", fig.width = 8, fig.height = 6, cache = F}
 library(sf)
 
-### Transform map projection
+### Transform the map projection
 terraOptions(progress = 0)  # hide the progress bar
-january_precipitation_raster_robinson <- project(worldclim_precipitation_raster[[1]], "ESRI:54030")  # ESRI:54030 for Robinson projection
+january_precipitation_raster_robinson <- project(worldclim_precipitation_raster[[1]], "ESRI:54030")  # ESRI:54030 for the Robinson projection
 country_boundary_robinson <- st_transform(country_boundary, crs = "ESRI:54030")
 
 ### Create sf objects for the long-lat lines and latitude labels
@@ -193,10 +193,10 @@ lon_lines <- lapply(c(-180, -120, -60, 0, 60, 120, 180), function(x) {cbind(x, s
 # latitude lines
 lat_lines <- lapply(c(-90, -60, -30, 0, 30, 60, 90), function(x) {cbind(seq(-180, 180, 1), x)})
 
-# an sf object for the long-lat lines 
+# sf object for the long-lat lines 
 grid_lines <- st_sf(geometry = st_sfc(st_multilinestring(x = append(lon_lines, lat_lines)), crs = "WGS84"))
 
-# an sf objects for the latitude labels
+# sf objects for the latitude labels
 lat <- c(-90, -60, -30, 0, 30, 60, 90)
 lat_labels <- data.frame(label = str_glue("{abs(lat)} °{if_else(lat == 0, '', if_else(lat < 0, 'S', 'N'))}"),
                          lon = -180,
@@ -207,8 +207,8 @@ lat_labels <- data.frame(label = str_glue("{abs(lat)} °{if_else(lat == 0, '', i
 ggplot() +
   geom_spatraster(data = january_precipitation_raster_robinson) +
   geom_sf(data = country_boundary_robinson, fill = NA, color = "black", size = 0.8) + 
-  geom_sf(data = grid_lines, linewidth = 0.1, color = "grey") +  # add grid lines
-  geom_sf_text(data = lat_labels, aes(label = label), size = 3,  # add latitude labels
+  geom_sf(data = grid_lines, linewidth = 0.1, color = "grey") +  # add the grid lines
+  geom_sf_text(data = lat_labels, aes(label = label), size = 3,  # add the latitude labels
                nudge_x = c(-2e6, -1.5e6, -1.3e6, -1e6, -1.3e6, -1.5e6, -2e6)) +  # need to adjust the amount of nudging depending on the specific map projection used
   scale_fill_gradientn(colors = col_pal[c(1, 4, 6, 7)], 
                        na.value = "transparent",
@@ -231,24 +231,24 @@ ggplot() +
 ```
 
 
-### Create a choropheth map of mean precipitation by country
+### Create a choropleth map of average precipitation by country
 
 The package `terra` has a suite of functions for geospatial computation. A useful one is `extract()`, which extracts cell values from SpatRaster layers based on a set of vector locations (points, lines, or polygons) and summarizes the extracted values (min, max, mean, length, etc.).
 
-Below, we'll extract the cell values from the January precipitation SpatRaster based on the country boundary polygons and calculate the mean precipitation for each country. We'll then add the country means to the same country boundary object and make a choropleth map.
+Below, we'll extract the cell values from the January precipitation SpatRaster based on the country boundary polygons and calculate the average precipitation for each country. We'll then join the country averages to the country boundary sf object to make a choropleth map.
 
 ```{r out.width = "80%", fig.width = 8, fig.height = 6, cache = F}
-### Summarize mean precipitation by country
+### Summarize the average precipitation by country
 january_precipitation_country_mean <- extract(worldclim_precipitation_raster[[1]],  # the SpatRaster to extract cell values from
                                               country_boundary,  # the vector polygons to define the zones
                                               fun = mean,  # the summary function 
                                               na.rm = T) %>% 
   rename(mean_precipitation = `wc2.1_2.5m_prec_01`)
 
-### Add country means to the country boundary sf object
+### Add country averages to the country boundary sf object
 january_precipitation_country_mean_sf <- bind_cols(country_boundary_robinson, january_precipitation_country_mean)
   
-### Make the choropleth map
+### Make a choropleth map
 ggplot() +
   geom_sf(data = january_precipitation_country_mean_sf, aes(fill = mean_precipitation), color = "black", size = 0.8) + 
   geom_sf(data = grid_lines, linewidth = 0.1, color = "grey") +  
@@ -274,7 +274,7 @@ ggplot() +
 
 ```
 
-### Create an animation of monthly average
+### Create an animation of monthly global precipitation
 
 Remember we have 12 SpatRaster objects in "worldclim_precipitation_raster". We can create a map for each and turn them into an animation to explore the temporal patterns of world precipitation. We'll simply loop through each month and make a map for it, just like what we did for January. This gives us a list of 12 maps. We can then use the functions from the package 
 [`magick`](https://cran.r-project.org/web/packages/magick/vignettes/intro.html) to make an animation of those maps. 
@@ -289,13 +289,13 @@ p_world_precipitation_by_month <- map(1:12, function(x) {
   # name of precipitation layer
   monthly_precipitation_raster_layer <- names(monthly_precipitation_raster)
   
-  # set the max precipitation to 1,000 mm (for a better color visualization)
+  # set the max precipitation to 1,000 mm (for better visualization)
   monthly_precipitation_raster <- monthly_precipitation_raster %>% 
     mutate(!!monthly_precipitation_raster_layer := if_else(!!sym(monthly_precipitation_raster_layer) >= 1000, 
                                                            1000, 
                                                            !!sym(monthly_precipitation_raster_layer)))
 
-  # change map projection
+  # change the map projection
   terraOptions(progress = 0)
   monthly_precipitation_raster_robinson <- project(monthly_precipitation_raster, "ESRI:54030")
   
@@ -336,7 +336,7 @@ p_world_precipitation_by_month <- map(1:12, function(x) {
   
 })
 
-### Make the animation
+### Make an animation
 library(magick)
 
 # create a Magick image object
@@ -361,7 +361,7 @@ animation
 
 ## Summary
 
-To recap, we learned how to create raster maps from GeoTIFF files in ggplot. We first created a basic raster map of world precipitation using the packages `terra` and `tidyterra`. Next, we modified the map by changing the map projection and customizing the grid lines and axis labels. We also did some basic manipulations of the raster data by calculating the average precipitation in each country and created a choropleth map for it. Finally, we made a map for each of the 12 months and turned them into an animation using the package `magick`. Raster data are quite common, especially when it comes to geospatial analysis. Having some "raster" skills under your belt will certainly go a long way!
+To recap, we learned how to create raster maps from GeoTIFF files in ggplot. We first created a basic raster map of world precipitation using the packages `terra` and `tidyterra`. Next, we modified the map by changing the map projection and customizing the grid lines and axis labels. We also did some basic manipulations of the raster data by calculating the average precipitation in each country and created a choropleth map for it. Finally, we made a world precipitation map for each of the 12 months and turned them into an animation using the package `magick`. Raster data are quite common, especially when it comes to geospatial analysis. Having some "raster" skills under your belt will certainly go a long way!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
