@@ -1,0 +1,173 @@
+---
+title: 'Post #42. Accelerate your ggplots with the extension package "ggforce"'
+description: |
+  Come take a look at some cool "ggforce" functions that can help strengthen your ggplot visualization!
+author:
+  - name: Gen-Chang Hsu
+date: 2025-06-28
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2025"
+preview: ../../homepage_images/Post42.png
+draft: true
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+  color: #2780e3 !important;
+  border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+  border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 30% !important;
+}
+
+</style>
+
+<head>
+  <base target="_blank">
+</head>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+The extension package [`ggforce`](https://ggforce.data-imaginist.com/index.html) provides miscellaneous functions for enhancing ggplot visualization. In particular, it has several functions that allow users to customize basic geometric elements such as lines and shapes, which may otherwise require more effort to achieve using the original ggplot functions. In this quick post, we'll explore some of these interesting functions, and hopefully you can put them into use in the future!
+
+
+## `ggforce` functionality
+
+### 1. Functions for lines
+
+There are three line functions we're going to take a look at:
+
+<span style="display: block; margin-top: 0px; margin-left: 10px">(1) `geom_link()`, which is similar to `geom_segment()` but allows users to draw lines with color/alpha transparency/size gradients by mapping the computed variable "index" (values from 0 to 1 representing the progression of interpolated points along the line segment) to those aesthetics.</span>
+
+<span style="display: block; margin-top: 5px; margin-left: 10px">(2) `geom_arc()`: </span>
+
+<span style="display: block; margin-top: 5px; margin-left: 10px">(3) `geom_diagonal()`: </span>
+
+
+```{r, fig.width = 5, fig.height = 4}
+library(tidyverse)
+library(ggforce)
+
+
+geom_link()
+
+geom_arc()
+
+geom_diagonal()
+
+
+
+
+
+
+```
+
+
+
+
+### 2. Functions for shapes
+
+
+
+
+
+
+### 3. Other handy functions
+
+
+
+
+
+
+## Summary
+
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
+
+
