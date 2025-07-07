@@ -18,87 +18,87 @@ draft: true
 
 <style>
 d-article a {
-  color: #2780e3 !important;
-  border-bottom: none !important;
+color: #2780e3 !important;
+border-bottom: none !important;
 }
 
 d-article a:hover {
-  color: #2780e3 !important;
-  border-bottom: 2px solid !important;
+color: #2780e3 !important;
+border-bottom: 2px solid !important;
 }
 
 d-byline {
-  margin-left: -10% !important;
+margin-left: -10% !important;
 }
 
 d-title {
-  margin-left: -10%;
+margin-left: -10%;
 }
 
 d-title h1{
-  font-size: 45px;
-  width: 130%;
+font-size: 45px;
+width: 130%;
 }
 
 d-article {
-  margin-left: -10%;
+margin-left: -10%;
 }
 
 p {
-  width: 120%;
+width: 120%;
 }
 
 d-article h2 {
-  width: 120%;
+width: 120%;
 }
 
 d-article h3 {
-  width: 120%;
-  font-size: 28px;
+width: 120%;
+font-size: 28px;
 }
 
 div.article-footer{
-  width: 120%;
+width: 120%;
 }
 
 d-article div.sourceCode { 
-  width: 120% !important;
+width: 120% !important;
 }
 
 d-article pre { 
-  width: 120% !important;
+width: 120% !important;
 }
 
 div.l-body {
-  width: 120% !important;
+width: 120% !important;
 }
 
 d-article table thead tr {
-  height: 60px !important;
-  width: 210px !important;
+height: 60px !important;
+width: 210px !important;
 }
 
 d-article table thead th {
-  height: 60px !important;
-  font-size: 22px !important;
-  width: 210px !important;
+height: 60px !important;
+font-size: 22px !important;
+width: 210px !important;
 }
 
 d-article table tbody tr td {
-  font-size: 21px !important;
-  height: 60px !important;
-  text-align: center !important;
-  width: 210px !important;
+font-size: 21px !important;
+height: 60px !important;
+text-align: center !important;
+width: 210px !important;
 }
 
 div.l-body img {
-    margin-right: 30% !important;
+margin-right: 30% !important;
 }
 
 </style>
 
 <head>
-  <base target="_blank">
+<base target="_blank">
 </head>
 
 ```{r setup, include = FALSE}
@@ -113,33 +113,135 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-The extension package [`ggforce`](https://ggforce.data-imaginist.com/index.html) provides miscellaneous functions for enhancing ggplot visualization. In particular, it has several functions that allow users to customize basic geometric elements such as lines and shapes, which may otherwise require more effort to achieve using the original ggplot functions. In this quick post, we'll explore some of these interesting functions, and hopefully you can put them into use in the future!
+The extension package [`ggforce`](https://ggforce.data-imaginist.com/index.html) provides miscellaneous functions for enhancing ggplot visualization. In particular, it has several functions that allow users to customize basic geometric elements such as lines and shapes, which may otherwise require more effort to achieve using the original ggplot functions. There are also some other interesting functions we'll explore. Hopefully, after reading this quick post, you'll be able to put these functions into use in the future!
 
 
 ## `ggforce` functionality
 
 ### 1. Functions for lines
 
-There are three line functions we're going to take a look at:
+We're going to check out three line functions:
 
 <span style="display: block; margin-top: 0px; margin-left: 10px">(1) `geom_link()`, which is similar to `geom_segment()` but allows users to draw lines with color/alpha transparency/size gradients by mapping the computed variable "index" (values from 0 to 1 representing the progression of interpolated points along the line segment) to those aesthetics.</span>
 
-<span style="display: block; margin-top: 5px; margin-left: 10px">(2) `geom_arc()`: </span>
+<span style="display: block; margin-top: 5px; margin-left: 10px">(2) `geom_arc()`, which draws arcs based on a center point (origin), a radius, a start angle, and an end angle (both in radians).</span>
 
-<span style="display: block; margin-top: 5px; margin-left: 10px">(3) `geom_diagonal()`: </span>
+<span style="display: block; margin-top: 5px; margin-left: 10px">(3) `geom_diagonal()`, which draws sigmoidal diagonal curves between two endpoints (as opposed to straight lines by `geom_link()`).</span>
 
+Let's see how these functions work:
 
-```{r, fig.width = 5, fig.height = 4}
+```{r, fig.width = 4, fig.height = 4}
 library(tidyverse)
 library(ggforce)
 
+### (1) geom_link()
+# create a dataframe with the x- and y-coordinates of the segment endpoints
+geom_link_dat <- data.frame(x = 1, y = 1, xend = 2, yend = 2)
 
-geom_link()
+# draw the segment with color and size gradients
+ggplot(geom_link_dat) + 
+  geom_link(aes(x = x, y = y, xend = xend, yend = yend,
+                color = after_stat(index),  # map "index" to the color aesthetic to create a color gradient along the segment
+                linewidth = after_stat(index)^2 - after_stat(index)), # map "index" to the linewidth aesthetic to create a size gradient along the segment
+            n = 100,  # n controls the number of interpolated points between the two endpoints
+            show.legend = F) +  
+  scale_color_viridis_c() +
+  scale_linewidth_continuous(range = c(1, 4)) + 
+  theme_bw(base_size = 13) + 
+  coord_fixed()
 
-geom_arc()
+### (2) geom_arc()
+# create a dataframe with the origin, radius, start angle, and end angle of the arc
+geom_arc_dat <- data.frame(x0 = 0, y0 = 0, r = 1, start = 0.2 * pi, end = 1.8 * pi)
 
-geom_diagonal()
+# draw the arc with color and size gradients
+ggplot(geom_arc_dat) + 
+  geom_arc(aes(x0 = x0, y0 = y0, r = r, start = start, end = end,
+               color = after_stat(index),
+               linewidth = after_stat(index)),
+           lineend = "round",
+           n = 100,
+           show.legend = F) +  
+  scale_color_distiller(palette = "Spectral") +
+  scale_linewidth_continuous(range = c(1, 4)) + 
+  theme_bw(base_size = 13) + 
+  coord_fixed()
 
+### (3) geom_diagonal
+# create a dataframe with the x- and y-coordinates of the diagonal curve endpoints
+geom_diagonal_dat <- data.frame(x = 1, y = 1, xend = 2, yend = 2)
+
+# draw the diagonal curve with a color gradient
+ggplot(geom_diagonal_dat) + 
+  geom_diagonal(aes(x = x, y = y, xend = xend, yend = yend,
+               color = after_stat(index)),
+               strength = 2,  # strength controls the curvature/steepness of the diagonal line
+               linewidth = 3,
+           n = 100,
+           show.legend = F) +  
+    geom_diagonal(aes(x = x, y = y, xend = xend, yend = yend,
+               color = after_stat(index)),
+               strength = 1,
+               linewidth = 2,
+           n = 100,
+           show.legend = F) +  
+    geom_diagonal(aes(x = x, y = y, xend = xend, yend = yend,
+               color = after_stat(index)),
+               strength = 0.5,
+               linewidth = 1,
+           n = 100,
+           show.legend = F) +  
+  scale_color_distiller(palette = "Set1") +
+  theme_bw(base_size = 13) + 
+  coord_fixed()
+
+```
+
+### 2. Functions for shapes
+
+Again, we have three shape functions to check out:
+
+<span style="display: block; margin-top: 0px; margin-left: 10px">(1) `geom_regon()`, which draws regular polygons with any number of sides and any rotation angle.</span>
+
+<span style="display: block; margin-top: 5px; margin-left: 10px">(2) `geom_arc_bar()`, which is similar to `geom_arc()` but draws sectors (pies) and arc bars instead of arc lines.</span>
+
+<span style="display: block; margin-top: 5px; margin-left: 10px">(3) `geom_diagonal_wide()`, </span>
+
+
+```{r, fig.width = 4, fig.height = 4}
+### (1) geom_regon()
+# create a dataframe with the origins of the polygons, numbers of sides, rotation angles, and polygon sizes (r)
+geom_regon_dat <- data.frame(x0 = rep(1:3, 3), 
+                             y0 = rep(3:1, each = 3),
+                             sides = 3:11,
+                             angle = seq(0, 160, by = 20),
+                             r = rep(0.2, 9))  # r is the ratio of polygon size to plot area  
+
+# draw the regular polygons
+ggplot(geom_regon_dat) + 
+  geom_regon(aes(x0 = x0, y0 = y0, sides = sides, angle = angle, r = r, fill = sides), show.legend = F) +  
+  scale_fill_viridis_c() +
+  theme_bw(base_size = 13) +
+  coord_fixed()
+
+### (2) geom_arc_bar()
+# create a dataframe with the origins, start radii, end radii, start angles, and end angles of the arc bars
+geom_arc_bar_dat <- data.frame(x0 = rep(0, 6), 
+                               y0 = rep(0, 6), 
+                               r0 = seq(0, 1.8, length.out = 6),  # the start radii
+                               r = rep(2, 6),  # the end radii
+                               start = c(0/3, 1/3, 2/3, 3/3, 4/3, 5/3) * pi,  # the start angles 
+                               end = c(1/3, 2/3, 3/3, 4/3, 5/3, 6/3) * pi,  # the end angles
+                               fill = letters[1:6])
+
+# draw the arc bars
+ggplot(geom_arc_bar_dat) + 
+  geom_arc_bar(aes(x0 = x0, y0 = y0, r0 = r0, r = r, start = start, end = end, fill = fill), show.legend = F) +  
+  scale_fill_brewer(palette = "Set2") +
+  theme_bw(base_size = 13) + 
+  coord_fixed()
+
+### (3) geom_diagonal_wide()
 
 
 
@@ -150,15 +252,16 @@ geom_diagonal()
 
 
 
-### 2. Functions for shapes
 
 
+### 3. Other interesting & handy functions
 
 
-
-
-### 3. Other handy functions
-
+geom_parallel_sets()
+geom_arc_bar(stats = "pie") with explosion and donut charts
+geom_voronoi()
+geom_delaunay()
+position_jitternormal()
 
 
 
