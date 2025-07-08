@@ -205,7 +205,7 @@ Again, we have three shape functions to check out:
 
 <span style="display: block; margin-top: 5px; margin-left: 10px">(2) `geom_arc_bar()`, which is similar to `geom_arc()` but draws sectors (pies) and arc bars instead of arc lines.</span>
 
-<span style="display: block; margin-top: 5px; margin-left: 10px">(3) `geom_diagonal_wide()`, </span>
+<span style="display: block; margin-top: 5px; margin-left: 10px">(3) `geom_diagonal_wide()`, which is similar to `geom_diagonal()` but draws polygons defined by an upper and a lower diagonal curve.</span>
 
 
 ```{r, fig.width = 4, fig.height = 4}
@@ -234,7 +234,7 @@ geom_arc_bar_dat <- data.frame(x0 = rep(0, 6),
                                end = c(1/3, 2/3, 3/3, 4/3, 5/3, 6/3) * pi,  # the end angles
                                fill = letters[1:6])
 
-# draw the arc bars
+# draw the sector and arc bars
 ggplot(geom_arc_bar_dat) + 
   geom_arc_bar(aes(x0 = x0, y0 = y0, r0 = r0, r = r, start = start, end = end, fill = fill), show.legend = F) +  
   scale_fill_brewer(palette = "Set2") +
@@ -242,17 +242,20 @@ ggplot(geom_arc_bar_dat) +
   coord_fixed()
 
 ### (3) geom_diagonal_wide()
+# create a dataframe with an upper and a lower diagonal curve
+geom_diagonal_wide_dat <- data.frame(x = c(1, 2.5, 1, 2.5),
+                                     y = c(1, 2, 1.5, 2.5),
+                                     group = c(1, 1, 1, 1))  # "group" identifies the four corner points defining each polygon   
 
-
-
-
+# draw the diagonal polygon
+ggplot(geom_diagonal_wide_dat) +
+  geom_diagonal_wide(aes(x = x, y = y, group = group), 
+                     strength = 0.7,  # steepness of the upper and lower diagonal curves 
+                     radius = unit(0.2, "cm")) +  # rounded corners
+  theme_bw(base_size = 13) + 
+  coord_fixed()
 
 ```
-
-
-
-
-
 
 ### 3. Other interesting & handy functions
 
