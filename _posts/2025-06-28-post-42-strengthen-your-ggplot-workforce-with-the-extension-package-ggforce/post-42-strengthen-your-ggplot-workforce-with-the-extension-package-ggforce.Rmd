@@ -257,13 +257,48 @@ ggplot(geom_diagonal_wide_dat) +
 
 ```
 
-### 3. Other interesting & handy functions
+### 3. Other interesting functions
+
+We're going to take a look at a few other interesting (and potentially useful) `ggforce` functions:
+
+<span style="display: block; margin-top: 0px; margin-left: 10px">(1) `geom_arc_bar(stats = "pie")`, which creates pie charts and donut charts with exploded slices. It works almost the same as `geom_arc_bar()`, but instead of start and end angles, we map the relative sizes of the slices to the "amount" aesthetic. Additionally, we can explode the slices using the "explode" aesthetic.</span>
+
+```{r, fig.width = 4, fig.height = 4}
+### (1) geom_arc_bar(stats = "pie")
+# create a dataframe with the origins, start radii, end radii, relative sizes of the slices (amount), and degrees of slice explosion (explode)
+geom_arc_bar_pie_dat <- data.frame(x0 = rep(0, 5), 
+                                   y0 = rep(0, 5), 
+                                   r0_pie = rep(0, 5),
+                                   r0_donut = rep(1.3, 5),
+                                   r = rep(2, 5),
+                                   amount = c(1, 2, 3, 4, 5),
+                                   explode = c(0, 0, 0, 0, 0.3))
+
+# create a pie chart with an exploded slice
+ggplot(geom_arc_bar_pie_dat) + 
+  geom_arc_bar(aes(x0 = x0, y0 = y0, r0 = r0_pie, r = r, amount = amount, explode = explode, fill = as.factor(amount)), stat = "pie", show.legend = F) +  
+  scale_fill_brewer(palette = "Dark2") +
+  theme_bw(base_size = 13) + 
+  coord_fixed()
+
+### Create a donut chart
+ggplot(geom_arc_bar_pie_dat) + 
+  geom_arc_bar(aes(x0 = x0, y0 = y0, r0 = r0_donut, r = r, amount = amount, fill = as.factor(amount)), stat = "pie", show.legend = F) +  
+  scale_fill_brewer(palette = "Dark2") +
+  theme_bw(base_size = 13) + 
+  coord_fixed()
+
+```
+
+
 
 
 geom_parallel_sets()
-geom_arc_bar(stats = "pie") with explosion and donut charts
+
 geom_voronoi()
+
 geom_delaunay()
+
 position_jitternormal()
 
 
