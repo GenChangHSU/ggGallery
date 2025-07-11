@@ -290,10 +290,24 @@ ggplot(geom_arc_bar_pie_dat) +
 
 ```
 
+<span style="display: block; margin-top: 0px; margin-left: 10px">(1) `geom_parallel_sets()`, which creates parallel sets/alluvial plots. Two functions `geom_parallel_sets_axes()` and `geom_parallel_sets_labels()` allow users to customize the line sets (i.e., the segments along the y-axis representing the levels of each categorical variable) and their labels.</span>
+
+```{r, fig.width = 4, fig.height = 4}
+
+data <- reshape2::melt(Titanic)
+data <- gather_set_data(data, 1:4)
+
+ggplot(data, aes(x, id = id, split = y, value = value)) +
+  geom_parallel_sets(aes(fill = Sex), alpha = 0.3, axis.width = 0.1) +
+  geom_parallel_sets_axes(axis.width = 0.1) +
+  geom_parallel_sets_labels(colour = 'white')
 
 
 
-geom_parallel_sets()
+
+
+```
+
 
 geom_voronoi()
 
