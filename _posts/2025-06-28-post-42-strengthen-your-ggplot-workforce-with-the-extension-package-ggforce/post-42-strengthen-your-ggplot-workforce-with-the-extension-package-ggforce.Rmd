@@ -324,25 +324,42 @@ ggplot(geom_parallel_sets_dat) +
 ```
 <br>
 
-<span style="display: block; margin-top: 0px; margin-left: 10px">(3) `geom_voronoi_tile() and geom_voronoi_segment()`, which create [Voronoi diagrams](https://en.wikipedia.org/wiki/Voronoi_diagram) for a given set of points (seeds) on the Cartesian plane. A Voronoi diagram is a partitioning of an area into cells (Voronoi cells) based on a set of seed points, with all points in a cell closer to the focal seed than to any other seed.</span>
+<span style="display: block; margin-top: 0px; margin-left: 10px">(3) `geom_voronoi_tile() and geom_voronoi_segment()`, which create [Voronoi diagrams](https://en.wikipedia.org/wiki/Voronoi_diagram) for a given set of points (seeds) on the Cartesian plane. A Voronoi diagram is a partitioning of an area into cells (Voronoi cells) based on a set of seed points, with all points in a cell closer to the focal seed than to any other seed. The associated stat function `stat_delvor_summary()` computes Voronoi tessellation, and we can extract the values of the computed variables (e.g., the area of each cell and the number of sides of each cell) from the plot for further analysis.</span>
 
 ```{r, fig.width = 6, fig.height = 4}
-### (3) geom_voronoi_tile() and geom_voronoi_segment()
+### (3) geom_voronoi_tile(), geom_voronoi_segment(), and stat_delvor_summary()
+# get the "brambles" dataset from the package "boot"
+# the dataset contains the x- and y-coordinates of 832 bramble canes at three different ages
+library(boot)
+data("brambles")
 
-ggplot(iris, aes(Sepal.Length, Sepal.Width, group = -1L)) +
-  geom_voronoi_tile(aes(fill = Species), normalize = F) +
-  geom_voronoi_segment(normalize = F) +
-  geom_text(aes(label = after_stat(nsides), size = after_stat(vorarea)),
-    stat = 'delvor_summary', switch.centroid = TRUE)
+# subset the entire data to avoid overplotting
+set.seed(123)
+geom_voronoi_dat <- brambles %>% 
+  slice_sample(n = 15, by = "age") %>% 
+  mutate(age = as.factor(age))
 
+# create the Voronoi plot
+ggplot(geom_voronoi_dat) +
+  geom_voronoi_tile(aes(x = x, y = y, group = 1, fill = age)) +  # use group = 1 to indicate that all points are in the same group 
+  geom_voronoi_segment(aes(x = x, y = y, group = 1)) +
+  stat_delvor_summary(aes(x = x, y = y, group = 1, size = after_stat(vorarea)),  # make the size of the centroid points proportional to the cell area
+                      geom = "point", 
+                      switch.centroid = T) +  # x and y values represent the cell centroids when switch.centroid = T
+  scale_fill_manual(name = "bramble cane age", values = c("#66c2a5", "#fc8d62", "#8da0cb")) + 
+  scale_size_continuous(name = "Voronoi cell area", range = c(0, 6)) + 
+  theme_bw(base_size = 13) + 
+  coord_fixed()
 
+# extract the values of the computed variables by stat_delvor_summary()
+p_voronoi <- ggplot(geom_voronoi_dat) + 
+  stat_delvor_summary(aes(x = x, y = y, group = 1, size = after_stat(vorarea)),
+                      geom = "point", switch.centroid = T)
 
-
-
+ggplot_build(p_voronoi)$data[[1]] %>% 
+  head()
 
 ```
-
-
 
 
 
