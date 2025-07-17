@@ -11,7 +11,6 @@ output:
 categories:
   - "2025"
 preview: ../../homepage_images/Post42.png
-draft: true
 ---
 
 <!-- Webpage style -->
@@ -361,17 +360,67 @@ ggplot_build(p_voronoi)$data[[1]] %>%
 
 ```
 
+<br>
 
+<span style="display: block; margin-top: 0px; margin-left: 10px">(4) `geom_delaunay_tile()` and `geom_delaunay_segment()`, which create plots of [Delaunay triangulation](https://en.wikipedia.org/wiki/Delaunay_triangulation) for a given set of points on the Cartesian plane. In Delaunay triangulation, each triangle has a circumcircle that does not contain any other point on the plane except for the three generating points on its circumference.</span>
 
-geom_delaunay()
+```{r, fig.width = 6, fig.height = 4}
+### (4) geom_delaunay_tile() and geom_delaunay_segment()
+# subset the brambles dataset to avoid overplotting
+set.seed(123)
+geom_delaunay_dat <- brambles %>% 
+  slice_sample(n = 15, by = "age") %>% 
+  mutate(age = as.factor(age))
 
-position_jitternormal()
+# create a plot of Delaunay triangulation
+ggplot(geom_delaunay_dat) +
+  geom_delaunay_tile(aes(x = x, y = y), fill = NA) +
+  geom_delaunay_segment(aes(x = x, y = y), color = "grey60") +
+  geom_point(aes(x = x, y = y, color = age), size = 2.5) + 
+  scale_color_manual(name = "bramble cane age", values = c("#66c2a5", "#fc8d62", "#8da0cb")) + 
+  theme_bw(base_size = 13) + 
+  coord_fixed()
 
+```
+<br>
 
+<span style="display: block; margin-top: 0px; margin-left: 10px">(5) `position_jitternormal()`, which jitters the points by adding random noise generated from a normal distribution (as opposed to a uniform distribution in ggplot's `position_jitter()`). The jittered points from `position_jitternormal()` look less rectangular/boxy than those from `position_jitter()`.</span>
 
+```{r, fig.width = 9, fig.height = 4}
+### (5) position_jitternormal()
+set.seed(123)
+diamonds_subset <- diamonds %>% 
+  slice_sample(prop = 0.05)
+
+# position_jitter()
+p_position_jitter <- ggplot(diamonds_subset) + 
+  geom_point(aes(x = cut, y = price, color = cut), 
+             position = position_jitter(width = 0.15), 
+             show.legend = F) + 
+  scale_color_brewer(palette = "Set1") + 
+  labs(title = "position_jitter()") + 
+  theme_bw(base_size = 13) + 
+  theme(plot.title = element_text(hjust = 0.5, size = 15))
+
+# position_jitternormal()
+p_position_jitternormal <- ggplot(diamonds_subset) + 
+  geom_point(aes(x = cut, y = price, color = cut),
+             position = position_jitternormal(sd_x = 0.05),  # sd_x and sd_y control the spread of the points 
+             show.legend = F) + 
+  scale_color_brewer(palette = "Set1") + 
+  labs(title = "position_jitternormal()") + 
+  theme_bw(base_size = 13) + 
+  theme(plot.title = element_text(hjust = 0.5, size = 15))
+
+library(patchwork)
+p_position_jitter + p_position_jitternormal
+
+```
 
 
 ## Summary
+
+
 
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
