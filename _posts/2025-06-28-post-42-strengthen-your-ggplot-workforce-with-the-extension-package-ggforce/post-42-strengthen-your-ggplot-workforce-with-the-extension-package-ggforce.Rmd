@@ -91,7 +91,7 @@ width: 210px !important;
 }
 
 div.l-body img {
-margin-right: 30% !important;
+margin-right: 40% !important;
 }
 
 </style>
@@ -129,7 +129,7 @@ We're going to check out three line functions:
 
 Let's see how these functions work:
 
-```{r, fig.width = 4, fig.height = 4}
+```{r, fig.width = 4, fig.height = 4, out.width = "45%"}
 library(tidyverse)
 library(ggforce)
 
@@ -146,9 +146,12 @@ ggplot(geom_link_dat) +
             show.legend = F) +  
   scale_color_viridis_c() +
   scale_linewidth_continuous(range = c(1, 4)) + 
-  theme_bw(base_size = 13) + 
+  theme_bw(base_size = 14) + 
   coord_fixed()
 
+```
+
+```{r, fig.width = 4, fig.height = 4, out.width = "45%"}
 ### (2) geom_arc()
 # create a dataframe with the origin, radius, start angle, and end angle of the arc
 geom_arc_dat <- data.frame(x0 = 0, y0 = 0, r = 1, start = 0.2 * pi, end = 1.8 * pi)
@@ -163,9 +166,12 @@ ggplot(geom_arc_dat) +
            show.legend = F) +  
   scale_color_distiller(palette = "Spectral") +
   scale_linewidth_continuous(range = c(1, 4)) + 
-  theme_bw(base_size = 13) + 
+  theme_bw(base_size = 14) + 
   coord_fixed()
 
+```
+
+```{r, fig.width = 4, fig.height = 4, out.width = "45%"}
 ### (3) geom_diagonal
 # create a dataframe with the x- and y-coordinates of the diagonal curve endpoints
 geom_diagonal_dat <- data.frame(x = 1, y = 1, xend = 2, yend = 2)
@@ -191,7 +197,7 @@ ggplot(geom_diagonal_dat) +
            n = 100,
            show.legend = F) +  
   scale_color_distiller(palette = "Set1") +
-  theme_bw(base_size = 13) + 
+  theme_bw(base_size = 14) + 
   coord_fixed()
 
 ```
@@ -207,7 +213,7 @@ Again, we have three shape functions to check out:
 <span style="display: block; margin-top: 5px; margin-left: 10px">(3) `geom_diagonal_wide()`, which is similar to `geom_diagonal()` but draws polygons defined by an upper and a lower diagonal curve.</span>
 
 
-```{r, fig.width = 4, fig.height = 4}
+```{r, fig.width = 4, fig.height = 4, out.width = "45%"}
 ### (1) geom_regon()
 # create a dataframe with the origins of the polygons, numbers of sides, rotation angles, and polygon sizes (r)
 geom_regon_dat <- data.frame(x0 = rep(1:3, 3), 
@@ -220,9 +226,12 @@ geom_regon_dat <- data.frame(x0 = rep(1:3, 3),
 ggplot(geom_regon_dat) + 
   geom_regon(aes(x0 = x0, y0 = y0, sides = sides, angle = angle, r = r, fill = sides), show.legend = F) +  
   scale_fill_viridis_c() +
-  theme_bw(base_size = 13) +
+  theme_bw(base_size = 14) +
   coord_fixed()
 
+```
+
+```{r, fig.width = 4, fig.height = 4, out.width = "45%"}
 ### (2) geom_arc_bar()
 # create a dataframe with the origins, start radii, end radii, start angles, and end angles of the arc bars
 geom_arc_bar_dat <- data.frame(x0 = rep(0, 6), 
@@ -237,9 +246,12 @@ geom_arc_bar_dat <- data.frame(x0 = rep(0, 6),
 ggplot(geom_arc_bar_dat) + 
   geom_arc_bar(aes(x0 = x0, y0 = y0, r0 = r0, r = r, start = start, end = end, fill = fill), show.legend = F) +  
   scale_fill_brewer(palette = "Set2") +
-  theme_bw(base_size = 13) + 
+  theme_bw(base_size = 14) + 
   coord_fixed()
 
+```
+
+```{r, fig.width = 4, fig.height = 4, out.width = "45%"}
 ### (3) geom_diagonal_wide()
 # create a dataframe with an upper and a lower diagonal curve
 geom_diagonal_wide_dat <- data.frame(x = c(1, 2.5, 1, 2.5),
@@ -251,7 +263,7 @@ ggplot(geom_diagonal_wide_dat) +
   geom_diagonal_wide(aes(x = x, y = y, group = group), 
                      strength = 0.7,  # steepness of the upper and lower diagonal curves 
                      radius = unit(0.2, "cm")) +  # rounded corners
-  theme_bw(base_size = 13) + 
+  theme_bw(base_size = 14) + 
   coord_fixed()
 
 ```
@@ -262,7 +274,7 @@ We're going to take a look at a few other interesting (and potentially useful) `
 
 <span style="display: block; margin-top: 0px; margin-left: 10px">(1) `geom_arc_bar(stats = "pie")`, which creates pie charts and donut charts with exploded slices. It works almost the same as `geom_arc_bar()`, but instead of start and end angles, we map the relative sizes of the slices to the "amount" aesthetic. Additionally, we can explode the slices using the "explode" aesthetic.</span>
 
-```{r, fig.width = 4, fig.height = 4}
+```{r, fig.width = 4, fig.height = 4, out.width = "45%"}
 ### (1) geom_arc_bar(stats = "pie")
 # create a dataframe with the origins, start radii, end radii, relative sizes of the slices (amount), and degrees of slice explosion (explode)
 geom_arc_bar_pie_dat <- data.frame(x0 = rep(0, 5), 
@@ -277,22 +289,26 @@ geom_arc_bar_pie_dat <- data.frame(x0 = rep(0, 5),
 ggplot(geom_arc_bar_pie_dat) + 
   geom_arc_bar(aes(x0 = x0, y0 = y0, r0 = r0_pie, r = r, amount = amount, explode = explode, fill = as.factor(amount)), stat = "pie", show.legend = F) +  
   scale_fill_brewer(palette = "Dark2") +
-  theme_bw(base_size = 13) + 
+  theme_bw(base_size = 14) + 
   coord_fixed()
 
+```
+
+```{r, fig.width = 4, fig.height = 4, out.width = "45%"}
 ### Create a donut chart
 ggplot(geom_arc_bar_pie_dat) + 
   geom_arc_bar(aes(x0 = x0, y0 = y0, r0 = r0_donut, r = r, amount = amount, fill = as.factor(amount)), stat = "pie", show.legend = F) +  
   scale_fill_brewer(palette = "Dark2") +
-  theme_bw(base_size = 13) + 
+  theme_bw(base_size = 14) + 
   coord_fixed()
 
 ```
+
 <br>
 
 <span style="display: block; margin-top: 0px; margin-left: 10px">(2) `geom_parallel_sets()`, which creates parallel sets/alluvial plots for a set of categorical variables. Basically, we need a dataframe with the counts of all unique combinations of the levels in the categorical variables. We then pass this dataframe to the function `gather_set_data()` to convert it into a format used by `geom_parallel_sets()`. Two companion functions `geom_parallel_sets_axes()` and `geom_parallel_sets_labels()` allow us to customize the line sets (i.e., the segments along the y-axis representing the levels of each categorical variable) and their labels.</span>
 
-```{r, fig.width = 6, fig.height = 4}
+```{r, fig.width = 6, fig.height = 4, out.width = "60%"}
 ### (2) geom_parallel_sets()
 # count the number of car models in each combination of cyl, am, and gear
 mtcars_count <- mtcars %>% 
@@ -318,7 +334,7 @@ ggplot(geom_parallel_sets_dat) +
   scale_x_continuous(breaks = 1:3, labels = c("cyl", "am", "gear")) + 
   scale_fill_brewer(palette = "Set1") +
   theme_void() + 
-  theme(axis.text.x = element_text(color = "black", margin = margin(t = -5, b = 5)))
+  theme(axis.text.x = element_text(color = "black", size = 12, margin = margin(t = -5, b = 5)))
 
 ```
 <br>
