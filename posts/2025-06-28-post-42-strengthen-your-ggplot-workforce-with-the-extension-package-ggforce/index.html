@@ -2754,15 +2754,15 @@ div.l-body img {
 margin-right: 35% !important;
 }
 
-body d-article div:nth-child(39) p img {
+body d-article div:nth-child(42) p img {
 margin-right: 22.5% !important;
 }
 
-body d-article div:nth-child(43) p img {
+body d-article div:nth-child(46) p img {
 margin-right: 22.5% !important;
 }
 
-body d-article div:nth-child(49) p img {
+body d-article div:nth-child(52) p img {
 margin-right: 22.5% !important;
 }
 
@@ -2800,6 +2800,7 @@ margin-right: 22.5% !important;
 </div>
 <p><img src="post-42-strengthen-your-ggplot-workforce-with-the-extension-package-ggforce_files/figure-html5/unnamed-chunk-1-1.png" width="45%" style="display: block; margin: auto;" /></p>
 </div>
+<p><br></p>
 <p><span style="display: block; margin-top: 5px; margin-left: 10px">(2) <code>geom_arc()</code>, which draws arcs based on a center point (origin), a radius, a start angle, and an end angle (both in radian).</span></p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2822,6 +2823,7 @@ margin-right: 22.5% !important;
 </div>
 <p><img src="post-42-strengthen-your-ggplot-workforce-with-the-extension-package-ggforce_files/figure-html5/unnamed-chunk-2-1.png" width="45%" style="display: block; margin: auto;" /></p>
 </div>
+<p><br></p>
 <p><span style="display: block; margin-top: 5px; margin-left: 10px">(3) <code>geom_diagonal()</code>, which draws sigmoidal diagonal curves between two endpoints (as opposed to drawing straight lines like <code>geom_link()</code> does).</span></p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2856,10 +2858,8 @@ margin-right: 22.5% !important;
 <p><img src="post-42-strengthen-your-ggplot-workforce-with-the-extension-package-ggforce_files/figure-html5/unnamed-chunk-3-1.png" width="45%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="functions-for-shapes">2. Functions for shapes</h3>
-<p>Again, we have three “shape” functions to check out:</p>
+<p>We have again three “shape” functions to check out:</p>
 <p><span style="display: block; margin-top: 0px; margin-left: 10px">(1) <code>geom_regon()</code>, which draws regular polygons with any number of sides and any rotation angle.</span></p>
-<p><span style="display: block; margin-top: 5px; margin-left: 10px">(2) <code>geom_arc_bar()</code>, which is similar to <code>geom_arc()</code> but draws sectors (pies) and arc bars instead of arc lines.</span></p>
-<p><span style="display: block; margin-top: 5px; margin-left: 10px">(3) <code>geom_diagonal_wide()</code>, which is similar to <code>geom_diagonal()</code> but draws polygons defined by an upper and a lower diagonal curve.</span></p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### (1) geom_regon()</span></span>
@@ -2867,7 +2867,7 @@ margin-right: 22.5% !important;
 <span><span class='va'>geom_regon_dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x0 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, <span class='fl'>3</span><span class='op'>)</span>, </span>
 <span>                             y0 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>3</span><span class='op'>:</span><span class='fl'>1</span>, each <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,</span>
 <span>                             sides <span class='op'>=</span> <span class='fl'>3</span><span class='op'>:</span><span class='fl'>11</span>,</span>
-<span>                             angle <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>160</span>, by <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>,</span>
+<span>                             angle <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>160</span>, by <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>,  <span class='co'># angles in degree</span></span>
 <span>                             r <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='fl'>9</span><span class='op'>)</span><span class='op'>)</span>  <span class='co'># r is the ratio of polygon size to plot area  </span></span>
 <span></span>
 <span><span class='co'># draw the regular polygons</span></span>
@@ -2879,6 +2879,8 @@ margin-right: 22.5% !important;
 </div>
 <p><img src="post-42-strengthen-your-ggplot-workforce-with-the-extension-package-ggforce_files/figure-html5/unnamed-chunk-4-1.png" width="45%" style="display: block; margin: auto;" /></p>
 </div>
+<p><br></p>
+<p><span style="display: block; margin-top: 5px; margin-left: 10px">(2) <code>geom_arc_bar()</code>, which is similar to <code>geom_arc()</code> but draws sectors (pies) and arc bars instead of arc lines.</span></p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### (2) geom_arc_bar()</span></span>
@@ -2900,6 +2902,8 @@ margin-right: 22.5% !important;
 </div>
 <p><img src="post-42-strengthen-your-ggplot-workforce-with-the-extension-package-ggforce_files/figure-html5/unnamed-chunk-5-1.png" width="45%" style="display: block; margin: auto;" /></p>
 </div>
+<p><br></p>
+<p><span style="display: block; margin-top: 5px; margin-left: 10px">(3) <code>geom_diagonal_wide()</code>, which is similar to <code>geom_diagonal()</code> but draws polygons defined by an upper and a lower diagonal curve.</span></p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### (3) geom_diagonal_wide()</span></span>
@@ -2911,7 +2915,7 @@ margin-right: 22.5% !important;
 <span><span class='co'># draw the diagonal polygon</span></span>
 <span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>geom_diagonal_wide_dat</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggforce.data-imaginist.com/reference/geom_diagonal_wide.html'>geom_diagonal_wide</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, group <span class='op'>=</span> <span class='va'>group</span><span class='op'>)</span>, </span>
-<span>                     strength <span class='op'>=</span> <span class='fl'>0.7</span>,  <span class='co'># steepness of the upper and lower diagonal curves </span></span>
+<span>                     strength <span class='op'>=</span> <span class='fl'>0.7</span>,  <span class='co'># strength controls the steepness of the upper and lower diagonal curves </span></span>
 <span>                     radius <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='st'>"cm"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>  <span class='co'># rounded corners</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>14</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
