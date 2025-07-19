@@ -1,7 +1,7 @@
 ---
 title: 'Post #42. Accelerate your ggplots with the extension package "ggforce"'
 description: |
-  Come take a look at some cool "ggforce" functions that can help strengthen your ggplot visualization!
+  Come take a look at some cool ggforce functions that can help strengthen your ggplot visualization!
 author:
   - name: Gen-Chang Hsu
 date: 2025-06-28
@@ -124,22 +124,16 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-The extension package [`ggforce`](https://ggforce.data-imaginist.com/index.html) provides miscellaneous functions for enhancing ggplot visualization. In particular, it has several functions that allow users to customize basic geometric elements such as lines and shapes, which may otherwise require more effort to achieve using the original ggplot functions. There are also some other interesting functions we'll explore. Hopefully, after reading this quick post, you'll be able to put these functions into use in the future!
+The extension package [`ggforce`](https://ggforce.data-imaginist.com/index.html) provides a myriad of functions for enhancing ggplot visualization. In particular, it has functions that allow users to customize basic geometric elements such as lines and shapes, which may otherwise take more time and effort to achieve with the original ggplot functions. There are also some other interesting/fun functions we'll explore. Hopefully, after reading this quick post, you'll be able to put these functions into use in the future!
 
 
 ## `ggforce` functionality
 
 ### 1. Functions for lines
 
-We're going to check out three line functions:
+We're going to check out three "line" functions:
 
-<span style="display: block; margin-top: 0px; margin-left: 10px">(1) `geom_link()`, which is similar to `geom_segment()` but allows users to draw lines with color/alpha transparency/size gradients by mapping the computed variable "index" (values from 0 to 1 representing the progression of interpolated points along the line segment) to those aesthetics.</span>
-
-<span style="display: block; margin-top: 5px; margin-left: 10px">(2) `geom_arc()`, which draws arcs based on a center point (origin), a radius, a start angle, and an end angle (both in radians).</span>
-
-<span style="display: block; margin-top: 5px; margin-left: 10px">(3) `geom_diagonal()`, which draws sigmoidal diagonal curves between two endpoints (as opposed to straight lines by `geom_link()`).</span>
-
-Let's see how these functions work:
+<span style="display: block; margin-top: 0px; margin-left: 10px">(1) `geom_link()`, which is similar to `geom_segment()` but allows users to draw lines with color/alpha transparency/size gradients. This is done by mapping the computed variable "index" (values from 0 to 1 representing the progression of interpolated points along the line segment) to those aesthetics.</span>
 
 ```{r, fig.width = 4, fig.height = 4, out.width = "45%"}
 library(tidyverse)
@@ -153,7 +147,7 @@ geom_link_dat <- data.frame(x = 1, y = 1, xend = 2, yend = 2)
 ggplot(geom_link_dat) + 
   geom_link(aes(x = x, y = y, xend = xend, yend = yend,
                 color = after_stat(index),  # map "index" to the color aesthetic to create a color gradient along the segment
-                linewidth = after_stat(index)^2 - after_stat(index)), # map "index" to the linewidth aesthetic to create a size gradient along the segment
+                linewidth = after_stat(index)^2 - after_stat(index)),  # map "index" to the linewidth aesthetic to create a size gradient along the segment
             n = 100,  # n controls the number of interpolated points between the two endpoints
             show.legend = F) +  
   scale_color_viridis_c() +
@@ -162,6 +156,10 @@ ggplot(geom_link_dat) +
   coord_fixed()
 
 ```
+
+<br>
+
+<span style="display: block; margin-top: 5px; margin-left: 10px">(2) `geom_arc()`, which draws arcs based on a center point (origin), a radius, a start angle, and an end angle (both in radian).</span>
 
 ```{r, fig.width = 4, fig.height = 4, out.width = "45%"}
 ### (2) geom_arc()
@@ -182,6 +180,10 @@ ggplot(geom_arc_dat) +
   coord_fixed()
 
 ```
+
+<br>
+
+<span style="display: block; margin-top: 5px; margin-left: 10px">(3) `geom_diagonal()`, which draws sigmoidal diagonal curves between two endpoints (as opposed to drawing straight lines like `geom_link()` does).</span>
 
 ```{r, fig.width = 4, fig.height = 4, out.width = "45%"}
 ### (3) geom_diagonal
@@ -216,7 +218,7 @@ ggplot(geom_diagonal_dat) +
 
 ### 2. Functions for shapes
 
-Again, we have three shape functions to check out:
+Again, we have three "shape" functions to check out:
 
 <span style="display: block; margin-top: 0px; margin-left: 10px">(1) `geom_regon()`, which draws regular polygons with any number of sides and any rotation angle.</span>
 
