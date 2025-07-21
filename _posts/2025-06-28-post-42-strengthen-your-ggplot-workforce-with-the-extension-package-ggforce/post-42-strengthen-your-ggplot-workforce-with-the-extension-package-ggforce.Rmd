@@ -186,7 +186,7 @@ ggplot(geom_arc_dat) +
 <span style="display: block; margin-top: 5px; margin-left: 10px">(3) `geom_diagonal()`, which draws sigmoidal diagonal curves between two endpoints (as opposed to drawing straight lines like `geom_link()` does).</span>
 
 ```{r, fig.width = 4, fig.height = 4, out.width = "45%"}
-### (3) geom_diagonal
+### (3) geom_diagonal()
 # create a dataframe with the x- and y-coordinates of the diagonal curve endpoints
 geom_diagonal_dat <- data.frame(x = 1, y = 1, xend = 2, yend = 2)
 
@@ -457,8 +457,7 @@ p_position_jitter + p_position_jitternormal
 
 ## Summary
 
-
-
+To recap, at several functions in the package `ggforce`. First, we looked at three "line" functions that draw line segments (`geom_link()`), arcs (`geom_arc()`), and diagonal curves (`geom_diagonal()`). We then looked at three "shape" functions that draw regular polygons (`geom_regon()`), sectors and arc bars (`geom_arc_bar()`), and diagonal polygons (`geom_diagonal_wide()`). Finally, we looked at functions that draw pie charts and donut charts (`geom_arc_bar(stats = "pie")`), parallel sets (`geom_parallel_sets()`), Voronoi diagrams (`geom_voronoi_tile()` and `geom_voronoi_segment()`), diagrams of Delaunay triangulation (`geom_delaunay_tile()` and `geom_delaunay_segment()`), and normally jittered points (`position_jitternormal()`). Some of these functions are more for fun, but others can be handy for professional figures.
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
