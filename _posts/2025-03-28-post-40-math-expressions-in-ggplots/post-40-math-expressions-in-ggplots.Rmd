@@ -209,7 +209,9 @@ ggplot() +
 
 ### (2) Math expressions using the package `ggtext`
 
-If you have a keen eye, you might have noticed that the words in *italic* and _**bold italic**_ in the first example look a bit funky: the letters seem to be spaced out a bit. This is totally fine, but we can make the words look "more normal" (well this depends on your perspective) using the package `ggtext`. The package allows users to add text annotations to ggplots using HTML syntax (check out my [previous post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) to learn more!). Another benefit of using `ggtext` is that you can directly insert a line break between text, which `expression()` and `bquote()` can't.
+If you have a keen eye, you might have noticed that the words in *italic* and _**bold italic**_ in the first example look a bit funky: the letters seem to be spaced out a bit. This is totally fine, but we can make the words look "more normal" (well this depends on your perspective) using the package `ggtext`. The package allows users to add text annotations to ggplots using HTML syntax (check out my [previous post](https://genchanghsu.github.io/ggGallery/posts/2021-07-10-post-5-awesome-text-display-with-ggtext/) to learn more!). Another benefit of using `ggtext` is that you can directly insert a line break between text using the <br> tag, which `expression()` and `bquote()` can't.
+
+As a side note, if you want to increase the line spacing, it's a bit difficult to achieve directly via <br>. But here's a hack: you can add a character with a larger font size in a <span> element at the end of the second line. It'll take up more space so that the line would be forced to shift downwards. Then you can set the character's color to white to hide it, creating a larger gap between the two lines without the character being seen.
 
 ```{r}
 library(ggtext)
@@ -219,6 +221,7 @@ ggplot() +
   geom_richtext(aes(x = 1, y = 0.8), label = "*F*<sub><span style='font-size: 8pt'>1,20</span></sub> = 5.2; *R<sup><span style='font-size: 10pt'>2</span></sup>* = 0.8", size = 5, hjust = 0, fill = NA, label.color = NA) + 
   geom_richtext(aes(x = 1, y = 0.6), label = "*&alpha;* = 0.05; *&chi;<sup><span style='font-size: 10pt'>2</span></sup>* = 3.5", size = 5, hjust = 0, fill = NA, label.color = NA) + 
   geom_richtext(aes(x = 1, y = 0.4), label = "This is a line break: <br> *p* = 0.001", size = 5, hjust = 0, fill = NA, label.color = NA) + 
+  geom_richtext(aes(x = 1, y = 0.15), label = "This is a larger line break: <br> *p* = 0.001 <span style='font-size: 30pt; color: white'>.</span>", size = 5, hjust = 0, fill = NA, label.color = NA) + 
   scale_x_continuous(limits = c(0.9, 10)) +
   scale_y_continuous(limits = c(0, 1.1)) + 
   theme_void() +
