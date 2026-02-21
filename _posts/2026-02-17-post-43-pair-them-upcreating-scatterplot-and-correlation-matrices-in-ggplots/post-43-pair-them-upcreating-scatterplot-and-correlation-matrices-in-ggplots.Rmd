@@ -1,0 +1,197 @@
+---
+title: "Post #43. Pair them up—creating scatterplot matrices and correlation heatmaps in ggplots"
+description: |
+  In this post, you will learn how to create awesome scatterplot matrices and correlation heatmaps in ggplots using the packages `GGally` and `ggcorheatmap`!
+author:
+  - name: Gen-Chang Hsu
+date: 2026-02-17
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - "2026"
+preview: ../../homepage_images/Post43.png
+draft: true
+---
+
+<!-- Webpage style -->
+
+<style>
+d-article a {
+  color: #2780e3 !important;
+  border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+  border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 30% !important;
+}
+
+</style>
+
+<head>
+  <base target="_blank">
+</head>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = F, 
+                      error = F, 
+                      warning = F,
+                      fig.align = "center")
+
+```
+
+<!-- Start of the article -->
+
+## Introduction
+
+Welcome to the first post of the year 2026! It's been over a half year since my last post, so supper happy to be back in the saddle!
+
+Suppose you have a dataset with several variables in the columns (can be continuous, categorical, or a mix of both) and you would like to explore the bivariate relationships between the variables, then a scatterplot matrix will be really handy for this: it visualizes all pairwise combinations of variables using a range of plot types, for example, a scatterplot for two continuous variables and a boxplot for one continuous vs. one categorical variable. If you have just continuous variables in the data, you can further visualize their pairwise correlation coefficients in a correlation heatmap, which uses color for the sign of correlations and intensity for the strength of correlations. Interesting patterns will often reveal themselves!
+
+In this post, we'll be creating scatterplot matrices in ggplots using the extension package `GGally` as well as correlation matrices/heatmaps using the extension package `ggcorrheatmap`. Let's start pairing things up!
+
+## Part I. Create scatterplot matrices with `GGally`
+
+### (1) Basic scatterplot matrices
+
+```{r, fig.width = 5, fig.height = 4}
+library(tidyverse)
+library(GGally)
+
+
+
+
+```
+
+
+
+
+
+## Part II. Create correlation heatmaps with `ggcorrheatmap`
+`ggcorrheatmap` offers a variety of functionality to create basic and more customized correlation heatmaps. Let's start with the basic ones.
+
+### (1) 
+
+
+```{r, fig.width = 5, fig.height = 4}
+library(ggcorrheatmap)
+
+### Basic correlation heatmap
+# change cell color
+# change cell shape
+# change the labels
+
+
+
+
+```
+
+
+### (2)
+
+```{r, fig.width = 5, fig.height = 4}
+library(ggcorrheatmap)
+
+### Basic correlation heatmap
+# change cell color
+# change cell shape
+# change the labels
+
+
+### Mixed layout
+# change layout
+# tile + p-values + significance stars
+
+
+### Modify cell appearance
+# highlight cell border
+
+
+### Cluster the variables and add annotation
+
+
+
+
+
+
+```
+
+
+
+
+## Summary
+
+
+
+
+Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
