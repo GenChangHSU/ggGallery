@@ -126,8 +126,9 @@ In this post, we'll be creating scatterplot matrices in ggplots using the extens
 ```{r, fig.width = 5, fig.height = 4}
 library(tidyverse)
 library(GGally)
+library(carData)
 
-
+data("Soils")
 
 
 ```
@@ -137,18 +138,45 @@ library(GGally)
 
 
 ## Part II. Create correlation heatmaps with `ggcorrheatmap`
-`ggcorrheatmap` offers a variety of functionality to create basic and more customized correlation heatmaps. Let's start with the basic ones.
 
-### (1) 
+In the second part of this post, we'll focus on the continuous variables in the `Soil` dataset. `ggcorrheatmap` offers a wide variety of functionality for creating correlation heatmaps. Let's start with the basics and add more complexity as we go.
 
+### (1) A basic correlation heatmap
+`ggcorrhm()` is the master function for creating correlation heatmaps. Simply pass your data to the function and you'll get a basic heatmap (note that he default choice of correlation is the Pearson correlation coefficient)!. We can also adjust the cell color and shape, and remove the diagonal cells (which all have a correlation coefficient of 1).
 
 ```{r, fig.width = 5, fig.height = 4}
 library(ggcorrheatmap)
 
-### Basic correlation heatmap
-# change cell color
-# change cell shape
+### Select continuous variables
+Soils_continuous <- Soils %>% 
+  select(is.numeric)
+
+### Create a basic correlation heatmap
+ggcorrhm(Soils_continuous)
+
+### Change the cell color and shape
+ggcorrhm(Soils_continuous,
+         high = "#de2d26",  # the color for the upper limit
+         mid = "white",  # the color for the midpoint
+         low = "#006d2c",  # the color for the lower limit
+         mode = 21,  # the shape of the cell 
+         include_diag = F)  # remove the diagonal cells 
+
+```
+Looks like there are some strong positive correlations (e.g., between Na and Conductance and between N and P) and some strong negative ones (e.g., between N and Density and between P and Density). So what are the actual coefficients (and their significance)?
+
+### (2) A mixed layout
+
+
+
+```{r, fig.width = 5, fig.height = 4}
+
+### Mixed layout
+# change layout
+# tile + p-values + significance stars
 # change the labels
+
+
 
 
 
@@ -156,30 +184,17 @@ library(ggcorrheatmap)
 ```
 
 
-### (2)
+
+
+### (3)
 
 ```{r, fig.width = 5, fig.height = 4}
-library(ggcorrheatmap)
-
-### Basic correlation heatmap
-# change cell color
-# change cell shape
-# change the labels
-
-
-### Mixed layout
-# change layout
-# tile + p-values + significance stars
-
 
 ### Modify cell appearance
 # highlight cell border
 
 
 ### Cluster the variables and add annotation
-
-
-
 
 
 
