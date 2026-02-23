@@ -159,47 +159,50 @@ ggcorrhm(Soils_continuous,
          high = "#de2d26",  # the color for the upper limit
          mid = "white",  # the color for the midpoint
          low = "#006d2c",  # the color for the lower limit
-         mode = 21,  # the shape of the cell 
-         include_diag = F)  # remove the diagonal cells 
+         mode = 21,  # the shape of the cell (a number between 1 to 25)
+         include_diag = F,  # remove the diagonal cells
+         size_range = c(5, 10),  # the range of cell size
+         layout = "bottomright",)  # show only the bottom-right trianglular matrix     
 
 ```
-Looks like there are some strong positive correlations (e.g., between Na and Conductance and between N and P) and some strong negative ones (e.g., between N and Density and between P and Density). So what are the actual coefficients (and their significance)?
+Looks like there are some strong positive correlations (e.g., between Na and Conductance and between N and P) and some strong negative ones (e.g., between N and Density and between P and Density). But what are the actual coefficients (and their significance)?
 
 ### (2) A mixed layout
 
-
+`ggcorrhm()` allows users to create correlation heatmaps with a mixed layout. To do so, we first have to tell the function that we want two triangular matrices, using the "layout" argument. We will also need to specify what we would like to display in these two triangular matrices using the "mode" argument: "heatmap" gives the colored cells, whereas "none" gives empty cells. Next, we can use the "p_values" argument to specify whether we would like to display the significance stars in each of the two triangular matrices. Finally, we can use the "cell_labels" argument to specify whether we would like to display the correlation coefficients in each of the two triangular matrices. 
 
 ```{r, fig.width = 5, fig.height = 4}
+### A mixed layout with color cells and p-values
+ggcorrhm(Soils_continuous,
+         layout = c("topleft", "bottomright"),  # create two triangular matrices
+         mode = c("heatmap", "none"),  # what to display in each of the two triangular matrices
+         include_diag = T,
+         p_values = c(F, T),  # whether to show the significance stars in each of two triangular matrices
+         p_adjust = "none",  # can be any of the method in "p.adjust.methods"
+         p_thresholds = c("***" = 0.001, "**" = 0.01, "*" = 0.05, 1),  # thresholds for annotating the significance stars
+         cell_labels = c(T, F))  # whether to show the correlation coefficients in each of two triangular matrices
 
-### Mixed layout
-# change layout
-# tile + p-values + significance stars
-# change the labels
+```
+All correlation coefficients are significant (without *p*-value adjustment)!!!
 
+### (3) Highlight certain cells
 
-
+```{r, fig.width = 5, fig.height = 4}
+### Modify the appearance of certain cells 
 
 
 
 ```
 
 
-
-
-### (3)
+### (4) 
 
 ```{r, fig.width = 5, fig.height = 4}
-
-### Modify cell appearance
-# highlight cell border
-
-
 ### Cluster the variables and add annotation
 
 
 
 ```
-
 
 
 
