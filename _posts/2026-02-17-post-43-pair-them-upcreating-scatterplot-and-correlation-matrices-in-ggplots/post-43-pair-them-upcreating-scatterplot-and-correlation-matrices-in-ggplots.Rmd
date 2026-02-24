@@ -187,15 +187,38 @@ All correlation coefficients are significant (without *p*-value adjustment)!!!
 
 ### (3) Highlight certain cells
 
+Now that we've learned how to make basic correlation heatmaps, we can spruce them up a bit! One thing we can do is to highlight certain cells. For example, we can highlight the borders of the cells with very strong correlations (absolute correlation coefficients larger than 0.8). 
+
+To do so, we'll first create a basic plot and set "return_data = T". This allows us to access the data underlying the heatmap. We can then save the data as a new object and create two new columns for the cell border width and the cell border color based on the correlation coefficients. Finally, we remake the original heatmap and add a new "geom_tile()" layer where we specify our new cell border width and color.
+
 ```{r, fig.width = 5, fig.height = 4}
-### Modify the appearance of certain cells 
+### Create a basic plot
+p_basic <- ggcorrhm(Soils_continuous, 
+                    layout = "bottomright", 
+                    include_diag = F,
+                    p_values = T,
+                    return_data = T)  # return the underlying data
 
+### Create two new columns for the cell border width and color
+p_data <- p_basic$plot_data %>% 
+  mutate(border_width = if_else(abs(value) < 0.8, 0, 1),
+         border_color = if_else(abs(value) < 0.8, NA, "red"))
 
+### Add a new geom_tile() layer to the original plot
+ggcorrhm(Soils_continuous, 
+         layout = "bottomright", 
+         include_diag = F,
+         p_values = T) + 
+  geom_tile(data = p_data,
+            aes(x = col, y = row),
+            fill = NA,
+            linewidth = p_data$border_width,  # new cell border width 
+            color = p_data$border_color)  # new cell border color
 
 ```
 
-
 ### (4) 
+
 
 ```{r, fig.width = 5, fig.height = 4}
 ### Cluster the variables and add annotation
