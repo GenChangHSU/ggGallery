@@ -141,7 +141,7 @@ data("Soils")
 
 In the second part of this post, we'll focus on the continuous variables in the `Soil` dataset. `ggcorrheatmap` offers a wide variety of functionality for creating correlation heatmaps. Let's start with the basics and add more complexity as we go.
 
-### (1) A basic correlation heatmap
+### (1) Make a basic correlation heatmap
 `ggcorrhm()` is the master function for creating correlation heatmaps. Simply pass your data to the function and you'll get a basic heatmap (note that he default choice of correlation is the Pearson correlation coefficient)!. We can also adjust the cell color and shape, and remove the diagonal cells (which all have a correlation coefficient of 1).
 
 ```{r, fig.width = 5, fig.height = 4}
@@ -167,7 +167,7 @@ ggcorrhm(Soils_continuous,
 ```
 Looks like there are some strong positive correlations (e.g., between Na and Conductance and between N and P) and some strong negative ones (e.g., between N and Density and between P and Density). But what are the actual coefficients (and their significance)?
 
-### (2) A mixed layout
+### (2) Create a correlation heatmap with a mixed layout
 
 `ggcorrhm()` allows users to create correlation heatmaps with a mixed layout. To do so, we first have to tell the function that we want two triangular matrices, using the "layout" argument. We will also need to specify what we would like to display in these two triangular matrices using the "mode" argument: "heatmap" gives the colored cells, whereas "none" gives empty cells. Next, we can use the "p_values" argument to specify whether we would like to display the significance stars in each of the two triangular matrices. Finally, we can use the "cell_labels" argument to specify whether we would like to display the correlation coefficients in each of the two triangular matrices. 
 
@@ -185,7 +185,7 @@ ggcorrhm(Soils_continuous,
 ```
 All correlation coefficients are significant (without *p*-value adjustment)!!!
 
-### (3) Highlight certain cells
+### (3) Highlight certain cells in the heatmap
 
 Now that we've learned how to make basic correlation heatmaps, we can spruce them up a bit! One thing we can do is to highlight certain cells. For example, we can highlight the borders of the cells with very strong correlations (absolute correlation coefficients larger than 0.8). 
 
@@ -196,7 +196,6 @@ To do so, we'll first create a basic plot and set "return_data = T". This allows
 p_basic <- ggcorrhm(Soils_continuous, 
                     layout = "bottomright", 
                     include_diag = F,
-                    p_values = T,
                     return_data = T)  # return the underlying data
 
 ### Create two new columns for the cell border width and color
@@ -217,14 +216,49 @@ ggcorrhm(Soils_continuous,
 
 ```
 
-### (4) 
+### (4) Cluster the variables and annotate the heatmap
 
 
 ```{r, fig.width = 5, fig.height = 4}
-### Cluster the variables and add annotation
+### Data for highlighting the cell borders
+p_basic <- ggcorrhm(Soils_continuous, 
+                    layout = "topright", 
+                    include_diag = F,
+                    return_data = T)
 
+p_data <- p_basic$plot_data %>% 
+  mutate(border_width = if_else(abs(value) < 0.8, 0, 1),
+         border_color = if_else(abs(value) < 0.8, NA, "#fed976"))
 
+### Create a dataframe for annotation
+annotation_df <- data.frame(.names = colnames(Soils_continuous),
+                            Type = c("Non-element", "Element", "Non-element", 
+                                     "Element", "Element", "Element",
+                                     "Element", "Element", "Non-element"))
 
+### Cluster the variables in the heatmap
+ggcorrhm(Soils_continuous, 
+         layout = "topright", 
+         include_diag = T,
+         high = "#e34a33",
+         mid = "white",
+         low = "#006d2c",
+         p_values = T,
+         cluster_rows = T,  # cluster the rows  
+         cluster_cols = T,  # cluster the columns
+         show_dend_cols = F,  # hide the row dendrogram 
+         annot_rows_df = annotation_df,
+         annot_rows_names_side = "top",
+         show_annot_names = F,
+         annot_dist = 0.3) +   
+  geom_tile(data = p_data,
+            aes(x = col, y = row),
+            fill = NA,
+            linewidth = p_data$border_width,
+            color = p_data$border_color) + 
+  theme(legend.position = "inside",
+        legend.position.inside = c(0.1, 0.3))
+  
 ```
 
 
