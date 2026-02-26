@@ -127,7 +127,6 @@ In this post, we'll be creating scatterplot matrices in ggplots using the extens
 library(tidyverse)
 library(GGally)
 library(carData)
-
 data("Soils")
 
 
@@ -218,6 +217,10 @@ ggcorrhm(Soils_continuous,
 
 ### (4) Cluster the variables and annotate the heatmap
 
+There are two more things we can do to make the heatmap even fancier: clustering the variables based on the correlation matrix and annotating the plot. 
+
+
+To annotate the heatmap, we'll first create a new dataframe with a column indicating the variable names and one or more columns of annotation variables (which can be both categorical or continuous). Simply pass the data to the argument "annot_rows_df = " (or "annot_cols_df = " depending on which side of the heatmap you would like annotate) and the annotation will show up in the plot! We can further customize the annotation using a variety of the "annot_XXX" arguments, as shown in the example below. 
 
 ```{r, fig.width = 5, fig.height = 4}
 ### Data for highlighting the cell borders
@@ -231,36 +234,43 @@ p_data <- p_basic$plot_data %>%
          border_color = if_else(abs(value) < 0.8, NA, "#fed976"))
 
 ### Create a dataframe for annotation
-annotation_df <- data.frame(.names = colnames(Soils_continuous),
-                            Type = c("Non-element", "Element", "Non-element", 
+annotation_df <- data.frame(.names = colnames(Soils_continuous),  # variable names
+                            Type = c("Non-element", "Element", "Non-element",  # annotation variable 
                                      "Element", "Element", "Element",
                                      "Element", "Element", "Non-element"))
 
-### Cluster the variables in the heatmap
+### Cluster the variables and annotate the heatmap
 ggcorrhm(Soils_continuous, 
          layout = "topright", 
          include_diag = T,
          high = "#e34a33",
          mid = "white",
-         low = "#006d2c",
+         low = "#4575b4",
          p_values = T,
+         
+         # arguments for clustering
          cluster_rows = T,  # cluster the rows  
          cluster_cols = T,  # cluster the columns
-         show_dend_cols = F,  # hide the row dendrogram 
-         annot_rows_df = annotation_df,
+         show_dend_cols = F,  # hide the column dendrogram 
+         
+         # arguments for annotation
+         annot_rows_df = annotation_df,  # dataframe for annotation
          annot_rows_names_side = "top",
-         show_annot_names = F,
-         annot_dist = 0.3) +   
-  geom_tile(data = p_data,
-            aes(x = col, y = row),
+         show_annot_names = F,  # hide the annotation name ("Type")
+         annot_dist = 0.3,  # distance between the annotation and the heatmap
+         annot_rows_col = list("Type" = scale_fill_manual(name = "Variable type", values = c("#f1a340", "#01665e"))),  # annotation tile color
+         annot_border_lwd = 0.5,  # annotation border width
+         annot_border_col = "white") +  # annotation border color
+  geom_tile(data = p_data, aes(x = col, y = row),
             fill = NA,
             linewidth = p_data$border_width,
             color = p_data$border_color) + 
   theme(legend.position = "inside",
-        legend.position.inside = c(0.1, 0.3))
-  
+        legend.position.inside = c(0.1, 0.35))
+
 ```
 
+Awesome! Looks like there are two main clusters of variables: Mg, Density, Na, and Conductance vs. N, P, K, pH, and Ca.
 
 
 ## Summary
