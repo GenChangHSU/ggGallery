@@ -141,7 +141,7 @@ data("Soils")
 In the second part of this post, we'll focus on the continuous variables in the `Soil` dataset. `ggcorrheatmap` offers a wide variety of functionality for creating correlation heatmaps. Let's start with the basics and add more complexity as we go.
 
 ### (1) Make a basic correlation heatmap
-`ggcorrhm()` is the master function for creating correlation heatmaps. Simply pass your data to the function and you'll get a basic heatmap (note that he default choice of correlation is the Pearson correlation coefficient)!. We can also adjust the cell color and shape, and remove the diagonal cells (which all have a correlation coefficient of 1).
+`ggcorrhm()` is the master function for creating correlation heatmaps. Simply pass your data to the function and you'll get a basic heatmap (note that the default choice of correlation is the Pearson's *r*)! 
 
 ```{r, fig.width = 5, fig.height = 4}
 library(ggcorrheatmap)
@@ -153,22 +153,28 @@ Soils_continuous <- Soils %>%
 ### Create a basic correlation heatmap
 ggcorrhm(Soils_continuous)
 
+```
+
+We can also change the cell color/shape and remove the diagonal cells (which all have a correlation coefficient of 1).
+
+```{r, fig.width = 5, fig.height = 4}
 ### Change the cell color and shape
 ggcorrhm(Soils_continuous,
-         high = "#de2d26",  # the color for the upper limit
-         mid = "white",  # the color for the midpoint
-         low = "#006d2c",  # the color for the lower limit
-         mode = 21,  # the shape of the cell (a number between 1 to 25)
-         include_diag = F,  # remove the diagonal cells
-         size_range = c(5, 10),  # the range of cell size
-         layout = "bottomright",)  # show only the bottom-right trianglular matrix     
+         high = "#de2d26",  # color for the upper limit
+         mid = "white",  # color for the midpoint
+         low = "#006d2c",  # color for the lower limit
+         mode = 21,  # shape of the cell (a number between 1 to 25)
+         include_diag = F,  # remove diagonal cells
+         size_range = c(5, 10),  # cell size range
+         layout = "bottomright")  # show only the bottom-right triangular matrix     
 
 ```
-Looks like there are some strong positive correlations (e.g., between Na and Conductance and between N and P) and some strong negative ones (e.g., between N and Density and between P and Density). But what are the actual coefficients (and their significance)?
+
+Looks like there are some strong positive correlations (e.g., between Na and Conductance and between N and P) and some strong negative ones (e.g., between N and Density and between P and Density). But what are the actual coefficients (and their statistical significance)?
 
 ### (2) Create a correlation heatmap with a mixed layout
 
-`ggcorrhm()` allows users to create correlation heatmaps with a mixed layout. To do so, we first have to tell the function that we want two triangular matrices, using the "layout" argument. We will also need to specify what we would like to display in these two triangular matrices using the "mode" argument: "heatmap" gives the colored cells, whereas "none" gives empty cells. Next, we can use the "p_values" argument to specify whether we would like to display the significance stars in each of the two triangular matrices. Finally, we can use the "cell_labels" argument to specify whether we would like to display the correlation coefficients in each of the two triangular matrices. 
+`ggcorrhm()` allows users to create correlation heatmaps with a mixed layout (e.g., a mix of heatmap and text display). To do so, we first have to tell the function that we want two triangular matrices, using the "layout" argument. We will also need to specify what we would like to display in these two triangular matrices using the "mode" argument: "heatmap" gives the colored cells, whereas "none" gives empty cells. Next, we can use the "p_values" argument to specify whether we would like to display the significance stars in each of the two triangular matrices. Finally, we can use the "cell_labels" argument to specify whether we would like to display the correlation coefficients in each of the two triangular matrices. 
 
 ```{r, fig.width = 5, fig.height = 4}
 ### A mixed layout with color cells and p-values
@@ -176,17 +182,17 @@ ggcorrhm(Soils_continuous,
          layout = c("topleft", "bottomright"),  # create two triangular matrices
          mode = c("heatmap", "none"),  # what to display in each of the two triangular matrices
          include_diag = T,
-         p_values = c(F, T),  # whether to show the significance stars in each of two triangular matrices
+         p_values = c(F, T),  # whether to show the significance stars in each of the two triangular matrices
          p_adjust = "none",  # can be any of the method in "p.adjust.methods"
          p_thresholds = c("***" = 0.001, "**" = 0.01, "*" = 0.05, 1),  # thresholds for annotating the significance stars
-         cell_labels = c(T, F))  # whether to show the correlation coefficients in each of two triangular matrices
+         cell_labels = c(T, F))  # whether to show the correlation coefficients in each of the two triangular matrices
 
 ```
 All correlation coefficients are significant (without *p*-value adjustment)!!!
 
 ### (3) Highlight certain cells in the heatmap
 
-Now that we've learned how to make basic correlation heatmaps, we can spruce them up a bit! One thing we can do is to highlight certain cells. For example, we can highlight the borders of the cells with very strong correlations (absolute correlation coefficients larger than 0.8). 
+Now that we've learned how to make a basic correlation heatmap, we can spruce it up a bit! One thing we can do is to highlight certain cells. For example, we can highlight the cells with very strong correlations (absolute correlation coefficients larger than 0.8). 
 
 To do so, we'll first create a basic plot and set "return_data = T". This allows us to access the data underlying the heatmap. We can then save the data as a new object and create two new columns for the cell border width and the cell border color based on the correlation coefficients. Finally, we remake the original heatmap and add a new "geom_tile()" layer where we specify our new cell border width and color.
 
@@ -199,8 +205,8 @@ p_basic <- ggcorrhm(Soils_continuous,
 
 ### Create two new columns for the cell border width and color
 p_data <- p_basic$plot_data %>% 
-  mutate(border_width = if_else(abs(value) < 0.8, 0, 1),
-         border_color = if_else(abs(value) < 0.8, NA, "red"))
+  mutate(border_width = if_else(abs(value) < 0.8, 0, 1),  # thicker cell border if |r| > 0.8
+         border_color = if_else(abs(value) < 0.8, NA, "red"))  # red cell border if |r| > 0.8
 
 ### Add a new geom_tile() layer to the original plot
 ggcorrhm(Soils_continuous, 
@@ -217,13 +223,14 @@ ggcorrhm(Soils_continuous,
 
 ### (4) Cluster the variables and annotate the heatmap
 
-There are two more things we can do to make the heatmap even fancier: clustering the variables based on the correlation matrix and annotating the plot. 
+There are two more things we can do to make the heatmap even fancier: (1) clustering the variables and (2) annotating the plot. 
 
+To cluster the variables, we need to specify "cluster_rows = T" and "cluster_cols = T", which will perform hierarchical clustering on the data using the function `hclust()`. We then specify the clustering distance (default is the Euclidean distance) and the agglomeration method (default is the complete method). We can also decide whether we would like to display the row/column dendrogram using the argument "show_dend_rows/show_dend_cols". Finally, there are arguments "dend_XXX" for adjusting the dendrogram appearance.
 
-To annotate the heatmap, we'll first create a new dataframe with a column indicating the variable names and one or more columns of annotation variables (which can be both categorical or continuous). Simply pass the data to the argument "annot_rows_df = " (or "annot_cols_df = " depending on which side of the heatmap you would like annotate) and the annotation will show up in the plot! We can further customize the annotation using a variety of the "annot_XXX" arguments, as shown in the example below. 
+To annotate the heatmap, we'll first create a new dataframe with a column indicating the variable names and one or more columns of annotation variables (which can be both categorical or continuous). Simply pass the data to the argument "annot_rows_df = " (or "annot_cols_df = " depending on the side of the heatmap you would like annotate on) and the annotation will show up in the plot! We can further customize the annotation using a variety of the "annot_XXX" arguments, as shown in the example below. 
 
 ```{r, fig.width = 5, fig.height = 4}
-### Data for highlighting the cell borders
+### Data for highlighting cell borders
 p_basic <- ggcorrhm(Soils_continuous, 
                     layout = "topright", 
                     include_diag = F,
@@ -235,7 +242,7 @@ p_data <- p_basic$plot_data %>%
 
 ### Create a dataframe for annotation
 annotation_df <- data.frame(.names = colnames(Soils_continuous),  # variable names
-                            Type = c("Non-element", "Element", "Non-element",  # annotation variable 
+                            Type = c("Non-element", "Element", "Non-element",  # annotation variable
                                      "Element", "Element", "Element",
                                      "Element", "Element", "Non-element"))
 
@@ -251,13 +258,17 @@ ggcorrhm(Soils_continuous,
          # arguments for clustering
          cluster_rows = T,  # cluster the rows  
          cluster_cols = T,  # cluster the columns
-         show_dend_cols = F,  # hide the column dendrogram 
+         cluster_distance = "euclidean",  # clustering distance
+         cluster_method = "complete",  # clustering method
+         show_dend_cols = F,  # hide column dendrogram
+         dend_height = 0.7,  # rescale branch length
+         dend_lwd = 0.7,  # dendrogram line width
          
          # arguments for annotation
          annot_rows_df = annotation_df,  # dataframe for annotation
-         annot_rows_names_side = "top",
+         annot_rows_names_side = "top",  # side of annotation name (this has no effect here since the annotation name is hidden)
          show_annot_names = F,  # hide the annotation name ("Type")
-         annot_dist = 0.3,  # distance between the annotation and the heatmap
+         annot_dist = 0.3,  # distance between annotation and heatmap
          annot_rows_col = list("Type" = scale_fill_manual(name = "Variable type", values = c("#f1a340", "#01665e"))),  # annotation tile color
          annot_border_lwd = 0.5,  # annotation border width
          annot_border_col = "white") +  # annotation border color
@@ -270,8 +281,7 @@ ggcorrhm(Soils_continuous,
 
 ```
 
-Awesome! Looks like there are two main clusters of variables: Mg, Density, Na, and Conductance vs. N, P, K, pH, and Ca.
-
+Awesome! Looks like there are two main clusters of variables: [Mg, Density, Na, and Conductance] vs. [N, P, K, pH, and Ca].
 
 ## Summary
 
