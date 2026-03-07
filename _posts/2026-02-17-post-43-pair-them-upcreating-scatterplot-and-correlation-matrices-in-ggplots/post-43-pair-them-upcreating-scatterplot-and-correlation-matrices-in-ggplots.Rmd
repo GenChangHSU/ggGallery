@@ -121,13 +121,44 @@ In this post, we'll be creating scatterplot matrices in ggplots using the extens
 
 ## Part I. Create scatterplot matrices with `GGally`
 
-### (1) Basic scatterplot matrices
+In the first part of the post, we'll create scatterplot matrices using the package [`GGally`](https://ggobi.github.io/ggally/index.html). We'll use the "Soils" dataset from the package `cardata`: the dataset contains various physical and chemical characteristics of soils from different topographic positions. To simplify things, we'll just use two continuous ("pH" and "N") and two categorical ("Contour" and "Depth") variables in the following examples. This also allows us to explore all three possible variable combinations (continuous–continuous, continuous–categorical, and categorical–categorical).
+
+### (1) Create a basic scatterplot matrix
+
+Adjust facet labels
 
 ```{r, fig.width = 5, fig.height = 4}
 library(tidyverse)
 library(GGally)
-library(carData)
-data("Soils")
+library(carData)  # for the dataset "Soils"
+
+### Create a basic scatterplot matrix
+Soils
+
+
+
+```
+
+
+### (2) Change plot types in the scatterplot matrix
+
+built-in option
+custom functions
+function wrapping
+
+```{r, fig.width = 5, fig.height = 4}
+
+
+
+```
+
+
+### (3) Adjust certain plots in the scatterplot matrix
+
+plot subsetting
+
+```{r, fig.width = 5, fig.height = 4}
+
 
 
 ```
@@ -138,9 +169,9 @@ data("Soils")
 
 ## Part II. Create correlation heatmaps with `ggcorrheatmap`
 
-In the second part of this post, we'll focus on the continuous variables in the `Soil` dataset. `ggcorrheatmap` offers a wide variety of functionality for creating correlation heatmaps. Let's start with the basics and add more complexity as we go.
+In the second part of this post, we'll focus on the continuous variables in the `Soil` dataset. [`ggcorrheatmap`](https://leod123.github.io/ggcorrheatmap/) offers a wide variety of functionality for creating correlation heatmaps. Let's start with the basics and add more complexity as we go.
 
-### (1) Make a basic correlation heatmap
+### (1) Create a basic correlation heatmap
 `ggcorrhm()` is the master function for creating correlation heatmaps. Simply pass your data to the function and you'll get a basic heatmap (note that the default choice of correlation is the Pearson's *r*)! 
 
 ```{r, fig.width = 5, fig.height = 4}
