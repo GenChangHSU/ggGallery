@@ -125,32 +125,55 @@ In the first part of the post, we'll create scatterplot matrices using the packa
 
 ### (1) Create a basic scatterplot matrix
 
-Adjust facet labels
+The function for creating a scatterplot matrix is `ggpair()`, which simply takes a dataframe and returns a scatterplot matrix. By default, the diagonal plots will be density plots for continuous variables and barplots of level counts for categorical variables. For the off-diagonal plots, it depends on the types of variable combinations:
 
-```{r, fig.width = 5, fig.height = 4}
+1. For continuous–continuous variable combinations, one triangular matrix will display scatterplots and the other triangular matrix will display correlation coefficients.
+
+2. For continuous–categorical variable combinations, one triangular matrix will display histograms of the continuous variable faceted by the categorical variable and the other triangular matrix will display boxplots of the continuous variable by each level of the categorical variable.
+
+3. For categorical–categorical variable combinations, one triangular matrix will display mosaic plots of the frequencies of the two categorical variables and the other triangular matrix will display barplots of the level counts of one categorical variable faceted by the other categorical variables.
+
+We can also map a categorical variable to the "color" aesthetic and use both `scale_color_XXX` and `scale_fill_XXX` to adjust the colors in the plots.
+
+```{r, fig.width = 7, fig.height = 6, out.width = "85%", out.height = "80%"}
 library(tidyverse)
 library(GGally)
 library(carData)  # for the dataset "Soils"
 
+### Select focal columns
+Soils_subset <- Soils %>% 
+  select(Contour, Depth, pH, N)
+
 ### Create a basic scatterplot matrix
-Soils
-
-
+ggpairs(Soils_subset, aes(color = Contour),
+        columnLabels = c("Topography", "Soil depth", "pH", "N (%)")) + 
+  scale_color_manual(values = c("#43a2ca", "#006d2c", "#d95f0e")) + 
+  scale_fill_manual(values = c("#43a2ca", "#006d2c", "#d95f0e")) +  # need to specify the fill scale too  
+  theme_bw()
 
 ```
-
 
 ### (2) Change plot types in the scatterplot matrix
 
 built-in option
-custom functions
 function wrapping
 
-```{r, fig.width = 5, fig.height = 4}
+```{r, fig.width = 7, fig.height = 6, out.width = "85%", out.height = "80%}
+### Change plot types using built-in options
+ggpairs(Soils_subset, aes(color = Contour),
+        columnLabels = c("Topography", "Soil depth", "pH", "N (%)")) + 
+  scale_color_manual(values = c("#43a2ca", "#006d2c", "#d95f0e")) + 
+  scale_fill_manual(values = c("#43a2ca", "#006d2c", "#d95f0e")) +
+  theme_bw()
 
 
 
 ```
+
+custom functions
+
+
+
 
 
 ### (3) Adjust certain plots in the scatterplot matrix
