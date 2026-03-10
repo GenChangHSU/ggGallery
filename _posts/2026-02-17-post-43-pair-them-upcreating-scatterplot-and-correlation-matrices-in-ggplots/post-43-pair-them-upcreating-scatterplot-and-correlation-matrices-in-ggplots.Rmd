@@ -157,16 +157,21 @@ ggpairs(Soils_subset, aes(color = Contour),
 
 built-in option
 function wrapping
+vig_ggally("ggally_plots")
 
 ```{r, fig.width = 7, fig.height = 6, out.width = "85%", out.height = "80%}
 ### Change plot types using built-in options
 ggpairs(Soils_subset, aes(color = Contour),
-        columnLabels = c("Topography", "Soil depth", "pH", "N (%)")) + 
+        columnLabels = c("Topography", "Soil depth", "pH", "N (%)"),
+        upper = list(continuous = "smooth_lm",
+                     combo = wrap("facetdensity", linewidth = 2),  # wrap the function to change the default parameter settings
+                     discrete = "crosstable"),
+        lower = list(continuous = "smooth_loess",
+                     combo = wrap("dot", width = 0.05),
+                     discrete = "count")) + 
   scale_color_manual(values = c("#43a2ca", "#006d2c", "#d95f0e")) + 
   scale_fill_manual(values = c("#43a2ca", "#006d2c", "#d95f0e")) +
   theme_bw()
-
-
 
 ```
 
