@@ -155,6 +155,8 @@ ggpairs(Soils_subset, aes(color = Contour),
 
 ### (2) Change plot types in the scatterplot matrix
 
+
+
 built-in option
 function wrapping
 vig_ggally("ggally_plots")
