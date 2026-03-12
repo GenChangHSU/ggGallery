@@ -155,19 +155,21 @@ ggpairs(Soils_subset, aes(color = Contour),
 
 ### (2) Change plot types in the scatterplot matrix
 
+If we are not satisfied with the default plot types, we can change them using the arguments "upper" and "lower", which control the plots in the upper and the lower triangular matrices. These two arguments take a list of three possible named elements: "continuous", "combo", and "discrete", representing the continuous-continuous, the continuous-categorical, and the categorical-categorical variable combinations. We can specify the new plot types in those named elements using character strings of the built-in plot options `GGally` offers. A full list of the built-in options is available via `vig_ggally("ggally_plots")`.
 
+Also, if we want to change the default parameter settings for the plots, we can `wrap()` the plot names and specify the new parameter values.
 
-built-in option
-function wrapping
-vig_ggally("ggally_plots")
-
-```{r, fig.width = 7, fig.height = 6, out.width = "85%", out.height = "80%}
+```{r, fig.width = 7, fig.height = 6, out.width = "85%", out.height = "80%"}
 ### Change plot types using built-in options
 ggpairs(Soils_subset, aes(color = Contour),
         columnLabels = c("Topography", "Soil depth", "pH", "N (%)"),
+        
+        # plot types for the upper triangular matrix
         upper = list(continuous = "smooth_lm",
-                     combo = wrap("facetdensity", linewidth = 2),  # wrap the function to change the default parameter settings
+                     combo = wrap("facetdensity", linewidth = 2),  # wrap the plot name to change the parameter settings
                      discrete = "crosstable"),
+        
+        # plot types for the lower triangular matrix
         lower = list(continuous = "smooth_loess",
                      combo = wrap("dot", width = 0.05),
                      discrete = "count")) + 
@@ -177,9 +179,27 @@ ggpairs(Soils_subset, aes(color = Contour),
 
 ```
 
+
 custom functions
 
+```{r, fig.width = 7, fig.height = 6, out.width = "85%", out.height = "80%"}
+### Create custom plot functions
 
+
+
+
+
+### Change plot types using custom functions
+ggpairs(Soils_subset, aes(color = Contour),
+        columnLabels = c("Topography", "Soil depth", "pH", "N (%)"),
+        upper = list(continuous = "smooth_lm",
+                     combo = wrap("facetdensity", linewidth = 2),
+                     discrete = "crosstable")) + 
+  scale_color_manual(values = c("#43a2ca", "#006d2c", "#d95f0e")) + 
+  scale_fill_manual(values = c("#43a2ca", "#006d2c", "#d95f0e")) +
+  theme_bw()
+
+```
 
 
 

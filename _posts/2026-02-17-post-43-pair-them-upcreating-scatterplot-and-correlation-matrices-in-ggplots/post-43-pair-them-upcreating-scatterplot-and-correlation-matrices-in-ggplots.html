@@ -1641,7 +1641,7 @@ div.l-body img {
 <h2 id="part-i.-create-scatterplot-matrices-with-ggally">Part I. Create scatterplot matrices with <code>GGally</code></h2>
 <p>In the first part of the post, we’ll create scatterplot matrices using the package <a href="https://ggobi.github.io/ggally/index.html"><code>GGally</code></a>. We’ll use the “Soils” dataset from the package <code>cardata</code>: the dataset contains various physical and chemical characteristics of soils from different topographic positions. To simplify things, we’ll just use two continuous (“pH” and “N”) and two categorical (“Contour” and “Depth”) variables in the following examples. This also allows us to explore all three possible variable combinations (continuous–continuous, continuous–categorical, and categorical–categorical).</p>
 <h3 id="create-a-basic-scatterplot-matrix">(1) Create a basic scatterplot matrix</h3>
-<p>The function for creating a scatterplot matrix is <code>ggpair()</code>, which simply takes a dataframe and returns a scatterplot matrix. By default, the diagonal plots will be density plots for continuous variables and barplots of counts for categorical variables. For the off-diagonal plots, it depends on the types of variable combinations:</p>
+<p>The function for creating a scatterplot matrix is <code>ggpair()</code>, which simply takes a dataframe and returns a scatterplot matrix. By default, the diagonal plots will be density plots for continuous variables and barplots of level counts for categorical variables. For the off-diagonal plots, it depends on the types of variable combinations:</p>
 <ol type="1">
 <li><p>For continuous–continuous variable combinations, one triangular matrix will display scatterplots and the other triangular matrix will display correlation coefficients.</p></li>
 <li><p>For continuous–categorical variable combinations, one triangular matrix will display histograms of the continuous variable faceted by the categorical variable and the other triangular matrix will display boxplots of the continuous variable by each level of the categorical variable.</p></li>
@@ -1668,12 +1668,30 @@ div.l-body img {
 <p><img src="post-43-pair-them-upcreating-scatterplot-and-correlation-matrices-in-ggplots_files/figure-html5/unnamed-chunk-1-1.png" alt="" width="85%" height="80%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="change-plot-types-in-the-scatterplot-matrix">(2) Change plot types in the scatterplot matrix</h3>
-<p>built-in option
-custom functions
-function wrapping</p>
+<p>If we are not satisfied with the default plot types, we can change them using the arguments “upper” and “lower”, which control the plots in the upper and the lower triangular matrices. These two arguments take a list of three possible named elements: “continuous”, “combo”, and “discrete”, representing the continuous-continuous, the continuous-categorical, and the categorical-categorical variable combinations. We can then specify the new plot types in those named elements using character strings of the built-in plot options <code>GGally</code> offers. A full list of the built-in options is available via <code>vig_ggally("ggally_plots")</code>.</p>
+<p>Also, if we want to change the default parameter settings for the plots, we can <code>wrap()</code> the plot names and specify the new parameter values.</p>
 <div class="layout-chunk" data-layout="l-body">
-
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Change plot types using built-in options</span></span>
+<span><span class='fu'><a href='https://ggobi.github.io/ggally/reference/ggpairs.html'>ggpairs</a></span><span class='op'>(</span><span class='va'>Soils_subset</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='va'>Contour</span><span class='op'>)</span>,</span>
+<span>        columnLabels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Topography"</span>, <span class='st'>"Soil depth"</span>, <span class='st'>"pH"</span>, <span class='st'>"N (%)"</span><span class='op'>)</span>,</span>
+<span>        </span>
+<span>        <span class='co'># plot types for the upper triangular matrix</span></span>
+<span>        upper <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>continuous <span class='op'>=</span> <span class='st'>"smooth_lm"</span>,</span>
+<span>                     combo <span class='op'>=</span> <span class='fu'><a href='https://ggobi.github.io/ggally/reference/wrap.html'>wrap</a></span><span class='op'>(</span><span class='st'>"facetdensity"</span>, linewidth <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>,  <span class='co'># wrap the plot name to change the parameter settings</span></span>
+<span>                     discrete <span class='op'>=</span> <span class='st'>"crosstable"</span><span class='op'>)</span>,</span>
+<span>        </span>
+<span>        <span class='co'># plot types for the lower triangular matrix</span></span>
+<span>        lower <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>continuous <span class='op'>=</span> <span class='st'>"smooth_loess"</span>,</span>
+<span>                     combo <span class='op'>=</span> <span class='fu'><a href='https://ggobi.github.io/ggally/reference/wrap.html'>wrap</a></span><span class='op'>(</span><span class='st'>"dot"</span>, width <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span>,</span>
+<span>                     discrete <span class='op'>=</span> <span class='st'>"count"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_color_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"#43a2ca"</span>, <span class='st'>"#006d2c"</span>, <span class='st'>"#d95f0e"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"#43a2ca"</span>, <span class='st'>"#006d2c"</span>, <span class='st'>"#d95f0e"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
 </div>
+<p><img src="post-43-pair-them-upcreating-scatterplot-and-correlation-matrices-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png" alt="" width="85%" height="80%" style="display: block; margin: auto;" /></p>
+</div>
+<p>custom functions</p>
 <h3 id="adjust-certain-plots-in-the-scatterplot-matrix">(3) Adjust certain plots in the scatterplot matrix</h3>
 <p>plot subsetting</p>
 <div class="layout-chunk" data-layout="l-body">
