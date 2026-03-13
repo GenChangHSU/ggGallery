@@ -183,25 +183,31 @@ ggpairs(Soils_subset, aes(color = Contour),
 custom functions
 
 ```{r, fig.width = 7, fig.height = 6, out.width = "85%", out.height = "80%"}
-### Create custom plot functions
+### Create a custom function for plotting continuous vs. categorical variables
+pointrange_fun <- function(data, mapping, ...) {
+   ggplot(data = data, mapping = mapping) +
+    geom_point(position = position_jitterdodge(jitter.height = 0.01, dodge.width = 1), alpha = 0.3) + 
+    stat_summary(geom = "pointrange", fun.data = "mean_se", position = position_dodge(width = 1))
+}
 
-
-
-
-
-### Change plot types using custom functions
+### Change plot type using the custom function
 ggpairs(Soils_subset, aes(color = Contour),
         columnLabels = c("Topography", "Soil depth", "pH", "N (%)"),
+        legend = 1,  # create a legend based on plot #1
         upper = list(continuous = "smooth_lm",
-                     combo = wrap("facetdensity", linewidth = 2),
-                     discrete = "crosstable")) + 
+                     combo = pointrange_fun,  # use the custom function "pointrange_fun" for plotting continuous vs. categorical variables
+                     discrete = "crosstable"),
+        lower = list(continuous = "smooth_loess",
+                     combo = wrap("dot", width = 0.05),
+                     discrete = "count")) + 
   scale_color_manual(values = c("#43a2ca", "#006d2c", "#d95f0e")) + 
   scale_fill_manual(values = c("#43a2ca", "#006d2c", "#d95f0e")) +
-  theme_bw()
+  theme_bw() + 
+  theme(legend.position = "top",
+        legend.key.spacing.x = unit(0.5, "in"),
+        legend.title = element_blank())
 
 ```
-
-
 
 ### (3) Adjust certain plots in the scatterplot matrix
 
