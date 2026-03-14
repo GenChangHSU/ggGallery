@@ -1691,7 +1691,7 @@ div.l-body img {
 </div>
 <p><img src="post-43-pair-them-upcreating-scatterplot-and-correlation-matrices-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png" alt="" width="85%" height="80%" style="display: block; margin: auto;" /></p>
 </div>
-<p>custom functions</p>
+<p>Besides the built-in plot options, we can also create our own custom functions for the plots! The custom functions should follow the structure <code>function(data, mapping, ...) { }</code> and return a ggplot. For example, we can create a plot function for the continuous-categorical variable combination that shows the means and the SEs as well as the jittered points in the background. We can then pass this function to the list.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Create a custom function for plotting continuous vs. categorical variables</span></span>
@@ -1704,15 +1704,19 @@ div.l-body img {
 <span><span class='co'>### Change plot type using the custom function</span></span>
 <span><span class='fu'><a href='https://ggobi.github.io/ggally/reference/ggpairs.html'>ggpairs</a></span><span class='op'>(</span><span class='va'>Soils_subset</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='va'>Contour</span><span class='op'>)</span>,</span>
 <span>        columnLabels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Topography"</span>, <span class='st'>"Soil depth"</span>, <span class='st'>"pH"</span>, <span class='st'>"N (%)"</span><span class='op'>)</span>,</span>
+<span>        legend <span class='op'>=</span> <span class='fl'>1</span>,  <span class='co'># create a legend based on plot #1</span></span>
 <span>        upper <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>continuous <span class='op'>=</span> <span class='st'>"smooth_lm"</span>,</span>
-<span>                     combo <span class='op'>=</span> <span class='va'>pointrange_fun</span>,  <span class='co'># use the custom function for plotting continuous vs. categorical variables</span></span>
+<span>                     combo <span class='op'>=</span> <span class='va'>pointrange_fun</span>,  <span class='co'># use the custom function "pointrange_fun" for plotting continuous vs. categorical variables</span></span>
 <span>                     discrete <span class='op'>=</span> <span class='st'>"crosstable"</span><span class='op'>)</span>,</span>
 <span>        lower <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>continuous <span class='op'>=</span> <span class='st'>"smooth_loess"</span>,</span>
 <span>                     combo <span class='op'>=</span> <span class='fu'><a href='https://ggobi.github.io/ggally/reference/wrap.html'>wrap</a></span><span class='op'>(</span><span class='st'>"dot"</span>, width <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span>,</span>
 <span>                     discrete <span class='op'>=</span> <span class='st'>"count"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_color_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"#43a2ca"</span>, <span class='st'>"#006d2c"</span>, <span class='st'>"#d95f0e"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"#43a2ca"</span>, <span class='st'>"#006d2c"</span>, <span class='st'>"#d95f0e"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"top"</span>,</span>
+<span>        legend.key.spacing.x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='st'>"in"</span><span class='op'>)</span>,</span>
+<span>        legend.title <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
 <p><img src="post-43-pair-them-upcreating-scatterplot-and-correlation-matrices-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png" alt="" width="85%" height="80%" style="display: block; margin: auto;" /></p>
 </div>

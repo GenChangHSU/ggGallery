@@ -179,8 +179,7 @@ ggpairs(Soils_subset, aes(color = Contour),
 
 ```
 
-
-custom functions
+Besides the built-in plot options, we can also create our own custom functions for the plots! The custom functions should follow the structure `function(data, mapping, ...) { }` and return a ggplot. For example, we can create a plot function for the continuous-categorical variable combination that shows the means and the SEs as well as the raw data points in the background. We can then pass this function to the list.
 
 ```{r, fig.width = 7, fig.height = 6, out.width = "85%", out.height = "80%"}
 ### Create a custom function for plotting continuous vs. categorical variables
@@ -213,7 +212,9 @@ ggpairs(Soils_subset, aes(color = Contour),
 
 plot subsetting
 
-```{r, fig.width = 5, fig.height = 4}
+```{r, fig.width = 7, fig.height = 6, out.width = "85%", out.height = "80%"}
+
+
 
 
 
