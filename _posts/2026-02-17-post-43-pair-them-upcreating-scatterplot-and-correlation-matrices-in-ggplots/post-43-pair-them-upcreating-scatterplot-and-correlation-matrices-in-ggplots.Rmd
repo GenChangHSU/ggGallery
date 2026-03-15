@@ -121,7 +121,7 @@ In this post, we'll be creating scatterplot matrices in ggplots using the extens
 
 ## Part I. Create scatterplot matrices with `GGally`
 
-In the first part of the post, we'll create scatterplot matrices using the package [`GGally`](https://ggobi.github.io/ggally/index.html). We'll use the "Soils" dataset from the package `cardata`: the dataset contains various physical and chemical characteristics of soils from different topographic positions. To simplify things, we'll just use two continuous ("pH" and "N") and two categorical ("Contour" and "Depth") variables in the following examples. This also allows us to explore all three possible variable combinations (continuous–continuous, continuous–categorical, and categorical–categorical).
+In the first part of the post, we'll create scatterplot matrices using the package [`GGally`](https://ggobi.github.io/ggally/index.html). We'll use the "Soils" dataset from the package `cardata`: the dataset contains various physical and chemical characteristics of soils from different topographic positions. To keep things simple, we'll just use two continuous ("pH" and "N") and two categorical ("Contour" and "Depth") variables in the following examples. This also allows us to explore all three possible variable combinations (continuous–continuous, continuous–categorical, and categorical–categorical).
 
 ### (1) Create a basic scatterplot matrix
 
@@ -140,7 +140,7 @@ library(tidyverse)
 library(GGally)
 library(carData)  # for the dataset "Soils"
 
-### Select focal columns
+### Select four focal columns
 Soils_subset <- Soils %>% 
   select(Contour, Depth, pH, N)
 
@@ -164,12 +164,12 @@ Also, if we want to change the default parameter settings for the plots, we can 
 ggpairs(Soils_subset, aes(color = Contour),
         columnLabels = c("Topography", "Soil depth", "pH", "N (%)"),
         
-        # plot types for the upper triangular matrix
+        # new plot types for the upper triangular matrix
         upper = list(continuous = wrap("smooth_lm", se = F),  # wrap the plot name to change the parameter settings
                      combo = wrap("facetdensity", linewidth = 1),
                      discrete = "crosstable"),
         
-        # plot types for the lower triangular matrix
+        # new plot types for the lower triangular matrix
         lower = list(continuous = wrap("smooth_loess", se = F),
                      combo = wrap("dot", width = 0.05),
                      discrete = "count")) + 
@@ -179,21 +179,21 @@ ggpairs(Soils_subset, aes(color = Contour),
 
 ```
 
-Besides the built-in plot options, we can also create our own custom functions for the plots! The custom functions should follow the structure `function(data, mapping, ...) { }` and return a ggplot. For example, we can create a plot function for the continuous-categorical variable combination that shows the means and the standard errors. We can then pass this function to the list.
+Besides the built-in plot options, we can also create our own custom plot functions! The custom plot functions should follow the structure `function(data, mapping, ...) { }` and return a ggplot. For example, we can create a custom plot function for the continuous-categorical variable combination that shows the means and the standard errors. We can then pass this function to the list.
 
 ```{r, fig.width = 7, fig.height = 6, out.width = "85%", out.height = "80%"}
-### Create a custom function for plotting continuous vs. categorical variables
+### Create a custom plot function for continuous vs. categorical variables
 pointrange_fun <- function(data, mapping, ...) {
    ggplot(data = data, mapping = mapping) +
     stat_summary(geom = "pointrange", fun.data = "mean_se", position = position_dodge(width = 1))
 }
 
-### Change plot type using the custom function
+### Change plot type using the custom plot function
 ggpairs(Soils_subset, aes(color = Contour),
         columnLabels = c("Topography", "Soil depth", "pH", "N (%)"),
         legend = 1,  # create a legend based on plot #1
         upper = list(continuous = wrap("smooth_lm", se = F),
-                     combo = pointrange_fun,  # use the custom function "pointrange_fun" for plotting continuous vs. categorical variables
+                     combo = pointrange_fun,  # use the custom plot function "pointrange_fun" for plotting continuous vs. categorical variables
                      discrete = "crosstable"),
         lower = list(continuous = wrap("smooth_loess", se = F),
                      combo = wrap("dot", width = 0.05),
@@ -207,9 +207,9 @@ ggpairs(Soils_subset, aes(color = Contour),
 
 ```
 
-### (3) Modify certain plots in the scatterplot matrix
+### (3) Modify a certain plot in the scatterplot matrix
 
-extrac plot
+If we want to further modify a certain plot in the scatterplot matrix, we can store the scatterplot matrix in an object, extract the plot using the row and the column indices, make the changes we want to the extracted plot, and replace the original plot with the new one using the same row and column indices:
 
 ```{r, fig.width = 7, fig.height = 6, out.width = "85%", out.height = "80%"}
 ### Store the previous scatterplot matrix in an object
@@ -241,7 +241,7 @@ p_scatterplot_matrix
 
 ```
 
-With this functionality, the scatterplot matrix is (almost) fully customizable!
+With this functionality, we can essentially customize the scatterplot matrix in any way we like!
 
 <br>
 

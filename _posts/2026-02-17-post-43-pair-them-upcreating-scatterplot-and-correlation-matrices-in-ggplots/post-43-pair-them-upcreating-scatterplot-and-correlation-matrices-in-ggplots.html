@@ -1719,8 +1719,8 @@ div.l-body img {
 </div>
 <p><img src="post-43-pair-them-upcreating-scatterplot-and-correlation-matrices-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png" alt="" width="85%" height="80%" style="display: block; margin: auto;" /></p>
 </div>
-<h3 id="modify-certain-plots-in-the-scatterplot-matrix">(3) Modify certain plots in the scatterplot matrix</h3>
-<p>extrac plot</p>
+<h3 id="modify-a-certain-plot-in-the-scatterplot-matrix">(3) Modify a certain plot in the scatterplot matrix</h3>
+<p>If we want to further modify a certain plot in the scatterplot matrix, we can store the scatterplot matrix in an object, extract the plot using the row and column indices, make the changes we want, and replace the original plot with the new one using the same row and column indices:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Store the previous scatterplot matrix in an object</span></span>
@@ -1752,7 +1752,7 @@ div.l-body img {
 </div>
 <p><img src="post-43-pair-them-upcreating-scatterplot-and-correlation-matrices-in-ggplots_files/figure-html5/unnamed-chunk-4-1.png" alt="" width="85%" height="80%" style="display: block; margin: auto;" /></p>
 </div>
-<p>With this functionality, your scatterplot matrix is (almost) fully customizable!</p>
+<p>With this functionality, the scatterplot matrix is (almost) fully customizable!</p>
 <p><br></p>
 <h2 id="part-ii.-create-correlation-heatmaps-with-ggcorrheatmap">Part II. Create correlation heatmaps with <code>ggcorrheatmap</code></h2>
 <p>In the second part of this post, we’ll focus on the continuous variables in the <code>Soil</code> dataset. <a href="https://leod123.github.io/ggcorrheatmap/"><code>ggcorrheatmap</code></a> offers a wide variety of functionality for creating correlation heatmaps. Let’s start with the basics and add more complexity as we go.</p>
