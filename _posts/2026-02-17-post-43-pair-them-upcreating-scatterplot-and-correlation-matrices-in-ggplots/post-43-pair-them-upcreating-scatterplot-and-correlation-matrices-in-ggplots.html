@@ -95,8 +95,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
   <!--  https://schema.org/Article -->
-  <meta property="article:published" itemprop="datePublished" content="2026-02-17"/>
-  <meta property="article:created" itemprop="dateCreated" content="2026-02-17"/>
+  <meta property="article:published" itemprop="datePublished" content="2026-03-17"/>
+  <meta property="article:created" itemprop="dateCreated" content="2026-03-17"/>
   <meta name="article:author" content="Gen-Chang Hsu"/>
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
@@ -114,7 +114,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","draft"]}},"value":[{"type":"character","attributes":{},"value":["Post #43. Pair them up—creating scatterplot matrices and correlation heatmaps in ggplots"]},{"type":"character","attributes":{},"value":["In this post, you will learn how to create awesome scatterplot matrices and correlation heatmaps in ggplots using the packages `GGally` and `ggcorheatmap`!\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2026-02-17"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2026"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post43.png"]},{"type":"logical","attributes":{},"value":[true]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview"]}},"value":[{"type":"character","attributes":{},"value":["Post #43. Pair them up—creating scatterplot matrices and correlation heatmaps in ggplots"]},{"type":"character","attributes":{},"value":["In this post, you will learn how to create awesome scatterplot matrices and correlation heatmaps in ggplots using the packages `GGally` and `ggcorheatmap`!\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Gen-Chang Hsu"]}]}]},{"type":"character","attributes":{},"value":["2026-03-17"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["2026"]},{"type":"character","attributes":{},"value":["../../homepage_images/Post43.png"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1522,7 +1522,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Post #43. Pair them up—creating scatterplot matrices and correlation heatmaps in ggplots","description":"In this post, you will learn how to create awesome scatterplot matrices and correlation heatmaps in ggplots using the packages `GGally` and `ggcorheatmap`!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2026-02-17T00:00:00.000-05:00","citationText":"Hsu, 2026"}
+{"title":"Post #43. Pair them up—creating scatterplot matrices and correlation heatmaps in ggplots","description":"In this post, you will learn how to create awesome scatterplot matrices and correlation heatmaps in ggplots using the packages `GGally` and `ggcorheatmap`!","authors":[{"author":"Gen-Chang Hsu","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2026-03-17T00:00:00.000-04:00","citationText":"Hsu, 2026"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1545,7 +1545,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="d-byline">
   Gen-Chang Hsu  
   
-<br/>2026-02-17
+<br/>2026-03-17
 </div>
 
 <div class="d-article">
@@ -1639,7 +1639,7 @@ div.l-body img {
 <p>Suppose you have a dataset with several variables in the columns (can be continuous, categorical, or a mix of both) and you would like to explore the bivariate relationships between the variables, then a scatterplot matrix will be really handy for this: it visualizes all pairwise combinations of variables using a range of plot types, for example, a scatterplot for two continuous variables and a boxplot for one continuous vs. one categorical variable. If you have just continuous variables in the data, you can further visualize their pairwise correlation coefficients in a correlation heatmap, which uses color for the sign of correlations and intensity for the strength of correlations. Interesting patterns will often reveal themselves!</p>
 <p>In this post, we’ll be creating scatterplot matrices in ggplots using the extension package <code>GGally</code> as well as correlation matrices/heatmaps using the extension package <code>ggcorrheatmap</code>. Let’s start pairing things up!</p>
 <h2 id="part-i.-create-scatterplot-matrices-with-ggally">Part I. Create scatterplot matrices with <code>GGally</code></h2>
-<p>In the first part of the post, we’ll create scatterplot matrices using the package <a href="https://ggobi.github.io/ggally/index.html"><code>GGally</code></a>. We’ll use the “Soils” dataset from the package <code>cardata</code>: the dataset contains various physical and chemical characteristics of soils from different topographic positions. To simplify things, we’ll just use two continuous (“pH” and “N”) and two categorical (“Contour” and “Depth”) variables in the following examples. This also allows us to explore all three possible variable combinations (continuous–continuous, continuous–categorical, and categorical–categorical).</p>
+<p>In the first part of the post, we’ll create scatterplot matrices using the package <a href="https://ggobi.github.io/ggally/index.html"><code>GGally</code></a>. We’ll use the “Soils” dataset from the package <code>cardata</code>: the dataset contains various physical and chemical characteristics of soils from different topographic positions. To keep things simple, we’ll just use two continuous (“pH” and “N”) and two categorical (“Contour” and “Depth”) variables in the following examples. This also allows us to explore all three possible variable combinations (continuous–continuous, continuous–categorical, and categorical–categorical).</p>
 <h3 id="create-a-basic-scatterplot-matrix">(1) Create a basic scatterplot matrix</h3>
 <p>The function for creating a scatterplot matrix is <code>ggpair()</code>, which simply takes a dataframe and returns a scatterplot matrix. By default, the diagonal plots will be density plots for continuous variables and barplots of level counts for categorical variables. For the off-diagonal plots, it depends on the types of variable combinations:</p>
 <ol type="1">
@@ -1654,7 +1654,7 @@ div.l-body img {
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggobi.github.io/ggally/'>GGally</a></span><span class='op'>)</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-forge.r-project.org/projects/car/'>carData</a></span><span class='op'>)</span>  <span class='co'># for the dataset "Soils"</span></span>
 <span></span>
-<span><span class='co'>### Select focal columns</span></span>
+<span><span class='co'>### Select four focal columns</span></span>
 <span><span class='va'>Soils_subset</span> <span class='op'>&lt;-</span> <span class='va'>Soils</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>Contour</span>, <span class='va'>Depth</span>, <span class='va'>pH</span>, <span class='va'>N</span><span class='op'>)</span></span>
 <span></span>
@@ -1676,12 +1676,12 @@ div.l-body img {
 <span><span class='fu'><a href='https://ggobi.github.io/ggally/reference/ggpairs.html'>ggpairs</a></span><span class='op'>(</span><span class='va'>Soils_subset</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='va'>Contour</span><span class='op'>)</span>,</span>
 <span>        columnLabels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Topography"</span>, <span class='st'>"Soil depth"</span>, <span class='st'>"pH"</span>, <span class='st'>"N (%)"</span><span class='op'>)</span>,</span>
 <span>        </span>
-<span>        <span class='co'># plot types for the upper triangular matrix</span></span>
+<span>        <span class='co'># new plot types for the upper triangular matrix</span></span>
 <span>        upper <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>continuous <span class='op'>=</span> <span class='fu'><a href='https://ggobi.github.io/ggally/reference/wrap.html'>wrap</a></span><span class='op'>(</span><span class='st'>"smooth_lm"</span>, se <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span>,  <span class='co'># wrap the plot name to change the parameter settings</span></span>
 <span>                     combo <span class='op'>=</span> <span class='fu'><a href='https://ggobi.github.io/ggally/reference/wrap.html'>wrap</a></span><span class='op'>(</span><span class='st'>"facetdensity"</span>, linewidth <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,</span>
 <span>                     discrete <span class='op'>=</span> <span class='st'>"crosstable"</span><span class='op'>)</span>,</span>
 <span>        </span>
-<span>        <span class='co'># plot types for the lower triangular matrix</span></span>
+<span>        <span class='co'># new plot types for the lower triangular matrix</span></span>
 <span>        lower <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>continuous <span class='op'>=</span> <span class='fu'><a href='https://ggobi.github.io/ggally/reference/wrap.html'>wrap</a></span><span class='op'>(</span><span class='st'>"smooth_loess"</span>, se <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span>,</span>
 <span>                     combo <span class='op'>=</span> <span class='fu'><a href='https://ggobi.github.io/ggally/reference/wrap.html'>wrap</a></span><span class='op'>(</span><span class='st'>"dot"</span>, width <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span>,</span>
 <span>                     discrete <span class='op'>=</span> <span class='st'>"count"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
@@ -1691,21 +1691,21 @@ div.l-body img {
 </div>
 <p><img src="post-43-pair-them-upcreating-scatterplot-and-correlation-matrices-in-ggplots_files/figure-html5/unnamed-chunk-2-1.png" alt="" width="85%" height="80%" style="display: block; margin: auto;" /></p>
 </div>
-<p>Besides the built-in plot options, we can also create our own custom functions for the plots! The custom functions should follow the structure <code>function(data, mapping, ...) { }</code> and return a ggplot. For example, we can create a plot function for the continuous-categorical variable combination that shows the means and the standard errors. We can then pass this function to the list.</p>
+<p>Besides the built-in plot options, we can also create our own custom plot functions! The custom plot functions should follow the structure <code>function(data, mapping, ...) { }</code> and return a ggplot. For example, we can create a custom plot function for the continuous-categorical variable combination that shows the means and the standard errors. We can then pass this function to the list.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Create a custom function for plotting continuous vs. categorical variables</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Create a custom plot function for continuous vs. categorical variables</span></span>
 <span><span class='va'>pointrange_fun</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>mapping</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>{</span></span>
 <span>   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>data</span>, mapping <span class='op'>=</span> <span class='va'>mapping</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/stat_summary.html'>stat_summary</a></span><span class='op'>(</span>geom <span class='op'>=</span> <span class='st'>"pointrange"</span>, fun.data <span class='op'>=</span> <span class='st'>"mean_se"</span>, position <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
 <span><span class='op'>}</span></span>
 <span></span>
-<span><span class='co'>### Change plot type using the custom function</span></span>
+<span><span class='co'>### Change plot type using the custom plot function</span></span>
 <span><span class='fu'><a href='https://ggobi.github.io/ggally/reference/ggpairs.html'>ggpairs</a></span><span class='op'>(</span><span class='va'>Soils_subset</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='va'>Contour</span><span class='op'>)</span>,</span>
 <span>        columnLabels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Topography"</span>, <span class='st'>"Soil depth"</span>, <span class='st'>"pH"</span>, <span class='st'>"N (%)"</span><span class='op'>)</span>,</span>
 <span>        legend <span class='op'>=</span> <span class='fl'>1</span>,  <span class='co'># create a legend based on plot #1</span></span>
 <span>        upper <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>continuous <span class='op'>=</span> <span class='fu'><a href='https://ggobi.github.io/ggally/reference/wrap.html'>wrap</a></span><span class='op'>(</span><span class='st'>"smooth_lm"</span>, se <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span>,</span>
-<span>                     combo <span class='op'>=</span> <span class='va'>pointrange_fun</span>,  <span class='co'># use the custom function "pointrange_fun" for plotting continuous vs. categorical variables</span></span>
+<span>                     combo <span class='op'>=</span> <span class='va'>pointrange_fun</span>,  <span class='co'># use the custom plot function "pointrange_fun" for plotting continuous vs. categorical variables</span></span>
 <span>                     discrete <span class='op'>=</span> <span class='st'>"crosstable"</span><span class='op'>)</span>,</span>
 <span>        lower <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>continuous <span class='op'>=</span> <span class='fu'><a href='https://ggobi.github.io/ggally/reference/wrap.html'>wrap</a></span><span class='op'>(</span><span class='st'>"smooth_loess"</span>, se <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span>,</span>
 <span>                     combo <span class='op'>=</span> <span class='fu'><a href='https://ggobi.github.io/ggally/reference/wrap.html'>wrap</a></span><span class='op'>(</span><span class='st'>"dot"</span>, width <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span>,</span>
@@ -1720,7 +1720,7 @@ div.l-body img {
 <p><img src="post-43-pair-them-upcreating-scatterplot-and-correlation-matrices-in-ggplots_files/figure-html5/unnamed-chunk-3-1.png" alt="" width="85%" height="80%" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="modify-a-certain-plot-in-the-scatterplot-matrix">(3) Modify a certain plot in the scatterplot matrix</h3>
-<p>If we want to further modify a certain plot in the scatterplot matrix, we can store the scatterplot matrix in an object, extract the plot using the row and column indices, make the changes we want, and replace the original plot with the new one using the same row and column indices:</p>
+<p>If we want to further modify a certain plot in the scatterplot matrix, we can store the scatterplot matrix in an object, extract the plot using the row and the column indices, make the changes we want to the extracted plot, and replace the original plot with the new one using the same row and column indices:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>### Store the previous scatterplot matrix in an object</span></span>
@@ -1752,7 +1752,7 @@ div.l-body img {
 </div>
 <p><img src="post-43-pair-them-upcreating-scatterplot-and-correlation-matrices-in-ggplots_files/figure-html5/unnamed-chunk-4-1.png" alt="" width="85%" height="80%" style="display: block; margin: auto;" /></p>
 </div>
-<p>With this functionality, the scatterplot matrix is (almost) fully customizable!</p>
+<p>With this functionality, we can essentially customize the scatterplot matrix in any way we like!</p>
 <p><br></p>
 <h2 id="part-ii.-create-correlation-heatmaps-with-ggcorrheatmap">Part II. Create correlation heatmaps with <code>ggcorrheatmap</code></h2>
 <p>In the second part of this post, we’ll focus on the continuous variables in the <code>Soil</code> dataset. <a href="https://leod123.github.io/ggcorrheatmap/"><code>ggcorrheatmap</code></a> offers a wide variety of functionality for creating correlation heatmaps. Let’s start with the basics and add more complexity as we go.</p>
@@ -1892,6 +1892,7 @@ div.l-body img {
 </div>
 <p>Awesome! Looks like there are two main clusters of variables: [Mg, Density, Na, and Conductance] vs. [N, P, K, pH, and Ca].</p>
 <h2 id="summary">Summary</h2>
+<p>In the first part of the post, we learned how to make a basic scatterplot matrix with the package <code>GGally</code>. We then modified the plots in the scatterplot matrix using the package’s built-in options as well as custom plot functions we created on our own. In the second part of the post, we focused specifically on continuous variables and learned how to make correlation heatmaps with the package <code>ggcorrheatmap</code>. We first made a basic correlation heatmap. We then modified the heatmap layout to include text of correlation coefficients in the cells. We also highlighted certain cells by changing the color and the width of cell borders. Finally, we clustered the variables with a dendrogram and added an annotation to the heatmap. Scatterplot matrices and correlation heatmaps are pretty common, and we now know there are a lot more things we can do to make them more effective, informative, and engaging!</p>
 <p>Hope you learn something useful from this post and don’t forget to leave your comments and suggestions below if you have any!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->

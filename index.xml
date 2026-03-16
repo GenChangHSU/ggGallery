@@ -7,7 +7,462 @@
     <description>A gallery of ggplots and beyond
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 28 Jun 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 17 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Post #43. Pair them up—creating scatterplot matrices and correlation heatmaps in ggplots</title>
+      <dc:creator>Gen-Chang Hsu</dc:creator>
+      <link>https://genchanghsu.github.io/ggGallery/posts/2026-02-17-post-43-pair-them-upcreating-scatterplot-and-correlation-matrices-in-ggplots</link>
+      <description>
+
+
+&lt;!-- Webpage style --&gt;
+&lt;style&gt;
+d-article a {
+  color: #2780e3 !important;
+  border-bottom: none !important;
+}
+
+d-article a:hover {
+  color: #2780e3 !important;
+  border-bottom: 2px solid !important;
+}
+
+d-byline {
+  margin-left: -10% !important;
+}
+
+d-title {
+  margin-left: -10%;
+}
+
+d-title h1{
+  font-size: 45px;
+  width: 130%;
+}
+
+d-article {
+  margin-left: -10%;
+}
+
+p {
+  width: 120%;
+}
+
+d-article h2 {
+  width: 120%;
+}
+
+d-article h3 {
+  width: 120%;
+  font-size: 28px;
+}
+
+div.article-footer{
+  width: 120%;
+}
+
+d-article div.sourceCode { 
+  width: 120% !important;
+}
+
+d-article pre { 
+  width: 120% !important;
+}
+
+div.l-body {
+  width: 120% !important;
+}
+
+d-article table thead tr {
+  height: 60px !important;
+  width: 210px !important;
+}
+
+d-article table thead th {
+  height: 60px !important;
+  font-size: 22px !important;
+  width: 210px !important;
+}
+
+d-article table tbody tr td {
+  font-size: 21px !important;
+  height: 60px !important;
+  text-align: center !important;
+  width: 210px !important;
+}
+
+div.l-body img {
+    margin-right: 30% !important;
+}
+
+&lt;/style&gt;
+&lt;head&gt;
+&lt;base target="_blank"&gt;
+&lt;/head&gt;
+&lt;!-- Start of the article --&gt;
+&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Welcome to the first post of the year 2026! It’s been over a half
+year since my last post, so supper happy to be back in the saddle!&lt;/p&gt;
+&lt;p&gt;Suppose you have a dataset with several variables in the columns (can
+be continuous, categorical, or a mix of both) and you would like to
+explore the bivariate relationships between the variables, then a
+scatterplot matrix will be really handy for this: it visualizes all
+pairwise combinations of variables using a range of plot types, for
+example, a scatterplot for two continuous variables and a boxplot for
+one continuous vs. one categorical variable. If you have just continuous
+variables in the data, you can further visualize their pairwise
+correlation coefficients in a correlation heatmap, which uses color for
+the sign of correlations and intensity for the strength of correlations.
+Interesting patterns will often reveal themselves!&lt;/p&gt;
+&lt;p&gt;In this post, we’ll be creating scatterplot matrices in ggplots using
+the extension package &lt;code&gt;GGally&lt;/code&gt; as well as correlation
+matrices/heatmaps using the extension package
+&lt;code&gt;ggcorrheatmap&lt;/code&gt;. Let’s start pairing things up!&lt;/p&gt;
+&lt;h2 id="part-i.-create-scatterplot-matrices-with-ggally"&gt;Part I. Create
+scatterplot matrices with &lt;code&gt;GGally&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;In the first part of the post, we’ll create scatterplot matrices
+using the package &lt;a
+href="https://ggobi.github.io/ggally/index.html"&gt;&lt;code&gt;GGally&lt;/code&gt;&lt;/a&gt;.
+We’ll use the “Soils” dataset from the package &lt;code&gt;cardata&lt;/code&gt;: the
+dataset contains various physical and chemical characteristics of soils
+from different topographic positions. To keep things simple, we’ll just
+use two continuous (“pH” and “N”) and two categorical (“Contour” and
+“Depth”) variables in the following examples. This also allows us to
+explore all three possible variable combinations (continuous–continuous,
+continuous–categorical, and categorical–categorical).&lt;/p&gt;
+&lt;h3 id="create-a-basic-scatterplot-matrix"&gt;(1) Create a basic
+scatterplot matrix&lt;/h3&gt;
+&lt;p&gt;The function for creating a scatterplot matrix is
+&lt;code&gt;ggpair()&lt;/code&gt;, which simply takes a dataframe and returns a
+scatterplot matrix. By default, the diagonal plots will be density plots
+for continuous variables and barplots of level counts for categorical
+variables. For the off-diagonal plots, it depends on the types of
+variable combinations:&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&lt;p&gt;For continuous–continuous variable combinations, one triangular
+matrix will display scatterplots and the other triangular matrix will
+display correlation coefficients.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;For continuous–categorical variable combinations, one triangular
+matrix will display histograms of the continuous variable faceted by the
+categorical variable and the other triangular matrix will display
+boxplots of the continuous variable by each level of the categorical
+variable.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;For categorical–categorical variable combinations, one triangular
+matrix will display mosaic plots of the frequencies of the two
+categorical variables and the other triangular matrix will display
+barplots of the level counts of one categorical variable faceted by the
+other categorical variables.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;We can also map a categorical variable to the “color” aesthetic and
+use both &lt;code&gt;scale_color_XXX&lt;/code&gt; and &lt;code&gt;scale_fill_XXX&lt;/code&gt; to
+adjust the colors in the plots.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+library(GGally)
+library(carData)  # for the dataset &amp;quot;Soils&amp;quot;
+
+### Select four focal columns
+Soils_subset &amp;lt;- Soils %&amp;gt;% 
+  select(Contour, Depth, pH, N)
+
+### Create a basic scatterplot matrix
+ggpairs(Soils_subset, aes(color = Contour),
+        columnLabels = c(&amp;quot;Topography&amp;quot;, &amp;quot;Soil depth&amp;quot;, &amp;quot;pH&amp;quot;, &amp;quot;N (%)&amp;quot;)) + 
+  scale_color_manual(values = c(&amp;quot;#43a2ca&amp;quot;, &amp;quot;#006d2c&amp;quot;, &amp;quot;#d95f0e&amp;quot;)) + 
+  scale_fill_manual(values = c(&amp;quot;#43a2ca&amp;quot;, &amp;quot;#006d2c&amp;quot;, &amp;quot;#d95f0e&amp;quot;)) +  # need to specify the fill scale too  
+  theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file31985ed15e7a_files/figure-html/unnamed-chunk-1-1.png" alt="" width="85%" height="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="change-plot-types-in-the-scatterplot-matrix"&gt;(2) Change plot
+types in the scatterplot matrix&lt;/h3&gt;
+&lt;p&gt;If we are not satisfied with the default plot types, we can change
+them using the arguments “upper” and “lower”, which control the plots in
+the upper and the lower triangular matrices. These two arguments take a
+list of three possible named elements: “continuous”, “combo”, and
+“discrete”, representing the continuous-continuous, the
+continuous-categorical, and the categorical-categorical variable
+combinations. We can specify the new plot types in those named elements
+using character strings of the built-in plot options &lt;code&gt;GGally&lt;/code&gt;
+offers. A full list of the built-in options is available via
+&lt;code&gt;vig_ggally("ggally_plots")&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Also, if we want to change the default parameter settings for the
+plots, we can &lt;code&gt;wrap()&lt;/code&gt; the plot names and specify the new
+parameter values.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Change plot types using built-in options
+ggpairs(Soils_subset, aes(color = Contour),
+        columnLabels = c(&amp;quot;Topography&amp;quot;, &amp;quot;Soil depth&amp;quot;, &amp;quot;pH&amp;quot;, &amp;quot;N (%)&amp;quot;),
+        
+        # new plot types for the upper triangular matrix
+        upper = list(continuous = wrap(&amp;quot;smooth_lm&amp;quot;, se = F),  # wrap the plot name to change the parameter settings
+                     combo = wrap(&amp;quot;facetdensity&amp;quot;, linewidth = 1),
+                     discrete = &amp;quot;crosstable&amp;quot;),
+        
+        # new plot types for the lower triangular matrix
+        lower = list(continuous = wrap(&amp;quot;smooth_loess&amp;quot;, se = F),
+                     combo = wrap(&amp;quot;dot&amp;quot;, width = 0.05),
+                     discrete = &amp;quot;count&amp;quot;)) + 
+  scale_color_manual(values = c(&amp;quot;#43a2ca&amp;quot;, &amp;quot;#006d2c&amp;quot;, &amp;quot;#d95f0e&amp;quot;)) + 
+  scale_fill_manual(values = c(&amp;quot;#43a2ca&amp;quot;, &amp;quot;#006d2c&amp;quot;, &amp;quot;#d95f0e&amp;quot;)) +
+  theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file31985ed15e7a_files/figure-html/unnamed-chunk-2-1.png" alt="" width="85%" height="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Besides the built-in plot options, we can also create our own custom
+plot functions! The custom plot functions should follow the structure
+&lt;code&gt;function(data, mapping, ...) { }&lt;/code&gt; and return a ggplot. For
+example, we can create a custom plot function for the
+continuous-categorical variable combination that shows the means and the
+standard errors. We can then pass this function to the list.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Create a custom plot function for continuous vs. categorical variables
+pointrange_fun &amp;lt;- function(data, mapping, ...) {
+   ggplot(data = data, mapping = mapping) +
+    stat_summary(geom = &amp;quot;pointrange&amp;quot;, fun.data = &amp;quot;mean_se&amp;quot;, position = position_dodge(width = 1))
+}
+
+### Change plot type using the custom plot function
+ggpairs(Soils_subset, aes(color = Contour),
+        columnLabels = c(&amp;quot;Topography&amp;quot;, &amp;quot;Soil depth&amp;quot;, &amp;quot;pH&amp;quot;, &amp;quot;N (%)&amp;quot;),
+        legend = 1,  # create a legend based on plot #1
+        upper = list(continuous = wrap(&amp;quot;smooth_lm&amp;quot;, se = F),
+                     combo = pointrange_fun,  # use the custom plot function &amp;quot;pointrange_fun&amp;quot; for plotting continuous vs. categorical variables
+                     discrete = &amp;quot;crosstable&amp;quot;),
+        lower = list(continuous = wrap(&amp;quot;smooth_loess&amp;quot;, se = F),
+                     combo = wrap(&amp;quot;dot&amp;quot;, width = 0.05),
+                     discrete = &amp;quot;count&amp;quot;)) + 
+  scale_color_manual(values = c(&amp;quot;#43a2ca&amp;quot;, &amp;quot;#006d2c&amp;quot;, &amp;quot;#d95f0e&amp;quot;)) + 
+  scale_fill_manual(values = c(&amp;quot;#43a2ca&amp;quot;, &amp;quot;#006d2c&amp;quot;, &amp;quot;#d95f0e&amp;quot;)) +
+  theme_bw() + 
+  theme(legend.position = &amp;quot;top&amp;quot;,
+        legend.key.spacing.x = unit(0.5, &amp;quot;in&amp;quot;),
+        legend.title = element_blank())&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file31985ed15e7a_files/figure-html/unnamed-chunk-3-1.png" alt="" width="85%" height="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="modify-a-certain-plot-in-the-scatterplot-matrix"&gt;(3) Modify a
+certain plot in the scatterplot matrix&lt;/h3&gt;
+&lt;p&gt;If we want to further modify a certain plot in the scatterplot
+matrix, we can store the scatterplot matrix in an object, extract the
+plot using the row and the column indices, make the changes we want to
+the extracted plot, and replace the original plot with the new one using
+the same row and column indices:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Store the previous scatterplot matrix in an object
+p_scatterplot_matrix &amp;lt;- ggpairs(Soils_subset, aes(color = Contour),
+        columnLabels = c(&amp;quot;Topography&amp;quot;, &amp;quot;Soil depth&amp;quot;, &amp;quot;pH&amp;quot;, &amp;quot;N (%)&amp;quot;),
+        legend = 1,
+        upper = list(continuous = wrap(&amp;quot;smooth_lm&amp;quot;, se = F),
+                     combo = pointrange_fun,
+                     discrete = &amp;quot;crosstable&amp;quot;),
+        lower = list(continuous = wrap(&amp;quot;smooth_loess&amp;quot;, se = F),
+                     combo = wrap(&amp;quot;dot&amp;quot;, width = 0.05),
+                     discrete = &amp;quot;count&amp;quot;)) + 
+  scale_color_manual(values = c(&amp;quot;#43a2ca&amp;quot;, &amp;quot;#006d2c&amp;quot;, &amp;quot;#d95f0e&amp;quot;)) + 
+  scale_fill_manual(values = c(&amp;quot;#43a2ca&amp;quot;, &amp;quot;#006d2c&amp;quot;, &amp;quot;#d95f0e&amp;quot;)) +
+  theme_bw() + 
+  theme(legend.position = &amp;quot;top&amp;quot;,
+        legend.key.spacing.x = unit(0.5, &amp;quot;in&amp;quot;),
+        legend.title = element_blank())
+
+### Extract the plot at row 2 and column 4
+p_2_4_original &amp;lt;- p_scatterplot_matrix[2, 4]
+
+### Modify the extracted plot
+p_2_4_new &amp;lt;- p_2_4_original + aes(shape = Contour)
+
+### Replace the original plot with the new one
+p_scatterplot_matrix[2, 4] &amp;lt;- p_2_4_new
+p_scatterplot_matrix&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file31985ed15e7a_files/figure-html/unnamed-chunk-4-1.png" alt="" width="85%" height="80%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;With this functionality, we can essentially customize the scatterplot
+matrix in any way we like!&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h2 id="part-ii.-create-correlation-heatmaps-with-ggcorrheatmap"&gt;Part
+II. Create correlation heatmaps with &lt;code&gt;ggcorrheatmap&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;In the second part of this post, we’ll focus on the continuous
+variables in the &lt;code&gt;Soil&lt;/code&gt; dataset. &lt;a
+href="https://leod123.github.io/ggcorrheatmap/"&gt;&lt;code&gt;ggcorrheatmap&lt;/code&gt;&lt;/a&gt;
+offers a wide variety of functionality for creating correlation
+heatmaps. Let’s start with the basics and add more complexity as we
+go.&lt;/p&gt;
+&lt;h3 id="create-a-basic-correlation-heatmap"&gt;(1) Create a basic
+correlation heatmap&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;ggcorrhm()&lt;/code&gt; is the master function for creating
+correlation heatmaps. Simply pass your data to the function and you’ll
+get a basic heatmap (note that the default choice of correlation is the
+Pearson’s &lt;em&gt;r&lt;/em&gt;)!&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(ggcorrheatmap)
+
+### Select continuous variables
+Soils_continuous &amp;lt;- Soils %&amp;gt;% 
+  select(is.numeric)
+
+### Create a basic correlation heatmap
+ggcorrhm(Soils_continuous)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file31985ed15e7a_files/figure-html/unnamed-chunk-5-1.png" alt="" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;We can also change the cell color/shape and remove the diagonal cells
+(which all have a correlation coefficient of 1).&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Change the cell color and shape
+ggcorrhm(Soils_continuous,
+         high = &amp;quot;#de2d26&amp;quot;,  # color for the upper limit
+         mid = &amp;quot;white&amp;quot;,  # color for the midpoint
+         low = &amp;quot;#006d2c&amp;quot;,  # color for the lower limit
+         mode = 21,  # shape of the cell (a number between 1 to 25)
+         include_diag = F,  # remove diagonal cells
+         size_range = c(5, 10),  # cell size range
+         layout = &amp;quot;bottomright&amp;quot;)  # show only the bottom-right triangular matrix     &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file31985ed15e7a_files/figure-html/unnamed-chunk-6-1.png" alt="" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Looks like there are some strong positive correlations (e.g., between
+Na and Conductance and between N and P) and some strong negative ones
+(e.g., between N and Density and between P and Density). But what are
+the actual coefficients (and their statistical significance)?&lt;/p&gt;
+&lt;h3 id="create-a-correlation-heatmap-with-a-mixed-layout"&gt;(2) Create a
+correlation heatmap with a mixed layout&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;ggcorrhm()&lt;/code&gt; allows users to create correlation heatmaps
+with a mixed layout (e.g., a mix of heatmap and text display). To do so,
+we first have to tell the function that we want two triangular matrices,
+using the “layout” argument. We will also need to specify what we would
+like to display in these two triangular matrices using the “mode”
+argument: “heatmap” gives the colored cells, whereas “none” gives empty
+cells. Next, we can use the “p_values” argument to specify whether we
+would like to display the significance stars in each of the two
+triangular matrices. Finally, we can use the “cell_labels” argument to
+specify whether we would like to display the correlation coefficients in
+each of the two triangular matrices.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### A mixed layout with color cells and p-values
+ggcorrhm(Soils_continuous,
+         layout = c(&amp;quot;topleft&amp;quot;, &amp;quot;bottomright&amp;quot;),  # create two triangular matrices
+         mode = c(&amp;quot;heatmap&amp;quot;, &amp;quot;none&amp;quot;),  # what to display in each of the two triangular matrices
+         include_diag = T,
+         p_values = c(F, T),  # whether to show the significance stars in each of the two triangular matrices
+         p_adjust = &amp;quot;none&amp;quot;,  # can be any of the method in &amp;quot;p.adjust.methods&amp;quot;
+         p_thresholds = c(&amp;quot;***&amp;quot; = 0.001, &amp;quot;**&amp;quot; = 0.01, &amp;quot;*&amp;quot; = 0.05, 1),  # thresholds for annotating the significance stars
+         cell_labels = c(T, F))  # whether to show the correlation coefficients in each of the two triangular matrices&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file31985ed15e7a_files/figure-html/unnamed-chunk-7-1.png" alt="" width="480" style="display: block; margin: auto;" /&gt;
+All correlation coefficients are significant (without &lt;em&gt;p&lt;/em&gt;-value
+adjustment)!!!&lt;/p&gt;
+&lt;h3 id="highlight-certain-cells-in-the-heatmap"&gt;(3) Highlight certain
+cells in the heatmap&lt;/h3&gt;
+&lt;p&gt;Now that we’ve learned how to make a basic correlation heatmap, we
+can spruce it up a bit! One thing we can do is to highlight certain
+cells. For example, we can highlight the cells with very strong
+correlations (absolute correlation coefficients larger than 0.8).&lt;/p&gt;
+&lt;p&gt;To do so, we’ll first create a basic plot and set “return_data = T”.
+This allows us to access the data underlying the heatmap. We can then
+save the data as a new object and create two new columns for the cell
+border width and the cell border color based on the correlation
+coefficients. Finally, we remake the original heatmap and add a new
+“geom_tile()” layer where we specify our new cell border width and
+color.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Create a basic plot
+p_basic &amp;lt;- ggcorrhm(Soils_continuous, 
+                    layout = &amp;quot;bottomright&amp;quot;, 
+                    include_diag = F,
+                    return_data = T)  # return the underlying data
+
+### Create two new columns for the cell border width and color
+p_data &amp;lt;- p_basic$plot_data %&amp;gt;% 
+  mutate(border_width = if_else(abs(value) &amp;lt; 0.8, 0, 1),  # thicker cell border if |r| &amp;gt; 0.8
+         border_color = if_else(abs(value) &amp;lt; 0.8, NA, &amp;quot;red&amp;quot;))  # red cell border if |r| &amp;gt; 0.8
+
+### Add a new geom_tile() layer to the original plot
+ggcorrhm(Soils_continuous, 
+         layout = &amp;quot;bottomright&amp;quot;, 
+         include_diag = F,
+         p_values = T) + 
+  geom_tile(data = p_data,
+            aes(x = col, y = row),
+            fill = NA,
+            linewidth = p_data$border_width,  # new cell border width 
+            color = p_data$border_color)  # new cell border color&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file31985ed15e7a_files/figure-html/unnamed-chunk-8-1.png" alt="" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;h3 id="cluster-the-variables-and-annotate-the-heatmap"&gt;(4) Cluster the
+variables and annotate the heatmap&lt;/h3&gt;
+&lt;p&gt;There are two more things we can do to make the heatmap even fancier:
+(1) clustering the variables and (2) annotating the plot.&lt;/p&gt;
+&lt;p&gt;To cluster the variables, we need to specify “cluster_rows = T” and
+“cluster_cols = T”, which will perform hierarchical clustering on the
+data using the function &lt;code&gt;hclust()&lt;/code&gt;. We then specify the
+clustering distance (default is the Euclidean distance) and the
+agglomeration method (default is the complete method). We can also
+decide whether we would like to display the row/column dendrogram using
+the argument “show_dend_rows/show_dend_cols”. Finally, there are
+arguments “dend_XXX” for adjusting the dendrogram appearance.&lt;/p&gt;
+&lt;p&gt;To annotate the heatmap, we’ll first create a new dataframe with a
+column indicating the variable names and one or more columns of
+annotation variables (which can be both categorical or continuous).
+Simply pass the data to the argument “annot_rows_df =” (or
+“annot_cols_df =” depending on the side of the heatmap you would like
+annotate on) and the annotation will show up in the plot! We can further
+customize the annotation using a variety of the “annot_XXX” arguments,
+as shown in the example below.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;### Data for highlighting cell borders
+p_basic &amp;lt;- ggcorrhm(Soils_continuous, 
+                    layout = &amp;quot;topright&amp;quot;, 
+                    include_diag = F,
+                    return_data = T)
+
+p_data &amp;lt;- p_basic$plot_data %&amp;gt;% 
+  mutate(border_width = if_else(abs(value) &amp;lt; 0.8, 0, 1),
+         border_color = if_else(abs(value) &amp;lt; 0.8, NA, &amp;quot;#fed976&amp;quot;))
+
+### Create a dataframe for annotation
+annotation_df &amp;lt;- data.frame(.names = colnames(Soils_continuous),  # variable names
+                            Type = c(&amp;quot;Non-element&amp;quot;, &amp;quot;Element&amp;quot;, &amp;quot;Non-element&amp;quot;,  # annotation variable
+                                     &amp;quot;Element&amp;quot;, &amp;quot;Element&amp;quot;, &amp;quot;Element&amp;quot;,
+                                     &amp;quot;Element&amp;quot;, &amp;quot;Element&amp;quot;, &amp;quot;Non-element&amp;quot;))
+
+### Cluster the variables and annotate the heatmap
+ggcorrhm(Soils_continuous, 
+         layout = &amp;quot;topright&amp;quot;, 
+         include_diag = T,
+         high = &amp;quot;#e34a33&amp;quot;,
+         mid = &amp;quot;white&amp;quot;,
+         low = &amp;quot;#4575b4&amp;quot;,
+         p_values = T,
+         
+         # arguments for clustering
+         cluster_rows = T,  # cluster the rows  
+         cluster_cols = T,  # cluster the columns
+         cluster_distance = &amp;quot;euclidean&amp;quot;,  # clustering distance
+         cluster_method = &amp;quot;complete&amp;quot;,  # clustering method
+         show_dend_cols = F,  # hide column dendrogram
+         dend_height = 0.7,  # rescale branch length
+         dend_lwd = 0.7,  # dendrogram line width
+         
+         # arguments for annotation
+         annot_rows_df = annotation_df,  # dataframe for annotation
+         annot_rows_names_side = &amp;quot;top&amp;quot;,  # side of annotation name (this has no effect here since the annotation name is hidden)
+         show_annot_names = F,  # hide the annotation name (&amp;quot;Type&amp;quot;)
+         annot_dist = 0.3,  # distance between annotation and heatmap
+         annot_rows_col = list(&amp;quot;Type&amp;quot; = scale_fill_manual(name = &amp;quot;Variable type&amp;quot;, values = c(&amp;quot;#f1a340&amp;quot;, &amp;quot;#01665e&amp;quot;))),  # annotation tile color
+         annot_border_lwd = 0.5,  # annotation border width
+         annot_border_col = &amp;quot;white&amp;quot;) +  # annotation border color
+  geom_tile(data = p_data, aes(x = col, y = row),
+            fill = NA,
+            linewidth = p_data$border_width,
+            color = p_data$border_color) + 
+  theme(legend.position = &amp;quot;inside&amp;quot;,
+        legend.position.inside = c(0.1, 0.35))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file31985ed15e7a_files/figure-html/unnamed-chunk-9-1.png" alt="" width="480" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;Awesome! Looks like there are two main clusters of variables: [Mg,
+Density, Na, and Conductance] vs. [N, P, K, pH, and Ca].&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;p&gt;In the first part of the post, we learned how to make a basic
+scatterplot matrix with the package &lt;code&gt;GGally&lt;/code&gt;. We then
+modified the plots in the scatterplot matrix using the package’s
+built-in options as well as custom plot functions we created on our own.
+In the second part of the post, we focused specifically on continuous
+variables and learned how to make correlation heatmaps with the package
+&lt;code&gt;ggcorrheatmap&lt;/code&gt;. We first made a basic correlation heatmap.
+We then modified the heatmap layout to include text of correlation
+coefficients in the cells. We also highlighted certain cells by changing
+the color and the width of cell borders. Finally, we clustered the
+variables with a dendrogram and added an annotation to the heatmap.
+Scatterplot matrices and correlation heatmaps are pretty common, and we
+now know there are a lot more things we can do to make them more
+effective, informative, and engaging!&lt;/p&gt;
+&lt;p&gt;Hope you learn something useful from this post and don’t forget to
+leave your comments and suggestions below if you have any!&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>1b91c0635f6d21acc06a82a68f7b34e4</distill:md5>
+      <category>2026</category>
+      <guid>https://genchanghsu.github.io/ggGallery/posts/2026-02-17-post-43-pair-them-upcreating-scatterplot-and-correlation-matrices-in-ggplots</guid>
+      <pubDate>Tue, 17 Mar 2026 00:00:00 +0000</pubDate>
+      <media:content url="https://genchanghsu.github.io/ggGallery/posts/2026-02-17-post-43-pair-them-upcreating-scatterplot-and-correlation-matrices-in-ggplots/../../homepage_images/Post43.png" medium="image" type="image/png" width="960" height="768"/>
+    </item>
     <item>
       <title>Post #42. Accelerate your ggplots with the extension package "ggforce"</title>
       <dc:creator>Gen-Chang Hsu</dc:creator>

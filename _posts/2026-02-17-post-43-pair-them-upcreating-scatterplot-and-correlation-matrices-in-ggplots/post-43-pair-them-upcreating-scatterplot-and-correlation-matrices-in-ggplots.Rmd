@@ -4,14 +4,13 @@ description: |
   In this post, you will learn how to create awesome scatterplot matrices and correlation heatmaps in ggplots using the packages `GGally` and `ggcorheatmap`!
 author:
   - name: Gen-Chang Hsu
-date: 2026-02-17
+date: 2026-03-17
 output:
   distill::distill_article:
     self_contained: false
 categories:
   - "2026"
 preview: ../../homepage_images/Post43.png
-draft: true
 ---
 
 <!-- Webpage style -->
@@ -394,8 +393,11 @@ Awesome! Looks like there are two main clusters of variables: [Mg, Density, Na, 
 
 ## Summary
 
-
-
+In the first part of the post, we learned how to make a basic scatterplot matrix with the package `GGally`. We then modified the plots in the scatterplot matrix using the package's built-in options as well as custom plot functions we created on our own. In the second part of the post, we focused specifically on continuous variables and learned how to make correlation heatmaps with the package `ggcorrheatmap`. We first made a basic correlation heatmap. We then modified the heatmap layout to include text of correlation coefficients in the cells. We also highlighted certain cells by changing the color and the width of cell borders. Finally, we clustered the variables with a dendrogram and added an annotation to the heatmap. Scatterplot matrices and correlation heatmaps are pretty common, and we now know there are a lot more things we can do to make them more effective, informative, and engaging!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
+
+
+
+
 
