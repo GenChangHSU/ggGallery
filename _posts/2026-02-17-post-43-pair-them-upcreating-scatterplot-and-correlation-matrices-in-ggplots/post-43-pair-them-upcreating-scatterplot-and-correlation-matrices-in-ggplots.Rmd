@@ -112,11 +112,11 @@ knitr::opts_chunk$set(message = F,
 
 ## Introduction
 
-Welcome to the first post of the year 2026! It's been over a half year since my last post, so supper happy to be back in the saddle!
+Welcome to the first post of 2026! It's been over a half year since my last post, so supper happy to be back in the saddle!
 
-Suppose you have a dataset with several variables in the columns (can be continuous, categorical, or a mix of both) and you would like to explore the bivariate relationships between the variables, then a scatterplot matrix will be really handy for this: it visualizes all pairwise combinations of variables using a range of plot types, for example, a scatterplot for two continuous variables and a boxplot for one continuous vs. one categorical variable. If you have just continuous variables in the data, you can further visualize their pairwise correlation coefficients in a correlation heatmap, which uses color for the sign of correlations and intensity for the strength of correlations. Interesting patterns will often reveal themselves!
+Suppose you have a dataset (with continuous variables, categorical variables, or a mix of both) and you would like to explore the bivariate relationships between those variables, what would you do? Well, there might be many ways to approach this task, but a scatterplot matrix will probably be something you are looking for: It visualizes all pairwise combinations of variables using a range of plot types, for example, a scatterplot for two continuous variables and a boxplot for a continuous vs. a categorical variable. If you have only continuous variables in the dataset, you can further visualize their pairwise correlation coefficients in a correlation heatmap, which uses color to show the sign and the strength of correlations. Interesting patterns will often reveal themselves in scatterplot matrices and correlation heatmaps!
 
-In this post, we'll be creating scatterplot matrices in ggplots using the extension package `GGally` as well as correlation matrices/heatmaps using the extension package `ggcorrheatmap`. Let's start pairing things up!
+So in this post, we'll be exploring scatterplot matrices and correlation heatmaps in ggplots using the extension package `GGally` and `ggcorrheatmap`. Are you ready? Let's start pairing things up!
 
 ## Part I. Create scatterplot matrices with `GGally`
 
@@ -144,7 +144,7 @@ Soils_subset <- Soils %>%
   select(Contour, Depth, pH, N)
 
 ### Create a basic scatterplot matrix
-ggpairs(Soils_subset, aes(color = Contour),
+ggpairs(Soils_subset, aes(color = Contour),  # color the plots by the variable "Coutour"
         columnLabels = c("Topography", "Soil depth", "pH", "N (%)")) + 
   scale_color_manual(values = c("#43a2ca", "#006d2c", "#d95f0e")) + 
   scale_fill_manual(values = c("#43a2ca", "#006d2c", "#d95f0e")) +  # need to specify the fill scale too  
@@ -154,12 +154,12 @@ ggpairs(Soils_subset, aes(color = Contour),
 
 ### (2) Change plot types in the scatterplot matrix
 
-If we are not satisfied with the default plot types, we can change them using the arguments "upper" and "lower", which control the plots in the upper and the lower triangular matrices. These two arguments take a list of three possible named elements: "continuous", "combo", and "discrete", representing the continuous-continuous, the continuous-categorical, and the categorical-categorical variable combinations. We can specify the new plot types in those named elements using character strings of the built-in plot options `GGally` offers. A full list of the built-in options is available via `vig_ggally("ggally_plots")`.
+If you are not satisfied with the default plot types, we can of course change them! To do so, we'll use the arguments "upper" and "lower", which control the plots in the upper and the lower triangular matrices. These two arguments take a list of three possible named elements: "continuous", "combo", and "discrete", representing the continuous-continuous, the continuous-categorical, and the categorical-categorical variable combinations. We can specify new plot types in those named elements using character strings of `GGally`'s built-in plot options (e.g., "smooth_lm"). A full list of the built-in options is available via `vig_ggally("ggally_plots")`.
 
 Also, if we want to change the default parameter settings for the plots, we can `wrap()` the plot names and specify the new parameter values.
 
 ```{r, fig.width = 7, fig.height = 6, out.width = "85%", out.height = "80%"}
-### Change plot types using built-in options
+### Change plot types using built-in plot options
 ggpairs(Soils_subset, aes(color = Contour),
         columnLabels = c("Topography", "Soil depth", "pH", "N (%)"),
         
@@ -208,7 +208,7 @@ ggpairs(Soils_subset, aes(color = Contour),
 
 ### (3) Modify a certain plot in the scatterplot matrix
 
-If we want to further modify a certain plot in the scatterplot matrix, we can store the scatterplot matrix in an object, extract the plot using the row and the column indices, make the changes we want to the extracted plot, and replace the original plot with the new one using the same row and column indices:
+We can further modify a certain plot in the scatterplot matrix! First, we'll store the scatterplot matrix in an object. We'll then extract the plot using the row and the column indices and make changes to the extracted plot. Finally, we'll replace the original plot with the new one using the same row and column indices:
 
 ```{r, fig.width = 7, fig.height = 6, out.width = "85%", out.height = "80%"}
 ### Store the previous scatterplot matrix in an object
@@ -246,10 +246,10 @@ With this functionality, we can essentially customize the scatterplot matrix in 
 
 ## Part II. Create correlation heatmaps with `ggcorrheatmap`
 
-In the second part of this post, we'll focus on the continuous variables in the `Soil` dataset. [`ggcorrheatmap`](https://leod123.github.io/ggcorrheatmap/) offers a wide variety of functionality for creating correlation heatmaps. Let's start with the basics and add more complexity as we go.
+In the second part of this post, we'll focus on the continuous variables in the `Soils` dataset. [`ggcorrheatmap`](https://leod123.github.io/ggcorrheatmap/) offers a wide variety of functionality for creating correlation heatmaps. We'll start with the basics and add more complexity as we go.
 
 ### (1) Create a basic correlation heatmap
-`ggcorrhm()` is the master function for creating correlation heatmaps. Simply pass your data to the function and you'll get a basic heatmap (note that the default choice of correlation is the Pearson's *r*)! 
+`ggcorrhm()` is the master function for creating correlation heatmaps. Simply pass your data to the function and you'll get a basic heatmap (note that the default choice of the correlation measure used in the plot is the Pearson's *r*)!
 
 ```{r, fig.width = 5, fig.height = 4}
 library(ggcorrheatmap)
@@ -266,7 +266,7 @@ ggcorrhm(Soils_continuous)
 We can also change the cell color/shape and remove the diagonal cells (which all have a correlation coefficient of 1).
 
 ```{r, fig.width = 5, fig.height = 4}
-### Change the cell color and shape
+### Change cell color and shape
 ggcorrhm(Soils_continuous,
          high = "#de2d26",  # color for the upper limit
          mid = "white",  # color for the midpoint
@@ -278,7 +278,7 @@ ggcorrhm(Soils_continuous,
 
 ```
 
-Looks like there are some strong positive correlations (e.g., between Na and Conductance and between N and P) and some strong negative ones (e.g., between N and Density and between P and Density). But what are the actual coefficients (and their statistical significance)?
+Looks like there are some strong positive correlations (e.g., between Na and Conductance and between N and P) and some strong negative ones (e.g., between N and Density and between P and Density). So what are the actual coefficients (and are they statistical significant)?
 
 ### (2) Create a correlation heatmap with a mixed layout
 
@@ -300,9 +300,9 @@ All correlation coefficients are significant (without *p*-value adjustment)!!!
 
 ### (3) Highlight certain cells in the heatmap
 
-Now that we've learned how to make a basic correlation heatmap, we can spruce it up a bit! One thing we can do is to highlight certain cells. For example, we can highlight the cells with very strong correlations (absolute correlation coefficients larger than 0.8). 
+Now that we've learned how to make a basic correlation heatmap, we can spruce it up! One thing we can do is to highlight certain cells. For example, we can highlight the cells with very strong correlations (absolute correlation coefficients larger than 0.8).
 
-To do so, we'll first create a basic plot and set "return_data = T". This allows us to access the data underlying the heatmap. We can then save the data as a new object and create two new columns for the cell border width and the cell border color based on the correlation coefficients. Finally, we remake the original heatmap and add a new "geom_tile()" layer where we specify our new cell border width and color.
+To do so, we'll first create a basic heatmap and set "return_data = T". This allows us to access the data underlying the heatmap. We can then save the data as a new object and create two new columns for the cell border width and the cell border color based on the correlation coefficients. Finally, we recreate the original heatmap and add a new "geom_tile()" layer where we specify our new cell border width and color.
 
 ```{r, fig.width = 5, fig.height = 4}
 ### Create a basic plot
@@ -331,11 +331,11 @@ ggcorrhm(Soils_continuous,
 
 ### (4) Cluster the variables and annotate the heatmap
 
-There are two more things we can do to make the heatmap even fancier: (1) clustering the variables and (2) annotating the plot. 
+There are two more things we can do to make the heatmap look even fancier: (1) clustering the variables with a dendrogram and (2) annotating the plot. 
 
-To cluster the variables, we need to specify "cluster_rows = T" and "cluster_cols = T", which will perform hierarchical clustering on the data using the function `hclust()`. We then specify the clustering distance (default is the Euclidean distance) and the agglomeration method (default is the complete method). We can also decide whether we would like to display the row/column dendrogram using the argument "show_dend_rows/show_dend_cols". Finally, there are arguments "dend_XXX" for adjusting the dendrogram appearance.
+To cluster the variables, we need to specify "cluster_rows = T" and "cluster_cols = T", which will perform hierarchical clustering on the original data using the function `hclust()`. We can specify the clustering distance (default is the Euclidean distance) and the agglomeration method (default is the complete method). We can also decide whether we would like to display the row/column dendrogram using the argument "show_dend_rows/show_dend_cols = T/F". Finally, there are multiple "dend_XXX" arguments for adjusting the dendrogram appearance.
 
-To annotate the heatmap, we'll first create a new dataframe with a column indicating the variable names and one or more columns of annotation variables (which can be both categorical or continuous). Simply pass the data to the argument "annot_rows_df = " (or "annot_cols_df = " depending on the side of the heatmap you would like annotate on) and the annotation will show up in the plot! We can further customize the annotation using a variety of the "annot_XXX" arguments, as shown in the example below. 
+To annotate the heatmap, we'll first create a new dataframe with a column indicating the variable names and one or more columns of annotation variables (which can be both categorical or continuous). Simply pass the data to the argument "annot_rows_df = " (or "annot_cols_df = " depending on the side of the heatmap on which you would like annotate) and the annotation will show up in the plot! We can further customize the annotation using a variety of "annot_XXX" arguments, as shown in the example below. 
 
 ```{r, fig.width = 5, fig.height = 4}
 ### Data for highlighting cell borders
@@ -366,16 +366,16 @@ ggcorrhm(Soils_continuous,
          # arguments for clustering
          cluster_rows = T,  # cluster the rows  
          cluster_cols = T,  # cluster the columns
-         cluster_distance = "euclidean",  # clustering distance
+         cluster_distance = "euclidean",  # clustering distance measure
          cluster_method = "complete",  # clustering method
          show_dend_cols = F,  # hide column dendrogram
-         dend_height = 0.7,  # rescale branch length
+         dend_height = 0.7,  # rescale dendrogram branch length
          dend_lwd = 0.7,  # dendrogram line width
          
          # arguments for annotation
          annot_rows_df = annotation_df,  # dataframe for annotation
-         annot_rows_names_side = "top",  # side of annotation name (this has no effect here since the annotation name is hidden)
-         show_annot_names = F,  # hide the annotation name ("Type")
+         annot_rows_names_side = "top",  # side of annotation title (this has no effect here since the annotation name is hidden)
+         show_annot_names = F,  # hide the annotation title ("Type")
          annot_dist = 0.3,  # distance between annotation and heatmap
          annot_rows_col = list("Type" = scale_fill_manual(name = "Variable type", values = c("#f1a340", "#01665e"))),  # annotation tile color
          annot_border_lwd = 0.5,  # annotation border width
@@ -389,11 +389,11 @@ ggcorrhm(Soils_continuous,
 
 ```
 
-Awesome! Looks like there are two main clusters of variables: [Mg, Density, Na, and Conductance] vs. [N, P, K, pH, and Ca].
+Awesome! Looks like there are two main clusters of variables: [N, P, K, pH, and Ca] vs. [Mg, Density, Na, and Conductance].
 
 ## Summary
 
-In the first part of the post, we learned how to make a basic scatterplot matrix with the package `GGally`. We then modified the plots in the scatterplot matrix using the package's built-in options as well as custom plot functions we created on our own. In the second part of the post, we focused specifically on continuous variables and learned how to make correlation heatmaps with the package `ggcorrheatmap`. We first made a basic correlation heatmap. We then modified the heatmap layout to include text of correlation coefficients in the cells. We also highlighted certain cells by changing the color and the width of cell borders. Finally, we clustered the variables with a dendrogram and added an annotation to the heatmap. Scatterplot matrices and correlation heatmaps are pretty common, and we now know there are a lot more things we can do to make them more effective, informative, and engaging!
+In the first part of the post, we learned how to make scatterplot matrices with the package `GGally`. We started with a basic scatterplot matrix and then modified the plots in the scatterplot matrix using the package's built-in options as well as the custom plot functions we created on our own. In the second part of the post, we focused specifically on continuous variables and learned how to make correlation heatmaps with the package `ggcorrheatmap`. Again we started with a basic correlation heatmap and then modified the heatmap layout to add text of correlation coefficients. We also highlighted certain cells in the heatmap by changing the color and the width of cell borders. Finally, we clustered the variables with a dendrogram and added an annotation to the heatmap. Scatterplot matrices and correlation heatmaps are pretty common, and we now know there are many ways to make them more informative and engaging!
 
 Hope you learn something useful from this post and don't forget to leave your comments and suggestions below if you have any!
 
